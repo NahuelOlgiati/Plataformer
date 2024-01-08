@@ -5,6 +5,7 @@ import static com.mandarina.utilz.HelpMethods.IsFloor;
 import javafx.geometry.Rectangle2D;
 
 import com.mandarina.constants.DialogueCts;
+import com.mandarina.constants.DirectionCts;
 import com.mandarina.entities.Enemy;
 import com.mandarina.entities.EnemyState;
 import com.mandarina.entities.player.Player;
@@ -19,6 +20,12 @@ public class Crabby extends Enemy {
 		super(x, y, CrabbySprite.WIDTH.scaled(), CrabbySprite.HEIGHT.scaled(), CrabbyAtlas.GreenValue());
 		initHitbox(CrabbyHitbox.width(), CrabbyHitbox.height());
 		initAttackBox(CrabbyAttackHitbox.width(), CrabbyAttackHitbox.height(), CrabbyAttackHitbox.attackBoxOffsetX());
+	}
+	
+	@Override
+	public void update(int[][] lvlData, Playing playing) {
+		super.update(lvlData, playing);
+		updateAttackBox();
 	}
 
 	@Override
@@ -65,7 +72,7 @@ public class Crabby extends Enemy {
 	
 	@Override
 	protected void draw(GraphicsContext g, int xLvlOffset, Image[][] animations) {
-		draw(g, xLvlOffset, animations, CrabbySprite.WIDTH.scaled(), CrabbySprite.HEIGHT.scaled(),
+		draw(g, xLvlOffset, animations, state.val(), CrabbySprite.WIDTH.scaled(), CrabbySprite.HEIGHT.scaled(),
 				CrabbySprite.DRAWOFFSET_X.scaled(), CrabbySprite.DRAWOFFSET_Y.scaled());
 	}
 

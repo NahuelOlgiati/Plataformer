@@ -20,23 +20,25 @@ class PlayerAtlas {
 	}
 
 	public static int YSize() {
-		return 7;
+		return 6;
 	}
 
 	public static int GetSpriteAmount(PlayerState state) {
 		switch (state) {
 		case DEAD:
-			return 8;
-		case RUNNING:
 			return 6;
+		case RUNNING:
+			return 8;
 		case IDLE:
-			return 5;
-		case HIT:
 			return 4;
+		case HIT:
+			return 6;
 		case JUMP:
+			return 8;
 		case ATTACK:
-			return 3;
+			return 7;
 		case FALLING:
+			return 6;
 		default:
 			return 1;
 		}

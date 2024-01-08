@@ -7,6 +7,7 @@ import com.mandarina.constants.GameCts;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public abstract class Entity {
@@ -21,16 +22,70 @@ public abstract class Entity {
 	protected int currentHealth;
 	protected Rectangle2D attackBox;
 	protected float walkSpeed;
+	protected int walkDir = DirectionCts.LEFT;
 
 	protected int pushBackDir;
 	protected float pushDrawOffset;
 	protected int pushBackOffsetDir = DirectionCts.UP;
+
+	protected boolean attackChecked;
+	protected int attackBoxOffsetX;
 
 	public Entity(float x, float y, int width, int height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+	}
+
+	protected void draw(GraphicsContext g, int xLvlOffset, Image[][] animations, int row, int spriteW, int spriteH,
+			int offsetX, int offsetY) {
+		g.drawImage(animations[row][getAniIndex()], (int) (hitbox.getMinX() - xLvlOffset - offsetX + flipX()),
+				(int) hitbox.getMinY() - offsetY + (int) pushDrawOffset, spriteW * flipW(), spriteH);
+
+		// For Debug
+		drawHitbox(g, xLvlOffset);
+		drawAttackBox(g, xLvlOffset);
+	}
+
+	protected void updateAttackBox() {
+		attackBox = new Rectangle2D(hitbox.getMinX() - attackBoxOffsetX, hitbox.getMinY(), attackBox.getWidth(),
+				attackBox.getHeight());
+	}
+
+	protected void updateAttackBoxFlip() {
+		if (walkDir == DirectionCts.RIGHT) {
+			attackBox = new Rectangle2D(hitbox.getMinX() + hitbox.getWidth(), hitbox.getMinY(), attackBox.getWidth(),
+					attackBox.getHeight());
+		} else {
+			attackBox = new Rectangle2D(hitbox.getMinX() - attackBoxOffsetX, hitbox.getMinY(), attackBox.getWidth(),
+					attackBox.getHeight());
+		}
+	}
+
+	protected void changeWalkDir() {
+		if (walkDir == DirectionCts.LEFT)
+			changeWalkDir(DirectionCts.RIGHT);
+		else
+			changeWalkDir(DirectionCts.LEFT);
+	}
+
+	protected void changeWalkDir(int direction) {
+		walkDir = direction;
+	}
+
+	public int flipX() {
+		if (walkDir == DirectionCts.RIGHT)
+			return width;
+		else
+			return 0;
+	}
+
+	public int flipW() {
+		if (walkDir == DirectionCts.RIGHT)
+			return -1;
+		else
+			return 1;
 	}
 
 	protected void updatePushBackDrawOffset() {

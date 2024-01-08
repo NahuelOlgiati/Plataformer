@@ -19,12 +19,9 @@ import javafx.scene.image.Image;
 public abstract class Enemy extends Entity {
 	protected EnemyState state;
 	protected boolean firstUpdate = true;
-	protected int walkDir = DirectionCts.LEFT;
 	protected int tileY;
 	protected float attackDistance = GameCts.TILES_SIZE;
 	protected boolean active = true;
-	protected boolean attackChecked;
-	protected int attackBoxOffsetX;
 
 	public Enemy(float x, float y, int width, int height, int enemyType) {
 		super(x, y, width, height);
@@ -45,33 +42,6 @@ public abstract class Enemy extends Entity {
 	public void update(int[][] lvlData, Playing playing) {
 		updateBehavior(lvlData, playing);
 		updateAnimationTick();
-		updateAttackBox();
-	}
-
-	protected void updateAttackBox() {
-		attackBox = new Rectangle2D(hitbox.getMinX() - attackBoxOffsetX, hitbox.getMinY(), attackBox.getWidth(),
-				attackBox.getHeight());
-	}
-
-	protected void updateAttackBoxFlip() {
-		if (walkDir == DirectionCts.RIGHT) {
-			attackBox = new Rectangle2D(hitbox.getMinX() + hitbox.getWidth(), hitbox.getMinY(), attackBox.getWidth(),
-					attackBox.getHeight());
-		} else {
-			attackBox = new Rectangle2D(hitbox.getMinX() - attackBoxOffsetX, hitbox.getMinY(), attackBox.getWidth(),
-					attackBox.getHeight());
-		}
-	}
-
-	protected void draw(GraphicsContext g, int xLvlOffset, Image[][] animations, int spriteW, int spriteH, int offsetX,
-			int offsetY) {
-		g.drawImage(animations[getState().val()][getAniIndex()],
-				(int) (getHitbox().getMinX() - xLvlOffset - offsetX + flipX()),
-				(int) getHitbox().getMinY() - offsetY + (int) getPushDrawOffset(), spriteW * flipW(), spriteH);
-
-		// For Debug
-		drawHitbox(g, xLvlOffset);
-		drawAttackBox(g, xLvlOffset);
 	}
 
 	protected void initAttackBox(int w, int h, int attackBoxOffsetX) {
@@ -180,13 +150,6 @@ public abstract class Enemy extends Entity {
 		}
 	}
 
-	protected void changeWalkDir() {
-		if (walkDir == DirectionCts.LEFT)
-			walkDir = DirectionCts.RIGHT;
-		else
-			walkDir = DirectionCts.LEFT;
-	}
-
 	public void resetEnemy() {
 	    hitbox = new Rectangle2D(x, y, hitbox.getWidth(), hitbox.getHeight());
 	    firstUpdate = true;
@@ -197,26 +160,8 @@ public abstract class Enemy extends Entity {
 	    pushDrawOffset = 0;
 	}
 
-	public int flipX() {
-		if (walkDir == DirectionCts.RIGHT)
-			return width;
-		else
-			return 0;
-	}
-
-	public int flipW() {
-		if (walkDir == DirectionCts.RIGHT)
-			return -1;
-		else
-			return 1;
-	}
-
 	public boolean isActive() {
 		return active;
-	}
-
-	public float getPushDrawOffset() {
-		return pushDrawOffset;
 	}
 
 	public EnemyState getState() {

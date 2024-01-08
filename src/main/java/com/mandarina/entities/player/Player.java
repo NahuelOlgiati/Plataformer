@@ -30,10 +30,6 @@ public class Player extends Entity {
 	private float jumpSpeed = -2.25f * GameCts.SCALE;
 	private float fallSpeedAfterCollision = 0.5f * GameCts.SCALE;
 
-	private int flipX = 0;
-	private int flipW = 1;
-
-	private boolean attackChecked;
 	private Playing playing;
 	private PlayerState state;
 
@@ -51,7 +47,7 @@ public class Player extends Entity {
 		this.walkSpeed = GameCts.SCALE * 1.0f;
 		loadAnimations();
 		initHitbox(PlayerHitbox.width(), PlayerHitbox.height());
-		initAttackBox(PlayerAttackHitbox.width(), PlayerAttackHitbox.height());
+		initAttackBox(PlayerAttackHitbox.width(), PlayerAttackHitbox.height(), PlayerAttackHitbox.attackBoxOffsetX());
 	}
 
 	public void setSpawn(Point2D spawn) {
@@ -60,8 +56,9 @@ public class Player extends Entity {
 		hitbox = new Rectangle2D(x, y, hitbox.getWidth(), hitbox.getHeight());
 	}
 
-	private void initAttackBox(int width, int height) {
+	private void initAttackBox(int width, int height, int attackBoxOffsetX) {
 		attackBox = new Rectangle2D(x, y, (int) (width * GameCts.SCALE), (int) (height * GameCts.SCALE));
+		this.attackBoxOffsetX = (int) (GameCts.SCALE * attackBoxOffsetX);
 		resetAttackBox();
 	}
 
@@ -104,7 +101,8 @@ public class Player extends Entity {
 			return;
 		}
 
-		updateAttackBox();
+		updateWalkDir();
+		updateAttackBoxFlip();
 
 		if (PlayerState.HIT.equals(state)) {
 			if (aniIndex <= PlayerAtlas.GetSpriteAmount(state) - 3)
@@ -160,40 +158,39 @@ public class Player extends Entity {
 		playing.getGame().getAudioPlayer().playAttackSound();
 	}
 
-	private void setAttackBoxOnRightSide() {
-		attackBox = new Rectangle2D(hitbox.getMinX() + hitbox.getWidth() - (int) (GameCts.SCALE * 5), hitbox.getMinY(),
-				attackBox.getWidth(), attackBox.getHeight());
-	}
-
-	private void setAttackBoxOnLeftSide() {
-		attackBox = new Rectangle2D(hitbox.getMinX() - hitbox.getWidth() - (int) (GameCts.SCALE * 10), hitbox.getMinY(),
-				attackBox.getWidth(), attackBox.getHeight());
-	}
-
-	private void updateAttackBox() {
+	private void updateWalkDir() {
 		if (right && left) {
-			if (flipW == 1) {
-				setAttackBoxOnRightSide();
+			if (walkDir == DirectionCts.RIGHT) {
+				changeWalkDir(DirectionCts.RIGHT);
 			} else {
-				setAttackBoxOnLeftSide();
+				changeWalkDir(DirectionCts.LEFT);
 			}
 
-		} else if (right || (powerAttackActive && flipW == 1))
-			setAttackBoxOnRightSide();
-		else if (left || (powerAttackActive && flipW == -1))
-			setAttackBoxOnLeftSide();
-
-		attackBox = new Rectangle2D(attackBox.getMinX(), hitbox.getMinY() + (GameCts.SCALE * 10), attackBox.getWidth(),
-				attackBox.getHeight());
+		} else if (right || (powerAttackActive && walkDir == DirectionCts.RIGHT))
+			changeWalkDir(DirectionCts.RIGHT);
+		else if (left || (powerAttackActive && walkDir == DirectionCts.LEFT))
+			changeWalkDir(DirectionCts.LEFT);
 	}
 
-	public void render(GraphicsContext g, int lvlOffset) {
-		g.drawImage(animations[state.val()][aniIndex],
-				(int) (hitbox.getMinX() - PlayerSprite.DRAWOFFSET_X.scaled()) - lvlOffset + flipX,
-				(int) (hitbox.getMinY() - PlayerSprite.DRAWOFFSET_Y.scaled() + (int) pushDrawOffset), width * flipW,
-				height);
-//		drawHitbox(g, lvlOffset);
-//		drawAttackBox(g, lvlOffset);
+	public void draw(GraphicsContext g, int xLvlOffset) {
+		draw(g, xLvlOffset, animations, state.val(), PlayerSprite.WIDTH.scaled(), PlayerSprite.HEIGHT.scaled(),
+				PlayerSprite.DRAWOFFSET_X.scaled(), PlayerSprite.DRAWOFFSET_Y.scaled());
+	}
+
+	@Override
+	public int flipX() {
+		if (walkDir == DirectionCts.RIGHT)
+			return 0;
+		else
+			return width;
+	}
+
+	@Override
+	public int flipW() {
+		if (walkDir == DirectionCts.RIGHT)
+			return 1;
+		else
+			return -1;
 	}
 
 	private void updateAnimationTick() {
@@ -272,18 +269,14 @@ public class Player extends Entity {
 
 		if (left && !right) {
 			xSpeed -= walkSpeed;
-			flipX = width;
-			flipW = -1;
 		}
 		if (right && !left) {
 			xSpeed += walkSpeed;
-			flipX = 0;
-			flipW = 1;
 		}
 
 		if (powerAttackActive) {
 			if ((!left && !right) || (left && right)) {
-				if (flipW == -1)
+				if (walkDir == DirectionCts.LEFT)
 					xSpeed = -walkSpeed;
 				else
 					xSpeed = walkSpeed;
@@ -436,10 +429,10 @@ public class Player extends Entity {
 	}
 
 	private void resetAttackBox() {
-		if (flipW == 1)
-			setAttackBoxOnRightSide();
+		if (walkDir == DirectionCts.RIGHT)
+			changeWalkDir(DirectionCts.RIGHT);
 		else
-			setAttackBoxOnLeftSide();
+			changeWalkDir(DirectionCts.LEFT);
 	}
 
 	public int getTileY() {

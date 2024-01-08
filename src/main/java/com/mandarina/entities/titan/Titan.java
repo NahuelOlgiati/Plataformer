@@ -73,7 +73,7 @@ public class Titan extends Enemy {
 
 	@Override
 	public void draw(GraphicsContext g, int xLvlOffset, Image[][] animations) {
-		draw(g, xLvlOffset, animations, TitanSprite.WIDTH.scaled(), TitanSprite.HEIGHT.scaled(),
+		draw(g, xLvlOffset, animations, state.val(), TitanSprite.WIDTH.scaled(), TitanSprite.HEIGHT.scaled(),
 				TitanSprite.DRAWOFFSET_X.scaled(), TitanSprite.DRAWOFFSET_Y.scaled());
 	}
 

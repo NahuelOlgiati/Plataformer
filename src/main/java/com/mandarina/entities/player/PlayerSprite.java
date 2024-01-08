@@ -3,11 +3,11 @@ package com.mandarina.entities.player;
 import com.mandarina.constants.GameCts;
 
 enum PlayerSprite {
-	WIDTH(64), //
-	HEIGHT(40), //
+	WIDTH(44), //
+	HEIGHT(62), //
 
-	DRAWOFFSET_X(21), //
-	DRAWOFFSET_Y(4);
+	DRAWOFFSET_X(10), //
+	DRAWOFFSET_Y(35);
 
 	private final int value;
 

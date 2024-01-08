@@ -266,7 +266,7 @@ public class Playing extends State implements Statemethods {
 		objectManager.draw(g, xLvlOffset);
 		enemyManager.draw(g, xLvlOffset);
 		statusBar.draw(g);
-		player.render(g, xLvlOffset);
+		player.draw(g, xLvlOffset);
 		objectManager.drawBackgroundTrees(g, xLvlOffset);
 		drawDialogue(g, xLvlOffset);
 

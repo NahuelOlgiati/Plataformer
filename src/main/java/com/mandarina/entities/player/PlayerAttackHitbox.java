@@ -9,4 +9,8 @@ class PlayerAttackHitbox {
 	public static int height() {
 		return 20;
 	}
+	
+	public static int attackBoxOffsetX() {
+		return 35;
+	}
 }
