@@ -1,6 +1,5 @@
 package com.mandarina.gamestates;
 
-import javafx.geometry.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -21,6 +20,7 @@ import com.mandarina.ui.PauseOverlay;
 import com.mandarina.ui.StatusBar;
 import com.mandarina.utilz.LoadSave;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
@@ -44,10 +44,15 @@ public class Playing extends State implements Statemethods {
 
 	private boolean paused = false;
 
-	private int xLvlOffset;
+	private int lvlOffsetX;
+	private int maxLvlOffsetX;
 	private int leftBorder = (int) (0.25 * GameCts.GAME_WIDTH);
 	private int rightBorder = (int) (0.75 * GameCts.GAME_WIDTH);
-	private int maxLvlOffsetX;
+
+	private int lvlOffsetY;
+	private int maxLvlOffsetY;
+	private int bottomBorder = (int) (0.25 * GameCts.GAME_HEIGHT);
+	private int topBorder = (int) (0.75 * GameCts.GAME_HEIGHT);
 
 	private Image backgroundImg, bigCloud, smallCloud, shipImgs[];
 	private Image[] questionImgs, exclamationImgs;
@@ -141,7 +146,8 @@ public class Playing extends State implements Statemethods {
 	}
 
 	private void calcLvlOffset() {
-		maxLvlOffsetX = levelManager.getCurrentLevel().getLvlOffset();
+		maxLvlOffsetX = levelManager.getCurrentLevel().getLvlOffsetX();
+		maxLvlOffsetY = levelManager.getCurrentLevel().getLvlOffsetY();
 	}
 
 	private void initClasses() {
@@ -177,13 +183,14 @@ public class Playing extends State implements Statemethods {
 		else {
 			updateDialogue();
 			if (drawRain)
-				rain.update(xLvlOffset);
+				rain.update(lvlOffsetX, lvlOffsetY);
 			levelManager.update();
 			objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
 			statusBar.update();
 			player.update();
 			enemyManager.update(levelManager.getCurrentLevel().getLevelData());
-			checkCloseToBorder();
+			checkCloseToBorderX();
+			checkCloseToBorderY();
 			if (drawShip)
 				updateShipAni();
 		}
@@ -214,14 +221,14 @@ public class Playing extends State implements Statemethods {
 				de.update();
 	}
 
-	private void drawDialogue(GraphicsContext g, int xLvlOffset) {
+	private void drawDialogue(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		for (DialogueEffect de : dialogEffects)
 			if (de.isActive()) {
 				if (de.getType() == DialogueCts.QUESTION)
-					g.drawImage(questionImgs[de.getAniIndex()], de.getX() - xLvlOffset, de.getY(),
+					g.drawImage(questionImgs[de.getAniIndex()], de.getX() - lvlOffsetX, de.getY() - lvlOffsetY,
 							DialogueCts.DIALOGUE_WIDTH, DialogueCts.DIALOGUE_HEIGHT);
 				else
-					g.drawImage(exclamationImgs[de.getAniIndex()], de.getX() - xLvlOffset, de.getY(),
+					g.drawImage(exclamationImgs[de.getAniIndex()], de.getX() - lvlOffsetX, de.getY() - lvlOffsetY,
 							DialogueCts.DIALOGUE_WIDTH, DialogueCts.DIALOGUE_HEIGHT);
 			}
 	}
@@ -237,16 +244,28 @@ public class Playing extends State implements Statemethods {
 				}
 	}
 
-	private void checkCloseToBorder() {
+	private void checkCloseToBorderX() {
 		int playerX = (int) player.getHitbox().getMinX();
-		int diff = playerX - xLvlOffset;
+		int diff = playerX - lvlOffsetX;
 
 		if (diff > rightBorder)
-			xLvlOffset += diff - rightBorder;
+			lvlOffsetX += diff - rightBorder;
 		else if (diff < leftBorder)
-			xLvlOffset += diff - leftBorder;
+			lvlOffsetX += diff - leftBorder;
 
-		xLvlOffset = Math.max(Math.min(xLvlOffset, maxLvlOffsetX), 0);
+		lvlOffsetX = Math.max(Math.min(lvlOffsetX, maxLvlOffsetX), 0);
+	}
+
+	private void checkCloseToBorderY() {
+		int playerY = (int) player.getHitbox().getMinY();
+		int diff = playerY - lvlOffsetY;
+
+		if (diff > topBorder)
+			lvlOffsetY += diff - topBorder;
+		else if (diff < bottomBorder)
+			lvlOffsetY += diff - bottomBorder;
+
+		lvlOffsetY = Math.max(Math.min(lvlOffsetY, maxLvlOffsetY), 0);
 	}
 
 	@Override
@@ -255,20 +274,20 @@ public class Playing extends State implements Statemethods {
 
 		drawClouds(g);
 		if (drawRain)
-			rain.draw(g, xLvlOffset);
+			rain.draw(g, lvlOffsetX, lvlOffsetY);
 
 		if (drawShip)
-			g.drawImage(shipImgs[shipAni], (int) (100 * GameCts.SCALE) - xLvlOffset,
-					(int) ((288 * GameCts.SCALE) + shipHeightDelta), (int) (78 * GameCts.SCALE),
+			g.drawImage(shipImgs[shipAni], (int) (100 * GameCts.SCALE) - lvlOffsetX,
+					(int) ((288 * GameCts.SCALE) + shipHeightDelta - lvlOffsetY), (int) (78 * GameCts.SCALE),
 					(int) (72 * GameCts.SCALE));
 
-		levelManager.draw(g, xLvlOffset);
-		objectManager.draw(g, xLvlOffset);
-		enemyManager.draw(g, xLvlOffset);
+		levelManager.draw(g, lvlOffsetX, lvlOffsetY);
+		objectManager.draw(g, lvlOffsetX, lvlOffsetY);
+		enemyManager.draw(g, lvlOffsetX, lvlOffsetY);
 		statusBar.draw(g);
-		player.draw(g, xLvlOffset);
-		objectManager.drawBackgroundTrees(g, xLvlOffset);
-		drawDialogue(g, xLvlOffset);
+		player.draw(g, lvlOffsetX, lvlOffsetY);
+		objectManager.drawBackgroundTrees(g, lvlOffsetX, lvlOffsetY);
+		drawDialogue(g, lvlOffsetX, lvlOffsetY);
 
 		if (paused) {
 			g.setFill(new Color(0, 0, 0, 0.6));
@@ -285,11 +304,11 @@ public class Playing extends State implements Statemethods {
 
 	private void drawClouds(GraphicsContext g) {
 		for (int i = 0; i < 4; i++)
-			g.drawImage(bigCloud, i * EnvCts.BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * GameCts.SCALE),
+			g.drawImage(bigCloud, i * EnvCts.BIG_CLOUD_WIDTH - (int) (lvlOffsetX * 0.3), (int) (204 * GameCts.SCALE),
 					EnvCts.BIG_CLOUD_WIDTH, EnvCts.BIG_CLOUD_HEIGHT);
 
 		for (int i = 0; i < smallCloudsPos.length; i++)
-			g.drawImage(smallCloud, EnvCts.SMALL_CLOUD_WIDTH * 4 * i - (int) (xLvlOffset * 0.7), smallCloudsPos[i],
+			g.drawImage(smallCloud, EnvCts.SMALL_CLOUD_WIDTH * 4 * i - (int) (lvlOffsetX * 0.7), smallCloudsPos[i],
 					EnvCts.SMALL_CLOUD_WIDTH, EnvCts.SMALL_CLOUD_HEIGHT);
 	}
 
@@ -319,7 +338,7 @@ public class Playing extends State implements Statemethods {
 	private void setDrawRainBoolean() {
 		// This method makes it rain 20% of the time you load a level.
 //		if (rnd.nextFloat() >= 0.8f)
-			drawRain = true;
+		drawRain = true;
 	}
 
 	public void setGameOver(boolean gameOver) {
@@ -449,8 +468,12 @@ public class Playing extends State implements Statemethods {
 		this.lvlCompleted = levelCompleted;
 	}
 
-	public void setMaxLvlOffset(int lvlOffset) {
-		this.maxLvlOffsetX = lvlOffset;
+	public void setMaxLvlOffsetX(int lvlOffsetX) {
+		this.maxLvlOffsetX = lvlOffsetX;
+	}
+
+	public void setMaxLvlOffsetY(int lvlOffsetY) {
+		this.maxLvlOffsetY = lvlOffsetY;
 	}
 
 	public void unpauseGame() {

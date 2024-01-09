@@ -38,7 +38,8 @@ public class LevelManager {
 		Level newLevel = levels.get(lvlIndex);
 		game.getPlaying().getEnemyManager().loadEnemies(newLevel);
 		game.getPlaying().getPlayer().loadLvlData(newLevel.getLevelData());
-		game.getPlaying().setMaxLvlOffset(newLevel.getLvlOffset());
+		game.getPlaying().setMaxLvlOffsetX(newLevel.getLvlOffsetX());
+		game.getPlaying().setMaxLvlOffsetY(newLevel.getLvlOffsetY());
 		game.getPlaying().getObjectManager().loadObjects(newLevel);
 	}
 
@@ -58,12 +59,14 @@ public class LevelManager {
 			}
 	}
 
-	public void draw(GraphicsContext g, int lvlOffset) {
-		for (int j = 0; j < GameCts.TILES_IN_HEIGHT; j++)
-			for (int i = 0; i < levels.get(lvlIndex).getLevelData()[0].length; i++) {
-				int index = levels.get(lvlIndex).getSpriteIndex(i, j);
-				int x = GameCts.TILES_SIZE * i - lvlOffset;
-				int y = GameCts.TILES_SIZE * j;
+	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+		Level level = levels.get(lvlIndex);
+		int[][] levelData = level.getLevelData();
+		for (int j = 0; j < levelData.length; j++) {
+			for (int i = 0; i < levelData[0].length; i++) {
+				int index = level.getSpriteIndex(i, j);
+				int x = GameCts.TILES_SIZE * i - lvlOffsetX;
+				int y = GameCts.TILES_SIZE * j - lvlOffsetY;
 				if (index == 48)
 					g.drawImage(waterSprite[aniIndex], x, y, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
 				else if (index == 49)
@@ -71,6 +74,7 @@ public class LevelManager {
 				else
 					g.drawImage(levelSprite[index], x, y, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
 			}
+		}
 	}
 
 	public void update() {

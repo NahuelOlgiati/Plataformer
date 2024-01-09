@@ -73,8 +73,8 @@ public class Shark extends Enemy {
 	}
 	
 	@Override
-	protected void draw(GraphicsContext g, int xLvlOffset, Image[][] animations) {
-		draw(g, xLvlOffset, animations, state.val(), SharkSprite.WIDTH.scaled(), SharkSprite.HEIGHT.scaled(),
+	protected void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[][] animations) {
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), SharkSprite.WIDTH.scaled(), SharkSprite.HEIGHT.scaled(),
 				SharkSprite.DRAWOFFSET_X.scaled(), SharkSprite.DRAWOFFSET_Y.scaled());
 	}
 

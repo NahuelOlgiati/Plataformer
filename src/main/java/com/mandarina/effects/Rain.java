@@ -31,27 +31,33 @@ public class Rain {
 	}
 
 	private Point2D getRndPos() {
-		return new Point2D((int) getNewX(0), rand.nextInt(GameCts.GAME_HEIGHT));
+		return new Point2D((int) getNewX(0), getNewY(0));
 	}
 
-	public void update(int xLvlOffset) {
-	    for (int i = 0; i < drops.length; i++) {
-	        Point2D p = drops[i];
-	        drops[i] = new Point2D(p.getX(), p.getY() + rainSpeed);
-	        if (drops[i].getY() >= GameCts.GAME_HEIGHT) {
-	            drops[i] = new Point2D(getNewX(xLvlOffset), -20);
-	        }
-	    }
+	public void update(int lvlOffsetX, int lvlOffsetY) {
+		for (int i = 0; i < drops.length; i++) {
+			Point2D p = drops[i];
+			drops[i] = new Point2D(p.getX(), p.getY() + rainSpeed);
+			if (drops[i].getY() >= GameCts.GAME_HEIGHT + lvlOffsetY) {
+				drops[i] = new Point2D(getNewX(lvlOffsetX), rand.nextInt(-GameCts.GAME_HEIGHT + lvlOffsetY, lvlOffsetY));
+			}
+		}
 	}
 
-	private float getNewX(int xLvlOffset) {
-		float value = (-GameCts.GAME_WIDTH) + rand.nextInt((int) (GameCts.GAME_WIDTH * 3f)) + xLvlOffset;
-		return value;
+	private float getNewX(int lvlOffsetX) {
+		return rand.nextInt((int) (GameCts.GAME_WIDTH * -1.5f) + lvlOffsetX,
+				(int) (GameCts.GAME_WIDTH * 1.5f) + lvlOffsetX);
 	}
 
-	public void draw(GraphicsContext g, int xLvlOffset) {
+	private float getNewY(int lvlOffsetY) {
+		return rand.nextInt((int) (GameCts.GAME_HEIGHT * -1.5f) + lvlOffsetY,
+				(int) (GameCts.GAME_HEIGHT * 1.5f) + lvlOffsetY);
+	}
+
+	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		for (Point2D p : drops) {
-			g.drawImage(rainParticle, p.getX() - xLvlOffset, p.getY(), 3, 12);
+			g.drawImage(rainParticle, p.getX() - lvlOffsetX, p.getY() - lvlOffsetY, 2 * GameCts.SCALE,
+					8 * GameCts.SCALE);
 		}
 	}
 

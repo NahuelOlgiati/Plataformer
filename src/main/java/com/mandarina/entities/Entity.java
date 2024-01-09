@@ -14,22 +14,27 @@ public abstract class Entity {
 
 	protected float x, y;
 	protected int width, height;
-	protected Rectangle2D hitbox;
+
 	protected int aniTick, aniIndex;
-	protected float airSpeed;
-	protected boolean inAir = false;
+
 	protected int maxHealth;
 	protected int currentHealth;
-	protected Rectangle2D attackBox;
+
 	protected float walkSpeed;
 	protected int walkDir = DirectionCts.LEFT;
+
+	protected float airSpeed;
+	protected boolean inAir = false;
+
+	protected Rectangle2D hitbox;
+
+	protected Rectangle2D attackBox;
+	protected boolean attackChecked;
+	protected int attackBoxOffsetX;
 
 	protected int pushBackDir;
 	protected float pushDrawOffset;
 	protected int pushBackOffsetDir = DirectionCts.UP;
-
-	protected boolean attackChecked;
-	protected int attackBoxOffsetX;
 
 	public Entity(float x, float y, int width, int height) {
 		this.x = x;
@@ -38,14 +43,14 @@ public abstract class Entity {
 		this.height = height;
 	}
 
-	protected void draw(GraphicsContext g, int xLvlOffset, Image[][] animations, int row, int spriteW, int spriteH,
-			int offsetX, int offsetY) {
-		g.drawImage(animations[row][getAniIndex()], (int) (hitbox.getMinX() - xLvlOffset - offsetX + flipX()),
-				(int) hitbox.getMinY() - offsetY + (int) pushDrawOffset, spriteW * flipW(), spriteH);
+	protected void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[][] animations, int row, int spriteW,
+			int spriteH, int offsetX, int offsetY) {
+		g.drawImage(animations[row][getAniIndex()], (int) (hitbox.getMinX() - lvlOffsetX - offsetX + flipX()),
+				(int) hitbox.getMinY() - lvlOffsetY - offsetY + (int) pushDrawOffset, spriteW * flipW(), spriteH);
 
 		// For Debug
-		drawHitbox(g, xLvlOffset);
-		drawAttackBox(g, xLvlOffset);
+		drawHitbox(g, lvlOffsetX, lvlOffsetY);
+		drawAttackBox(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	protected void updateAttackBox() {
@@ -116,16 +121,16 @@ public abstract class Entity {
 					hitbox.getHeight());
 	}
 
-	protected void drawAttackBox(GraphicsContext g, int xLvlOffset) {
+	protected void drawAttackBox(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		g.setStroke(Color.RED);
-		g.strokeRect(attackBox.getMinX() - xLvlOffset, attackBox.getMinY(), attackBox.getWidth(),
+		g.strokeRect(attackBox.getMinX() - lvlOffsetX, attackBox.getMinY() - lvlOffsetY, attackBox.getWidth(),
 				attackBox.getHeight());
 	}
 
-	protected void drawHitbox(GraphicsContext g, int xLvlOffset) {
+	protected void drawHitbox(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		g.setStroke(Color.PINK);
-		g.strokeRect((int) (hitbox.getMinX() - xLvlOffset), (int) hitbox.getMinY(), (int) hitbox.getWidth(),
-				(int) hitbox.getHeight());
+		g.strokeRect((int) (hitbox.getMinX() - lvlOffsetX), (int) (hitbox.getMinY() - lvlOffsetY),
+				(int) hitbox.getWidth(), (int) hitbox.getHeight());
 	}
 
 	protected void initHitbox(int width, int height) {

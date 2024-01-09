@@ -196,83 +196,91 @@ public class ObjectManager {
 		projectiles.add(new Projectile((int) c.getHitbox().getMinX(), (int) c.getHitbox().getMinY(), dir));
 	}
 
-	public void draw(GraphicsContext g, int xLvlOffset) {
-		drawPotions(g, xLvlOffset);
-		drawContainers(g, xLvlOffset);
-		drawTraps(g, xLvlOffset);
-		drawCannons(g, xLvlOffset);
-		drawProjectiles(g, xLvlOffset);
-		drawGrass(g, xLvlOffset);
+	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+		drawPotions(g, lvlOffsetX, lvlOffsetY);
+		drawContainers(g, lvlOffsetX, lvlOffsetY);
+		drawTraps(g, lvlOffsetX, lvlOffsetY);
+		drawCannons(g, lvlOffsetX, lvlOffsetY);
+		drawProjectiles(g, lvlOffsetX, lvlOffsetY);
+		drawGrass(g, lvlOffsetX, lvlOffsetY);
 	}
 
-	private void drawGrass(GraphicsContext g, int xLvlOffset) {
+	private void drawGrass(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		for (Grass grass : currentLevel.getGrass())
-			g.drawImage(grassImgs[grass.getType()], grass.getX() - xLvlOffset, grass.getY(), (int) (32 * GameCts.SCALE),
-					(int) (32 * GameCts.SCALE));
+			g.drawImage(grassImgs[grass.getType()], grass.getX() - lvlOffsetX, grass.getY() - lvlOffsetY,
+					(int) (32 * GameCts.SCALE), (int) (32 * GameCts.SCALE));
 	}
 
-	public void drawBackgroundTrees(GraphicsContext g, int xLvlOffset) {
+	public void drawBackgroundTrees(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		for (BackgroundTree bt : currentLevel.getTrees()) {
 
 			int type = bt.getType();
 			if (type == 9)
 				type = 8;
 			g.drawImage(treeImgs[type - 7][bt.getAniIndex()],
-					bt.getX() - xLvlOffset + ObjectCts.GetTreeOffsetX(bt.getType()),
-					(int) (bt.getY() + ObjectCts.GetTreeOffsetY(bt.getType())), ObjectCts.GetTreeWidth(bt.getType()),
-					ObjectCts.GetTreeHeight(bt.getType()));
+					bt.getX() - lvlOffsetX + ObjectCts.GetTreeOffsetX(bt.getType()),
+					(int) (bt.getY() - lvlOffsetY + ObjectCts.GetTreeOffsetY(bt.getType())),
+					ObjectCts.GetTreeWidth(bt.getType()), ObjectCts.GetTreeHeight(bt.getType()));
 		}
 	}
 
-	private void drawProjectiles(GraphicsContext g, int xLvlOffset) {
+	private void drawProjectiles(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		for (Projectile p : projectiles)
 			if (p.isActive())
-				g.drawImage(cannonBallImg, (int) (p.getHitbox().getMinX() - xLvlOffset), (int) p.getHitbox().getMinY(),
-						ProjectileCts.CANNON_BALL_WIDTH, ProjectileCts.CANNON_BALL_HEIGHT);
+				g.drawImage(cannonBallImg, (int) (p.getHitbox().getMinX() - lvlOffsetX),
+						(int) p.getHitbox().getMinY() - lvlOffsetY, ProjectileCts.CANNON_BALL_WIDTH,
+						ProjectileCts.CANNON_BALL_HEIGHT);
 	}
 
-	private void drawCannons(GraphicsContext g, int xLvlOffset) {
+	private void drawCannons(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		for (Cannon c : currentLevel.getCannons()) {
-			int x = (int) (c.getHitbox().getMinX() - xLvlOffset);
+			int x = (int) (c.getHitbox().getMinX() - lvlOffsetX);
 			int width = ObjectCts.CANNON_WIDTH;
+
+			int y = (int) (c.getHitbox().getMinY() - lvlOffsetY);
+			int height = ObjectCts.CANNON_HEIGHT;
 
 			if (c.getObjType() == ObjectCts.CANNON_RIGHT) {
 				x += width;
 				width *= -1;
+				y += height;
+				height *= -1;
 			}
-			g.drawImage(cannonImgs[c.getAniIndex()], x, (int) (c.getHitbox().getMinY()), width, ObjectCts.CANNON_HEIGHT);
+			g.drawImage(cannonImgs[c.getAniIndex()], x, y, width, height);
 		}
 	}
 
-	private void drawTraps(GraphicsContext g, int xLvlOffset) {
+	private void drawTraps(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		for (Spike s : currentLevel.getSpikes())
-			g.drawImage(spikeImg, (int) (s.getHitbox().getMinX() - xLvlOffset), (int) (s.getHitbox().getMinY() - s.getyDrawOffset()),
-					ObjectCts.SPIKE_WIDTH, ObjectCts.SPIKE_HEIGHT);
+			g.drawImage(spikeImg, (int) (s.getHitbox().getMinX() - lvlOffsetX),
+					(int) (s.getHitbox().getMinY() - s.getyDrawOffset() - lvlOffsetY), ObjectCts.SPIKE_WIDTH,
+					ObjectCts.SPIKE_HEIGHT);
 
 	}
 
-	private void drawContainers(GraphicsContext g, int xLvlOffset) {
+	private void drawContainers(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		for (GameContainer gc : containers)
 			if (gc.isActive()) {
 				int type = 0;
 				if (gc.getObjType() == ObjectCts.BARREL)
 					type = 1;
 				g.drawImage(containerImgs[type][gc.getAniIndex()],
-						(int) (gc.getHitbox().getMinX() - gc.getxDrawOffset() - xLvlOffset),
-						(int) (gc.getHitbox().getMinY() - gc.getyDrawOffset()), ObjectCts.CONTAINER_WIDTH,
+						(int) (gc.getHitbox().getMinX() - gc.getxDrawOffset() - lvlOffsetX),
+						(int) (gc.getHitbox().getMinY() - gc.getyDrawOffset() - lvlOffsetY), ObjectCts.CONTAINER_WIDTH,
 						ObjectCts.CONTAINER_HEIGHT);
 			}
 	}
 
-	private void drawPotions(GraphicsContext g, int xLvlOffset) {
+	private void drawPotions(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		for (Potion p : potions)
 			if (p.isActive()) {
 				int type = 0;
 				if (p.getObjType() == ObjectCts.RED_POTION)
 					type = 1;
 				g.drawImage(potionImgs[type][p.getAniIndex()],
-						(int) (p.getHitbox().getMinX() - p.getxDrawOffset() - xLvlOffset),
-						(int) (p.getHitbox().getMinY() - p.getyDrawOffset()), ObjectCts.POTION_WIDTH, ObjectCts.POTION_HEIGHT);
+						(int) (p.getHitbox().getMinX() - p.getxDrawOffset() - lvlOffsetX),
+						(int) (p.getHitbox().getMinY() - p.getyDrawOffset() - lvlOffsetY), ObjectCts.POTION_WIDTH,
+						ObjectCts.POTION_HEIGHT);
 			}
 	}
 

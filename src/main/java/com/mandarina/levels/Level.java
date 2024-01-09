@@ -38,8 +38,13 @@ public class Level {
 	private ArrayList<Grass> grass = new ArrayList<>();
 
 	private int lvlTilesWide;
-	private int maxTilesOffset;
+	private int maxTilesOffsetX;
 	private int maxLvlOffsetX;
+	
+	private int lvlTilesHeight;
+	private int maxTilesOffsetY;
+	private int maxLvlOffsetY;
+	
 	private Point2D playerSpawn;
 
 	public Level(Image img) {
@@ -111,8 +116,12 @@ public class Level {
 
 	private void calcLvlOffsets() {
 		lvlTilesWide = (int) img.getWidth();
-		maxTilesOffset = lvlTilesWide - GameCts.TILES_IN_WIDTH;
-		maxLvlOffsetX = GameCts.TILES_SIZE * maxTilesOffset;
+		maxTilesOffsetX = lvlTilesWide - GameCts.TILES_IN_WIDTH;
+		maxLvlOffsetX = GameCts.TILES_SIZE * maxTilesOffsetX;
+		
+		lvlTilesHeight = (int) img.getHeight();
+		maxTilesOffsetY = lvlTilesHeight - GameCts.TILES_IN_HEIGHT;
+		maxLvlOffsetY = GameCts.TILES_SIZE * maxTilesOffsetY;
 	}
 
 	public int getSpriteIndex(int x, int y) {
@@ -123,8 +132,12 @@ public class Level {
 		return lvlData;
 	}
 
-	public int getLvlOffset() {
+	public int getLvlOffsetX() {
 		return maxLvlOffsetX;
+	}
+	
+	public int getLvlOffsetY() {
+		return maxLvlOffsetY;
 	}
 
 	public Point2D getPlayerSpawn() {

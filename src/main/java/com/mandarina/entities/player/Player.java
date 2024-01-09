@@ -42,6 +42,7 @@ public class Player extends Entity {
 		super(x, y, PlayerSprite.WIDTH.scaled(), PlayerSprite.HEIGHT.scaled());
 		this.playing = playing;
 		this.state = PlayerState.IDLE;
+		this.walkDir = DirectionCts.RIGHT;
 		this.maxHealth = 100;
 		this.currentHealth = maxHealth;
 		this.walkSpeed = GameCts.SCALE * 1.0f;
@@ -172,8 +173,8 @@ public class Player extends Entity {
 			changeWalkDir(DirectionCts.LEFT);
 	}
 
-	public void draw(GraphicsContext g, int xLvlOffset) {
-		draw(g, xLvlOffset, animations, state.val(), PlayerSprite.WIDTH.scaled(), PlayerSprite.HEIGHT.scaled(),
+	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), PlayerSprite.WIDTH.scaled(), PlayerSprite.HEIGHT.scaled(),
 				PlayerSprite.DRAWOFFSET_X.scaled(), PlayerSprite.DRAWOFFSET_Y.scaled());
 	}
 

@@ -33,7 +33,7 @@ public abstract class Enemy extends Entity {
 
 	protected abstract void updateBehavior(int[][] lvlData, Playing playing);
 
-	protected abstract void draw(GraphicsContext g, int xLvlOffset, Image[][] animations);
+	protected abstract void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[][] animations);
 
 	protected abstract int getSpriteAmount(EnemyState state);
 

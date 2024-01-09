@@ -28,7 +28,7 @@ public class Pinkstar extends Enemy {
 		initAttackBox(PinkstarAttackHitbox.width(), PinkstarAttackHitbox.height(),
 				PinkstarAttackHitbox.attackBoxOffsetX());
 	}
-	
+
 	@Override
 	public void update(int[][] lvlData, Playing playing) {
 		super.update(lvlData, playing);
@@ -85,9 +85,10 @@ public class Pinkstar extends Enemy {
 	}
 
 	@Override
-	protected void draw(GraphicsContext g, int xLvlOffset, Image[][] animations) {
-		draw(g, xLvlOffset, animations, state.val(), PinkstarSprite.WIDTH.scaled(), PinkstarSprite.HEIGHT.scaled(),
-				PinkstarSprite.DRAWOFFSET_X.scaled(), PinkstarSprite.DRAWOFFSET_Y.scaled());
+	protected void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[][] animations) {
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), PinkstarSprite.WIDTH.scaled(),
+				PinkstarSprite.HEIGHT.scaled(), PinkstarSprite.DRAWOFFSET_X.scaled(),
+				PinkstarSprite.DRAWOFFSET_Y.scaled());
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import javafx.util.Duration;
 
 public abstract class GameLoop {
 
+	// TODO USE ONE Timeline only
 	private static final boolean SHOW_FPS_UPS = true;
 
 	private static final int UPS_SET = 180;

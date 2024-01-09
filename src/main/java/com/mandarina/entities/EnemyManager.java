@@ -62,17 +62,17 @@ public class EnemyManager {
 			playing.setLevelCompleted(true);
 	}
 
-	public void draw(GraphicsContext g, int xLvlOffset) {
-		draw(g, xLvlOffset, currentLevel.getCrabs(), crabbyArr);
-		draw(g, xLvlOffset, currentLevel.getPinkstars(), pinkstarArr);
-		draw(g, xLvlOffset, currentLevel.getSharks(), sharkArr);
-		draw(g, xLvlOffset, currentLevel.getTitans(), titanArr);
+	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+		draw(g, lvlOffsetX, lvlOffsetY, currentLevel.getCrabs(), crabbyArr);
+		draw(g, lvlOffsetX, lvlOffsetY, currentLevel.getPinkstars(), pinkstarArr);
+		draw(g, lvlOffsetX, lvlOffsetY, currentLevel.getSharks(), sharkArr);
+		draw(g, lvlOffsetX, lvlOffsetY, currentLevel.getTitans(), titanArr);
 	}
 
-	private void draw(GraphicsContext g, int xLvlOffset, List<? extends Enemy> enemies, Image[][] animations) {
+	private void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, List<? extends Enemy> enemies, Image[][] animations) {
 		for (Enemy e : enemies)
 			if (e.isActive()) {
-				e.draw(g, xLvlOffset, animations);
+				e.draw(g, lvlOffsetX, lvlOffsetY, animations);
 			}
 	}
 

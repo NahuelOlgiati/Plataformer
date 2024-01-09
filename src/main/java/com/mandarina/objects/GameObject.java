@@ -53,9 +53,9 @@ public class GameObject {
 		hitbox = new Rectangle2D(x, y, (int) (width * GameCts.SCALE), (int) (height * GameCts.SCALE));
 	}
 
-	public void drawHitbox(GraphicsContext g, int xLvlOffset) {
+	public void drawHitbox(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		g.setStroke(Color.PINK);
-		g.strokeRect(hitbox.getMinX() - xLvlOffset, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight());
+		g.strokeRect(hitbox.getMinX() - lvlOffsetX, hitbox.getMinY() - lvlOffsetY, hitbox.getWidth(), hitbox.getHeight());
 	}
 
 	public int getObjType() {

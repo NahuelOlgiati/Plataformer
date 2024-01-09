@@ -71,8 +71,8 @@ public class Crabby extends Enemy {
 	}
 	
 	@Override
-	protected void draw(GraphicsContext g, int xLvlOffset, Image[][] animations) {
-		draw(g, xLvlOffset, animations, state.val(), CrabbySprite.WIDTH.scaled(), CrabbySprite.HEIGHT.scaled(),
+	protected void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[][] animations) {
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), CrabbySprite.WIDTH.scaled(), CrabbySprite.HEIGHT.scaled(),
 				CrabbySprite.DRAWOFFSET_X.scaled(), CrabbySprite.DRAWOFFSET_Y.scaled());
 	}
 
