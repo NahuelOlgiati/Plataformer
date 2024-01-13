@@ -38,7 +38,7 @@ class PlayerAtlas {
 		case ATTACK:
 			return 7;
 		case FALLING:
-			return 6;
+			return 4;
 		default:
 			return 1;
 		}
