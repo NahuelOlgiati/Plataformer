@@ -7,7 +7,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.EventTarget;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Menu;
@@ -18,9 +20,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -28,6 +31,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class ImageBuilderApp extends Application {
+
+	private static final int TILE_WIDTH = 32;
+	private static final int TILE_HEIGHT = 32;
 
 	private ScrollPane sidePanel;
 	private VBox mainPanel;
@@ -40,6 +46,8 @@ public class ImageBuilderApp extends Application {
 	private Color[][] colors = new Color[10][10];
 
 	private int currentPanels = 1;
+
+	private ClipboardContent clipboard = new ClipboardContent();
 
 	public static void main(String[] args) {
 		launch(args);
@@ -56,6 +64,14 @@ public class ImageBuilderApp extends Application {
 
 		// Add panels to the root layout
 		root = new HBox(sidePanel, mainPanel);
+		root.setOnMouseClicked(event -> {
+			MouseButton button = event.getButton();
+			EventTarget target = event.getTarget();
+			if (button == MouseButton.SECONDARY) {
+				toClipboard(target);
+			}
+			event.consume();
+		});
 
 		// Create scene and set it on the stage
 		Scene scene = new Scene(root, 600, 400);
@@ -106,23 +122,8 @@ public class ImageBuilderApp extends Application {
 		panel.setMinWidth(200);
 		panel.setStyle("-fx-background-color: lightgray;");
 
-		panel.getChildren().addAll(getNewImageView(), getNewImageView(), getNewImageView(), getNewImageView(),
-				getNewImageView(), getNewImageView(), getNewImageView(), getNewImageView(), getNewImageView(),
-				getNewImageView(), getNewImageView(), getNewImageView(), getNewImageView(), getNewImageView(),
-				getNewImageView());
-
-		// Drag and drop functionality for the entire panel
-		panel.setOnDragDetected(event -> {
-			Dragboard dragboard = panel.startDragAndDrop(TransferMode.COPY);
-
-			// Add an image to the dragboard
-			Image image = new Image("assets/tree_one_atlas.png");
-			ClipboardContent content = new ClipboardContent();
-			content.putImage(image);
-			dragboard.setContent(content);
-
-			event.consume();
-		});
+		panel.getChildren().addAll(getNewImageView(), getNewImageView(), getNewImageView(), getNewImageView2(),
+				getNewImageView2());
 
 		// Wrap the panel in a ScrollPane
 		ScrollPane scrollPane = new ScrollPane(panel);
@@ -138,28 +139,22 @@ public class ImageBuilderApp extends Application {
 		return scrollPane;
 	}
 
-	private ImageView getNewImageView() {
-		// Add an image to the side panel
-		ImageView imageView = new ImageView(new Image("assets/tree_one_atlas.png"));
-		setFitSize(imageView, 50);
-
-		// Allow the image to be dragged
-		imageView.setOnDragDetected(event -> {
-			Dragboard dragboard = imageView.startDragAndDrop(TransferMode.COPY);
-
-			// Add the image to the dragboard
-			ClipboardContent content = new ClipboardContent();
-			content.putImage(imageView.getImage());
-			dragboard.setContent(content);
-
-			event.consume();
-		});
-		return imageView;
+	private VBox getNewImageView() {
+		VBox square = createSquare(TILE_WIDTH);
+		Image image = new Image("assets/tree_one_atlas.png");
+		ImageView imageView = new ImageView(image);
+		setFitSize(imageView, TILE_WIDTH, TILE_HEIGHT);
+		square.getChildren().add(imageView);
+		return square;
 	}
 
-	private void setFitSize(ImageView imageView, int size) {
-		imageView.setFitWidth(size);
-		imageView.setFitHeight(size);
+	private VBox getNewImageView2() {
+		VBox square = createSquare(TILE_WIDTH);
+		Image image = new Image("assets/ball.png");
+		ImageView imageView = new ImageView(image);
+		setFitSize(imageView, TILE_WIDTH, TILE_HEIGHT);
+		square.getChildren().add(imageView);
+		return square;
 	}
 
 	private void saveMainPanelAsImage() throws IOException {
@@ -184,32 +179,21 @@ public class ImageBuilderApp extends Application {
 
 	private VBox createMainPanel(int xTiles, int yTiles) {
 		VBox panel = new VBox();
-		setSize(panel, 50 * xTiles, 50 * yTiles);
+		setSize(panel, TILE_WIDTH * xTiles, TILE_HEIGHT * yTiles);
 		panel.setStyle("-fx-background-color: white;");
 
-		int squareSize = 50; // Size of each square in pixels
-
-		// Create a grid of squares using an HBox for each row
-		for (int i = 0; i < panel.getMinWidth() / squareSize; i++) {
+		for (int i = 0; i < panel.getMinWidth() / TILE_WIDTH; i++) {
 			HBox row = new HBox();
-			setSize(row, squareSize, squareSize);
+			setSize(row, TILE_WIDTH, TILE_HEIGHT);
 
 			// Add squares to the row
-			for (int j = 0; j < panel.getMinWidth() / squareSize; j++) {
-				VBox square = createSquare(squareSize);
+			for (int j = 0; j < panel.getMinWidth() / TILE_WIDTH; j++) {
+				VBox square = createSquare(TILE_WIDTH);
 				row.getChildren().add(square);
 			}
 
 			panel.getChildren().add(row);
 		}
-
-		// Set up drag over and drag dropped event handlers
-		panel.setOnDragOver(event -> {
-			if (event.getGestureSource() != panel && event.getDragboard().hasImage()) {
-				event.acceptTransferModes(TransferMode.COPY);
-			}
-			event.consume();
-		});
 
 		panel.setOnScroll(event -> {
 			if (event.getDeltaY() < 0) {
@@ -219,43 +203,88 @@ public class ImageBuilderApp extends Application {
 			}
 		});
 
-		panel.setOnDragDropped(event -> {
-			Dragboard dragboard = event.getDragboard();
-			boolean success = false;
-
-			if (dragboard.hasImage()) {
-				Image image = dragboard.getImage();
-				int colIndex = (int) (event.getX() / squareSize);
-				int rowIndex = (int) (event.getY() / squareSize);
-
-				this.colors[rowIndex][colIndex] = null;
-
-				ImageView droppedImageView = new ImageView(image);
-				setFitSize(droppedImageView, squareSize);
-
-				// Add the image to the specific square in the grid
-				if (rowIndex < panel.getChildren().size()) {
-					HBox row = (HBox) panel.getChildren().get(rowIndex);
-					if (colIndex < row.getChildren().size()) {
-						VBox square = (VBox) row.getChildren().get(colIndex);
-						square.getChildren().add(droppedImageView);
-						success = true;
-					}
-				}
+		panel.setOnMouseClicked(event -> {
+			MouseButton button = event.getButton();
+			EventTarget target = event.getTarget();
+			if (button == MouseButton.PRIMARY) {
+				fromClipboard(event);
+			} else if (button == MouseButton.SECONDARY) {
+				toClipboard(target);
 			}
-
-			event.setDropCompleted(success);
 			event.consume();
 		});
 
 		return panel;
 	}
 
+	private void fromClipboard(MouseEvent event) {
+		if (clipboard.hasImage()) {
+			Image image = clipboard.getImage();
+			int colIndex = (int) (event.getX() / TILE_WIDTH);
+			int rowIndex = (int) (event.getY() / TILE_HEIGHT);
+
+			this.colors[rowIndex][colIndex] = null;
+
+			ImageView droppedImageView = new ImageView(image);
+			setFitSize(droppedImageView, TILE_WIDTH, TILE_HEIGHT);
+
+			// Add the image to the specific square in the grid
+			if (rowIndex < mainPanel.getChildren().size()) {
+				HBox row = (HBox) mainPanel.getChildren().get(rowIndex);
+				if (colIndex < row.getChildren().size()) {
+					VBox square = (VBox) row.getChildren().get(colIndex);
+					square.getChildren().clear();
+					square.getChildren().add(droppedImageView);
+				}
+			}
+		}
+	}
+
+	private void toClipboard(EventTarget target) {
+		try {
+			if (target instanceof ImageView imageView) {
+				clipboard.putImage(imageView.getImage());
+			} else if (((Pane) target).getChildren() instanceof ImageView imageView) {
+				clipboard.putImage(imageView.getImage());
+			} else if (((Pane) target).getChildren() instanceof ObservableList<?> && //
+					((ObservableList<?>) ((Pane) target).getChildren()).size() == 1 && //
+					((ObservableList<?>) ((Pane) target).getChildren()).get(0) instanceof ImageView imageView) {
+				clipboard.putImage(imageView.getImage());
+			} else {
+				debug(target);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			debug(target);
+		}
+	}
+
+	private void debug(EventTarget target) {
+		System.out.println(target);
+		System.out.println(((Pane) target).getChildren());
+		System.out.println(((Pane) target).getChildren());
+		System.out.println(((Pane) target).getChildren() instanceof ObservableList);
+		System.out.println(((Pane) target).getChildren() instanceof ImageView);
+		System.out.println();
+	}
+
 	private VBox createSquare(int size) {
-		VBox square = new VBox();
-		setSize(square, size, size);
-		square.setStyle("-fx-border-color: black; -fx-border-width: 0px;");
-		return square;
+		VBox vbox = new VBox();
+		setSize(vbox, size, size);
+
+		makeSelectable(vbox);
+
+		return vbox;
+	}
+
+	private void makeSelectable(VBox vbox) {
+		vbox.setOnMouseEntered(event -> {
+			vbox.setStyle("-fx-border-color: blue; -fx-border-width: 1;");
+		});
+
+		vbox.setOnMouseExited(event -> {
+			vbox.setStyle("-fx-border-color: transparent; -fx-border-width: 1;");
+		});
 	}
 
 	private void setSize(Region r, int width, int height) {
@@ -264,5 +293,10 @@ public class ImageBuilderApp extends Application {
 		r.setMinHeight(height);
 		r.setMaxHeight(height);
 		r.setPrefSize(width, height);
+	}
+
+	private void setFitSize(ImageView imageView, int width, int height) {
+		imageView.setFitWidth(width);
+		imageView.setFitHeight(height);
 	}
 }
