@@ -12,12 +12,10 @@ import com.mandarina.entities.Enemy;
 import com.mandarina.entities.player.Player;
 import com.mandarina.gamestates.Playing;
 import com.mandarina.levels.Level;
-import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 
 public class ObjectManager {
 
@@ -90,42 +88,13 @@ public class ObjectManager {
 	}
 
 	private void loadImgs() {
-		Image potionSprite = LoadSave.GetSpriteAtlas(LoadSave.POTION_ATLAS);
-		potionImgs = new Image[2][7];
-
-		for (int j = 0; j < potionImgs.length; j++)
-			for (int i = 0; i < potionImgs[j].length; i++)
-				potionImgs[j][i] = new WritableImage(potionSprite.getPixelReader(), 12 * i, 16 * j, 12, 16);
-
-		Image containerSprite = LoadSave.GetSpriteAtlas(LoadSave.CONTAINER_ATLAS);
-		containerImgs = new Image[2][8];
-
-		for (int j = 0; j < containerImgs.length; j++)
-			for (int i = 0; i < containerImgs[j].length; i++)
-				containerImgs[j][i] = new WritableImage(containerSprite.getPixelReader(), 40 * i, 30 * j, 40, 30);
-
-		spikeImg = LoadSave.GetSpriteAtlas(LoadSave.TRAP_ATLAS);
-
-		cannonImgs = new Image[7];
-		Image temp = LoadSave.GetSpriteAtlas(LoadSave.CANNON_ATLAS);
-
-		for (int i = 0; i < cannonImgs.length; i++)
-			cannonImgs[i] = new WritableImage(temp.getPixelReader(), i * 40, 0, 40, 26);
-
-		cannonBallImg = LoadSave.GetSpriteAtlas(LoadSave.CANNON_BALL);
-		treeImgs = new Image[2][4];
-		Image treeOneImg = LoadSave.GetSpriteAtlas(LoadSave.TREE_ONE_ATLAS);
-		for (int i = 0; i < 4; i++)
-			treeImgs[0][i] = new WritableImage(treeOneImg.getPixelReader(), i * 39, 0, 39, 92);
-
-		Image treeTwoImg = LoadSave.GetSpriteAtlas(LoadSave.TREE_TWO_ATLAS);
-		for (int i = 0; i < 4; i++)
-			treeImgs[1][i] = new WritableImage(treeTwoImg.getPixelReader(), i * 62, 0, 62, 54);
-
-		Image grassTemp = LoadSave.GetSpriteAtlas(LoadSave.GRASS_ATLAS);
-		grassImgs = new Image[2];
-		for (int i = 0; i < grassImgs.length; i++)
-			grassImgs[i] = new WritableImage(grassTemp.getPixelReader(), 32 * i, 0, 32, 32);
+		potionImgs = Potion.load();
+		containerImgs = GameContainer.load();
+		spikeImg = Spike.load();
+		cannonImgs = Cannon.load();
+		cannonBallImg = CannonBall.load();
+		treeImgs = Tree.load();
+		grassImgs = Grass.load();
 	}
 
 	public void update(int[][] lvlData, Player player) {
@@ -203,6 +172,7 @@ public class ObjectManager {
 		drawCannons(g, lvlOffsetX, lvlOffsetY);
 		drawProjectiles(g, lvlOffsetX, lvlOffsetY);
 		drawGrass(g, lvlOffsetX, lvlOffsetY);
+		drawBackgroundTrees(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	private void drawGrass(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
@@ -211,7 +181,7 @@ public class ObjectManager {
 					(int) (32 * GameCts.SCALE), (int) (32 * GameCts.SCALE));
 	}
 
-	public void drawBackgroundTrees(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+	private void drawBackgroundTrees(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		for (BackgroundTree bt : currentLevel.getTrees()) {
 
 			int type = bt.getType();
@@ -233,29 +203,13 @@ public class ObjectManager {
 	}
 
 	private void drawCannons(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
-		for (Cannon c : currentLevel.getCannons()) {
-			int x = (int) (c.getHitbox().getMinX() - lvlOffsetX);
-			int width = ObjectCts.CANNON_WIDTH;
-
-			int y = (int) (c.getHitbox().getMinY() - lvlOffsetY);
-			int height = ObjectCts.CANNON_HEIGHT;
-
-			if (c.getObjType() == ObjectCts.CANNON_RIGHT) {
-				x += width;
-				width *= -1;
-				y += height;
-				height *= -1;
-			}
-			g.drawImage(cannonImgs[c.getAniIndex()], x, y, width, height);
-		}
+		for (Cannon c : currentLevel.getCannons())
+			c.draw(g, lvlOffsetX, lvlOffsetY, cannonImgs);
 	}
 
 	private void drawTraps(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		for (Spike s : currentLevel.getSpikes())
-			g.drawImage(spikeImg, (int) (s.getHitbox().getMinX() - lvlOffsetX),
-					(int) (s.getHitbox().getMinY() - s.getyDrawOffset() - lvlOffsetY), ObjectCts.SPIKE_WIDTH,
-					ObjectCts.SPIKE_HEIGHT);
-
+			s.draw(g, lvlOffsetX, lvlOffsetY, spikeImg);
 	}
 
 	private void drawContainers(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {

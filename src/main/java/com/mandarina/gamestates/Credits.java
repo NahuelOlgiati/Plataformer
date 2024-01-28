@@ -25,8 +25,8 @@ public class Credits extends State implements Statemethods {
 
 	public Credits(Game game) {
 		super(game);
-		backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND_IMG);
-		creditsImg = LoadSave.GetSpriteAtlas(LoadSave.CREDITS);
+		backgroundImg = LoadSave.GetSprite(LoadSave.MENU_BACKGROUND_IMG);
+		creditsImg = LoadSave.GetSprite(LoadSave.CREDITS);
 		bgW = (int) (creditsImg.getWidth() * GameCts.SCALE);
 		bgH = (int) (creditsImg.getHeight() * GameCts.SCALE);
 		bgX = GameCts.GAME_WIDTH / 2 - bgW / 2;

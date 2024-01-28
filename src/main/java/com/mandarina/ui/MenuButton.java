@@ -33,7 +33,7 @@ public class MenuButton {
 
 	private void loadImgs() {
 		imgs = new Image[3];
-		Image temp = LoadSave.GetSpriteAtlas(LoadSave.MENU_BUTTONS);
+		Image temp = LoadSave.GetSprite(LoadSave.MENU_BUTTONS);
 		PixelReader pixelReader = temp.getPixelReader();
 		for (int i = 0; i < imgs.length; i++) {
 			WritableImage subImage = new WritableImage(pixelReader, i * UICts.Buttons.B_WIDTH_DEFAULT,

@@ -13,7 +13,7 @@ public class PinkstarAtlas {
 	}
 
 	public static String Image() {
-		return "pinkstar_atlas.png";
+		return "pinkstar.png";
 	}
 
 	public static int XSize() {
@@ -41,7 +41,7 @@ public class PinkstarAtlas {
 	}
 
 	public static Image[][] getAnimations() {
-		return LoadSave.getAnimations(XSize(), YSize(), PinkstarSprite.WIDTH.val(), PinkstarSprite.HEIGHT.val(),
-				LoadSave.GetSpriteAtlas(Image()));
+		return LoadSave.GetAnimations(XSize(), YSize(), PinkstarSprite.WIDTH.val(), PinkstarSprite.HEIGHT.val(),
+				LoadSave.GetAtlas(Image()));
 	}
 }

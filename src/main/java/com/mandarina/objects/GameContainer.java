@@ -2,8 +2,10 @@ package com.mandarina.objects;
 
 import com.mandarina.constants.GameCts;
 import com.mandarina.constants.ObjectCts;
+import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 
 public class GameContainer extends GameObject {
 
@@ -32,5 +34,9 @@ public class GameContainer extends GameObject {
 	public void update() {
 		if (doAnimation)
 			updateAnimationTick();
+	}
+
+	public static Image[][] load() {
+		return LoadSave.GetAnimations(8, 2, 40, 30, LoadSave.GetAtlas(LoadSave.CONTAINER));
 	}
 }

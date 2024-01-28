@@ -16,7 +16,7 @@ import javafx.scene.image.WritableImage;
 
 public class LoadSave {
 
-	public static final String LEVEL_ATLAS = "outside_sprites.png";
+	public static final String OUTSIDE = "outside.png";
 	public static final String MENU_BUTTONS = "button_atlas.png";
 	public static final String MENU_BACKGROUND = "menu_background.png";
 	public static final String PAUSE_BACKGROUND = "pause_menu.png";
@@ -29,39 +29,53 @@ public class LoadSave {
 	public static final String SMALL_CLOUDS = "small_clouds.png";
 	public static final String STATUS_BAR = "health_power_bar.png";
 	public static final String COMPLETED_IMG = "completed_sprite.png";
-	public static final String POTION_ATLAS = "potions_sprites.png";
-	public static final String CONTAINER_ATLAS = "objects_sprites.png";
-	public static final String TRAP_ATLAS = "trap_atlas.png";
-	public static final String CANNON_ATLAS = "cannon_atlas.png";
+	public static final String POTION = "potions.png";
+	public static final String CONTAINER = "objects.png";
+	public static final String TRAP = "trap.png";
+	public static final String CANNON = "cannon.png";
 	public static final String CANNON_BALL = "ball.png";
 	public static final String DEATH_SCREEN = "death_screen.png";
 	public static final String OPTIONS_MENU = "options_background.png";
-	public static final String QUESTION_ATLAS = "question_atlas.png";
-	public static final String EXCLAMATION_ATLAS = "exclamation_atlas.png";
+	public static final String QUESTION = "question.png";
+	public static final String EXCLAMATION = "exclamation.png";
 	public static final String CREDITS = "credits_list.png";
-	public static final String GRASS_ATLAS = "grass_atlas.png";
-	public static final String TREE_ONE_ATLAS = "tree_one_atlas.png";
-	public static final String TREE_TWO_ATLAS = "tree_two_atlas.png";
+	public static final String GRASS = "grass.png";
+	public static final String TREE_ONE = "tree_one.png";
+	public static final String TREE_TWO = "tree_two.png";
 	public static final String GAME_COMPLETED = "game_completed.png";
 	public static final String RAIN_PARTICLE = "rain_particle.png";
-	public static final String WATER_TOP = "water_atlas_animation.png";
+	public static final String WATER = "water.png";
 	public static final String WATER_BOTTOM = "water.png";
 	public static final String SHIP = "ship.png";
 
-	public static Image GetSpriteAtlas(String fileName) {
-		Image img = null;
-		Path path = Paths.get("assets", fileName); // Adjust the path based on your project structure
+	public static Image GetAtlas(String fileName) {
+		return GetImage(Paths.get("assets", "atlas", fileName));
+	}
 
+	public static Image GetSprite(String fileName) {
+		return GetImage(Paths.get("assets", fileName));
+	}
+
+	private static Image GetImage(Path path) {
+		Image img = null;
 		try (InputStream is = Files.newInputStream(path, StandardOpenOption.READ)) {
 			img = new Image(is);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		return img;
 	}
-	
-	public static Image[][] getAnimations(int xSize, int ySize, int spriteW, int spriteH, Image img) {
+
+	public static Image[] GetAnimations(int size, int spriteW, int spriteH, Image img) {
+		Image[] tempArr = new Image[size];
+		PixelReader pixelReader = img.getPixelReader();
+		for (int i = 0; i < size; i++) {
+			tempArr[i] = new WritableImage(pixelReader, i * spriteW, 0, spriteW, spriteH);
+		}
+		return tempArr;
+	}
+
+	public static Image[][] GetAnimations(int xSize, int ySize, int spriteW, int spriteH, Image img) {
 		Image[][] tempArr = new Image[ySize][xSize];
 		PixelReader pixelReader = img.getPixelReader();
 		for (int j = 0; j < ySize; j++) {
@@ -73,7 +87,7 @@ public class LoadSave {
 	}
 
 	public static Image[] GetAllLevels() {
-		Path folderPath = Paths.get("assets/lvls"); // Adjust the path based on your project structure
+		Path folderPath = Paths.get("assets/lvls");
 		List<Image> images = new ArrayList<>();
 
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath)) {

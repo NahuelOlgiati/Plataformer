@@ -58,6 +58,8 @@ public class HelpMethods {
 		int value = lvlData[yTile][xTile];
 
 		switch (value) {
+		case GameCts.EMPTY_TILE_VALUE:
+			return false;
 		case 11, 48, 49:
 			return false;
 		default:

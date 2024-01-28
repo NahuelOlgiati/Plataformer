@@ -1,6 +1,7 @@
 package com.mandarina.constants;
 
 public class GameCts {
+	public final static int EMPTY_TILE_VALUE = 128;
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 1.7f;
 	public final static int TILES_IN_WIDTH = 26;

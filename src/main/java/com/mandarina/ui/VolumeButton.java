@@ -29,7 +29,7 @@ public class VolumeButton extends PauseButton {
 	}
 
 	private void loadImgs() {
-		Image temp = LoadSave.GetSpriteAtlas(LoadSave.VOLUME_BUTTONS);
+		Image temp = LoadSave.GetSprite(LoadSave.VOLUME_BUTTONS);
 		imgs = new Image[3];
 		for (int i = 0; i < imgs.length; i++)
 			imgs[i] = new WritableImage(temp.getPixelReader(), i * UICts.VolumeButtons.VOLUME_DEFAULT_WIDTH, 0,

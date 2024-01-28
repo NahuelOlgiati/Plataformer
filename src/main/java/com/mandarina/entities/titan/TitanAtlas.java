@@ -13,7 +13,7 @@ public class TitanAtlas {
 	}
 
 	public static String Image() {
-		return "titan_atlas.png";
+		return "titan.png";
 	}
 
 	public static int XSize() {
@@ -41,7 +41,7 @@ public class TitanAtlas {
 	}
 
 	public static Image[][] getAnimations() {
-		return LoadSave.getAnimations(XSize(), YSize(), TitanSprite.WIDTH.val(), TitanSprite.HEIGHT.val(),
-				LoadSave.GetSpriteAtlas(Image()));
+		return LoadSave.GetAnimations(XSize(), YSize(), TitanSprite.WIDTH.val(), TitanSprite.HEIGHT.val(),
+				LoadSave.GetAtlas(Image()));
 	}
 }

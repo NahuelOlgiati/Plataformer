@@ -1,8 +1,11 @@
 package com.mandarina.objects;
 
 import com.mandarina.constants.GameCts;
+import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 
 public class Potion extends GameObject {
 
@@ -35,5 +38,15 @@ public class Potion extends GameObject {
 			hoverDir = 1;
 
 		hitbox = new Rectangle2D(hitbox.getMinX(), y + hoverOffset, hitbox.getWidth(), hitbox.getHeight());
+	}
+
+	public static Image[][] load() {
+		Image potionSprite = LoadSave.GetAtlas(LoadSave.POTION);
+		Image[][] potionImgs = new Image[2][7];
+		for (int j = 0; j < potionImgs.length; j++)
+			for (int i = 0; i < potionImgs[j].length; i++)
+				potionImgs[j][i] = new WritableImage(potionSprite.getPixelReader(), 12 * i, 16 * j, 12, 16);
+
+		return potionImgs;
 	}
 }

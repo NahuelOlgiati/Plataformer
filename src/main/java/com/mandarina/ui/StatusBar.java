@@ -75,7 +75,7 @@ public class StatusBar {
 	}
 
 	public void loadAnimations() {
-		statusBarImg = LoadSave.GetSpriteAtlas(LoadSave.STATUS_BAR);
+		statusBarImg = LoadSave.GetSprite(LoadSave.STATUS_BAR);
 	}
 
 	public void changePower(int value) {

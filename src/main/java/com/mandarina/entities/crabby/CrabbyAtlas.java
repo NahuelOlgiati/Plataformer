@@ -13,7 +13,7 @@ public class CrabbyAtlas {
 	}
 
 	public static String Image() {
-		return "crabby_sprite.png";
+		return "crabby.png";
 	}
 
 	public static int XSize() {
@@ -41,7 +41,7 @@ public class CrabbyAtlas {
 	}
 
 	public static Image[][] getAnimations() {
-		return LoadSave.getAnimations(XSize(), YSize(), CrabbySprite.WIDTH.val(), CrabbySprite.HEIGHT.val(),
-				LoadSave.GetSpriteAtlas(Image()));
+		return LoadSave.GetAnimations(XSize(), YSize(), CrabbySprite.WIDTH.val(), CrabbySprite.HEIGHT.val(),
+				LoadSave.GetAtlas(Image()));
 	}
 }

@@ -28,7 +28,7 @@ public class GameCompletedOverlay {
 	}
 
 	private void createImg() {
-		img = LoadSave.GetSpriteAtlas(LoadSave.GAME_COMPLETED);
+		img = LoadSave.GetSprite(LoadSave.GAME_COMPLETED);
 		imgW = (int) (img.getWidth() * GameCts.SCALE);
 		imgH = (int) (img.getHeight() * GameCts.SCALE);
 		imgX = GameCts.GAME_WIDTH / 2 - imgW / 2;

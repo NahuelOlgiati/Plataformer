@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -36,8 +37,8 @@ public class Game extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		initClasses();
-
+		initClasses((Image)primaryStage.getUserData());
+		
 		canvas = new Canvas(GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
 		gc = canvas.getGraphicsContext2D();
 
@@ -62,11 +63,11 @@ public class Game extends Application {
 		startGameLoop();
 	}
 
-	private void initClasses() {
+	private void initClasses(Image image) {
 		audioOptions = new AudioOptions(this);
 		audioPlayer = new AudioPlayer();
 		menu = new Menu(this);
-		playing = new Playing(this);
+		playing = new Playing(this, image);
 		credits = new Credits(this);
 		gameOptions = new GameOptions(this);
 		gameInputs = new GameInputs(playing, menu, gameOptions, credits);

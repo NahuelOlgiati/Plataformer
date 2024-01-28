@@ -21,7 +21,7 @@ public class SoundButton extends PauseButton {
 	}
 
 	private void loadSoundImgs() {
-		Image temp = LoadSave.GetSpriteAtlas(LoadSave.SOUND_BUTTONS);
+		Image temp = LoadSave.GetSprite(LoadSave.SOUND_BUTTONS);
 		soundImgs = new Image[2][3];
 		for (int j = 0; j < soundImgs.length; j++)
 			for (int i = 0; i < soundImgs[j].length; i++)

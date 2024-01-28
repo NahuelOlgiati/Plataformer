@@ -19,7 +19,7 @@ public class UrmButton extends PauseButton {
 	}
 
 	private void loadImgs() {
-		Image temp = LoadSave.GetSpriteAtlas(LoadSave.URM_BUTTONS);
+		Image temp = LoadSave.GetSprite(LoadSave.URM_BUTTONS);
 		imgs = new Image[3];
 		for (int i = 0; i < imgs.length; i++)
 			imgs[i] = new WritableImage(temp.getPixelReader(), i * UICts.URMButtons.URM_DEFAULT_SIZE,

@@ -1,3 +1,4 @@
+
 package com.mandarina.levels;
 
 import java.util.ArrayList;
@@ -18,20 +19,24 @@ public class LevelManager {
 	private ArrayList<Level> levels;
 	private int lvlIndex = 0, aniTick, aniIndex;
 
-	public LevelManager(Game game) {
+	public LevelManager(Game game, Image image) {
 		this.game = game;
 		importOutsideSprites();
 		createWater();
 		levels = new ArrayList<>();
-		buildAllLevels();
+		if (image != null) {
+			buildLevel(image);
+		} else {
+			buildAllLevels();
+		}
 	}
 
 	private void createWater() {
 		waterSprite = new Image[5];
-		Image img = LoadSave.GetSpriteAtlas(LoadSave.WATER_TOP);
+		Image img = LoadSave.GetAtlas(LoadSave.WATER);
 		for (int i = 0; i < 4; i++)
 			waterSprite[i] = new WritableImage(img.getPixelReader(), i * 32, 0, 32, 32);
-		waterSprite[4] = LoadSave.GetSpriteAtlas(LoadSave.WATER_BOTTOM);
+		waterSprite[4] = LoadSave.GetSprite(LoadSave.WATER_BOTTOM);
 	}
 
 	public void loadNextLevel() {
@@ -46,17 +51,15 @@ public class LevelManager {
 	private void buildAllLevels() {
 		Image[] allLevels = LoadSave.GetAllLevels();
 		for (Image img : allLevels)
-			levels.add(new Level(img));
+			buildLevel(img);
+	}
+
+	private void buildLevel(Image img) {
+		levels.add(new Level(img));
 	}
 
 	private void importOutsideSprites() {
-		Image img = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS);
-		levelSprite = new Image[48];
-		for (int j = 0; j < 4; j++)
-			for (int i = 0; i < 12; i++) {
-				int index = j * 12 + i;
-				levelSprite[index] = new WritableImage(img.getPixelReader(), i * 32, j * 32, 32, 32);
-			}
+		levelSprite = LoadSave.GetAnimations(46, 32, 32, LoadSave.GetAtlas(LoadSave.OUTSIDE));
 	}
 
 	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
@@ -67,12 +70,14 @@ public class LevelManager {
 				int index = level.getSpriteIndex(i, j);
 				int x = GameCts.TILES_SIZE * i - lvlOffsetX;
 				int y = GameCts.TILES_SIZE * j - lvlOffsetY;
-				if (index == 48)
-					g.drawImage(waterSprite[aniIndex], x, y, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
-				else if (index == 49)
-					g.drawImage(waterSprite[4], x, y, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
-				else
-					g.drawImage(levelSprite[index], x, y, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
+				if (index != GameCts.EMPTY_TILE_VALUE) {
+					if (index == 48)
+						g.drawImage(waterSprite[aniIndex], x, y, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
+					else if (index == 49)
+						g.drawImage(waterSprite[4], x, y, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
+					else
+						g.drawImage(levelSprite[index], x, y, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
+				}
 			}
 		}
 	}

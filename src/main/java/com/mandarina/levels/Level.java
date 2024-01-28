@@ -40,11 +40,11 @@ public class Level {
 	private int lvlTilesWide;
 	private int maxTilesOffsetX;
 	private int maxLvlOffsetX;
-	
+
 	private int lvlTilesHeight;
 	private int maxTilesOffsetY;
 	private int maxLvlOffsetY;
-	
+
 	private Point2D playerSpawn;
 
 	public Level(Image img) {
@@ -75,11 +75,25 @@ public class Level {
 		}
 	}
 
+//	private void loadLevelData(int redValue, int x, int y) {
+//		if (redValue == GameCts.EMPTY_TILE_VALUE)
+//			lvlData[y][x] = GameCts.EMPTY_TILE_VALUE;
+//		else if (redValue >= 50)
+//			lvlData[y][x] = 0;
+//		else
+//			lvlData[y][x] = redValue;
+//		switch (redValue) {
+//		case 0, 1, 2, 3, 30, 31, 33, 34, 35, 36, 37, 38, 39 -> grass.add(new Grass((int) (x * GameCts.TILES_SIZE),
+//				(int) (y * GameCts.TILES_SIZE) - GameCts.TILES_SIZE, getRndGrassType(x)));
+//		}
+//	}
+
 	private void loadLevelData(int redValue, int x, int y) {
-		if (redValue >= 50)
-			lvlData[y][x] = 0;
-		else
-			lvlData[y][x] = redValue;
+		lvlData[y][x] = redValue;
+		loadGrass(redValue, x, y);
+	}
+
+	private void loadGrass(int redValue, int x, int y) {
 		switch (redValue) {
 		case 0, 1, 2, 3, 30, 31, 33, 34, 35, 36, 37, 38, 39 -> grass.add(new Grass((int) (x * GameCts.TILES_SIZE),
 				(int) (y * GameCts.TILES_SIZE) - GameCts.TILES_SIZE, getRndGrassType(x)));
@@ -109,7 +123,7 @@ public class Level {
 		case ObjectCts.SPIKE -> spikes.add(new Spike(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, ObjectCts.SPIKE));
 		case ObjectCts.CANNON_LEFT, ObjectCts.CANNON_RIGHT ->
 			cannons.add(new Cannon(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blueValue));
-		case ObjectCts.TREE_ONE, ObjectCts.TREE_TWO, ObjectCts.TREE_THREE ->
+		case ObjectCts.TREE_UP, ObjectCts.TREE_TWO, ObjectCts.TREE_THREE ->
 			trees.add(new BackgroundTree(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blueValue));
 		}
 	}
@@ -118,7 +132,7 @@ public class Level {
 		lvlTilesWide = (int) img.getWidth();
 		maxTilesOffsetX = lvlTilesWide - GameCts.TILES_IN_WIDTH;
 		maxLvlOffsetX = GameCts.TILES_SIZE * maxTilesOffsetX;
-		
+
 		lvlTilesHeight = (int) img.getHeight();
 		maxTilesOffsetY = lvlTilesHeight - GameCts.TILES_IN_HEIGHT;
 		maxLvlOffsetY = GameCts.TILES_SIZE * maxTilesOffsetY;
@@ -135,7 +149,7 @@ public class Level {
 	public int getLvlOffsetX() {
 		return maxLvlOffsetX;
 	}
-	
+
 	public int getLvlOffsetY() {
 		return maxLvlOffsetY;
 	}

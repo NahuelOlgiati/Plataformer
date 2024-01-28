@@ -21,7 +21,7 @@ public class Rain {
 	public Rain() {
 		rand = new Random();
 		drops = new Point2D[1000];
-		rainParticle = LoadSave.GetSpriteAtlas(LoadSave.RAIN_PARTICLE);
+		rainParticle = LoadSave.GetSprite(LoadSave.RAIN_PARTICLE);
 		initDrops();
 	}
 

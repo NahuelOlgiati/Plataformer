@@ -9,7 +9,7 @@ public class ObjectCts {
 	public static final int SPIKE = 4;
 	public static final int CANNON_LEFT = 5;
 	public static final int CANNON_RIGHT = 6;
-	public static final int TREE_ONE = 7;
+	public static final int TREE_UP = 7;
 	public static final int TREE_TWO = 8;
 	public static final int TREE_THREE = 9;
 
@@ -50,7 +50,7 @@ public class ObjectCts {
 
 	public static int GetTreeOffsetX(int treeType) {
 		switch (treeType) {
-		case TREE_ONE:
+		case TREE_UP:
 			return (GameCts.TILES_SIZE / 2) - (GetTreeWidth(treeType) / 2);
 		case TREE_TWO:
 			return (int) (GameCts.TILES_SIZE / 2.5f);
@@ -64,7 +64,7 @@ public class ObjectCts {
 	public static int GetTreeOffsetY(int treeType) {
 
 		switch (treeType) {
-		case TREE_ONE:
+		case TREE_UP:
 			return -GetTreeHeight(treeType) + GameCts.TILES_SIZE * 2;
 		case TREE_TWO, TREE_THREE:
 			return -GetTreeHeight(treeType) + (int) (GameCts.TILES_SIZE / 1.25f);
@@ -75,7 +75,7 @@ public class ObjectCts {
 
 	public static int GetTreeWidth(int treeType) {
 		switch (treeType) {
-		case TREE_ONE:
+		case TREE_UP:
 			return (int) (39 * GameCts.SCALE);
 		case TREE_TWO:
 			return (int) (62 * GameCts.SCALE);
@@ -88,7 +88,7 @@ public class ObjectCts {
 
 	public static int GetTreeHeight(int treeType) {
 		switch (treeType) {
-		case TREE_ONE:
+		case TREE_UP:
 			return (int) (int) (92 * GameCts.SCALE);
 		case TREE_TWO, TREE_THREE:
 			return (int) (54 * GameCts.SCALE);

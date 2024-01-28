@@ -13,7 +13,7 @@ public class SharkAtlas {
 	}
 
 	public static String Image() {
-		return "shark_atlas.png";
+		return "shark.png";
 	}
 
 	public static int XSize() {
@@ -41,7 +41,7 @@ public class SharkAtlas {
 	}
 
 	public static Image[][] getAnimations() {
-		return LoadSave.getAnimations(XSize(), YSize(), SharkSprite.WIDTH.val(), SharkSprite.HEIGHT.val(),
-				LoadSave.GetSpriteAtlas(Image()));
+		return LoadSave.GetAnimations(XSize(), YSize(), SharkSprite.WIDTH.val(), SharkSprite.HEIGHT.val(),
+				LoadSave.GetAtlas(Image()));
 	}
 }

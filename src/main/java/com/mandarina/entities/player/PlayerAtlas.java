@@ -12,7 +12,7 @@ class PlayerAtlas {
 	}
 
 	public static String Image() {
-		return "player_sprites.png";
+		return "player.png";
 	}
 
 	public static int XSize() {
@@ -45,7 +45,7 @@ class PlayerAtlas {
 	}
 
 	public static Image[][] getAnimations() {
-		return LoadSave.getAnimations(XSize(), YSize(), PlayerSprite.WIDTH.val(), PlayerSprite.HEIGHT.val(),
-				LoadSave.GetSpriteAtlas(Image()));
+		return LoadSave.GetAnimations(XSize(), YSize(), PlayerSprite.WIDTH.val(), PlayerSprite.HEIGHT.val(),
+				LoadSave.GetAtlas(Image()));
 	}
 }

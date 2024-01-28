@@ -1,0 +1,4 @@
+tooltips a los items
+agregar agua
+agregar arboles
+agregar personajes

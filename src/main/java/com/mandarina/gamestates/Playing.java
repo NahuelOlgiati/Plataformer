@@ -23,7 +23,6 @@ import com.mandarina.utilz.LoadSave;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -77,25 +76,22 @@ public class Playing extends State implements Statemethods {
 	// you want
 	// it.
 
-	private boolean drawShip = true;
+	private boolean drawShip = false;
 	private int shipAni, shipTick, shipDir = 1;
 	private float shipHeightDelta, shipHeightChange = 0.05f * GameCts.SCALE;
 
-	public Playing(Game game) {
+	public Playing(Game game, Image image) {
 		super(game);
-		initClasses();
+		initClasses(image);
 
-		backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG);
-		bigCloud = LoadSave.GetSpriteAtlas(LoadSave.BIG_CLOUDS);
-		smallCloud = LoadSave.GetSpriteAtlas(LoadSave.SMALL_CLOUDS);
+		backgroundImg = LoadSave.GetSprite(LoadSave.PLAYING_BG_IMG);
+		bigCloud = LoadSave.GetSprite(LoadSave.BIG_CLOUDS);
+		smallCloud = LoadSave.GetSprite(LoadSave.SMALL_CLOUDS);
 		smallCloudsPos = new int[8];
 		for (int i = 0; i < smallCloudsPos.length; i++)
 			smallCloudsPos[i] = (int) (90 * GameCts.SCALE) + rnd.nextInt((int) (100 * GameCts.SCALE));
 
-		shipImgs = new Image[4];
-		Image temp = LoadSave.GetSpriteAtlas(LoadSave.SHIP);
-		for (int i = 0; i < shipImgs.length; i++)
-			shipImgs[i] = new WritableImage(temp.getPixelReader(), i * 78, 0, 78, 72);
+		shipImgs = LoadSave.GetAnimations(4, 78, 72, LoadSave.GetAtlas(LoadSave.SHIP));
 
 		loadDialogue();
 		calcLvlOffset();
@@ -121,15 +117,8 @@ public class Playing extends State implements Statemethods {
 	}
 
 	private void loadDialogueImgs() {
-		Image qtemp = LoadSave.GetSpriteAtlas(LoadSave.QUESTION_ATLAS);
-		questionImgs = new Image[5];
-		for (int i = 0; i < questionImgs.length; i++)
-			questionImgs[i] = new WritableImage(qtemp.getPixelReader(), i * 14, 0, 14, 12);
-
-		Image etemp = LoadSave.GetSpriteAtlas(LoadSave.EXCLAMATION_ATLAS);
-		exclamationImgs = new Image[5];
-		for (int i = 0; i < exclamationImgs.length; i++)
-			exclamationImgs[i] = new WritableImage(etemp.getPixelReader(), i * 14, 0, 14, 12);
+		questionImgs = LoadSave.GetAnimations(5, 14, 12, LoadSave.GetAtlas(LoadSave.QUESTION));
+		exclamationImgs = LoadSave.GetAnimations(5, 14, 12, LoadSave.GetAtlas(LoadSave.EXCLAMATION));
 	}
 
 	public void loadNextLevel() {
@@ -150,8 +139,8 @@ public class Playing extends State implements Statemethods {
 		maxLvlOffsetY = levelManager.getCurrentLevel().getLvlOffsetY();
 	}
 
-	private void initClasses() {
-		levelManager = new LevelManager(game);
+	private void initClasses(Image image) {
+		levelManager = new LevelManager(game, image);
 		enemyManager = new EnemyManager(this);
 		objectManager = new ObjectManager(this);
 
@@ -286,7 +275,6 @@ public class Playing extends State implements Statemethods {
 		enemyManager.draw(g, lvlOffsetX, lvlOffsetY);
 		statusBar.draw(g);
 		player.draw(g, lvlOffsetX, lvlOffsetY);
-		objectManager.drawBackgroundTrees(g, lvlOffsetX, lvlOffsetY);
 		drawDialogue(g, lvlOffsetX, lvlOffsetY);
 
 		if (paused) {
