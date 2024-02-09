@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 public class RGBLoad {
 
 	public static List<VBox> getItems(String prefix) {
-		List<VBox> items = new ArrayList<VBox>();
+		List<VBox> items = new ArrayList<>();
 		for (Path path : getRGBFiles(prefix)) {
 			if (isTiledImage(path)) {
 				ValuedImage[] valuedImages = getValuedImages(new TiledImage(path));
@@ -56,7 +56,7 @@ public class RGBLoad {
 	}
 
 	private static List<VBox> getBoxes(ValuedImage... images) {
-		List<VBox> vboxCollection = new ArrayList<VBox>();
+		List<VBox> vboxCollection = new ArrayList<>();
 		for (ValuedImage image : images) {
 			ImageView imageView = new ImageView(image);
 			LvlBuilderUtil.setFitSize(imageView, LvlBuilder.TILE_WIDTH, LvlBuilder.TILE_HEIGHT);

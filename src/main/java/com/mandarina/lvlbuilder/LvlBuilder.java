@@ -2,7 +2,8 @@ package com.mandarina.lvlbuilder;
 
 import java.util.List;
 
-import javafx.application.Application;
+import com.mandarina.main.AppStage;
+
 import javafx.collections.ObservableList;
 import javafx.event.EventTarget;
 import javafx.scene.Scene;
@@ -19,7 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class LvlBuilder extends Application {
+public class LvlBuilder {
 
 	public static final int WINDOW_X = 1280;
 	public static final int WINDOW_Y = 720;
@@ -47,26 +48,21 @@ public class LvlBuilder extends Application {
 	private ClipboardContent greenClipboard = new ClipboardContent();
 	private ClipboardContent blueClipboard = new ClipboardContent();
 
-	private Stage stage;
-
-	public Stage getStage() {
-		return stage;
+	public void show() {
+		Scene scene = getScene();
+		Stage stage = AppStage.get().getStage();
+		stage.setScene(scene);
+		stage.setTitle("Lvl Builder");
+		stage.setResizable(false);
+		stage.show();
 	}
 
-	public static void main(String[] args) {
-		launch(args);
-	}
-
-	@Override
-	public void start(Stage primaryStage) {
-		stage = primaryStage;
-		// Initialize panels
+	private Scene getScene() {
 		createSidePanes();
 		createMainPanes();
 
 		mousePositionLabel = new Label();
 
-		// Add panels to the root layout
 		root = new HBox(redSidePane, redMainPane);
 		root.setOnMouseClicked(event -> {
 			MouseButton button = event.getButton();
@@ -81,11 +77,7 @@ public class LvlBuilder extends Application {
 		MenuBar menuBar = lvlBuilderMenu.getMenuBar();
 		VBox vbox = new VBox(menuBar, root, mousePositionLabel);
 		Scene scene = new Scene(vbox, WINDOW_X, WINDOW_Y);
-
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Image Drag and Drop App");
-		primaryStage.setResizable(false);
-		primaryStage.show();
+		return scene;
 	}
 
 	private void updateMousePosition(MouseEvent event) {
@@ -207,9 +199,8 @@ public class LvlBuilder extends Application {
 
 		ScrollPane scrollPane = new ScrollPane(pane);
 		int scrollWidth = 18;
-		int minWidth = (int) TILE_WIDTH * 32;
-		int minHeight = (int) TILE_HEIGHT * 20;
-//		setSize(scrollPane, (TILE_WIDTH * CANVAS_X) + scrollWidth, (TILE_HEIGHT * CANVAS_Y) + scrollWidth);
+		int minWidth = TILE_WIDTH * 32;
+		int minHeight = TILE_HEIGHT * 20;
 		LvlBuilderUtil.setSize(scrollPane, minWidth + scrollWidth, minHeight + scrollWidth);
 		scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);

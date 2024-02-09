@@ -6,8 +6,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.mandarina.constants.GameCts;
-import com.mandarina.main.Game;
+import com.mandarina.game.constants.GameCts;
+import com.mandarina.game.gamestates.GameState;
+import com.mandarina.game.main.Game;
+import com.mandarina.main.AppStage;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -58,10 +60,14 @@ public class LvlBuilderMenu {
 		MenuItem openMenuItem = new MenuItem("Load");
 		openMenuItem.setOnAction(this::openFile);
 		fileMenu.getItems().add(openMenuItem);
-		
+
 		MenuItem runMenuItem = new MenuItem("Run");
 		runMenuItem.setOnAction(this::run);
 		fileMenu.getItems().add(runMenuItem);
+
+		MenuItem backMenuItem = new MenuItem("Back");
+		backMenuItem.setOnAction(this::back);
+		fileMenu.getItems().add(backMenuItem);
 
 		menuBar.getMenus().add(fileMenu);
 		return menuBar;
@@ -79,7 +85,7 @@ public class LvlBuilderMenu {
 			loadLevel(image);
 		}
 	}
-	
+
 	private void run(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Image File");
@@ -88,10 +94,19 @@ public class LvlBuilderMenu {
 		File selectedFile = fileChooser.showOpenDialog(null);
 		if (selectedFile != null) {
 			Image lvl = new Image(selectedFile.toURI().toString());
+			AppStage.get().getStage().setUserData(lvl);
+			GameState.setState(GameState.PLAYING);
 			Game game = new Game();
-			this.lvlBuilder.getStage().setUserData(lvl);
-			game.start(this.lvlBuilder.getStage());
+			game.init();
+			game.start();
 		}
+	}
+
+	private void back(ActionEvent event) {
+		GameState.setState(GameState.MENU);
+		Game game = new Game();
+		game.init();
+		game.start();
 	}
 
 	private void loadLevel(Image img) {
@@ -131,28 +146,25 @@ public class LvlBuilderMenu {
 	}
 
 	private void saveMainPaneAsImage(ActionEvent event) {
-		SnapshotParameters parameters = new SnapshotParameters();
-		parameters.setFill(Color.TRANSPARENT);
-
-		Canvas canvas = getCanvas();
-		WritableImage writableImage = canvas.snapshot(parameters, null);
-
-		// Choose a file to save the image
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png"));
 		File file = fileChooser.showSaveDialog(new Stage());
 
 		if (file != null) {
-			// Convert the snapshot to a BufferedImage
-			BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
+			Canvas canvas = getCanvas();
+			writeCanvasImage(canvas, file);
+		}
+	}
 
-			// Save the BufferedImage to the chosen file
-			try {
-				ImageIO.write(bufferedImage, "png", file);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	private void writeCanvasImage(Canvas canvas, File file) {
+		try {
+			SnapshotParameters parameters = new SnapshotParameters();
+			parameters.setFill(Color.TRANSPARENT);
+			WritableImage writableImage = canvas.snapshot(parameters, null);
+			BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
+			ImageIO.write(bufferedImage, "png", file);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

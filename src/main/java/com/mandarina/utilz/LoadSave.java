@@ -1,12 +1,7 @@
 package com.mandarina.utilz;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +10,8 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 
 public class LoadSave {
+
+	private static ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
 	public static final String OUTSIDE = "outside.png";
 	public static final String MENU_BUTTONS = "button_atlas.png";
@@ -56,14 +53,12 @@ public class LoadSave {
 		return GetImage(Paths.get("assets", fileName));
 	}
 
+	public static Image GetLvl(String fileName) {
+		return GetImage(Paths.get("assets", "lvls", fileName));
+	}
+
 	private static Image GetImage(Path path) {
-		Image img = null;
-		try (InputStream is = Files.newInputStream(path, StandardOpenOption.READ)) {
-			img = new Image(is);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return img;
+		return new Image(cl.getResourceAsStream(path.toString().replace('\\', '/')));
 	}
 
 	public static Image[] GetAnimations(int size, int spriteW, int spriteH, Image img) {
@@ -87,19 +82,15 @@ public class LoadSave {
 	}
 
 	public static Image[] GetAllLevels() {
-		Path folderPath = Paths.get("assets/lvls");
 		List<Image> images = new ArrayList<>();
-
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath)) {
-			stream.forEach(path -> {
-				try (InputStream is = Files.newInputStream(path, StandardOpenOption.READ)) {
-					images.add(new Image(is));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			});
-		} catch (IOException e) {
-			e.printStackTrace();
+		try {
+			images.add(GetLvl("1.png"));
+			images.add(GetLvl("2.png"));
+			images.add(GetLvl("3.png"));
+			images.add(GetLvl("4.png"));
+			images.add(GetLvl("5.png"));
+		} catch (Exception e) {
+			System.out.println(e);
 		}
 		return images.toArray(new Image[0]);
 	}

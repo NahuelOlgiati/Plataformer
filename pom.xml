@@ -4,15 +4,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mandarina</groupId>
-	<artifactId>PlataformerTutotrial</artifactId>
+	<artifactId>plataformer</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>PlataformerTutotrial</name>
+	<name>Plataformer</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>21</maven.compiler.source>
-		<maven.compiler.target>21</maven.compiler.target>
-		<javafx.version>21.0.1</javafx.version>
+		<maven.compiler.source>20</maven.compiler.source>
+		<maven.compiler.target>20</maven.compiler.target>
+		<javafx.version>20.0.1</javafx.version>
+		<main.class>com.mandarina.main.Launcher</main.class>
 	</properties>
 
 	<dependencies>
@@ -39,7 +40,7 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<release>17</release>
+					<release>20</release>
 				</configuration>
 			</plugin>
 
@@ -140,23 +141,23 @@
 								<argument>--input</argument>
 								<argument>${project.build.directory}/libs</argument>
 								<argument>--main-class</argument>
-								<argument>com.mandarina.App</argument>
+								<argument>${main.class}</argument>
 								<argument>--main-jar</argument>
 								<argument>
 									./${project.artifactId}-${project.version}.jar</argument>
 								<argument>--dest</argument>
 								<argument>${project.build.directory}/release</argument>
+								
+								<!-- Game -->
 								<argument>--icon</argument>
-								<argument>../assets/nina.ico</argument>
+								<argument>../assets/rayman.ico</argument>
 								<argument>--name</argument>
-								<argument>Dforg</argument>
+								<argument>${project.name}</argument>
 								<argument>--win-shortcut</argument>
 								<argument>--vendor</argument>
-								<argument>com.mandarina</argument>
-								<argument>--win-menu-group</argument>
-								<argument>com.mandarina</argument>
+								<argument>${project.groupId}</argument>
 								<argument>--copyright</argument>
-								<argument>com.mandarina</argument>
+								<argument>${project.groupId}</argument>
 
 								<!-- jlink arguments -->
 								<argument>--module-path</argument>
@@ -192,6 +193,13 @@
 				<plugin>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>3.0.2</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<mainClass>${main.class}</mainClass>
+							</manifest>
+						</archive>
+					</configuration>
 				</plugin>
 				<plugin>
 					<artifactId>maven-install-plugin</artifactId>

@@ -1,7 +1,7 @@
 package com.mandarina.utilz;
 
-import com.mandarina.constants.GameCts;
-import com.mandarina.objects.Projectile;
+import com.mandarina.game.constants.GameCts;
+import com.mandarina.game.objects.Projectile;
 
 import javafx.geometry.Rectangle2D;
 
