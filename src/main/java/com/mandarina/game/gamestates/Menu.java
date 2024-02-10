@@ -37,7 +37,7 @@ public class Menu implements Statemethods {
 		buttons[1] = new MenuButton(GameCts.GAME_WIDTH / 2, (int) (177 * GameCts.SCALE), 1, GameState.OPTIONS);
 		buttons[2] = new MenuButton(GameCts.GAME_WIDTH / 2, (int) (234 * GameCts.SCALE), 3, GameState.CREDITS);
 		buttons[3] = new MenuButton(GameCts.GAME_WIDTH / 2, (int) (291 * GameCts.SCALE), 2, GameState.QUIT);
-		buttons[4] = new MenuButton(GameCts.GAME_WIDTH / 2, (int) (348 * GameCts.SCALE), 2, GameState.LVLBUILDER);
+		buttons[4] = new MenuButton(GameCts.GAME_WIDTH / 2, (int) (348 * GameCts.SCALE), 4, GameState.LVLBUILDER);
 	}
 
 	@Override
