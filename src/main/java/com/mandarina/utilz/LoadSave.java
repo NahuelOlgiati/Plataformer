@@ -15,6 +15,7 @@ public class LoadSave {
 
 	private static ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
+	public static final String APP_ICON = "rayman.png";
 	public static final String OUTSIDE = "outside.png";
 	public static final String MENU_BUTTONS = "button_atlas.png";
 	public static final String MENU_BACKGROUND = "menu_background.png";
@@ -46,6 +47,10 @@ public class LoadSave {
 	public static final String WATER = "water.png";
 	public static final String WATER_BOTTOM = "water.png";
 	public static final String SHIP = "ship.png";
+
+	public static Image GetAppIcon() {
+		return GetImage(Paths.get("assets", APP_ICON));
+	}
 
 	public static Image GetAtlas(String fileName) {
 		return GetImage(Paths.get("assets", "atlas", fileName));
@@ -85,7 +90,6 @@ public class LoadSave {
 		try {
 			return Stream.of(new PathMatchingResourcePatternResolver(cl).getResources(pathNormalization(path) + "/*"))
 					.map(r -> {
-						System.out.println(r.getFilename());
 						try (InputStream inputStream = r.getInputStream()) {
 							return new Image(inputStream);
 						} catch (IOException e) {

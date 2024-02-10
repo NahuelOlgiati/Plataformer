@@ -2,6 +2,7 @@ package com.mandarina.main;
 
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.main.Game;
+import com.mandarina.utilz.LoadSave;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -14,6 +15,7 @@ public class Launcher extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		stage.getIcons().add(LoadSave.GetAppIcon());
 		AppStage.getInstance(stage);
 		if (noParameters()) {
 			Game game = new Game();
