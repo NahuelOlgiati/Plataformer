@@ -112,7 +112,6 @@ public class Game {
 	}
 
 	private void update() {
-//		System.out.println(GameState.get());
 		switch (GameState.get()) {
 		case MENU -> menu.update();
 		case PLAYING -> playing.update();

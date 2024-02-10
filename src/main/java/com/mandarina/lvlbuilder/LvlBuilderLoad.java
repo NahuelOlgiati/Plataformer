@@ -3,7 +3,6 @@ package com.mandarina.lvlbuilder;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,7 +40,6 @@ public class LvlBuilderLoad {
 			return Stream
 					.of(new PathMatchingResourcePatternResolver(cl).getResources(pathNormalization(path) + "/" + regex))
 					.map(r -> {
-						System.out.println(r.getFilename());
 						try (InputStream inputStream = r.getInputStream()) {
 							return new LvlBuilderImage(inputStream, r.getFilename());
 						} catch (Throwable e) {
@@ -96,23 +94,22 @@ public class LvlBuilderLoad {
 		return vboxCollection;
 	}
 
-	// TODO
-	private static LvlBuilderImage[] getValuedImages(LvlBuilderImage timg) {
-		LvlBuilderImage[] levelSprite = new LvlBuilderImage[timg.getLastValue()];
-		for (int i = timg.getFirstValue(); i < timg.getLastValue(); i++) {
-			levelSprite[i] = getTile(timg, i);
+	private static LvlBuilderImage[] getValuedImages(LvlBuilderImage img) {
+		LvlBuilderImage[] levelSprite = new LvlBuilderImage[img.getLastValue()];
+		for (int i = img.getFirstValue(); i < img.getLastValue(); i++) {
+			levelSprite[i] = getTileImage(img, i);
 		}
 		return levelSprite;
 	}
 
-	private static LvlBuilderImage getTile(LvlBuilderImage timg, int i) {
+	private static LvlBuilderImage getTileImage(LvlBuilderImage img, int i) {
 		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-			WritableImage wi = new WritableImage(timg.getPixelReader(), i * LvlBuilder.TILE_WIDTH, 0,
+			WritableImage wi = new WritableImage(img.getPixelReader(), i * LvlBuilder.TILE_WIDTH, 0,
 					LvlBuilder.TILE_WIDTH, LvlBuilder.TILE_HEIGHT);
 			BufferedImage bufferedImage = SwingFXUtils.fromFXImage(wi, null);
 			ImageIO.write(bufferedImage, "png", outputStream);
 			try (InputStream is = new ByteArrayInputStream(outputStream.toByteArray())) {
-				return new LvlBuilderImage(is, LvlBuilderImage.getFileName(timg.getFileName(), i));
+				return new LvlBuilderImage(is, LvlBuilderImage.getFileName(img.getFileName(), i));
 			}
 		} catch (Throwable e) {
 			System.out.println(e);
@@ -120,22 +117,11 @@ public class LvlBuilderLoad {
 		return null;
 	}
 
-	public static InputStream writableImageToInputStream(WritableImage writableImage) {
-		BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		try {
-			ImageIO.write(bufferedImage, "png", outputStream);
-		} catch (IOException e) {
-			System.out.println(e);
-		}
-		return new ByteArrayInputStream(outputStream.toByteArray());
-	}
-
-	private static LvlBuilderImage getValuedImage(LvlBuilderImage timg, int value) {
+	private static LvlBuilderImage getValuedImage(LvlBuilderImage img, int value) {
 		LvlBuilderImage vi = null;
-		for (int i = timg.getFirstValue(); i < timg.getLastValue(); i++) {
+		for (int i = img.getFirstValue(); i < img.getLastValue(); i++) {
 			if (i == value) {
-				return getTile(timg, i);
+				return getTileImage(img, i);
 			}
 		}
 		return vi;
