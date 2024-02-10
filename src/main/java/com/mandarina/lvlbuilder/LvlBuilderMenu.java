@@ -118,20 +118,20 @@ public class LvlBuilderMenu {
 				int green = (int) (c.getGreen() * 255);
 				int blue = (int) (c.getBlue() * 255);
 
-				loadManePane(lvlBuilder.getRedMainPane(), j, i, "R", red);
-				loadManePane(lvlBuilder.getGreenMainPane(), j, i, "G", green);
-				loadManePane(lvlBuilder.getBlueMainPane(), j, i, "B", blue);
+				loadManePane(lvlBuilder.getRedMainPane(), j, i, RGB.RED, red);
+				loadManePane(lvlBuilder.getGreenMainPane(), j, i, RGB.GREEN, green);
+				loadManePane(lvlBuilder.getBlueMainPane(), j, i, RGB.BLUE, blue);
 			}
 		}
 	}
 
-	private void loadManePane(ScrollPane mainPane, int x, int y, String prefix, int value) {
+	private void loadManePane(ScrollPane mainPane, int x, int y, RGB rgb, int value) {
 		VBox mainPaneBox = (VBox) mainPane.getContent();
 		HBox row = (HBox) mainPaneBox.getChildren().get(x);
 		VBox square = (VBox) row.getChildren().get(y);
 		square.getChildren().clear();
 		if (value != GameCts.EMPTY_TILE_VALUE) {
-			ValuedImage vi = RGBLoad.getImage(prefix, value);
+			LvlBuilderImage vi = LvlBuilderLoad.getImage(rgb, value);
 			if (vi != null) {
 				ImageView droppedImageView = new ImageView(vi);
 				LvlBuilderUtil.setFitSize(droppedImageView, LvlBuilder.TILE_WIDTH, LvlBuilder.TILE_HEIGHT);
@@ -191,7 +191,7 @@ public class LvlBuilderMenu {
 		VBox col = (VBox) row.getChildren().get(colIndex);
 		if (col.getChildren().size() == 1) {
 			ImageView iv = (ImageView) col.getChildren().get(0);
-			ValuedImage vi = (ValuedImage) iv.getImage();
+			LvlBuilderImage vi = (LvlBuilderImage) iv.getImage();
 			if (vi == null) {
 				System.out.println(rowIndex + "," + colIndex);
 			}

@@ -1,18 +1,24 @@
 package com.mandarina.lvlbuilder;
 
 public enum RGB {
-	RED, GREEN, BLUE;
+	RED("R"), GREEN("G"), BLUE("B");
+
+	private String value;
+
+	RGB(String value) {
+		this.value = value;
+	}
 
 	public static RGB get(String s) {
-		switch (s) {
-		case "R":
-			return RED;
-		case "G":
-			return GREEN;
-		case "B":
-			return BLUE;
-		default:
-			throw new IllegalArgumentException("Invalid prefix: " + s);
+		for (RGB rgb : values()) {
+			if (rgb.getValue().equals(s)) {
+				return rgb;
+			}
 		}
+		throw new IllegalArgumentException("Invalid value: " + s);
+	}
+
+	public String getValue() {
+		return value;
 	}
 }

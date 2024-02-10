@@ -32,6 +32,11 @@
 			<artifactId>javafx-swing</artifactId>
 			<version>${javafx.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>6.1.3</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -147,7 +152,7 @@
 									./${project.artifactId}-${project.version}.jar</argument>
 								<argument>--dest</argument>
 								<argument>${project.build.directory}/release</argument>
-								
+
 								<!-- Game -->
 								<argument>--icon</argument>
 								<argument>../assets/rayman.ico</argument>
@@ -164,7 +169,7 @@
 								<argument>${project.build.directory}/mods</argument>
 								<argument>--add-modules</argument>
 								<argument>
-									javafx.base,javafx.controls,javafx.graphics</argument>
+									java.logging,javafx.base,javafx.controls,javafx.graphics,javafx.swing</argument>
 							</arguments>
 						</configuration>
 					</execution>

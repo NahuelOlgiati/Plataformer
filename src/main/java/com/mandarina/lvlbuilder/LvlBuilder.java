@@ -87,9 +87,9 @@ public class LvlBuilder {
 	}
 
 	private void createSidePanes() {
-		redSidePane = createSidePane(RGBLoad.getItems("R"));
-		greenSidePane = createSidePane(RGBLoad.getItems("G"));
-		blueSidePane = createSidePane(RGBLoad.getItems("B"));
+		redSidePane = createSidePane(LvlBuilderLoad.getItems(RGB.RED));
+		greenSidePane = createSidePane(LvlBuilderLoad.getItems(RGB.GREEN));
+		blueSidePane = createSidePane(LvlBuilderLoad.getItems(RGB.BLUE));
 	}
 
 	private void createMainPanes() {
@@ -238,7 +238,7 @@ public class LvlBuilder {
 	private void fromClipboard(MouseEvent event) {
 		ClipboardContent currentClipboar = getCurrentClipboar();
 		if (currentClipboar.hasImage()) {
-			ValuedImage image = (ValuedImage) currentClipboar.getImage();
+			LvlBuilderImage image = (LvlBuilderImage) currentClipboar.getImage();
 			int colIndex = (int) (event.getX() / TILE_WIDTH);
 			int rowIndex = (int) (event.getY() / TILE_HEIGHT);
 

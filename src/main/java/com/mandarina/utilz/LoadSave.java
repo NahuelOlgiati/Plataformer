@@ -1,12 +1,14 @@
 package com.mandarina.utilz;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Stream;
+
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 
 public class LoadSave {
@@ -53,45 +55,51 @@ public class LoadSave {
 		return GetImage(Paths.get("assets", fileName));
 	}
 
-	public static Image GetLvl(String fileName) {
-		return GetImage(Paths.get("assets", "lvls", fileName));
-	}
-
 	private static Image GetImage(Path path) {
-		return new Image(cl.getResourceAsStream(path.toString().replace('\\', '/')));
+		return new Image(cl.getResourceAsStream(pathNormalization(path)));
 	}
 
 	public static Image[] GetAnimations(int size, int spriteW, int spriteH, Image img) {
 		Image[] tempArr = new Image[size];
-		PixelReader pixelReader = img.getPixelReader();
 		for (int i = 0; i < size; i++) {
-			tempArr[i] = new WritableImage(pixelReader, i * spriteW, 0, spriteW, spriteH);
+			tempArr[i] = new WritableImage(img.getPixelReader(), i * spriteW, 0, spriteW, spriteH);
 		}
 		return tempArr;
 	}
 
 	public static Image[][] GetAnimations(int xSize, int ySize, int spriteW, int spriteH, Image img) {
 		Image[][] tempArr = new Image[ySize][xSize];
-		PixelReader pixelReader = img.getPixelReader();
 		for (int j = 0; j < ySize; j++) {
 			for (int i = 0; i < xSize; i++) {
-				tempArr[j][i] = new WritableImage(pixelReader, i * spriteW, j * spriteH, spriteW, spriteH);
+				tempArr[j][i] = new WritableImage(img.getPixelReader(), i * spriteW, j * spriteH, spriteW, spriteH);
 			}
 		}
 		return tempArr;
 	}
 
 	public static Image[] GetAllLevels() {
-		List<Image> images = new ArrayList<>();
+		return getImages(Paths.get("assets", "lvls"));
+	}
+
+	private static Image[] getImages(Path path) {
 		try {
-			images.add(GetLvl("1.png"));
-			images.add(GetLvl("2.png"));
-			images.add(GetLvl("3.png"));
-			images.add(GetLvl("4.png"));
-			images.add(GetLvl("5.png"));
-		} catch (Exception e) {
+			return Stream.of(new PathMatchingResourcePatternResolver(cl).getResources(pathNormalization(path) + "/*"))
+					.map(r -> {
+						System.out.println(r.getFilename());
+						try (InputStream inputStream = r.getInputStream()) {
+							return new Image(inputStream);
+						} catch (IOException e) {
+							System.out.println(e);
+							return null;
+						}
+					}).toArray(Image[]::new);
+		} catch (IOException e) {
 			System.out.println(e);
 		}
-		return images.toArray(new Image[0]);
+		return null;
+	}
+
+	private static String pathNormalization(Path path) {
+		return path.toString().replace('\\', '/');
 	}
 }
