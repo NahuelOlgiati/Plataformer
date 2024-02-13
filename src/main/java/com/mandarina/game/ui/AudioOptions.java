@@ -23,7 +23,8 @@ public class AudioOptions {
 	private void createVolumeButton() {
 		int vX = (int) (309 * GameCts.SCALE);
 		int vY = (int) (278 * GameCts.SCALE);
-		volumeButton = new VolumeButton(vX, vY, UICts.VolumeButtons.SLIDER_WIDTH, UICts.VolumeButtons.VOLUME_HEIGHT);
+		volumeButton = new VolumeButton(vX, vY, UICts.VolumeButtons.VOLUME_WIDTH,
+				UICts.VolumeButtons.VOLUME_HEIGHT);
 	}
 
 	private void createSoundButtons() {
@@ -52,9 +53,9 @@ public class AudioOptions {
 
 	public void mouseDragged(MouseEvent e) {
 		if (volumeButton.isMousePressed()) {
-			float valueBefore = volumeButton.getFloatValue();
+			float valueBefore = volumeButton.getVolume();
 			volumeButton.changeX((int) e.getX());
-			float valueAfter = volumeButton.getFloatValue();
+			float valueAfter = volumeButton.getVolume();
 			if (valueBefore != valueAfter)
 				game.getAudioPlayer().setVolume(valueAfter);
 		}
@@ -107,4 +108,7 @@ public class AudioOptions {
 		return b.getBounds().contains(e.getX(), e.getY());
 	}
 
+	public VolumeButton getVolumeButton() {
+		return volumeButton;
+	}
 }

@@ -28,11 +28,12 @@ public class AudioPlayer {
 
 	private Clip[] songs, effects;
 	private int currentSongId;
-	private float volume = 0.5f;
+	private float volume;
 	private boolean songMute, effectMute;
 	private Random rand = new Random();
 
-	public AudioPlayer() {
+	public AudioPlayer(float volume) {
+		this.volume = volume;
 		loadSongs();
 		loadEffects();
 		playSong(MENU_1);
@@ -137,7 +138,6 @@ public class AudioPlayer {
 	}
 
 	private void updateSongVolume() {
-
 		FloatControl gainControl = (FloatControl) songs[currentSongId].getControl(FloatControl.Type.MASTER_GAIN);
 		float range = gainControl.getMaximum() - gainControl.getMinimum();
 		float gain = (range * volume) + gainControl.getMinimum();

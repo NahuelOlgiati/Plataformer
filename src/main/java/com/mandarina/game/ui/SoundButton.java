@@ -5,7 +5,7 @@ import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
+import javafx.scene.shape.Rectangle;
 
 public class SoundButton extends PauseButton {
 
@@ -25,8 +25,7 @@ public class SoundButton extends PauseButton {
 		soundImgs = new Image[2][3];
 		for (int j = 0; j < soundImgs.length; j++)
 			for (int i = 0; i < soundImgs[j].length; i++)
-				soundImgs[j][i] = new WritableImage(temp.getPixelReader(), i * UICts.PauseButtons.SOUND_SIZE_DEFAULT,
-						j * UICts.PauseButtons.SOUND_SIZE_DEFAULT, UICts.PauseButtons.SOUND_SIZE_DEFAULT,
+				soundImgs[j][i] = LoadSave.GetSubimage(temp, i, j, UICts.PauseButtons.SOUND_SIZE_DEFAULT,
 						UICts.PauseButtons.SOUND_SIZE_DEFAULT);
 	}
 
@@ -50,7 +49,8 @@ public class SoundButton extends PauseButton {
 	}
 
 	public void draw(GraphicsContext g) {
-		g.drawImage(soundImgs[rowIndex][colIndex], x, y, width, height);
+		Rectangle b = getBounds();
+		g.drawImage(soundImgs[rowIndex][colIndex], b.getX(), b.getY(), b.getWidth(), b.getHeight());
 	}
 
 	public boolean isMouseOver() {

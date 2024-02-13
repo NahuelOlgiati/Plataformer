@@ -106,4 +106,8 @@ public class LoadSave {
 	private static String pathNormalization(Path path) {
 		return path.toString().replace('\\', '/');
 	}
+	
+	public static WritableImage GetSubimage(Image img, int x, int y, int width, int height) {
+		return new WritableImage(img.getPixelReader(), x * width, y * height, width, height);
+	}
 }

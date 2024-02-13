@@ -1,9 +1,9 @@
 package com.mandarina.game.objects;
 
+import com.mandarina.game.constants.GameCts;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 
 public class Grass {
 
@@ -32,7 +32,8 @@ public class Grass {
 		Image grassTemp = LoadSave.GetAtlas(LoadSave.GRASS);
 		Image[] grassImgs = new Image[2];
 		for (int i = 0; i < grassImgs.length; i++)
-			grassImgs[i] = new WritableImage(grassTemp.getPixelReader(), 32 * i, 0, 32, 32);
+			grassImgs[i] = LoadSave.GetSubimage(grassTemp, i, 0, GameCts.TILES_DEFAULT_SIZE,
+					GameCts.TILES_DEFAULT_SIZE);
 
 		return grassImgs;
 	}

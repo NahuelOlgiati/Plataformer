@@ -6,8 +6,6 @@ import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
@@ -35,12 +33,9 @@ public class MenuButton {
 	private void loadImgs() {
 		imgs = new Image[3];
 		Image temp = LoadSave.GetSprite(LoadSave.MENU_BUTTONS);
-		PixelReader pixelReader = temp.getPixelReader();
 		for (int i = 0; i < imgs.length; i++) {
-			WritableImage subImage = new WritableImage(pixelReader, i * UICts.Buttons.B_WIDTH_DEFAULT,
-					rowIndex * UICts.Buttons.B_HEIGHT_DEFAULT, UICts.Buttons.B_WIDTH_DEFAULT,
+			imgs[i] = LoadSave.GetSubimage(temp, i, rowIndex, UICts.Buttons.B_WIDTH_DEFAULT,
 					UICts.Buttons.B_HEIGHT_DEFAULT);
-			imgs[i] = subImage;
 		}
 	}
 

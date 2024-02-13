@@ -102,7 +102,7 @@ public class Game {
 
 	private void initClasses(Image image) {
 		audioOptions = new AudioOptions(this);
-		audioPlayer = new AudioPlayer();
+		audioPlayer = new AudioPlayer(audioOptions.getVolumeButton().getVolume());
 		menu = new Menu(this);
 		playing = new Playing(this, image);
 		credits = new Credits();

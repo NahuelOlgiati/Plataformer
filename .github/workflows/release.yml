@@ -19,5 +19,5 @@ jobs:
          path: 'target/release'
      - uses: AButler/upload-release-assets@v3.0
        with:
-         files: './target/release/*'
+         files: 'target/release/*'
          repo-token: ${{ secrets.GITHUB_TOKEN }}

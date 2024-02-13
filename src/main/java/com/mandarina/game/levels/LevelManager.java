@@ -9,7 +9,6 @@ import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 
 public class LevelManager {
 
@@ -35,7 +34,7 @@ public class LevelManager {
 		waterSprite = new Image[5];
 		Image img = LoadSave.GetAtlas(LoadSave.WATER);
 		for (int i = 0; i < 4; i++)
-			waterSprite[i] = new WritableImage(img.getPixelReader(), i * 32, 0, 32, 32);
+			waterSprite[i] = LoadSave.GetSubimage(img, i, 0, GameCts.TILES_DEFAULT_SIZE, GameCts.TILES_DEFAULT_SIZE);
 		waterSprite[4] = LoadSave.GetSprite(LoadSave.WATER_BOTTOM);
 	}
 

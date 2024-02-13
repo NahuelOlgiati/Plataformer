@@ -5,7 +5,7 @@ import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
+import javafx.scene.shape.Rectangle;
 
 public class UrmButton extends PauseButton {
 	private Image[] imgs;
@@ -22,8 +22,7 @@ public class UrmButton extends PauseButton {
 		Image temp = LoadSave.GetSprite(LoadSave.URM_BUTTONS);
 		imgs = new Image[3];
 		for (int i = 0; i < imgs.length; i++)
-			imgs[i] = new WritableImage(temp.getPixelReader(), i * UICts.URMButtons.URM_DEFAULT_SIZE,
-					rowIndex * UICts.URMButtons.URM_DEFAULT_SIZE, UICts.URMButtons.URM_DEFAULT_SIZE,
+			imgs[i] = LoadSave.GetSubimage(temp, i, rowIndex, UICts.URMButtons.URM_DEFAULT_SIZE,
 					UICts.URMButtons.URM_DEFAULT_SIZE);
 	}
 
@@ -37,7 +36,8 @@ public class UrmButton extends PauseButton {
 	}
 
 	public void draw(GraphicsContext g) {
-		g.drawImage(imgs[index], x, y, UICts.URMButtons.URM_SIZE, UICts.URMButtons.URM_SIZE);
+		Rectangle b = getBounds();
+		g.drawImage(imgs[index], b.getX(), b.getY(), UICts.URMButtons.URM_SIZE, UICts.URMButtons.URM_SIZE);
 	}
 
 	public void resetBools() {

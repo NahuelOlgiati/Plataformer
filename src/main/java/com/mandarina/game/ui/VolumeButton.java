@@ -6,34 +6,35 @@ import com.mandarina.utilz.LoadSave;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class VolumeButton extends PauseButton {
 
 	private Image[] imgs;
 	private Image slider;
+	private Rectangle sliderBounds;
 	private int index = 0;
 	private boolean mouseOver, mousePressed;
 	private int buttonX, minX, maxX;
-	private float floatValue = 0f;
+	private float volume;
 
 	public VolumeButton(int x, int y, int width, int height) {
-		super(x + width / 2, y, UICts.VolumeButtons.VOLUME_WIDTH, height);
-		bounds = new Rectangle(x - UICts.VolumeButtons.VOLUME_WIDTH / 2, y, UICts.VolumeButtons.VOLUME_WIDTH, height);
-		buttonX = x + width / 2;
-		this.x = x;
-		this.width = width;
-		minX = x + UICts.VolumeButtons.VOLUME_WIDTH / 2;
-		maxX = x + width - UICts.VolumeButtons.VOLUME_WIDTH / 2;
+		super(x, y, width, height);
+		sliderBounds = new Rectangle(x - 5, y, UICts.VolumeButtons.SLIDER_WIDTH, height);
+		minX = (int) (sliderBounds.getX() + UICts.VolumeButtons.VOLUME_WIDTH / 2);
+		maxX = (int) (sliderBounds.getX() + UICts.VolumeButtons.SLIDER_WIDTH - UICts.VolumeButtons.VOLUME_WIDTH / 2);
 		loadImgs();
+		setVolume(0.75f);
+		updateVolume();
 	}
 
 	private void loadImgs() {
 		Image temp = LoadSave.GetSprite(LoadSave.VOLUME_BUTTONS);
 		imgs = new Image[3];
 		for (int i = 0; i < imgs.length; i++)
-			imgs[i] = new WritableImage(temp.getPixelReader(), i * UICts.VolumeButtons.VOLUME_DEFAULT_WIDTH, 0,
-					UICts.VolumeButtons.VOLUME_DEFAULT_WIDTH, UICts.VolumeButtons.VOLUME_DEFAULT_HEIGHT);
+			imgs[i] = LoadSave.GetSubimage(temp, i, 0, UICts.VolumeButtons.VOLUME_DEFAULT_WIDTH,
+					UICts.VolumeButtons.VOLUME_DEFAULT_HEIGHT);
 
 		slider = new WritableImage(temp.getPixelReader(), 3 * UICts.VolumeButtons.VOLUME_DEFAULT_WIDTH, 0,
 				UICts.VolumeButtons.SLIDER_DEFAULT_WIDTH, UICts.VolumeButtons.VOLUME_DEFAULT_HEIGHT);
@@ -45,13 +46,25 @@ public class VolumeButton extends PauseButton {
 			index = 1;
 		if (mousePressed)
 			index = 2;
-
 	}
 
 	public void draw(GraphicsContext g) {
-		g.drawImage(slider, x, y, width, height);
-		g.drawImage(imgs[index], buttonX - UICts.VolumeButtons.VOLUME_WIDTH / 2, y, UICts.VolumeButtons.VOLUME_WIDTH,
-				height);
+		g.drawImage(slider, sliderBounds.getX(), sliderBounds.getY(), sliderBounds.getWidth(),
+				sliderBounds.getHeight());
+		g.drawImage(imgs[index], buttonX - UICts.VolumeButtons.VOLUME_WIDTH / 2, bounds.getY(),
+				UICts.VolumeButtons.VOLUME_WIDTH, bounds.getHeight());
+//		drawBoundBox(g);
+//		drawSliderBoundBox(g);
+	}
+
+	protected void drawBoundBox(GraphicsContext g) {
+		g.setStroke(Color.BLUE);
+		g.strokeRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+	}
+
+	protected void drawSliderBoundBox(GraphicsContext g) {
+		g.setStroke(Color.RED);
+		g.strokeRect(sliderBounds.getX(), sliderBounds.getY(), sliderBounds.getWidth(), sliderBounds.getHeight());
 	}
 
 	public void changeX(int x) {
@@ -61,15 +74,19 @@ public class VolumeButton extends PauseButton {
 			buttonX = maxX;
 		else
 			buttonX = x;
-
-		updateFloatValue();
 		bounds.setX(buttonX - UICts.VolumeButtons.VOLUME_WIDTH / 2);
+		updateVolume();
 	}
 
-	private void updateFloatValue() {
+	private void updateVolume() {
 		float range = maxX - minX;
 		float value = buttonX - minX;
-		floatValue = value / range;
+		volume = value / range;
+	}
+
+	private void setVolume(float targetVolume) {
+		float range = maxX - minX;
+		changeX((int) (minX + (range * targetVolume)));
 	}
 
 	public void resetBools() {
@@ -93,7 +110,11 @@ public class VolumeButton extends PauseButton {
 		this.mousePressed = mousePressed;
 	}
 
-	public float getFloatValue() {
-		return floatValue;
+	public float getVolume() {
+		return volume;
+	}
+
+	public Rectangle getBounds() {
+		return bounds;
 	}
 }
