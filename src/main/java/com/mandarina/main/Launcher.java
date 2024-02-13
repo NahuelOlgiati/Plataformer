@@ -22,16 +22,10 @@ public class Launcher extends Application {
 			GameState.getInstance(game);
 			game.show();
 			game.start();
-		} else {
-//			new LvlBuilder(primaryStage).start();
 		}
 	}
 
 	private boolean noParameters() {
-		System.out.println("ACCCA");
-		System.out.println(getParameters());
-		System.out.println(getParameters().getRaw());
-		System.out.println(getParameters().getRaw().isEmpty());
 		return getParameters().getRaw().isEmpty();
 	}
 }

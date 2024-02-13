@@ -33,9 +33,9 @@ public class Credits {
 
 	private void loadEntities() {
 		entitiesList = new ArrayList<>();
-		entitiesList.add(new ShowEntity(TitanAtlas.getAnimations()[1], (int) (GameCts.GAME_WIDTH * 0.05),
-				(int) (GameCts.GAME_HEIGHT * 0.8)));
-		entitiesList.add(new ShowEntity(CrabbyAtlas.getAnimations()[1], (int) (GameCts.GAME_WIDTH * 0.15),
+		entitiesList.add(new ShowEntity(TitanAtlas.getAnimations()[2], (int) (GameCts.GAME_WIDTH * 0.05),
+				(int) (GameCts.GAME_HEIGHT * 0.45)));
+		entitiesList.add(new ShowEntity(CrabbyAtlas.getAnimations()[1], (int) (GameCts.GAME_WIDTH * 0.2),
 				(int) (GameCts.GAME_HEIGHT * 0.75)));
 		entitiesList.add(new ShowEntity(SharkAtlas.getAnimations()[3], (int) (GameCts.GAME_WIDTH * 0.7),
 				(int) (GameCts.GAME_HEIGHT * 0.75)));

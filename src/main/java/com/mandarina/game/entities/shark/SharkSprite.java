@@ -7,7 +7,7 @@ enum SharkSprite {
 	HEIGHT(30), //
 
 	DRAWOFFSET_X(8), //
-	DRAWOFFSET_Y(6);
+	DRAWOFFSET_Y(16);
 
 	private final int value;
 
