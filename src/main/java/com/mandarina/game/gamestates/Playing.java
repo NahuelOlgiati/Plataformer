@@ -28,7 +28,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
-public class Playing implements Statemethods {
+public class Playing {
 
 	private Game game;
 
@@ -159,7 +159,6 @@ public class Playing implements Statemethods {
 		rain = new Rain();
 	}
 
-	@Override
 	public void update() {
 		if (paused)
 			pauseOverlay.update();
@@ -259,7 +258,6 @@ public class Playing implements Statemethods {
 		lvlOffsetY = Math.max(Math.min(lvlOffsetY, maxLvlOffsetY), 0);
 	}
 
-	@Override
 	public void draw(GraphicsContext g) {
 		g.drawImage(backgroundImg, 0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
 
@@ -351,7 +349,6 @@ public class Playing implements Statemethods {
 		objectManager.checkSpikesTouched(p);
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (!gameOver) {
 			if (e.getButton() == MouseButton.PRIMARY)
@@ -361,7 +358,6 @@ public class Playing implements Statemethods {
 		}
 	}
 
-	@Override
 	public void keyPressed(KeyEvent e) {
 		if (!gameOver && !gameCompleted && !lvlCompleted) {
 			switch (e.getCode()) {
@@ -383,7 +379,6 @@ public class Playing implements Statemethods {
 		}
 	}
 
-	@Override
 	public void keyReleased(KeyEvent e) {
 		if (!gameOver && !gameCompleted && !lvlCompleted) {
 			switch (e.getCode()) {
@@ -408,7 +403,6 @@ public class Playing implements Statemethods {
 				pauseOverlay.mouseDragged(e);
 	}
 
-	@Override
 	public void mousePressed(MouseEvent e) {
 		if (gameOver)
 			gameOverOverlay.mousePressed(e);
@@ -421,7 +415,6 @@ public class Playing implements Statemethods {
 
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (gameOver)
 			gameOverOverlay.mouseReleased(e);
@@ -433,7 +426,6 @@ public class Playing implements Statemethods {
 			gameCompletedOverlay.mouseReleased(e);
 	}
 
-	@Override
 	public void mouseMoved(MouseEvent e) {
 		if (gameOver)
 			gameOverOverlay.mouseMoved(e);

@@ -13,9 +13,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 
-public class Credits implements Statemethods {
+public class Credits {
 	private Image backgroundImg, creditsImg;
 	private int bgX, bgY, bgW, bgH;
 	private float bgYfloat;
@@ -44,14 +43,12 @@ public class Credits implements Statemethods {
 				(int) (GameCts.GAME_HEIGHT * 0.8)));
 	}
 
-	@Override
 	public void update() {
 		bgYfloat -= 0.2f;
 		for (ShowEntity se : entitiesList)
 			se.update();
 	}
 
-	@Override
 	public void draw(GraphicsContext g) {
 		g.drawImage(backgroundImg, 0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
 		g.drawImage(creditsImg, bgX, (int) (bgY + bgYfloat), bgW, bgH);
@@ -60,38 +57,11 @@ public class Credits implements Statemethods {
 			se.draw(g);
 	}
 
-	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getCode() == KeyCode.ESCAPE) {
 			bgYfloat = 0;
 			GameState.setState(GameState.MENU);
 		}
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
 	}
 
 	private class ShowEntity {

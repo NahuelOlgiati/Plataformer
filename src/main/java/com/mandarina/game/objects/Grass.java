@@ -3,6 +3,7 @@ package com.mandarina.game.objects;
 import com.mandarina.game.constants.GameCts;
 import com.mandarina.utilz.LoadSave;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Grass {
@@ -13,6 +14,11 @@ public class Grass {
 		this.x = x;
 		this.y = y;
 		this.type = type;
+	}
+
+	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[] grassImgs) {
+		g.drawImage(grassImgs[getType()], getX() - lvlOffsetX, getY() - lvlOffsetY, (int) (32 * GameCts.SCALE),
+				(int) (32 * GameCts.SCALE));
 	}
 
 	public int getX() {

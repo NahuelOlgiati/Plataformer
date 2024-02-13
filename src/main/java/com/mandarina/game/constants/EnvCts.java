@@ -1,6 +1,9 @@
 package com.mandarina.game.constants;
 
 public class EnvCts {
+	public static final int WATER_TOP = 48;
+	public static final int WATER = 49;
+
 	public static final int BIG_CLOUD_WIDTH_DEFAULT = 448;
 	public static final int BIG_CLOUD_HEIGHT_DEFAULT = 101;
 	public static final int SMALL_CLOUD_WIDTH_DEFAULT = 74;

@@ -19,10 +19,15 @@ public enum GameState {
 		return state;
 	}
 
+	public static Game getGame() {
+		return game;
+	}
+
 	public static void setState(GameState newState) {
 		switch (newState) {
 		case MENU -> game.getAudioPlayer().playSong(AudioPlayer.MENU_1);
 		case PLAYING -> game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex());
+		case LVLBUILDER -> game.getAudioPlayer().playSong(AudioPlayer.BUILD);
 		}
 		state = newState;
 	}

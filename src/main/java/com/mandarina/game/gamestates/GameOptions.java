@@ -9,11 +9,9 @@ import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
-public class GameOptions implements Statemethods {
+public class GameOptions {
 
 	private AudioOptions audioOptions;
 	private Image backgroundImg, optionsBackgroundImg;
@@ -43,13 +41,11 @@ public class GameOptions implements Statemethods {
 		bgY = (int) (33 * GameCts.SCALE);
 	}
 
-	@Override
 	public void update() {
 		menuB.update();
 		audioOptions.update();
 	}
 
-	@Override
 	public void draw(GraphicsContext g) {
 		g.drawImage(backgroundImg, 0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
 		g.drawImage(optionsBackgroundImg, bgX, bgY, bgW, bgH);
@@ -62,7 +58,6 @@ public class GameOptions implements Statemethods {
 		audioOptions.mouseDragged(e);
 	}
 
-	@Override
 	public void mousePressed(MouseEvent e) {
 		if (isIn(e, menuB)) {
 			menuB.setMousePressed(true);
@@ -70,7 +65,6 @@ public class GameOptions implements Statemethods {
 			audioOptions.mousePressed(e);
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (isIn(e, menuB)) {
 			if (menuB.isMousePressed())
@@ -80,7 +74,6 @@ public class GameOptions implements Statemethods {
 		menuB.resetBools();
 	}
 
-	@Override
 	public void mouseMoved(MouseEvent e) {
 		menuB.setMouseOver(false);
 
@@ -88,24 +81,6 @@ public class GameOptions implements Statemethods {
 			menuB.setMouseOver(true);
 		else
 			audioOptions.mouseMoved(e);
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if (e.getCode() == KeyCode.ESCAPE)
-			GameState.setState(GameState.MENU);
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	private boolean isIn(MouseEvent e, PauseButton b) {

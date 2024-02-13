@@ -104,7 +104,7 @@ public class LvlBuilderMenu {
 
 	private void back(ActionEvent event) {
 		GameState.setState(GameState.MENU);
-		Game game = new Game();
+		Game game = GameState.getGame();
 		game.init();
 		game.start();
 	}

@@ -7,10 +7,9 @@ import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
-public class Menu implements Statemethods {
+public class Menu {
 
 	private Game game;
 	private MenuButton[] buttons = new MenuButton[5];
@@ -40,13 +39,11 @@ public class Menu implements Statemethods {
 		buttons[4] = new MenuButton(GameCts.GAME_WIDTH / 2, (int) (348 * GameCts.SCALE), 4, GameState.LVLBUILDER);
 	}
 
-	@Override
 	public void update() {
 		for (MenuButton mb : buttons)
 			mb.update();
 	}
 
-	@Override
 	public void draw(GraphicsContext g) {
 		g.drawImage(backgroundImgPink, 0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
 		g.drawImage(backgroundImg, menuX, menuY, menuWidth, menuHeight);
@@ -55,7 +52,6 @@ public class Menu implements Statemethods {
 			mb.draw(g);
 	}
 
-	@Override
 	public void mousePressed(MouseEvent e) {
 		for (MenuButton mb : buttons) {
 			if (mb.isIn(e)) {
@@ -64,7 +60,6 @@ public class Menu implements Statemethods {
 		}
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		for (MenuButton mb : buttons) {
 			if (mb.isIn(e)) {
@@ -88,24 +83,8 @@ public class Menu implements Statemethods {
 			mb.resetBools();
 	}
 
-	@Override
 	public void mouseMoved(MouseEvent e) {
 		for (MenuButton mb : buttons)
 			mb.setMouseOver(mb.isIn(e));
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// Handle key events if needed
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// Handle mouse click events if needed
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// Handle key release events if needed
 	}
 }

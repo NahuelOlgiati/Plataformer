@@ -20,9 +20,8 @@ import javafx.scene.image.Image;
 public class ObjectManager {
 
 	private Playing playing;
-	private Image[][] potionImgs, containerImgs;
+	private Image[][] potionImgs, containerImgs, treeImgs;
 	private Image[] cannonImgs, grassImgs;
-	private Image[][] treeImgs;
 	private Image spikeImg, cannonBallImg;
 	private ArrayList<Potion> potions;
 	private ArrayList<GameContainer> containers;
@@ -93,7 +92,7 @@ public class ObjectManager {
 		spikeImg = Spike.load();
 		cannonImgs = Cannon.load();
 		cannonBallImg = CannonBall.load();
-		treeImgs = Tree.load();
+		treeImgs = BackgroundTree.load();
 		grassImgs = Grass.load();
 	}
 
@@ -177,21 +176,12 @@ public class ObjectManager {
 
 	private void drawGrass(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
 		for (Grass grass : currentLevel.getGrass())
-			g.drawImage(grassImgs[grass.getType()], grass.getX() - lvlOffsetX, grass.getY() - lvlOffsetY,
-					(int) (32 * GameCts.SCALE), (int) (32 * GameCts.SCALE));
+			grass.draw(g, lvlOffsetX, lvlOffsetY, grassImgs);
 	}
 
 	private void drawBackgroundTrees(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
-		for (BackgroundTree bt : currentLevel.getTrees()) {
-
-			int type = bt.getType();
-			if (type == 9)
-				type = 8;
-			g.drawImage(treeImgs[type - 7][bt.getAniIndex()],
-					bt.getX() - lvlOffsetX + ObjectCts.GetTreeOffsetX(bt.getType()),
-					bt.getY() - lvlOffsetY + ObjectCts.GetTreeOffsetY(bt.getType()),
-					ObjectCts.GetTreeWidth(bt.getType()), ObjectCts.GetTreeHeight(bt.getType()));
-		}
+		for (BackgroundTree bt : currentLevel.getTrees())
+			bt.draw(g, lvlOffsetX, lvlOffsetY, treeImgs);
 	}
 
 	private void drawProjectiles(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {

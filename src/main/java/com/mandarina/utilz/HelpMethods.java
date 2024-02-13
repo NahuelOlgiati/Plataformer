@@ -1,5 +1,6 @@
 package com.mandarina.utilz;
 
+import com.mandarina.game.constants.EnvCts;
 import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.objects.Projectile;
 
@@ -56,11 +57,8 @@ public class HelpMethods {
 
 	public static boolean IsTileSolid(int xTile, int yTile, int[][] lvlData) {
 		int value = lvlData[yTile][xTile];
-
 		switch (value) {
-		case GameCts.EMPTY_TILE_VALUE:
-			return false;
-		case 11, 48, 49:
+		case GameCts.EMPTY_TILE_VALUE, EnvCts.WATER_TOP, EnvCts.WATER:
 			return false;
 		default:
 			return true;

@@ -26,15 +26,12 @@ public class GameInputs {
 
 	private void onKeyPressed(KeyEvent e) {
 		switch (GameState.get()) {
-		case MENU -> this.menu.keyPressed(e);
 		case PLAYING -> this.playing.keyPressed(e);
-		case OPTIONS -> this.gameOptions.keyPressed(e);
 		}
 	}
 
 	private void onKeyReleased(KeyEvent e) {
 		switch (GameState.get()) {
-		case MENU -> this.menu.keyReleased(e);
 		case PLAYING -> this.playing.keyReleased(e);
 		case CREDITS -> this.credits.keyReleased(e);
 		}
