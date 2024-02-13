@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 
 public class Game {
 
+	private Scene scene;
 	private Canvas canvas;
 	private GraphicsContext gc;
 
@@ -34,8 +35,15 @@ public class Game {
 	private GameInputs gameInputs;
 	private GameLoop gameLoop;
 
-	public void init() {
-		Scene scene = getScene();
+	public void show() {
+		if (scene == null) {
+			scene = getScene();
+		}
+		if (AppStage.get().getStage().getUserData() instanceof Image image) {
+			GameState.getGame().getPlaying().loadCustomLevel(image);
+			GameState.setState(GameState.PLAYING);
+			AppStage.get().getStage().setUserData(null);
+		}
 		Stage stage = AppStage.get().getStage();
 		stage.setTitle("Plataformer");
 		stage.setScene(scene);
@@ -52,9 +60,7 @@ public class Game {
 	}
 
 	private Scene getScene() {
-		Stage stage = AppStage.get().getStage();
-		initClasses((Image) stage.getUserData());
-
+		initClasses();
 		canvas = new Canvas(GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
 		gc = canvas.getGraphicsContext2D();
 
@@ -100,11 +106,11 @@ public class Game {
 		gameLoop.stop();
 	}
 
-	private void initClasses(Image image) {
+	private void initClasses() {
 		audioOptions = new AudioOptions(this);
 		audioPlayer = new AudioPlayer(audioOptions.getVolumeButton().getVolume());
 		menu = new Menu(this);
-		playing = new Playing(this, image);
+		playing = new Playing(this);
 		credits = new Credits();
 		lvlBuilder = new LvlBuilder();
 		gameOptions = new GameOptions(audioOptions);

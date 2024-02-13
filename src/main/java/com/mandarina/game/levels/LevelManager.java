@@ -16,18 +16,15 @@ public class LevelManager {
 	private Image[] levelSprite;
 	private Image[] waterSprite;
 	private ArrayList<Level> levels;
+	private Level customLevel;
 	private int lvlIndex = 0, aniTick, aniIndex;
 
-	public LevelManager(Game game, Image image) {
+	public LevelManager(Game game) {
 		this.game = game;
 		importOutsideSprites();
 		createWater();
 		levels = new ArrayList<>();
-		if (image != null) {
-			buildLevel(image);
-		} else {
-			buildAllLevels();
-		}
+		buildAllLevels();
 	}
 
 	private void createWater() {
@@ -39,22 +36,27 @@ public class LevelManager {
 	}
 
 	public void loadNextLevel() {
-		Level newLevel = levels.get(lvlIndex);
-		game.getPlaying().getEnemyManager().loadEnemies(newLevel);
-		game.getPlaying().getPlayer().loadLvlData(newLevel.getLevelData());
-		game.getPlaying().setMaxLvlOffsetX(newLevel.getLvlOffsetX());
-		game.getPlaying().setMaxLvlOffsetY(newLevel.getLvlOffsetY());
-		game.getPlaying().getObjectManager().loadObjects(newLevel);
+		loadLevel(levels.get(lvlIndex));
+	}
+
+	public void loadCustomLevel(Level level) {
+		setLevelIndex(-1);
+		this.customLevel = level;
+		loadLevel(getCurrentLevel());
+	}
+
+	public void loadLevel(Level level) {
+		game.getPlaying().getEnemyManager().loadEnemies(level);
+		game.getPlaying().getPlayer().loadLvlData(level.getLevelData());
+		game.getPlaying().setMaxLvlOffsetX(level.getLvlOffsetX());
+		game.getPlaying().setMaxLvlOffsetY(level.getLvlOffsetY());
+		game.getPlaying().getObjectManager().loadObjects(level);
 	}
 
 	private void buildAllLevels() {
 		Image[] allLevels = LoadSave.GetAllLevels();
 		for (Image img : allLevels)
-			buildLevel(img);
-	}
-
-	private void buildLevel(Image img) {
-		levels.add(new Level(img));
+			levels.add(new Level(img));
 	}
 
 	private void importOutsideSprites() {
@@ -62,7 +64,7 @@ public class LevelManager {
 	}
 
 	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
-		Level level = levels.get(lvlIndex);
+		Level level = getCurrentLevel();
 		int[][] levelData = level.getLevelData();
 		for (int j = 0; j < levelData.length; j++) {
 			for (int i = 0; i < levelData[0].length; i++) {
@@ -97,7 +99,7 @@ public class LevelManager {
 	}
 
 	public Level getCurrentLevel() {
-		return levels.get(lvlIndex);
+		return lvlIndex == -1 ? customLevel : levels.get(lvlIndex);
 	}
 
 	public int getAmountOfLevels() {

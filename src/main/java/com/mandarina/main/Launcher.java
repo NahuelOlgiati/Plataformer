@@ -20,7 +20,7 @@ public class Launcher extends Application {
 		if (noParameters()) {
 			Game game = new Game();
 			GameState.getInstance(game);
-			game.init();
+			game.show();
 			game.start();
 		} else {
 //			new LvlBuilder(primaryStage).start();

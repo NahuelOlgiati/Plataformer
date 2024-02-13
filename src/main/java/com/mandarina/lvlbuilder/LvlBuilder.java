@@ -31,6 +31,8 @@ public class LvlBuilder {
 	private RGB rgb = RGB.RED;
 	private int mainPaneX = 80;
 	private int mainPaneY = 12;
+	
+	private Scene scene;
 
 	private ScrollPane redSidePane;
 	private ScrollPane redMainPane;
@@ -49,7 +51,9 @@ public class LvlBuilder {
 	private ClipboardContent blueClipboard = new ClipboardContent();
 
 	public void show() {
-		Scene scene = getScene();
+		if (scene == null) {
+			scene = getScene();
+		}
 		Stage stage = AppStage.get().getStage();
 		stage.setScene(scene);
 		stage.setTitle("Lvl Builder");

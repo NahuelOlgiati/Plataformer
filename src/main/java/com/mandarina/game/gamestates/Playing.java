@@ -10,6 +10,7 @@ import com.mandarina.game.effects.DialogueEffect;
 import com.mandarina.game.effects.Rain;
 import com.mandarina.game.entities.EnemyManager;
 import com.mandarina.game.entities.player.Player;
+import com.mandarina.game.levels.Level;
 import com.mandarina.game.levels.LevelManager;
 import com.mandarina.game.main.Game;
 import com.mandarina.game.objects.ObjectManager;
@@ -82,9 +83,9 @@ public class Playing {
 	private int shipAni, shipTick, shipDir = 1;
 	private float shipHeightDelta, shipHeightChange = 0.05f * GameCts.SCALE;
 
-	public Playing(Game game, Image image) {
+	public Playing(Game game) {
 		this.game = game;
-		initClasses(image);
+		initClasses();
 
 		backgroundImg = LoadSave.GetSprite(LoadSave.PLAYING_BG_IMG);
 		bigCloud = LoadSave.GetSprite(LoadSave.BIG_CLOUDS);
@@ -131,6 +132,14 @@ public class Playing {
 		drawShip = false;
 	}
 
+	public void loadCustomLevel(Image image) {
+		Level level = new Level(image);
+		levelManager.loadCustomLevel(level);
+		player.setSpawn(level.getPlayerSpawn());
+		resetAll();
+		drawShip = false;
+	}
+
 	private void loadStartLevel() {
 		enemyManager.loadEnemies(levelManager.getCurrentLevel());
 		objectManager.loadObjects(levelManager.getCurrentLevel());
@@ -141,8 +150,8 @@ public class Playing {
 		maxLvlOffsetY = levelManager.getCurrentLevel().getLvlOffsetY();
 	}
 
-	private void initClasses(Image image) {
-		levelManager = new LevelManager(game, image);
+	private void initClasses() {
+		levelManager = new LevelManager(game);
 		enemyManager = new EnemyManager(this);
 		objectManager = new ObjectManager(this);
 

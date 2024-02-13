@@ -75,19 +75,6 @@ public class Level {
 		}
 	}
 
-//	private void loadLevelData(int redValue, int x, int y) {
-//		if (redValue == GameCts.EMPTY_TILE_VALUE)
-//			lvlData[y][x] = GameCts.EMPTY_TILE_VALUE;
-//		else if (redValue >= 50)
-//			lvlData[y][x] = 0;
-//		else
-//			lvlData[y][x] = redValue;
-//		switch (redValue) {
-//		case 0, 1, 2, 3, 30, 31, 33, 34, 35, 36, 37, 38, 39 -> grass.add(new Grass((int) (x * GameCts.TILES_SIZE),
-//				(int) (y * GameCts.TILES_SIZE) - GameCts.TILES_SIZE, getRndGrassType(x)));
-//		}
-//	}
-
 	private void loadLevelData(int redValue, int x, int y) {
 		lvlData[y][x] = redValue;
 		loadGrass(redValue, x, y);
@@ -95,8 +82,8 @@ public class Level {
 
 	private void loadGrass(int redValue, int x, int y) {
 		switch (redValue) {
-		case 0, 1, 2, 3, 30, 31, 33, 34, 35, 36, 37, 38, 39 -> grass.add(new Grass(x * GameCts.TILES_SIZE,
-				y * GameCts.TILES_SIZE - GameCts.TILES_SIZE, getRndGrassType(x)));
+		case 0, 1, 2, 3, 30, 31, 33, 34, 35, 36, 37, 38, 39 -> grass.add(
+				new Grass(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE - GameCts.TILES_SIZE, getRndGrassType(x)));
 		}
 	}
 

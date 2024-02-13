@@ -96,8 +96,8 @@ public class LvlBuilderMenu {
 			Image lvl = new Image(selectedFile.toURI().toString());
 			AppStage.get().getStage().setUserData(lvl);
 			GameState.setState(GameState.PLAYING);
-			Game game = new Game();
-			game.init();
+			Game game = GameState.getGame();
+			game.show();
 			game.start();
 		}
 	}
@@ -105,7 +105,7 @@ public class LvlBuilderMenu {
 	private void back(ActionEvent event) {
 		GameState.setState(GameState.MENU);
 		Game game = GameState.getGame();
-		game.init();
+		game.show();
 		game.start();
 	}
 
