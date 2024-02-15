@@ -2,11 +2,13 @@ package com.mandarina.lvlbuilder;
 
 import java.io.InputStream;
 
+import org.springframework.core.io.Resource;
+
 import javafx.scene.image.Image;
 
 public class LvlBuilderImage extends Image {
 
-	private String fileName;
+	private Resource resource;
 	private RGB rgb;
 	private boolean tiled;
 	private int value;
@@ -14,24 +16,27 @@ public class LvlBuilderImage extends Image {
 	private int lastValue;
 	private String name;
 
-	public LvlBuilderImage(InputStream is, String fileName) {
+	public LvlBuilderImage(InputStream is, Resource resource) {
 		super(is);
-		this.fileName = fileName;
+		this.resource = resource;
+		var fileName = resource.getFilename();
 		var values = fileName.toString().split("_");
 		this.rgb = RGB.get(values[0]);
-		this.tiled = isTiledImage(fileName);
-		if (this.tiled) {
-			this.firstValue = Integer.parseInt(values[1]);
-			this.lastValue = Integer.parseInt(values[2]);
-			this.name = values[3].split("\\.")[0];
-		} else {
-			this.value = Integer.parseInt(values[1]);
-			this.name = values[2].split("\\.")[0];
+		if (this.rgb != null) {
+			this.tiled = isTiledImage(fileName);
+			if (this.tiled) {
+				this.firstValue = Integer.parseInt(values[1]);
+				this.lastValue = Integer.parseInt(values[2]);
+				this.name = values[3].split("\\.")[0];
+			} else {
+				this.value = Integer.parseInt(values[1]);
+				this.name = values[2].split("\\.")[0];
+			}
 		}
 	}
 
-	public String getFileName() {
-		return fileName;
+	public Resource getResource() {
+		return resource;
 	}
 
 	public boolean isTiled() {

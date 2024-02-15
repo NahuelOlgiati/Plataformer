@@ -8,6 +8,8 @@ import java.util.stream.Stream;
 
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
+import com.mandarina.lvlbuilder.LvlBuilderImage;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
@@ -56,6 +58,10 @@ public class LoadSave {
 		return GetImage(Paths.get("assets", "atlas", fileName));
 	}
 
+	public static Image GetFeature(String fileName) {
+		return GetImage(Paths.get("assets", "feature", fileName));
+	}
+
 	public static Image GetSprite(String fileName) {
 		return GetImage(Paths.get("assets", fileName));
 	}
@@ -82,21 +88,21 @@ public class LoadSave {
 		return tempArr;
 	}
 
-	public static Image[] GetAllLevels() {
+	public static LvlBuilderImage[] GetAllLevels() {
 		return getImages(Paths.get("assets", "lvls"));
 	}
 
-	private static Image[] getImages(Path path) {
+	private static LvlBuilderImage[] getImages(Path path) {
 		try {
 			return Stream.of(new PathMatchingResourcePatternResolver(cl).getResources(pathNormalization(path) + "/*"))
 					.map(r -> {
-						try (InputStream inputStream = r.getInputStream()) {
-							return new Image(inputStream);
+						try (InputStream is = r.getInputStream()) {
+							return new LvlBuilderImage(is, r);
 						} catch (IOException e) {
 							System.out.println(e);
 							return null;
 						}
-					}).toArray(Image[]::new);
+					}).toArray(LvlBuilderImage[]::new);
 		} catch (IOException e) {
 			System.out.println(e);
 		}
@@ -106,7 +112,7 @@ public class LoadSave {
 	private static String pathNormalization(Path path) {
 		return path.toString().replace('\\', '/');
 	}
-	
+
 	public static WritableImage GetSubimage(Image img, int x, int y, int width, int height) {
 		return new WritableImage(img.getPixelReader(), x * width, y * height, width, height);
 	}

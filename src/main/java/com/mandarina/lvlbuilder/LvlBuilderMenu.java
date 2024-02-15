@@ -2,9 +2,14 @@ package com.mandarina.lvlbuilder;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
+
+import org.springframework.core.io.FileUrlResource;
 
 import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.gamestates.GameState;
@@ -80,9 +85,15 @@ public class LvlBuilderMenu {
 
 		File selectedFile = fileChooser.showOpenDialog(null);
 		if (selectedFile != null) {
-			Image image = new Image(selectedFile.toURI().toString());
-			resizeMainPane((int) image.getWidth(), (int) image.getHeight());
-			loadLevel(image);
+			try {
+				LvlBuilderImage lvl = new LvlBuilderImage(new FileInputStream(selectedFile),
+						new FileUrlResource(selectedFile.toURI().toURL()));
+				resizeMainPane((int) lvl.getWidth(), (int) lvl.getHeight());
+				loadLevel(lvl);
+				loadMetadata(lvl);
+			} catch (Throwable e) {
+				System.out.println(e);
+			}
 		}
 	}
 
@@ -93,12 +104,17 @@ public class LvlBuilderMenu {
 
 		File selectedFile = fileChooser.showOpenDialog(null);
 		if (selectedFile != null) {
-			Image lvl = new Image(selectedFile.toURI().toString());
-			AppStage.get().getStage().setUserData(lvl);
-			GameState.setState(GameState.PLAYING);
-			Game game = GameState.getGame();
-			game.show();
-			game.start();
+			try {
+				LvlBuilderImage lvl = new LvlBuilderImage(new FileInputStream(selectedFile),
+						new FileUrlResource(selectedFile.toURI().toURL()));
+				AppStage.get().getStage().setUserData(lvl);
+				GameState.setState(GameState.PLAYING);
+				Game game = GameState.getGame();
+				game.show();
+				game.start();
+			} catch (Throwable e) {
+				System.out.println(e);
+			}
 		}
 	}
 
@@ -125,6 +141,16 @@ public class LvlBuilderMenu {
 		}
 	}
 
+	private void loadMetadata(LvlBuilderImage image) {
+		PNGMetadata metadata = new PNGMetadata();
+		metadata.load(image);
+		metadata.log();
+		lvlBuilder.setMetadata(metadata);
+		loadManePaneMetadata(lvlBuilder.getRedMainPane(), RGB.RED, metadata);
+		loadManePaneMetadata(lvlBuilder.getGreenMainPane(), RGB.GREEN, metadata);
+		loadManePaneMetadata(lvlBuilder.getBlueMainPane(), RGB.BLUE, metadata);
+	}
+
 	private void loadManePane(ScrollPane mainPane, int x, int y, RGB rgb, int value) {
 		VBox mainPaneBox = (VBox) mainPane.getContent();
 		HBox row = (HBox) mainPaneBox.getChildren().get(x);
@@ -134,8 +160,25 @@ public class LvlBuilderMenu {
 			LvlBuilderImage vi = LvlBuilderLoad.getImage(rgb, value);
 			if (vi != null) {
 				ImageView droppedImageView = new ImageView(vi);
-				LvlBuilderUtil.setFitSize(droppedImageView, LvlBuilder.TILE_WIDTH, LvlBuilder.TILE_HEIGHT);
+				LvlBuilderUtil.setFitSize(droppedImageView, LvlBuilderCts.TILE_WIDTH, LvlBuilderCts.TILE_HEIGHT);
 				square.getChildren().add(droppedImageView);
+			}
+		}
+	}
+
+	private void loadManePaneMetadata(ScrollPane mainPane, RGB rgb, PNGMetadata metadata) {
+		for (TileFeature tf : TileFeature.values()) {
+			Map<Integer, Integer> coordMap = metadata.get(rgb, tf.getKeyCode());
+			if (coordMap != null) {
+				for (Entry<Integer, Integer> coord : coordMap.entrySet()) {
+					Integer x = coord.getKey();
+					Integer y = coord.getValue();
+					VBox mainPaneBox = (VBox) mainPane.getContent();
+					HBox row = (HBox) mainPaneBox.getChildren().get(y);
+					VBox square = (VBox) row.getChildren().get(x);
+					ImageView iv = (ImageView) square.getChildren().get(0);
+					tf.apply(iv);
+				}
 			}
 		}
 	}
@@ -153,6 +196,8 @@ public class LvlBuilderMenu {
 		if (file != null) {
 			Canvas canvas = getCanvas();
 			writeCanvasImage(canvas, file);
+			LvlBuilderMetada.writeMetadata(file, lvlBuilder.getMetadata());
+			lvlBuilder.getMetadata().log();
 		}
 	}
 
@@ -250,15 +295,15 @@ public class LvlBuilderMenu {
 
 		VBox redMainPaneBox = (VBox) lvlBuilder.getRedMainPane().getContent();
 		resizeMainPane(redMainPaneBox, currentCanvasX, currentCanvasY, x, y);
-		LvlBuilderUtil.setSize(redMainPaneBox, LvlBuilder.TILE_WIDTH * x, LvlBuilder.TILE_HEIGHT * y);
+		LvlBuilderUtil.setSize(redMainPaneBox, LvlBuilderCts.TILE_WIDTH * x, LvlBuilderCts.TILE_HEIGHT * y);
 
 		VBox greenMainPaneBox = (VBox) lvlBuilder.getGreenMainPane().getContent();
 		resizeMainPane(greenMainPaneBox, currentCanvasX, currentCanvasY, x, y);
-		LvlBuilderUtil.setSize(greenMainPaneBox, LvlBuilder.TILE_WIDTH * x, LvlBuilder.TILE_HEIGHT * y);
+		LvlBuilderUtil.setSize(greenMainPaneBox, LvlBuilderCts.TILE_WIDTH * x, LvlBuilderCts.TILE_HEIGHT * y);
 
 		VBox blueMainPaneBox = (VBox) lvlBuilder.getBlueMainPane().getContent();
 		resizeMainPane(blueMainPaneBox, currentCanvasX, currentCanvasY, x, y);
-		LvlBuilderUtil.setSize(blueMainPaneBox, LvlBuilder.TILE_WIDTH * x, LvlBuilder.TILE_HEIGHT * y);
+		LvlBuilderUtil.setSize(blueMainPaneBox, LvlBuilderCts.TILE_WIDTH * x, LvlBuilderCts.TILE_HEIGHT * y);
 	}
 
 	private void resizeMainPane(VBox mainPane, int currentCanvasX, int currentCanvasY, int newCanvasX, int newCanvasY) {
@@ -267,11 +312,11 @@ public class LvlBuilderMenu {
 			// Add new rows
 			for (int i = currentCanvasY; i < newCanvasY; i++) {
 				HBox newRow = new HBox();
-				LvlBuilderUtil.setSize(newRow, LvlBuilder.TILE_WIDTH, LvlBuilder.TILE_HEIGHT);
+				LvlBuilderUtil.setSize(newRow, LvlBuilderCts.TILE_WIDTH, LvlBuilderCts.TILE_HEIGHT);
 
 				// Add squares to the new row
 				for (int j = 0; j < newCanvasX; j++) {
-					VBox square = LvlBuilderUtil.newSelectableVBox(LvlBuilder.TILE_WIDTH);
+					VBox square = LvlBuilderUtil.newSelectableVBox();
 					newRow.getChildren().add(square);
 				}
 
@@ -289,7 +334,7 @@ public class LvlBuilderMenu {
 			if (newCanvasX > currentCanvasX) {
 				// Add new squares to the current row
 				for (int i = currentCanvasX; i < newCanvasX; i++) {
-					VBox square = LvlBuilderUtil.newSelectableVBox(LvlBuilder.TILE_WIDTH);
+					VBox square = LvlBuilderUtil.newSelectableVBox();
 					currentRow.getChildren().add(square);
 				}
 			} else if (newCanvasX < currentCanvasX) {

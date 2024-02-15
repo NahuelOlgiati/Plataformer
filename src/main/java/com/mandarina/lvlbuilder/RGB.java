@@ -15,7 +15,7 @@ public enum RGB {
 				return rgb;
 			}
 		}
-		throw new IllegalArgumentException("Invalid value: " + s);
+		return null;
 	}
 
 	public String getValue() {

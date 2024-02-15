@@ -19,6 +19,7 @@ import com.mandarina.game.ui.GameOverOverlay;
 import com.mandarina.game.ui.LevelCompletedOverlay;
 import com.mandarina.game.ui.PauseOverlay;
 import com.mandarina.game.ui.StatusBar;
+import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Rectangle2D;
@@ -132,7 +133,7 @@ public class Playing {
 		drawShip = false;
 	}
 
-	public void loadCustomLevel(Image image) {
+	public void loadCustomLevel(LvlBuilderImage image) {
 		Level level = new Level(image);
 		levelManager.loadCustomLevel(level);
 		player.setSpawn(level.getPlayerSpawn());

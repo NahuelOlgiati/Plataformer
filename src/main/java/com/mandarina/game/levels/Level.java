@@ -15,16 +15,18 @@ import com.mandarina.game.objects.GameContainer;
 import com.mandarina.game.objects.Grass;
 import com.mandarina.game.objects.Potion;
 import com.mandarina.game.objects.Spike;
+import com.mandarina.lvlbuilder.LvlBuilderImage;
+import com.mandarina.lvlbuilder.PNGMetadata;
 
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
 
 public class Level {
 
-	private Image img;
+	private LvlBuilderImage img;
 	private int[][] lvlData;
+	private PNGMetadata metadata;
 
 	private ArrayList<Crabby> crabs = new ArrayList<>();
 	private ArrayList<Pinkstar> pinkstars = new ArrayList<>();
@@ -47,19 +49,16 @@ public class Level {
 
 	private Point2D playerSpawn;
 
-	public Level(Image img) {
+	@SuppressWarnings("unchecked")
+	public Level(LvlBuilderImage img) {
 		this.img = img;
 		lvlData = new int[(int) img.getHeight()][(int) img.getWidth()];
 		loadLevel();
+		loadMetadata();
 		calcLvlOffsets();
 	}
 
 	private void loadLevel() {
-
-		// Looping through the image colors just once. Instead of one per
-		// object/enemy/etc..
-		// Removed many methods in HelpMethods class.
-
 		PixelReader pixelReader = img.getPixelReader();
 		for (int y = 0; y < img.getHeight(); y++) {
 			for (int x = 0; x < img.getWidth(); x++) {
@@ -75,9 +74,14 @@ public class Level {
 		}
 	}
 
-	private void loadLevelData(int redValue, int x, int y) {
-		lvlData[y][x] = redValue;
-		loadGrass(redValue, x, y);
+	private void loadMetadata() {
+		this.metadata = new PNGMetadata();
+		this.metadata.load(img);
+	}
+
+	private void loadLevelData(int red, int x, int y) {
+		lvlData[y][x] = red;
+		loadGrass(red, x, y);
 	}
 
 	private void loadGrass(int redValue, int x, int y) {
@@ -91,8 +95,8 @@ public class Level {
 		return xPos % 2;
 	}
 
-	private void loadEntities(int greenValue, int x, int y) {
-		switch (greenValue) {
+	private void loadEntities(int green, int x, int y) {
+		switch (green) {
 		case EntityCts.CRABBY -> crabs.add(new Crabby(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE));
 		case EntityCts.PINKSTAR -> pinkstars.add(new Pinkstar(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE));
 		case EntityCts.SHARK -> sharks.add(new Shark(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE));
@@ -101,17 +105,17 @@ public class Level {
 		}
 	}
 
-	private void loadObjects(int blueValue, int x, int y) {
-		switch (blueValue) {
+	private void loadObjects(int blue, int x, int y) {
+		switch (blue) {
 		case ObjectCts.RED_POTION, ObjectCts.BLUE_POTION ->
-			potions.add(new Potion(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blueValue));
+			potions.add(new Potion(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
 		case ObjectCts.BOX, ObjectCts.BARREL ->
-			containers.add(new GameContainer(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blueValue));
+			containers.add(new GameContainer(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
 		case ObjectCts.SPIKE -> spikes.add(new Spike(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, ObjectCts.SPIKE));
 		case ObjectCts.CANNON_LEFT, ObjectCts.CANNON_RIGHT ->
-			cannons.add(new Cannon(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blueValue));
+			cannons.add(new Cannon(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
 		case ObjectCts.TREE_UP, ObjectCts.TREE_TWO, ObjectCts.TREE_THREE ->
-			trees.add(new BackgroundTree(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blueValue));
+			trees.add(new BackgroundTree(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
 		}
 	}
 
@@ -125,7 +129,7 @@ public class Level {
 		maxLvlOffsetY = GameCts.TILES_SIZE * maxTilesOffsetY;
 	}
 
-	public int getSpriteIndex(int x, int y) {
+	public int getSpriteValue(int x, int y) {
 		return lvlData[y][x];
 	}
 

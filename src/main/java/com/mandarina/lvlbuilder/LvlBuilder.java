@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.mandarina.main.AppStage;
 
-import javafx.collections.ObservableList;
 import javafx.event.EventTarget;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -16,22 +15,15 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class LvlBuilder {
 
-	public static final int WINDOW_X = 1280;
-	public static final int WINDOW_Y = 720;
-
-	public static final int TILE_WIDTH = 32;
-	public static final int TILE_HEIGHT = 32;
-
 	private RGB rgb = RGB.RED;
 	private int mainPaneX = 80;
 	private int mainPaneY = 12;
-	
+
 	private Scene scene;
 
 	private ScrollPane redSidePane;
@@ -43,12 +35,16 @@ public class LvlBuilder {
 	private ScrollPane blueSidePane;
 	private ScrollPane blueMainPane;
 
+	private PNGMetadata metadata;
+
 	private Label mousePositionLabel;
 	private HBox root;
 
 	private ClipboardContent redClipboard = new ClipboardContent();
 	private ClipboardContent greenClipboard = new ClipboardContent();
 	private ClipboardContent blueClipboard = new ClipboardContent();
+
+	private SelectedTile selectedTile;
 
 	public void show() {
 		if (scene == null) {
@@ -64,8 +60,8 @@ public class LvlBuilder {
 	private Scene getScene() {
 		createSidePanes();
 		createMainPanes();
-
-		mousePositionLabel = new Label();
+		this.metadata = new PNGMetadata();
+		this.mousePositionLabel = new Label();
 
 		root = new HBox(redSidePane, redMainPane);
 		root.setOnMouseClicked(event -> {
@@ -76,17 +72,27 @@ public class LvlBuilder {
 			}
 			event.consume();
 		});
+		root.setOnKeyReleased(event -> {
+			if (selectedTile != null) {
+				for (TileFeature e : TileFeature.values()) {
+					if (event.getCode() == e.getKeyCode()) {
+						e.apply(selectedTile.getImageView());
+						this.metadata.add(rgb, e.getKeyCode(), selectedTile.getX(), selectedTile.getY());
+					}
+				}
+			}
+		});
 
 		LvlBuilderMenu lvlBuilderMenu = new LvlBuilderMenu(this);
 		MenuBar menuBar = lvlBuilderMenu.getMenuBar();
 		VBox vbox = new VBox(menuBar, root, mousePositionLabel);
-		Scene scene = new Scene(vbox, WINDOW_X, WINDOW_Y);
+		Scene scene = new Scene(vbox, LvlBuilderCts.WINDOW_X, LvlBuilderCts.WINDOW_Y);
 		return scene;
 	}
 
 	private void updateMousePosition(MouseEvent event) {
-		int x = (int) (event.getX() / TILE_WIDTH);
-		int y = (int) (event.getY() / TILE_HEIGHT);
+		int x = (int) (event.getX() / LvlBuilderCts.TILE_WIDTH);
+		int y = (int) (event.getY() / LvlBuilderCts.TILE_HEIGHT);
 		mousePositionLabel.setText("X=" + x + ", Y=" + y);
 	}
 
@@ -129,7 +135,7 @@ public class LvlBuilder {
 
 		int rows = 6;
 		int gap = 2;
-		int flowPaneWidth = TILE_WIDTH * rows + gap * 2;
+		int flowPaneWidth = LvlBuilderCts.TILE_WIDTH * rows + gap * 2;
 		flowPane.setMinWidth(flowPaneWidth + gap * 2 + 1);
 		flowPane.setStyle("-fx-background-color: lightgray;");
 		flowPane.setHgap(gap);
@@ -152,34 +158,32 @@ public class LvlBuilder {
 	private ScrollPane createMainPane() {
 		VBox pane = new VBox();
 		pane.setId("mainPane");
-		LvlBuilderUtil.setSize(pane, TILE_WIDTH * mainPaneX, TILE_HEIGHT * mainPaneY);
+		LvlBuilderUtil.setSize(pane, LvlBuilderCts.TILE_WIDTH * mainPaneX, LvlBuilderCts.TILE_HEIGHT * mainPaneY);
 		pane.setStyle("-fx-background-color: lightgray;");
 
 		for (int i = 0; i < mainPaneY; i++) {
 			HBox row = new HBox();
-			LvlBuilderUtil.setSize(row, TILE_WIDTH, TILE_HEIGHT);
-
-			// Add squares to the row
+			LvlBuilderUtil.setSize(row, LvlBuilderCts.TILE_WIDTH, LvlBuilderCts.TILE_HEIGHT);
 			for (int j = 0; j < mainPaneX; j++) {
-				VBox square = LvlBuilderUtil.newSelectableVBox(TILE_WIDTH);
+				VBox square = LvlBuilderUtil.newSelectableVBox();
 				row.getChildren().add(square);
 			}
 
 			pane.getChildren().add(row);
 		}
-
 		pane.setOnScroll(event -> {
 			if (event.isShiftDown()) {
 				switchPanes();
 			}
 		});
-
 		pane.setOnMouseClicked(event -> {
 			MouseButton button = event.getButton();
 			EventTarget target = event.getTarget();
 			if (button == MouseButton.PRIMARY) {
 				if (event.isShiftDown()) {
 					removeTile(event);
+				} else if (event.isAltDown()) {
+					selectTile(event);
 				} else {
 					fromClipboard(event);
 				}
@@ -203,8 +207,8 @@ public class LvlBuilder {
 
 		ScrollPane scrollPane = new ScrollPane(pane);
 		int scrollWidth = 18;
-		int minWidth = TILE_WIDTH * 32;
-		int minHeight = TILE_HEIGHT * 20;
+		int minWidth = LvlBuilderCts.TILE_WIDTH * 32;
+		int minHeight = LvlBuilderCts.TILE_HEIGHT * 20;
 		LvlBuilderUtil.setSize(scrollPane, minWidth + scrollWidth, minHeight + scrollWidth);
 		scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -214,8 +218,8 @@ public class LvlBuilder {
 	}
 
 	private void removeTile(MouseEvent event) {
-		int colIndex = (int) (event.getX() / TILE_WIDTH);
-		int rowIndex = (int) (event.getY() / TILE_HEIGHT);
+		int colIndex = (int) (event.getX() / LvlBuilderCts.TILE_WIDTH);
+		int rowIndex = (int) (event.getY() / LvlBuilderCts.TILE_HEIGHT);
 
 		VBox mainPane = (VBox) this.root.lookup("#mainPane");
 		if (rowIndex >= 0 && rowIndex < mainPane.getChildren().size()) {
@@ -239,16 +243,25 @@ public class LvlBuilder {
 		return null;
 	}
 
+	private void selectTile(MouseEvent event) {
+		ImageView iv = LvlBuilderUtil.getImageView(event.getTarget());
+		if (iv != null) {
+			int x = (int) (event.getX() / LvlBuilderCts.TILE_WIDTH);
+			int y = (int) (event.getY() / LvlBuilderCts.TILE_HEIGHT);
+			this.selectedTile = new SelectedTile(iv, rgb, x, y);
+			this.selectedTile.getImageView().setEffect(LvlBuilderUtil.selectedEffect);
+		}
+	}
+
 	private void fromClipboard(MouseEvent event) {
 		ClipboardContent currentClipboar = getCurrentClipboar();
 		if (currentClipboar.hasImage()) {
 			LvlBuilderImage image = (LvlBuilderImage) currentClipboar.getImage();
-			int colIndex = (int) (event.getX() / TILE_WIDTH);
-			int rowIndex = (int) (event.getY() / TILE_HEIGHT);
+			int colIndex = (int) (event.getX() / LvlBuilderCts.TILE_WIDTH);
+			int rowIndex = (int) (event.getY() / LvlBuilderCts.TILE_HEIGHT);
 
 			ImageView droppedImageView = new ImageView(image);
-			LvlBuilderUtil.setFitSize(droppedImageView, TILE_WIDTH, TILE_HEIGHT);
-
+			LvlBuilderUtil.setFitSize(droppedImageView, LvlBuilderCts.TILE_WIDTH, LvlBuilderCts.TILE_HEIGHT);
 			VBox mainPane = (VBox) this.root.lookup("#mainPane");
 			if (rowIndex >= 0 && rowIndex < mainPane.getChildren().size()) {
 				HBox row = (HBox) mainPane.getChildren().get(rowIndex);
@@ -262,22 +275,9 @@ public class LvlBuilder {
 	}
 
 	private void toClipboard(EventTarget target) {
-		try {
-			ClipboardContent currentClipboar = getCurrentClipboar();
-			if (target instanceof ImageView imageView) {
-				currentClipboar.putImage(imageView.getImage());
-			} else if (((Pane) target).getChildren() instanceof ImageView imageView) {
-				currentClipboar.putImage(imageView.getImage());
-			} else if (((Pane) target).getChildren() instanceof ObservableList<?> && //
-					((ObservableList<?>) ((Pane) target).getChildren()).size() == 1 && //
-					((ObservableList<?>) ((Pane) target).getChildren()).get(0) instanceof ImageView imageView) {
-				currentClipboar.putImage(imageView.getImage());
-			} else {
-				LvlBuilderUtil.debug(target);
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-			LvlBuilderUtil.debug(target);
+		ImageView iv = LvlBuilderUtil.getImageView(target);
+		if (iv != null) {
+			getCurrentClipboar().putImage(iv.getImage());
 		}
 	}
 
@@ -307,5 +307,13 @@ public class LvlBuilder {
 
 	public ScrollPane getBlueMainPane() {
 		return blueMainPane;
+	}
+
+	public PNGMetadata getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(PNGMetadata metadata) {
+		this.metadata = metadata;
 	}
 }

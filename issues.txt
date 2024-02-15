@@ -1,0 +1,6 @@
+caniones derecha al reves
+player por delante de palmera
+enemigos travados en esq
+palmera en lvl3
+fullscreen
+false walls

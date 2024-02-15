@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.main.Game;
+import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -54,8 +55,8 @@ public class LevelManager {
 	}
 
 	private void buildAllLevels() {
-		Image[] allLevels = LoadSave.GetAllLevels();
-		for (Image img : allLevels)
+		LvlBuilderImage[] allLevels = LoadSave.GetAllLevels();
+		for (LvlBuilderImage img : allLevels)
 			levels.add(new Level(img));
 	}
 
@@ -68,16 +69,16 @@ public class LevelManager {
 		int[][] levelData = level.getLevelData();
 		for (int j = 0; j < levelData.length; j++) {
 			for (int i = 0; i < levelData[0].length; i++) {
-				int index = level.getSpriteIndex(i, j);
+				int value = level.getSpriteValue(i, j);
 				int x = GameCts.TILES_SIZE * i - lvlOffsetX;
 				int y = GameCts.TILES_SIZE * j - lvlOffsetY;
-				if (index != GameCts.EMPTY_TILE_VALUE) {
-					if (index == 48)
+				if (value != GameCts.EMPTY_TILE_VALUE) {
+					if (value == 48)
 						g.drawImage(waterSprite[aniIndex], x, y, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
-					else if (index == 49)
+					else if (value == 49)
 						g.drawImage(waterSprite[4], x, y, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
 					else
-						g.drawImage(levelSprite[index], x, y, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
+						g.drawImage(levelSprite[value], x, y, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
 				}
 			}
 		}

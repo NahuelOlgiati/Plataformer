@@ -4,6 +4,8 @@ import javafx.collections.ObservableList;
 import javafx.event.EventTarget;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.SepiaTone;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -11,7 +13,8 @@ import javafx.scene.layout.VBox;
 
 public class LvlBuilderUtil {
 
-	private static final DropShadow dropShadow = new DropShadow();
+	private static final Effect overEffect = new DropShadow();
+	public static final Effect selectedEffect = new SepiaTone();
 
 	public static void setSize(Region r, int width, int height) {
 		r.setMinWidth(width);
@@ -31,6 +34,24 @@ public class LvlBuilderUtil {
 		to.setVvalue(from.getVvalue());
 	}
 
+	public static ImageView getImageView(EventTarget target) {
+		try {
+			if (target instanceof ImageView imageView) {
+				return imageView;
+			}
+			if (((Pane) target).getChildren() instanceof ImageView imageView) {
+				return imageView;
+			}
+			if (((Pane) target).getChildren() instanceof ObservableList<?> && //
+					((ObservableList<?>) ((Pane) target).getChildren()).size() == 1 && //
+					((ObservableList<?>) ((Pane) target).getChildren()).get(0) instanceof ImageView imageView) {
+				return imageView;
+			}
+		} catch (Exception e) {
+		}
+		return null;
+	}
+
 	public static void debug(EventTarget target) {
 		System.out.println(target);
 		System.out.println(((Pane) target).getChildren());
@@ -40,17 +61,51 @@ public class LvlBuilderUtil {
 		System.out.println();
 	}
 
-	public static VBox newSelectableVBox(int size) {
+	public static VBox newSelectableVBox(ImageView imageView) {
+		setFitSize(imageView, LvlBuilderCts.TILE_WIDTH, LvlBuilderCts.TILE_HEIGHT);
+		VBox square = LvlBuilderUtil.newSelectableVBox();
+		square.getChildren().add(imageView);
+		return square;
+	}
+
+	public static VBox newSelectableVBox() {
 		VBox vbox = new VBox();
-		setSize(vbox, size, size);
+		setSize(vbox, LvlBuilderCts.TILE_WIDTH, LvlBuilderCts.TILE_HEIGHT);
 		vbox.setOnMouseEntered(event -> {
-			if (vbox.getChildren().size() == 1)
-				((ImageView) vbox.getChildren().get(0)).setEffect(dropShadow);
+			if (isEffect(vbox, null)) {
+				setEffect(vbox, overEffect);
+			}
 		});
 		vbox.setOnMouseExited(event -> {
-			if (vbox.getChildren().size() == 1)
-				((ImageView) vbox.getChildren().get(0)).setEffect(null);
+			if (isEffect(vbox, overEffect)) {
+				setEffect(vbox, null);
+			}
 		});
 		return vbox;
+	}
+
+	private static ImageView getImageView(VBox vbox) {
+		if (vbox.getChildren().size() == 1)
+			return ((ImageView) vbox.getChildren().get(0));
+		return null;
+	}
+
+	private static void setEffect(VBox vbox, Effect effect) {
+		ImageView iv = getImageView(vbox);
+		if (iv != null) {
+			iv.setEffect(effect);
+		}
+	}
+
+	private static Effect getEffect(VBox vbox) {
+		ImageView iv = getImageView(vbox);
+		if (iv != null) {
+			return iv.getEffect();
+		}
+		return null;
+	}
+
+	private static boolean isEffect(VBox vbox, Effect effect) {
+		return effect == null ? getEffect(vbox) == null : effect.equals(getEffect(vbox));
 	}
 }

@@ -40,8 +40,8 @@ public class LvlBuilderLoad {
 			return Stream
 					.of(new PathMatchingResourcePatternResolver(cl).getResources(pathNormalization(path) + "/" + regex))
 					.map(r -> {
-						try (InputStream inputStream = r.getInputStream()) {
-							return new LvlBuilderImage(inputStream, r.getFilename());
+						try (InputStream is = r.getInputStream()) {
+							return new LvlBuilderImage(is, r);
 						} catch (Throwable e) {
 							System.out.println(e);
 							return null;
@@ -58,7 +58,7 @@ public class LvlBuilderLoad {
 		LvlBuilderImage[] getAllRGB = GetAllRGB(rgb);
 		for (LvlBuilderImage image : getAllRGB) {
 			if (image.isTiled()) {
-				LvlBuilderImage[] valuedImages = getValuedImages(image);
+				LvlBuilderImage[] valuedImages = getTiledImages(image);
 				items.addAll(getBoxes(valuedImages));
 			} else {
 				items.addAll(getBoxes(image));
@@ -71,7 +71,7 @@ public class LvlBuilderLoad {
 		for (LvlBuilderImage image : GetAllRGB(rgb)) {
 			if (image.isTiled()) {
 				if (value >= image.getFirstValue() && value <= image.getLastValue()) {
-					return getValuedImage(image, value);
+					return getTile(image, value);
 				}
 			} else {
 				if (image.getValue() == value) {
@@ -86,44 +86,42 @@ public class LvlBuilderLoad {
 		List<VBox> vboxCollection = new ArrayList<>();
 		for (LvlBuilderImage image : images) {
 			ImageView imageView = new ImageView(image);
-			LvlBuilderUtil.setFitSize(imageView, LvlBuilder.TILE_WIDTH, LvlBuilder.TILE_HEIGHT);
-			VBox square = LvlBuilderUtil.newSelectableVBox(LvlBuilder.TILE_WIDTH);
-			square.getChildren().add(imageView);
+			VBox square = LvlBuilderUtil.newSelectableVBox(imageView);
 			vboxCollection.add(square);
 		}
 		return vboxCollection;
 	}
 
-	private static LvlBuilderImage[] getValuedImages(LvlBuilderImage img) {
+	private static LvlBuilderImage[] getTiledImages(LvlBuilderImage img) {
 		LvlBuilderImage[] levelSprite = new LvlBuilderImage[img.getLastValue()];
 		for (int i = img.getFirstValue(); i < img.getLastValue(); i++) {
-			levelSprite[i] = getTileImage(img, i);
+			levelSprite[i] = getTile(img, i);
 		}
 		return levelSprite;
 	}
 
-	private static LvlBuilderImage getTileImage(LvlBuilderImage img, int i) {
+	private static LvlBuilderImage getTile(LvlBuilderImage img, int value) {
+		LvlBuilderImage vi = null;
+		for (int i = img.getFirstValue(); i < img.getLastValue(); i++) {
+			if (i == value) {
+				return writeTileImage(img, i);
+			}
+		}
+		return vi;
+	}
+
+	private static LvlBuilderImage writeTileImage(LvlBuilderImage img, int i) {
 		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-			WritableImage wi = new WritableImage(img.getPixelReader(), i * LvlBuilder.TILE_WIDTH, 0,
-					LvlBuilder.TILE_WIDTH, LvlBuilder.TILE_HEIGHT);
+			WritableImage wi = new WritableImage(img.getPixelReader(), i * LvlBuilderCts.TILE_WIDTH, 0,
+					LvlBuilderCts.TILE_WIDTH, LvlBuilderCts.TILE_HEIGHT);
 			BufferedImage bufferedImage = SwingFXUtils.fromFXImage(wi, null);
 			ImageIO.write(bufferedImage, "png", outputStream);
 			try (InputStream is = new ByteArrayInputStream(outputStream.toByteArray())) {
-				return new LvlBuilderImage(is, LvlBuilderImage.getFileName(img.getFileName(), i));
+				return new LvlBuilderImage(is, img.getResource());
 			}
 		} catch (Throwable e) {
 			System.out.println(e);
 		}
 		return null;
-	}
-
-	private static LvlBuilderImage getValuedImage(LvlBuilderImage img, int value) {
-		LvlBuilderImage vi = null;
-		for (int i = img.getFirstValue(); i < img.getLastValue(); i++) {
-			if (i == value) {
-				return getTileImage(img, i);
-			}
-		}
-		return vi;
 	}
 }

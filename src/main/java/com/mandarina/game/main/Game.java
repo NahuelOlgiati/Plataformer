@@ -9,6 +9,7 @@ import com.mandarina.game.gamestates.Menu;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.ui.AudioOptions;
 import com.mandarina.lvlbuilder.LvlBuilder;
+import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.main.AppStage;
 
 import javafx.scene.Scene;
@@ -39,7 +40,7 @@ public class Game {
 		if (scene == null) {
 			scene = getScene();
 		}
-		if (AppStage.get().getStage().getUserData() instanceof Image image) {
+		if (AppStage.get().getStage().getUserData() instanceof LvlBuilderImage image) {
 			GameState.getGame().getPlaying().loadCustomLevel(image);
 			GameState.setState(GameState.PLAYING);
 			AppStage.get().getStage().setUserData(null);

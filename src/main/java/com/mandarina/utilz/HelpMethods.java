@@ -63,7 +63,6 @@ public class HelpMethods {
 		default:
 			return true;
 		}
-
 	}
 
 	public static float GetEntityXPosNextToWall(Rectangle2D hitbox, float xSpeed) {
