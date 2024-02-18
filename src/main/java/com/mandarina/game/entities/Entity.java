@@ -4,6 +4,7 @@ import static com.mandarina.utilz.HelpMethods.CanMoveHere;
 
 import com.mandarina.game.constants.DirectionCts;
 import com.mandarina.game.constants.GameCts;
+import com.mandarina.game.levels.LevelData;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -108,7 +109,7 @@ public abstract class Entity {
 		}
 	}
 
-	protected void pushBack(int pushBackDir, int[][] lvlData, float speedMulti) {
+	protected void pushBack(int pushBackDir, LevelData lvlData, float speedMulti) {
 		float xSpeed = 0;
 		if (pushBackDir == DirectionCts.LEFT)
 			xSpeed = -walkSpeed;

@@ -9,6 +9,7 @@ import com.mandarina.game.entities.Enemy;
 import com.mandarina.game.entities.EnemyState;
 import com.mandarina.game.entities.player.Player;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.levels.LevelData;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,13 +24,13 @@ public class Titan extends Enemy {
 	}
 
 	@Override
-	public void update(int[][] lvlData, Playing playing) {
+	public void update(LevelData lvlData, Playing playing) {
 		super.update(lvlData, playing);
 		updateAttackBoxFlip();
 	}
 
 	@Override
-	protected void updateBehavior(int[][] lvlData, Playing playing) {
+	protected void updateBehavior(LevelData lvlData, Playing playing) {
 		if (firstUpdate)
 			firstUpdateCheck(lvlData);
 
@@ -101,7 +102,7 @@ public class Titan extends Enemy {
 		attackChecked = true;
 	}
 
-	private void attackMove(int[][] lvlData, Playing playing) {
+	private void attackMove(LevelData lvlData, Playing playing) {
 		float xSpeed = 0;
 
 		if (walkDir == DirectionCts.LEFT)

@@ -8,11 +8,11 @@ import com.mandarina.utilz.LoadSave;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class BackgroundTree {
+public class Tree {
 
 	private int x, y, type, aniIndex, aniTick;
 
-	public BackgroundTree(int x, int y, int type) {
+	public Tree(int x, int y, int type) {
 		this.x = x;
 		this.y = y;
 		this.type = type;

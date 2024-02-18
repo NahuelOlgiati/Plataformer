@@ -1,43 +1,17 @@
 package com.mandarina.game.levels;
 
-import java.util.ArrayList;
-
-import com.mandarina.game.constants.EntityCts;
 import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.constants.ObjectCts;
-import com.mandarina.game.entities.crabby.Crabby;
-import com.mandarina.game.entities.pinkstar.Pinkstar;
-import com.mandarina.game.entities.shark.Shark;
-import com.mandarina.game.entities.titan.Titan;
-import com.mandarina.game.objects.BackgroundTree;
-import com.mandarina.game.objects.Cannon;
-import com.mandarina.game.objects.GameContainer;
-import com.mandarina.game.objects.Grass;
-import com.mandarina.game.objects.Potion;
-import com.mandarina.game.objects.Spike;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.lvlbuilder.PNGMetadata;
-
-import javafx.geometry.Point2D;
-import javafx.scene.image.PixelReader;
-import javafx.scene.paint.Color;
 
 public class Level {
 
 	private LvlBuilderImage img;
-	private int[][] lvlData;
 	private PNGMetadata metadata;
 
-	private ArrayList<Crabby> crabs = new ArrayList<>();
-	private ArrayList<Pinkstar> pinkstars = new ArrayList<>();
-	private ArrayList<Shark> sharks = new ArrayList<>();
-	private ArrayList<Titan> titans = new ArrayList<>();
-	private ArrayList<Potion> potions = new ArrayList<>();
-	private ArrayList<Spike> spikes = new ArrayList<>();
-	private ArrayList<GameContainer> containers = new ArrayList<>();
-	private ArrayList<Cannon> cannons = new ArrayList<>();
-	private ArrayList<BackgroundTree> trees = new ArrayList<>();
-	private ArrayList<Grass> grass = new ArrayList<>();
+	private LevelData levelData;
+	private LevelEntities levelEntities;
+	private LevelObjects levelObjects;
 
 	private int lvlTilesWide;
 	private int maxTilesOffsetX;
@@ -47,76 +21,18 @@ public class Level {
 	private int maxTilesOffsetY;
 	private int maxLvlOffsetY;
 
-	private Point2D playerSpawn;
-
-	@SuppressWarnings("unchecked")
 	public Level(LvlBuilderImage img) {
 		this.img = img;
-		lvlData = new int[(int) img.getHeight()][(int) img.getWidth()];
-		loadLevel();
+		this.levelData = new LevelData(img);
+		this.levelEntities = new LevelEntities(img);
+		this.levelObjects = new LevelObjects(img);
 		loadMetadata();
 		calcLvlOffsets();
-	}
-
-	private void loadLevel() {
-		PixelReader pixelReader = img.getPixelReader();
-		for (int y = 0; y < img.getHeight(); y++) {
-			for (int x = 0; x < img.getWidth(); x++) {
-				Color c = pixelReader.getColor(x, y);
-				int red = (int) (c.getRed() * 255);
-				int green = (int) (c.getGreen() * 255);
-				int blue = (int) (c.getBlue() * 255);
-
-				loadLevelData(red, x, y);
-				loadEntities(green, x, y);
-				loadObjects(blue, x, y);
-			}
-		}
 	}
 
 	private void loadMetadata() {
 		this.metadata = new PNGMetadata();
 		this.metadata.load(img);
-	}
-
-	private void loadLevelData(int red, int x, int y) {
-		lvlData[y][x] = red;
-		loadGrass(red, x, y);
-	}
-
-	private void loadGrass(int redValue, int x, int y) {
-		switch (redValue) {
-		case 0, 1, 2, 3, 30, 31, 33, 34, 35, 36, 37, 38, 39 -> grass.add(
-				new Grass(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE - GameCts.TILES_SIZE, getRndGrassType(x)));
-		}
-	}
-
-	private int getRndGrassType(int xPos) {
-		return xPos % 2;
-	}
-
-	private void loadEntities(int green, int x, int y) {
-		switch (green) {
-		case EntityCts.CRABBY -> crabs.add(new Crabby(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE));
-		case EntityCts.PINKSTAR -> pinkstars.add(new Pinkstar(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE));
-		case EntityCts.SHARK -> sharks.add(new Shark(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE));
-		case EntityCts.TITAN -> titans.add(new Titan(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE));
-		case EntityCts.PLAYER -> playerSpawn = new Point2D(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE);
-		}
-	}
-
-	private void loadObjects(int blue, int x, int y) {
-		switch (blue) {
-		case ObjectCts.RED_POTION, ObjectCts.BLUE_POTION ->
-			potions.add(new Potion(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
-		case ObjectCts.BOX, ObjectCts.BARREL ->
-			containers.add(new GameContainer(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
-		case ObjectCts.SPIKE -> spikes.add(new Spike(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, ObjectCts.SPIKE));
-		case ObjectCts.CANNON_LEFT, ObjectCts.CANNON_RIGHT ->
-			cannons.add(new Cannon(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
-		case ObjectCts.TREE_UP, ObjectCts.TREE_TWO, ObjectCts.TREE_THREE ->
-			trees.add(new BackgroundTree(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
-		}
 	}
 
 	private void calcLvlOffsets() {
@@ -129,12 +45,16 @@ public class Level {
 		maxLvlOffsetY = GameCts.TILES_SIZE * maxTilesOffsetY;
 	}
 
-	public int getSpriteValue(int x, int y) {
-		return lvlData[y][x];
+	public LevelData getLevelData() {
+		return levelData;
 	}
 
-	public int[][] getLevelData() {
-		return lvlData;
+	public LevelEntities getLevelEntities() {
+		return levelEntities;
+	}
+
+	public LevelObjects getLevelObjects() {
+		return levelObjects;
 	}
 
 	public int getLvlOffsetX() {
@@ -144,49 +64,4 @@ public class Level {
 	public int getLvlOffsetY() {
 		return maxLvlOffsetY;
 	}
-
-	public Point2D getPlayerSpawn() {
-		return playerSpawn;
-	}
-
-	public ArrayList<Crabby> getCrabs() {
-		return crabs;
-	}
-
-	public ArrayList<Shark> getSharks() {
-		return sharks;
-	}
-
-	public ArrayList<Titan> getTitans() {
-		return titans;
-	}
-
-	public ArrayList<Potion> getPotions() {
-		return potions;
-	}
-
-	public ArrayList<GameContainer> getContainers() {
-		return containers;
-	}
-
-	public ArrayList<Spike> getSpikes() {
-		return spikes;
-	}
-
-	public ArrayList<Cannon> getCannons() {
-		return cannons;
-	}
-
-	public ArrayList<Pinkstar> getPinkstars() {
-		return pinkstars;
-	}
-
-	public ArrayList<BackgroundTree> getTrees() {
-		return trees;
-	}
-
-	public ArrayList<Grass> getGrass() {
-		return grass;
-	}
-
 }

@@ -7,6 +7,7 @@ import com.mandarina.game.entities.Enemy;
 import com.mandarina.game.entities.EnemyState;
 import com.mandarina.game.entities.player.Player;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.levels.LevelData;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,13 +22,13 @@ public class Crabby extends Enemy {
 	}
 
 	@Override
-	public void update(int[][] lvlData, Playing playing) {
+	public void update(LevelData lvlData, Playing playing) {
 		super.update(lvlData, playing);
 		updateAttackBox();
 	}
 
 	@Override
-	protected void updateBehavior(int[][] lvlData, Playing playing) {
+	protected void updateBehavior(LevelData lvlData, Playing playing) {
 		if (firstUpdate)
 			firstUpdateCheck(lvlData);
 
@@ -69,7 +70,7 @@ public class Crabby extends Enemy {
 	}
 
 	@Override
-	protected void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[][] animations) {
+	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[][] animations) {
 		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), CrabbySprite.WIDTH.scaled(),
 				CrabbySprite.HEIGHT.scaled(), CrabbySprite.DRAWOFFSET_X.scaled(), CrabbySprite.DRAWOFFSET_Y.scaled());
 	}

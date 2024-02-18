@@ -128,7 +128,7 @@ public class Playing {
 	public void loadNextLevel() {
 		levelManager.setLevelIndex(levelManager.getLevelIndex() + 1);
 		levelManager.loadNextLevel();
-		player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
+		player.setSpawn(levelManager.getCurrentLevel().getLevelEntities().getPlayerSpawn());
 		resetAll();
 		drawShip = false;
 	}
@@ -136,7 +136,7 @@ public class Playing {
 	public void loadCustomLevel(LvlBuilderImage image) {
 		Level level = new Level(image);
 		levelManager.loadCustomLevel(level);
-		player.setSpawn(level.getPlayerSpawn());
+		player.setSpawn(level.getLevelEntities().getPlayerSpawn());
 		resetAll();
 		drawShip = false;
 	}
@@ -157,8 +157,7 @@ public class Playing {
 		objectManager = new ObjectManager(this);
 
 		player = new Player(200, 200, this, game.getAudioPlayer());
-		player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
-		player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
+		player.setSpawn(levelManager.getCurrentLevel().getLevelEntities().getPlayerSpawn());
 
 		pauseOverlay = new PauseOverlay(this, game.getAudioOptions());
 		gameOverOverlay = new GameOverOverlay(this);
@@ -185,10 +184,10 @@ public class Playing {
 			if (drawRain)
 				rain.update(lvlOffsetX, lvlOffsetY);
 			levelManager.update();
+			player.update();
+			enemyManager.update();
 			objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
 			statusBar.update();
-			player.update();
-			enemyManager.update(levelManager.getCurrentLevel().getLevelData());
 			checkCloseToBorderX();
 			checkCloseToBorderY();
 			if (drawShip)

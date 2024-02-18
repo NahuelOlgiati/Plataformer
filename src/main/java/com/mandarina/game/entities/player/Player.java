@@ -13,6 +13,7 @@ import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.entities.Enemy;
 import com.mandarina.game.entities.Entity;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.levels.LevelData;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -24,7 +25,6 @@ public class Player extends Entity {
 	private Image[][] animations;
 	private boolean moving = false, attacking = false;
 	private boolean left, right, jump;
-	private int[][] lvlData;
 
 	// Jumping / Gravity
 	private float jumpSpeed = -2.25f * GameCts.SCALE;
@@ -66,6 +66,7 @@ public class Player extends Entity {
 	}
 
 	public void update() {
+		LevelData lvlData = playing.getLevelManager().getCurrentLevel().getLevelData();
 		if (currentHealth <= 0) {
 			if (!PlayerState.DEAD.equals(state)) {
 				state = PlayerState.DEAD;
@@ -208,6 +209,7 @@ public class Player extends Entity {
 				if (PlayerState.HIT.equals(state)) {
 					newState(PlayerState.IDLE);
 					airSpeed = 0f;
+					LevelData lvlData = playing.getLevelManager().getCurrentLevel().getLevelData();
 					if (!IsFloor(hitbox, 0, lvlData))
 						inAir = true;
 				}
@@ -288,6 +290,7 @@ public class Player extends Entity {
 			xSpeed *= 3;
 		}
 
+		LevelData lvlData = playing.getLevelManager().getCurrentLevel().getLevelData();
 		if (!inAir)
 			if (!IsEntityOnFloor(hitbox, lvlData))
 				inAir = true;
@@ -329,6 +332,7 @@ public class Player extends Entity {
 	}
 
 	private void updateXPos(float xSpeed) {
+		LevelData lvlData = playing.getLevelManager().getCurrentLevel().getLevelData();
 		if (CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(), lvlData)) {
 			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(),
 					hitbox.getHeight());
@@ -341,6 +345,12 @@ public class Player extends Entity {
 			}
 		}
 	}
+	
+
+//	public void loadLvlData(LevelData lvlData) {
+//		if (!IsEntityOnFloor(hitbox, lvlData))
+//			inAir = true;
+//	}
 
 	public void changeHealth(int value) {
 		if (value < 0) {
@@ -374,12 +384,6 @@ public class Player extends Entity {
 
 	private void loadAnimations() {
 		animations = PlayerAtlas.getAnimations();
-	}
-
-	public void loadLvlData(int[][] lvlData) {
-		this.lvlData = lvlData;
-		if (!IsEntityOnFloor(hitbox, lvlData))
-			inAir = true;
 	}
 
 	public void resetDirBooleans() {
@@ -426,6 +430,7 @@ public class Player extends Entity {
 		hitbox = new Rectangle2D(x, y, hitbox.getWidth(), hitbox.getHeight());
 		resetAttackBox();
 
+		LevelData lvlData = playing.getLevelManager().getCurrentLevel().getLevelData();
 		if (!IsEntityOnFloor(hitbox, lvlData)) {
 			inAir = true;
 		}

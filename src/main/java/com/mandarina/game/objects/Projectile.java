@@ -4,6 +4,8 @@ import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.constants.ProjectileCts;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 public class Projectile {
 	private Rectangle2D hitbox;
@@ -25,6 +27,12 @@ public class Projectile {
 	public void updatePos() {
 		hitbox = new Rectangle2D(hitbox.getMinX() + dir * ProjectileCts.SPEED, hitbox.getMinY(), hitbox.getWidth(),
 				hitbox.getHeight());
+	}
+
+	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image cannonBallSprite) {
+		g.drawImage(cannonBallSprite, (int) (getHitbox().getMinX() - lvlOffsetX),
+				(int) getHitbox().getMinY() - lvlOffsetY, ProjectileCts.CANNON_BALL_WIDTH,
+				ProjectileCts.CANNON_BALL_HEIGHT);
 	}
 
 	public void setPos(int x, int y) {

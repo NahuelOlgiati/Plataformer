@@ -7,9 +7,9 @@ import com.mandarina.utilz.LoadSave;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
-public class GameContainer extends GameObject {
+public class Container extends GameObject {
 
-	public GameContainer(int x, int y, int objType) {
+	public Container(int x, int y, int objType) {
 		super(x, y, objType);
 		createHitbox();
 	}

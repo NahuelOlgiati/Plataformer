@@ -28,7 +28,7 @@ public enum TileFeature {
 		this.icon = icon;
 	}
 
-	private static void apply(ImageView iw, String icon) {
+	public static void apply(ImageView iw, String icon) {
 		Blend blend = new Blend();
 		LvlBuilderImage image = (LvlBuilderImage) iw.getImage();
 		Image featureImg = LoadSave.GetFeature(icon);
