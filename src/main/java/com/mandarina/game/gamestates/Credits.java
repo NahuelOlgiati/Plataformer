@@ -1,6 +1,7 @@
 package com.mandarina.game.gamestates;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.entities.crabby.CrabbyAtlas;
@@ -19,7 +20,7 @@ public class Credits {
 	private int bgX, bgY, bgW, bgH;
 	private float bgYfloat;
 
-	private ArrayList<ShowEntity> entitiesList;
+	private List<ShowEntity> entitiesList;
 
 	public Credits() {
 		backgroundImg = LoadSave.GetSprite(LoadSave.MENU_BACKGROUND_IMG);
@@ -32,7 +33,7 @@ public class Credits {
 	}
 
 	private void loadEntities() {
-		entitiesList = new ArrayList<>();
+		entitiesList = new ArrayList<ShowEntity>();
 		entitiesList.add(new ShowEntity(TitanAtlas.getAnimations()[2], (int) (GameCts.GAME_WIDTH * 0.05),
 				(int) (GameCts.GAME_HEIGHT * 0.45)));
 		entitiesList.add(new ShowEntity(CrabbyAtlas.getAnimations()[1], (int) (GameCts.GAME_WIDTH * 0.2),

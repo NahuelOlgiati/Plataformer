@@ -1,9 +1,7 @@
 
 package com.mandarina.game.levels;
 
-import java.util.ArrayList;
-
-import com.mandarina.game.main.Game;
+import com.mandarina.game.gamestates.Playing;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.utilz.LoadSave;
 
@@ -11,38 +9,36 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class LevelManager {
 
-	private Game game;
-	private ArrayList<Level> levels;
-	private Level customLevel;
-	private int lvlIndex = 0;
+	private Playing playing;
+	private Level currentLevel;
+	private int lvlIndex;
+	private int numOfLevels;
 
-	public LevelManager(Game game) {
-		this.game = game;
-		levels = new ArrayList<>();
-		buildAllLevels();
+	public LevelManager(Playing playing) {
+		this.playing = playing;
+		this.lvlIndex = 0;
+		this.numOfLevels = LoadSave.GetNumOfLevels();
 	}
 
 	public void loadNextLevel() {
-		loadLevel(levels.get(lvlIndex));
+		lvlIndex++;
+		LvlBuilderImage lvlImg = LoadSave.GetLevel(lvlIndex);
+		Level level = new Level(lvlImg);
+		this.currentLevel = level;
+		loadLevel(level);
 	}
 
 	public void loadCustomLevel(Level level) {
-		setLevelIndex(-1);
-		this.customLevel = level;
-		loadLevel(getCurrentLevel());
+		this.lvlIndex = 0;
+		this.currentLevel = level;
+		loadLevel(level);
 	}
 
 	public void loadLevel(Level level) {
-		game.getPlaying().getEnemyManager().loadEnemies(level);
-		game.getPlaying().setMaxLvlOffsetX(level.getLvlOffsetX());
-		game.getPlaying().setMaxLvlOffsetY(level.getLvlOffsetY());
-		game.getPlaying().getObjectManager().loadObjects(level);
-	}
-
-	private void buildAllLevels() {
-		LvlBuilderImage[] allLevels = LoadSave.GetAllLevels();
-		for (LvlBuilderImage img : allLevels)
-			levels.add(new Level(img));
+		playing.getObjectManager().loadObjects(level);
+		playing.getEnemyManager().loadEnemies(level);
+		playing.setMaxLvlOffsetX(level.getLvlOffsetX());
+		playing.setMaxLvlOffsetY(level.getLvlOffsetY());
 	}
 
 	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
@@ -54,18 +50,20 @@ public class LevelManager {
 	}
 
 	public Level getCurrentLevel() {
-		return lvlIndex == -1 ? customLevel : levels.get(lvlIndex);
+		return currentLevel;
 	}
 
-	public int getAmountOfLevels() {
-		return levels.size();
+	public int getNumOfLevels() {
+		return numOfLevels;
 	}
 
 	public int getLevelIndex() {
 		return lvlIndex;
 	}
 
-	public void setLevelIndex(int lvlIndex) {
-		this.lvlIndex = lvlIndex;
+	public void reset() {
+		this.currentLevel = null;
+		this.lvlIndex = 0;
+		loadNextLevel();
 	}
 }

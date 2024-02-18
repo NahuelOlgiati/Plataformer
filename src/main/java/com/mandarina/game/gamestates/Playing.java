@@ -1,6 +1,7 @@
 package com.mandarina.game.gamestates;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.mandarina.game.constants.DialogueCts;
@@ -45,8 +46,6 @@ public class Playing {
 	private StatusBar statusBar;
 	private Rain rain;
 
-	private boolean paused = false;
-
 	private int lvlOffsetX;
 	private int maxLvlOffsetX;
 	private int leftBorder = (int) (0.25 * GameCts.GAME_WIDTH);
@@ -59,11 +58,12 @@ public class Playing {
 
 	private Image backgroundImg, bigCloud, smallCloud, shipImgs[];
 	private Image[] questionImgs, exclamationImgs;
-	private ArrayList<DialogueEffect> dialogEffects = new ArrayList<>();
+	private List<DialogueEffect> dialogEffects = new ArrayList<DialogueEffect>();
 
 	private int[] smallCloudsPos;
 	private Random rnd = new Random();
 
+	private boolean paused = false;
 	private boolean gameOver;
 	private boolean lvlCompleted;
 	private boolean gameCompleted;
@@ -98,8 +98,6 @@ public class Playing {
 		shipImgs = LoadSave.GetAnimations(4, 78, 72, LoadSave.GetAtlas(LoadSave.SHIP));
 
 		loadDialogue();
-		calcLvlOffset();
-		loadStartLevel();
 		setDrawRainBoolean();
 	}
 
@@ -126,7 +124,6 @@ public class Playing {
 	}
 
 	public void loadNextLevel() {
-		levelManager.setLevelIndex(levelManager.getLevelIndex() + 1);
 		levelManager.loadNextLevel();
 		player.setSpawn(levelManager.getCurrentLevel().getLevelEntities().getPlayerSpawn());
 		resetAll();
@@ -141,23 +138,12 @@ public class Playing {
 		drawShip = false;
 	}
 
-	private void loadStartLevel() {
-		enemyManager.loadEnemies(levelManager.getCurrentLevel());
-		objectManager.loadObjects(levelManager.getCurrentLevel());
-	}
-
-	private void calcLvlOffset() {
-		maxLvlOffsetX = levelManager.getCurrentLevel().getLvlOffsetX();
-		maxLvlOffsetY = levelManager.getCurrentLevel().getLvlOffsetY();
-	}
-
 	private void initClasses() {
-		levelManager = new LevelManager(game);
+		levelManager = new LevelManager(this);
 		enemyManager = new EnemyManager(this);
 		objectManager = new ObjectManager(this);
 
 		player = new Player(200, 200, this, game.getAudioPlayer());
-		player.setSpawn(levelManager.getCurrentLevel().getLevelEntities().getPlayerSpawn());
 
 		pauseOverlay = new PauseOverlay(this, game.getAudioOptions());
 		gameOverOverlay = new GameOverOverlay(this);
@@ -448,11 +434,10 @@ public class Playing {
 
 	public void setLevelCompleted(boolean levelCompleted) {
 		this.game.getAudioPlayer().lvlCompleted();
-		if (levelManager.getLevelIndex() + 1 >= levelManager.getAmountOfLevels()) {
+		if (levelManager.getLevelIndex() + 1 >= levelManager.getNumOfLevels()) {
 			// No more levels
 			gameCompleted = true;
-			levelManager.setLevelIndex(0);
-			levelManager.loadNextLevel();
+			levelManager.reset();
 			resetAll();
 			return;
 		}

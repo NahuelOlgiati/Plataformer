@@ -54,7 +54,7 @@ public class LvlBuilderLoad {
 	}
 
 	public static List<VBox> getItems(RGB rgb) {
-		List<VBox> items = new ArrayList<>();
+		List<VBox> items = new ArrayList<VBox>();
 		LvlBuilderImage[] getAllRGB = GetAllRGB(rgb);
 		for (LvlBuilderImage image : getAllRGB) {
 			if (image.isTiled()) {
@@ -83,7 +83,7 @@ public class LvlBuilderLoad {
 	}
 
 	private static List<VBox> getBoxes(LvlBuilderImage... images) {
-		List<VBox> vboxCollection = new ArrayList<>();
+		List<VBox> vboxCollection = new ArrayList<VBox>();
 		for (LvlBuilderImage image : images) {
 			ImageView imageView = new ImageView(image);
 			VBox square = LvlBuilderUtil.newSelectableVBox(imageView);

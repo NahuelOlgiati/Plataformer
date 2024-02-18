@@ -15,7 +15,6 @@ import com.mandarina.main.AppStage;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -112,6 +111,7 @@ public class Game {
 		audioPlayer = new AudioPlayer(audioOptions.getVolumeButton().getVolume());
 		menu = new Menu(this);
 		playing = new Playing(this);
+		playing.loadNextLevel();
 		credits = new Credits();
 		lvlBuilder = new LvlBuilder();
 		gameOptions = new GameOptions(audioOptions);

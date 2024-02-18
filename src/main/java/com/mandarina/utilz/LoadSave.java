@@ -88,25 +88,40 @@ public class LoadSave {
 		return tempArr;
 	}
 
-	public static LvlBuilderImage[] GetAllLevels() {
-		return getImages(Paths.get("assets", "lvls"));
+	public static LvlBuilderImage GetLevel(int num) {
+		return GetLvlImage(Paths.get("assets", "lvls", num + ".png"));
 	}
 
-	private static LvlBuilderImage[] getImages(Path path) {
+	private static LvlBuilderImage GetLvlImage(Path path) {
 		try {
-			return Stream.of(new PathMatchingResourcePatternResolver(cl).getResources(pathNormalization(path) + "/*"))
-					.map(r -> {
+			return Stream.of(new PathMatchingResourcePatternResolver(cl).getResources(pathNormalization(path)))
+					.findFirst().map(r -> {
 						try (InputStream is = r.getInputStream()) {
 							return new LvlBuilderImage(is, r);
 						} catch (IOException e) {
 							System.out.println(e);
 							return null;
 						}
-					}).toArray(LvlBuilderImage[]::new);
+					}).orElse(null);
 		} catch (IOException e) {
 			System.out.println(e);
 		}
 		return null;
+	}
+
+	public static int GetNumOfLevels() {
+		return getCount(Paths.get("assets", "lvls"));
+	}
+
+	private static int getCount(Path path) {
+		try {
+			return (int) Stream
+					.of(new PathMatchingResourcePatternResolver(cl).getResources(pathNormalization(path) + "/*"))
+					.count();
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+		return 0;
 	}
 
 	private static String pathNormalization(Path path) {

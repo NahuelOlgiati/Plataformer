@@ -13,12 +13,7 @@ public class Level {
 	private LevelEntities levelEntities;
 	private LevelObjects levelObjects;
 
-	private int lvlTilesWide;
-	private int maxTilesOffsetX;
 	private int maxLvlOffsetX;
-
-	private int lvlTilesHeight;
-	private int maxTilesOffsetY;
 	private int maxLvlOffsetY;
 
 	public Level(LvlBuilderImage img) {
@@ -36,12 +31,12 @@ public class Level {
 	}
 
 	private void calcLvlOffsets() {
-		lvlTilesWide = (int) img.getWidth();
-		maxTilesOffsetX = lvlTilesWide - GameCts.TILES_IN_WIDTH;
+		int lvlTilesWide = (int) img.getWidth();
+		int maxTilesOffsetX = lvlTilesWide - GameCts.TILES_IN_WIDTH;
 		maxLvlOffsetX = GameCts.TILES_SIZE * maxTilesOffsetX;
 
-		lvlTilesHeight = (int) img.getHeight();
-		maxTilesOffsetY = lvlTilesHeight - GameCts.TILES_IN_HEIGHT;
+		int lvlTilesHeight = (int) img.getHeight();
+		int maxTilesOffsetY = lvlTilesHeight - GameCts.TILES_IN_HEIGHT;
 		maxLvlOffsetY = GameCts.TILES_SIZE * maxTilesOffsetY;
 	}
 

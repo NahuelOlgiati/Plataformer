@@ -345,12 +345,6 @@ public class Player extends Entity {
 			}
 		}
 	}
-	
-
-//	public void loadLvlData(LevelData lvlData) {
-//		if (!IsEntityOnFloor(hitbox, lvlData))
-//			inAir = true;
-//	}
 
 	public void changeHealth(int value) {
 		if (value < 0) {
