@@ -1,6 +1,4 @@
-caniones derecha al reves
-player por delante de palmera
+player por delante de palmera (agregar multiples canvas)
 enemigos travados en esq
-palmera en lvl3
 fullscreen
 false walls

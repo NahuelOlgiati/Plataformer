@@ -30,8 +30,6 @@ public class Cannon extends GameObject {
 		if (getObjType() == ObjectCts.CANNON_RIGHT) {
 			x += width;
 			width *= -1;
-			y += height;
-			height *= -1;
 		}
 		g.drawImage(animations[getAniIndex()], x, y, width, height);
 	}
