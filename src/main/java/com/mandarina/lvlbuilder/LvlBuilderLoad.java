@@ -117,7 +117,9 @@ public class LvlBuilderLoad {
 			BufferedImage bufferedImage = SwingFXUtils.fromFXImage(wi, null);
 			ImageIO.write(bufferedImage, "png", outputStream);
 			try (InputStream is = new ByteArrayInputStream(outputStream.toByteArray())) {
-				return new LvlBuilderImage(is, img.getResource());
+				LvlBuilderImage image = new LvlBuilderImage(is, img.getResource());
+				image.setValue(i);
+				return image;
 			}
 		} catch (Throwable e) {
 			System.out.println(e);
