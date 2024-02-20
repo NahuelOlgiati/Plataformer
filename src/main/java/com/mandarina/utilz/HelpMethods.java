@@ -1,7 +1,7 @@
 package com.mandarina.utilz;
 
-import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.levels.LevelData;
+import com.mandarina.game.main.GameCts;
 import com.mandarina.game.objects.Projectile;
 
 import javafx.geometry.Rectangle2D;
@@ -36,24 +36,6 @@ public class HelpMethods {
 		return IsSolid(p.getHitbox().getMinX() + p.getHitbox().getWidth() / 2,
 				p.getHitbox().getMinY() + p.getHitbox().getHeight() / 2, levelData);
 	}
-
-//	public static boolean IsEntityInWater(Rectangle2D hitbox, LevelData levelData) {
-//		// Will only check if entity touches the top water. Can't reach bottom water if
-//		// not
-//		// touched top water.
-//		if (GetTileValue(hitbox.getMinX(), hitbox.getMinY() + hitbox.getHeight(), levelData) != 48
-//				|| GetTileValue(hitbox.getMinX() + hitbox.getWidth(), hitbox.getMinY() + hitbox.getHeight(),
-//						levelData) != 48) {
-//			return false;
-//		}
-//		return true;
-//	}
-//
-//	private static int GetTileValue(double xPos, double yPos, LevelData levelData) {
-//		int xCord = (int) (xPos / GameCts.TILES_SIZE);
-//		int yCord = (int) (yPos / GameCts.TILES_SIZE);
-//		return levelData.getAll()[yCord][xCord];
-//	}
 
 	public static boolean IsEntityInWater(Rectangle2D hitbox, LevelData levelData) {
 		return IsEntityInWater(hitbox.getMinX(), hitbox.getMinY() + hitbox.getHeight(), levelData) || IsEntityInWater(
@@ -97,11 +79,11 @@ public class HelpMethods {
 	}
 
 	public static boolean IsEntityOnFloor(Rectangle2D hitbox, LevelData levelData) {
-		if (!IsSolid(hitbox.getMinX(), hitbox.getMinY() + hitbox.getHeight() + 1, levelData)
-				|| !IsSolid(hitbox.getMinX() + hitbox.getWidth(), hitbox.getMinY() + hitbox.getHeight() + 1, levelData)) {
-			return false;
+		if (IsSolid(hitbox.getMinX(), hitbox.getMinY() + hitbox.getHeight() + 1, levelData) || IsSolid(
+				hitbox.getMinX() + hitbox.getWidth(), hitbox.getMinY() + hitbox.getHeight() + 1, levelData)) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	public static boolean IsFloor(Rectangle2D hitbox, float xSpeed, LevelData levelData) {

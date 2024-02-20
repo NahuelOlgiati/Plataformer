@@ -1,12 +1,11 @@
 package com.mandarina.game.ui;
 
-import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.constants.UICts;
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import com.mandarina.utilz.LoadSave;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
@@ -31,9 +30,9 @@ public class PauseOverlay {
 		int unpauseX = (int) (462 * GameCts.SCALE);
 		int bY = (int) (325 * GameCts.SCALE);
 
-		menuB = new UrmButton(menuX, bY, UICts.URMButtons.URM_SIZE, UICts.URMButtons.URM_SIZE, 2);
-		replayB = new UrmButton(replayX, bY, UICts.URMButtons.URM_SIZE, UICts.URMButtons.URM_SIZE, 1);
-		unpauseB = new UrmButton(unpauseX, bY, UICts.URMButtons.URM_SIZE, UICts.URMButtons.URM_SIZE, 0);
+		menuB = new UrmButton(menuX, bY, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 2);
+		replayB = new UrmButton(replayX, bY, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 1);
+		unpauseB = new UrmButton(unpauseX, bY, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 0);
 	}
 
 	private void loadBackground() {
@@ -54,7 +53,7 @@ public class PauseOverlay {
 
 	}
 
-	public void draw(GraphicsContext g) {
+	public void draw(GameDrawer g) {
 		// Background
 		g.drawImage(backgroundImg, bgX, bgY, bgW, bgH);
 

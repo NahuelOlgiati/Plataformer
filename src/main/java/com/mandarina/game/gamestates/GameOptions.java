@@ -1,13 +1,13 @@
 package com.mandarina.game.gamestates;
 
-import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.constants.UICts;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.ui.AudioOptions;
 import com.mandarina.game.ui.PauseButton;
+import com.mandarina.game.ui.URMButtonCts;
 import com.mandarina.game.ui.UrmButton;
 import com.mandarina.utilz.LoadSave;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
@@ -28,7 +28,7 @@ public class GameOptions {
 		int menuX = (int) (387 * GameCts.SCALE);
 		int menuY = (int) (325 * GameCts.SCALE);
 
-		menuB = new UrmButton(menuX, menuY, UICts.URMButtons.URM_SIZE, UICts.URMButtons.URM_SIZE, 2);
+		menuB = new UrmButton(menuX, menuY, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 2);
 	}
 
 	private void loadImgs() {
@@ -46,7 +46,7 @@ public class GameOptions {
 		audioOptions.update();
 	}
 
-	public void draw(GraphicsContext g) {
+	public void draw(GameDrawer g) {
 		g.drawImage(backgroundImg, 0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
 		g.drawImage(optionsBackgroundImg, bgX, bgY, bgW, bgH);
 

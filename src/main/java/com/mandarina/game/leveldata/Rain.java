@@ -2,11 +2,12 @@ package com.mandarina.game.leveldata;
 
 import java.util.Random;
 
-import com.mandarina.game.constants.GameCts;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Point2D;
-import javafx.scene.canvas.GraphicsContext;
+
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import javafx.scene.image.Image;
 
 public class Rain {
@@ -55,7 +56,7 @@ public class Rain {
 				(int) (GameCts.GAME_HEIGHT * 1.5f) + lvlOffsetY);
 	}
 
-	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		for (Point2D p : drops) {
 			g.drawImage(rainParticle, p.getX() - lvlOffsetX, p.getY() - lvlOffsetY, 2 * GameCts.SCALE,
 					8 * GameCts.SCALE);

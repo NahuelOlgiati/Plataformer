@@ -1,7 +1,6 @@
 package com.mandarina.game.main;
 
 import com.mandarina.game.audio.AudioPlayer;
-import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.gamestates.Credits;
 import com.mandarina.game.gamestates.GameOptions;
 import com.mandarina.game.gamestates.GameState;
@@ -12,17 +11,13 @@ import com.mandarina.lvlbuilder.LvlBuilder;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.main.AppStage;
 
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Game {
 
 	private Scene scene;
-	private Canvas canvas;
-	private GraphicsContext gc;
 
 	private Playing playing;
 	private Menu menu;
@@ -32,6 +27,7 @@ public class Game {
 	private AudioOptions audioOptions;
 	private AudioPlayer audioPlayer;
 
+	private GameDrawer gameDrawer;
 	private GameInputs gameInputs;
 	private GameLoop gameLoop;
 
@@ -61,11 +57,10 @@ public class Game {
 
 	private Scene getScene() {
 		initClasses();
-		canvas = new Canvas(GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
-		gc = canvas.getGraphicsContext2D();
 
-		StackPane root = new StackPane();
-		root.getChildren().add(canvas);
+		this.gameDrawer = new GameDrawer(GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
+		Group root = new Group();
+		this.gameDrawer.init(root);
 
 		Scene scene = new Scene(root);
 		gameInputs.init(scene);
@@ -130,10 +125,10 @@ public class Game {
 
 	private void repaint() {
 		switch (GameState.get()) {
-		case MENU -> menu.draw(gc);
-		case PLAYING -> playing.draw(gc);
-		case OPTIONS -> gameOptions.draw(gc);
-		case CREDITS -> credits.draw(gc);
+		case MENU -> menu.draw(this.gameDrawer);
+		case PLAYING -> playing.draw(this.gameDrawer);
+		case OPTIONS -> gameOptions.draw(this.gameDrawer);
+		case CREDITS -> credits.draw(this.gameDrawer);
 		}
 	}
 

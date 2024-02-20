@@ -2,10 +2,10 @@ package com.mandarina.game.objects;
 
 import java.util.Random;
 
-import com.mandarina.game.constants.ObjectCts;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import com.mandarina.utilz.LoadSave;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Tree {
@@ -34,13 +34,13 @@ public class Tree {
 		}
 	}
 
-	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[][] treeImgs) {
+	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[][] treeImgs) {
 		int type = getType();
 		if (type == 9)
 			type = 8;
-		g.drawImage(treeImgs[type - 7][getAniIndex()], getX() - lvlOffsetX + ObjectCts.GetTreeOffsetX(getType()),
-				getY() - lvlOffsetY + ObjectCts.GetTreeOffsetY(getType()), ObjectCts.GetTreeWidth(getType()),
-				ObjectCts.GetTreeHeight(getType()));
+		int index = type - 7;
+		g.drawImage(treeImgs[index][getAniIndex()], getX() - lvlOffsetX + GetTreeOffsetX(getType()),
+				getY() - lvlOffsetY + GetTreeOffsetY(getType()), GetTreeWidth(getType()), GetTreeHeight(getType()));
 	}
 
 	public static Image[][] load() {
@@ -54,6 +54,55 @@ public class Tree {
 			treeImgs[1][i] = LoadSave.GetSubimage(treeTwoImg, i, 0, 62, 54);
 
 		return treeImgs;
+	}
+
+	public static int GetTreeOffsetX(int treeType) {
+		switch (treeType) {
+		case ObjectCts.TREE_UP:
+			return (GameCts.TILES_SIZE / 2) - (GetTreeWidth(treeType) / 2);
+		case ObjectCts.TREE_RIGHT:
+			return (int) (GameCts.TILES_SIZE / 2.5f);
+		case ObjectCts.TREE_LEFT:
+			return (int) (GameCts.TILES_SIZE / 1.65f);
+		}
+
+		return 0;
+	}
+
+	public static int GetTreeOffsetY(int treeType) {
+
+		switch (treeType) {
+		case ObjectCts.TREE_UP:
+			return -GetTreeHeight(treeType) + GameCts.TILES_SIZE * 2;
+		case ObjectCts.TREE_RIGHT, ObjectCts.TREE_LEFT:
+			return -GetTreeHeight(treeType) + (int) (GameCts.TILES_SIZE / 1.25f);
+		}
+		return 0;
+
+	}
+
+	public static int GetTreeWidth(int treeType) {
+		switch (treeType) {
+		case ObjectCts.TREE_UP:
+			return (int) (39 * GameCts.SCALE);
+		case ObjectCts.TREE_RIGHT:
+			return (int) (62 * GameCts.SCALE);
+		case ObjectCts.TREE_LEFT:
+			return -(int) (62 * GameCts.SCALE);
+
+		}
+		return 0;
+	}
+
+	public static int GetTreeHeight(int treeType) {
+		switch (treeType) {
+		case ObjectCts.TREE_UP:
+			return (int) (92 * GameCts.SCALE);
+		case ObjectCts.TREE_RIGHT, ObjectCts.TREE_LEFT:
+			return (int) (54 * GameCts.SCALE);
+
+		}
+		return 0;
 	}
 
 	public int getAniIndex() {

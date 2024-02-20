@@ -1,10 +1,9 @@
 package com.mandarina.game.objects;
 
-import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.constants.ObjectCts;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class GameObject {
@@ -26,7 +25,7 @@ public class GameObject {
 		if (aniTick >= GameCts.ANI_SPEED) {
 			aniTick = 0;
 			aniIndex++;
-			if (aniIndex >= ObjectCts.GetSpriteAmount(objType)) {
+			if (aniIndex >= GetSpriteAmount(objType)) {
 				aniIndex = 0;
 				if (objType == ObjectCts.BARREL || objType == ObjectCts.BOX) {
 					doAnimation = false;
@@ -35,6 +34,18 @@ public class GameObject {
 					doAnimation = false;
 			}
 		}
+	}
+
+	private static int GetSpriteAmount(int object_type) {
+		switch (object_type) {
+		case ObjectCts.RED_POTION, ObjectCts.BLUE_POTION:
+			return 7;
+		case ObjectCts.BARREL, ObjectCts.BOX:
+			return 8;
+		case ObjectCts.CANNON_LEFT, ObjectCts.CANNON_RIGHT:
+			return 7;
+		}
+		return 1;
 	}
 
 	public void reset() {
@@ -53,7 +64,7 @@ public class GameObject {
 		hitbox = new Rectangle2D(x, y, (int) (width * GameCts.SCALE), (int) (height * GameCts.SCALE));
 	}
 
-	public void drawHitbox(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawHitbox(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		g.setStroke(Color.PINK);
 		g.strokeRect(hitbox.getMinX() - lvlOffsetX, hitbox.getMinY() - lvlOffsetY, hitbox.getWidth(),
 				hitbox.getHeight());

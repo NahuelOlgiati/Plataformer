@@ -10,7 +10,7 @@ import javafx.util.Duration;
 
 public abstract class GameLoop {
 
-	private static final boolean SHOW_FPS_UPS = true;
+	private static final boolean SHOW_FPS_UPS = false;
 
 	private static final int UPS_SET = 180;
 	private static final int FPS_SET = 60;

@@ -1,12 +1,13 @@
 package com.mandarina.game.gamestates;
 
-import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.entities.EnemyManager;
-import com.mandarina.game.entities.player.Player;
+import com.mandarina.game.entities.Player;
+import com.mandarina.game.entities.PlayerCts;
 import com.mandarina.game.leveldata.LevelManager;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.Game;
+import com.mandarina.game.main.GameCts;
 import com.mandarina.game.objects.ObjectManager;
 import com.mandarina.game.ui.GameCompletedOverlay;
 import com.mandarina.game.ui.GameOverOverlay;
@@ -16,7 +17,7 @@ import com.mandarina.game.ui.StatusBar;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.GraphicsContext;
+import com.mandarina.game.main.GameDrawer;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -137,12 +138,13 @@ public class Playing {
 		lvlOffsetY = Math.max(Math.min(lvlOffsetY, maxLvlOffsetY), 0);
 	}
 
-	public void draw(GraphicsContext g) {
+	public void draw(GameDrawer g) {
 		levelManager.draw(g, lvlOffsetX, lvlOffsetY);
+		player.draw(g, lvlOffsetX, lvlOffsetY);
 		objectManager.draw(g, lvlOffsetX, lvlOffsetY);
 		enemyManager.draw(g, lvlOffsetX, lvlOffsetY);
+		
 		statusBar.draw(g);
-		player.draw(g, lvlOffsetX, lvlOffsetY);
 
 		if (paused) {
 			g.setFill(new Color(0, 0, 0, 0.6));
@@ -184,7 +186,7 @@ public class Playing {
 	}
 
 	public void checkEnemyHit(Rectangle2D attackBox) {
-		enemyManager.checkEnemyHit(attackBox);
+		enemyManager.checkEnemyHit(attackBox, PlayerCts.DAMAGE);
 	}
 
 	public void checkPotionTouched(Rectangle2D hitbox) {
@@ -286,7 +288,6 @@ public class Playing {
 	public void setLevelCompleted(boolean levelCompleted) {
 		this.game.getAudioPlayer().lvlCompleted();
 		if (levelManager.getLevelIndex() + 1 >= levelManager.getNumOfLevels()) {
-			// No more levels
 			gameCompleted = true;
 			levelManager.reset();
 			resetAll();

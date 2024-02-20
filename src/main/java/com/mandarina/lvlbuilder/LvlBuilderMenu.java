@@ -11,9 +11,9 @@ import javax.imageio.ImageIO;
 
 import org.springframework.core.io.FileUrlResource;
 
-import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.main.Game;
+import com.mandarina.game.main.GameCts;
 import com.mandarina.main.AppStage;
 
 import javafx.embed.swing.SwingFXUtils;

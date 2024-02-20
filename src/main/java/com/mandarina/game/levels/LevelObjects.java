@@ -3,21 +3,21 @@ package com.mandarina.game.levels;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mandarina.game.constants.DialogueCts;
-import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.constants.ObjectCts;
-import com.mandarina.game.constants.ProjectileCts;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.Cannon;
 import com.mandarina.game.objects.CannonBall;
 import com.mandarina.game.objects.Container;
 import com.mandarina.game.objects.Dialogue;
+import com.mandarina.game.objects.DialogueCts;
+import com.mandarina.game.objects.ObjectCts;
 import com.mandarina.game.objects.Potion;
 import com.mandarina.game.objects.Projectile;
+import com.mandarina.game.objects.ProjectileCts;
 import com.mandarina.game.objects.Spike;
 import com.mandarina.game.objects.Tree;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
@@ -53,23 +53,23 @@ public class LevelObjects {
 		load(img);
 	}
 
-	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, List<Potion> potions,
-			List<Projectile> projectiles, List<Dialogue> dialogues) {
+	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Potion> potions, List<Projectile> projectiles,
+			List<Dialogue> dialogues) {
 		drawPotions(g, lvlOffsetX, lvlOffsetY, potions);
 		drawContainers(g, lvlOffsetX, lvlOffsetY);
 		drawTraps(g, lvlOffsetX, lvlOffsetY);
 		drawCannons(g, lvlOffsetX, lvlOffsetY);
 		drawProjectiles(g, lvlOffsetX, lvlOffsetY, projectiles);
-		drawBackgroundTrees(g, lvlOffsetX, lvlOffsetY);
+		drawTrees(g, lvlOffsetX, lvlOffsetY);
 		drawDialogues(g, lvlOffsetX, lvlOffsetY, dialogues);
 	}
 
-	private void drawBackgroundTrees(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+	private void drawTrees(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		for (Tree bt : getTrees())
 			bt.draw(g, lvlOffsetX, lvlOffsetY, treeSprite);
 	}
 
-	private void drawProjectiles(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, List<Projectile> projectiles) {
+	private void drawProjectiles(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Projectile> projectiles) {
 		for (Projectile p : projectiles)
 			if (p.isActive())
 				g.drawImage(cannonBallSprite, (int) (p.getHitbox().getMinX() - lvlOffsetX),
@@ -77,17 +77,17 @@ public class LevelObjects {
 						ProjectileCts.CANNON_BALL_HEIGHT);
 	}
 
-	private void drawCannons(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+	private void drawCannons(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		for (Cannon c : getCannons())
 			c.draw(g, lvlOffsetX, lvlOffsetY, cannonSprite);
 	}
 
-	private void drawTraps(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+	private void drawTraps(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		for (Spike s : getSpikes())
 			s.draw(g, lvlOffsetX, lvlOffsetY, spikeSprite);
 	}
 
-	private void drawContainers(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+	private void drawContainers(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		for (Container gc : containers)
 			if (gc.isActive()) {
 				int type = 0;
@@ -100,7 +100,7 @@ public class LevelObjects {
 			}
 	}
 
-	private void drawPotions(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, List<Potion> potions) {
+	private void drawPotions(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Potion> potions) {
 		for (Potion p : potions)
 			if (p.isActive()) {
 				int type = 0;
@@ -113,7 +113,7 @@ public class LevelObjects {
 			}
 	}
 
-	private void drawDialogues(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, List<Dialogue> dialogues) {
+	private void drawDialogues(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Dialogue> dialogues) {
 		for (Dialogue d : dialogues)
 			if (d.isActive()) {
 				if (d.getType() == DialogueCts.QUESTION)
@@ -158,7 +158,7 @@ public class LevelObjects {
 				spikes.add(new Spike(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, ObjectCts.SPIKE));
 			case ObjectCts.CANNON_LEFT, ObjectCts.CANNON_RIGHT ->
 				cannons.add(new Cannon(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
-			case ObjectCts.TREE_UP, ObjectCts.TREE_TWO, ObjectCts.TREE_THREE ->
+			case ObjectCts.TREE_UP, ObjectCts.TREE_RIGHT, ObjectCts.TREE_LEFT ->
 				trees.add(new Tree(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
 			}
 		}

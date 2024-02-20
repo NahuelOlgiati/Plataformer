@@ -1,10 +1,9 @@
 package com.mandarina.game.ui;
 
-import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.constants.UICts;
 import com.mandarina.game.main.Game;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 
 public class AudioOptions {
@@ -23,16 +22,15 @@ public class AudioOptions {
 	private void createVolumeButton() {
 		int vX = (int) (309 * GameCts.SCALE);
 		int vY = (int) (278 * GameCts.SCALE);
-		volumeButton = new VolumeButton(vX, vY, UICts.VolumeButtons.VOLUME_WIDTH,
-				UICts.VolumeButtons.VOLUME_HEIGHT);
+		volumeButton = new VolumeButton(vX, vY, VolumeButtonCts.VOLUME_WIDTH, VolumeButtonCts.VOLUME_HEIGHT);
 	}
 
 	private void createSoundButtons() {
 		int soundX = (int) (450 * GameCts.SCALE);
 		int musicY = (int) (140 * GameCts.SCALE);
 		int sfxY = (int) (186 * GameCts.SCALE);
-		musicButton = new SoundButton(soundX, musicY, UICts.PauseButtons.SOUND_SIZE, UICts.PauseButtons.SOUND_SIZE);
-		sfxButton = new SoundButton(soundX, sfxY, UICts.PauseButtons.SOUND_SIZE, UICts.PauseButtons.SOUND_SIZE);
+		musicButton = new SoundButton(soundX, musicY, SoundButtonCts.SIZE, SoundButtonCts.SIZE);
+		sfxButton = new SoundButton(soundX, sfxY, SoundButtonCts.SIZE, SoundButtonCts.SIZE);
 	}
 
 	public void update() {
@@ -42,7 +40,7 @@ public class AudioOptions {
 		volumeButton.update();
 	}
 
-	public void draw(GraphicsContext g) {
+	public void draw(GameDrawer g) {
 		// Sound buttons
 		musicButton.draw(g);
 		sfxButton.draw(g);

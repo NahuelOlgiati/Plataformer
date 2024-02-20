@@ -1,9 +1,8 @@
 package com.mandarina.game.leveldata;
 
-import com.mandarina.game.constants.GameCts;
 import com.mandarina.utilz.LoadSave;
-
-import javafx.scene.canvas.GraphicsContext;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import javafx.scene.image.Image;
 
 public class Grass {
@@ -16,7 +15,7 @@ public class Grass {
 		this.type = type;
 	}
 
-	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[] grassImgs) {
+	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[] grassImgs) {
 		g.drawImage(grassImgs[getType()], getX() - lvlOffsetX, getY() - lvlOffsetY, (int) (32 * GameCts.SCALE),
 				(int) (32 * GameCts.SCALE));
 	}

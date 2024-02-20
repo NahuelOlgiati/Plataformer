@@ -7,17 +7,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mandarina.game.constants.DialogueCts;
-import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.constants.ObjectCts;
 import com.mandarina.game.entities.Enemy;
-import com.mandarina.game.entities.player.Player;
+import com.mandarina.game.entities.Player;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.levels.LevelData;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.GraphicsContext;
+
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 
 public class ObjectManager {
 
@@ -39,7 +38,7 @@ public class ObjectManager {
 		loadDialogues();
 	}
 
-	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		currentLevel.getLevelObjects().draw(g, lvlOffsetX, lvlOffsetY, this.potions, this.projectiles, this.dialogues);
 	}
 

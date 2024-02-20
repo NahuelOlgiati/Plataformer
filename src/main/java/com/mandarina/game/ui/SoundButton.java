@@ -1,9 +1,8 @@
 package com.mandarina.game.ui;
 
-import com.mandarina.game.constants.UICts;
+import com.mandarina.game.main.GameDrawer;
 import com.mandarina.utilz.LoadSave;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 
@@ -25,8 +24,8 @@ public class SoundButton extends PauseButton {
 		soundImgs = new Image[2][3];
 		for (int j = 0; j < soundImgs.length; j++)
 			for (int i = 0; i < soundImgs[j].length; i++)
-				soundImgs[j][i] = LoadSave.GetSubimage(temp, i, j, UICts.PauseButtons.SOUND_SIZE_DEFAULT,
-						UICts.PauseButtons.SOUND_SIZE_DEFAULT);
+				soundImgs[j][i] = LoadSave.GetSubimage(temp, i, j, SoundButtonCts.SIZE_DEFAULT,
+						SoundButtonCts.SIZE_DEFAULT);
 	}
 
 	public void update() {
@@ -48,7 +47,7 @@ public class SoundButton extends PauseButton {
 		mousePressed = false;
 	}
 
-	public void draw(GraphicsContext g) {
+	public void draw(GameDrawer g) {
 		Rectangle b = getBounds();
 		g.drawImage(soundImgs[rowIndex][colIndex], b.getX(), b.getY(), b.getWidth(), b.getHeight());
 	}

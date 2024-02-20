@@ -1,9 +1,8 @@
 package com.mandarina.game.ui;
 
-import com.mandarina.game.constants.UICts;
+import com.mandarina.game.main.GameDrawer;
 import com.mandarina.utilz.LoadSave;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
@@ -21,9 +20,9 @@ public class VolumeButton extends PauseButton {
 
 	public VolumeButton(int x, int y, int width, int height) {
 		super(x, y, width, height);
-		sliderBounds = new Rectangle(x - 5, y, UICts.VolumeButtons.SLIDER_WIDTH, height);
-		minX = (int) (sliderBounds.getX() + UICts.VolumeButtons.VOLUME_WIDTH / 2);
-		maxX = (int) (sliderBounds.getX() + UICts.VolumeButtons.SLIDER_WIDTH - UICts.VolumeButtons.VOLUME_WIDTH / 2);
+		sliderBounds = new Rectangle(x - 5, y, VolumeButtonCts.SLIDER_WIDTH, height);
+		minX = (int) (sliderBounds.getX() + VolumeButtonCts.VOLUME_WIDTH / 2);
+		maxX = (int) (sliderBounds.getX() + VolumeButtonCts.SLIDER_WIDTH - VolumeButtonCts.VOLUME_WIDTH / 2);
 		loadImgs();
 		setVolume(0.75f);
 		updateVolume();
@@ -33,11 +32,11 @@ public class VolumeButton extends PauseButton {
 		Image temp = LoadSave.GetSprite(LoadSave.VOLUME_BUTTONS);
 		imgs = new Image[3];
 		for (int i = 0; i < imgs.length; i++)
-			imgs[i] = LoadSave.GetSubimage(temp, i, 0, UICts.VolumeButtons.VOLUME_DEFAULT_WIDTH,
-					UICts.VolumeButtons.VOLUME_DEFAULT_HEIGHT);
+			imgs[i] = LoadSave.GetSubimage(temp, i, 0, VolumeButtonCts.VOLUME_DEFAULT_WIDTH,
+					VolumeButtonCts.VOLUME_DEFAULT_HEIGHT);
 
-		slider = new WritableImage(temp.getPixelReader(), 3 * UICts.VolumeButtons.VOLUME_DEFAULT_WIDTH, 0,
-				UICts.VolumeButtons.SLIDER_DEFAULT_WIDTH, UICts.VolumeButtons.VOLUME_DEFAULT_HEIGHT);
+		slider = new WritableImage(temp.getPixelReader(), 3 * VolumeButtonCts.VOLUME_DEFAULT_WIDTH, 0,
+				VolumeButtonCts.SLIDER_DEFAULT_WIDTH, VolumeButtonCts.VOLUME_DEFAULT_HEIGHT);
 	}
 
 	public void update() {
@@ -48,21 +47,21 @@ public class VolumeButton extends PauseButton {
 			index = 2;
 	}
 
-	public void draw(GraphicsContext g) {
+	public void draw(GameDrawer g) {
 		g.drawImage(slider, sliderBounds.getX(), sliderBounds.getY(), sliderBounds.getWidth(),
 				sliderBounds.getHeight());
-		g.drawImage(imgs[index], buttonX - UICts.VolumeButtons.VOLUME_WIDTH / 2, bounds.getY(),
-				UICts.VolumeButtons.VOLUME_WIDTH, bounds.getHeight());
+		g.drawImage(imgs[index], buttonX - VolumeButtonCts.VOLUME_WIDTH / 2, bounds.getY(),
+				VolumeButtonCts.VOLUME_WIDTH, bounds.getHeight());
 //		drawBoundBox(g);
 //		drawSliderBoundBox(g);
 	}
 
-	protected void drawBoundBox(GraphicsContext g) {
+	protected void drawBoundBox(GameDrawer g) {
 		g.setStroke(Color.BLUE);
 		g.strokeRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 	}
 
-	protected void drawSliderBoundBox(GraphicsContext g) {
+	protected void drawSliderBoundBox(GameDrawer g) {
 		g.setStroke(Color.RED);
 		g.strokeRect(sliderBounds.getX(), sliderBounds.getY(), sliderBounds.getWidth(), sliderBounds.getHeight());
 	}
@@ -74,7 +73,7 @@ public class VolumeButton extends PauseButton {
 			buttonX = maxX;
 		else
 			buttonX = x;
-		bounds.setX(buttonX - UICts.VolumeButtons.VOLUME_WIDTH / 2);
+		bounds.setX(buttonX - VolumeButtonCts.VOLUME_WIDTH / 2);
 		updateVolume();
 	}
 

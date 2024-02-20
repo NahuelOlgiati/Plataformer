@@ -1,6 +1,6 @@
 package com.mandarina.game.objects;
 
-import com.mandarina.game.constants.GameCts;
+import com.mandarina.game.main.GameCts;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Rectangle2D;

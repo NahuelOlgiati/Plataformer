@@ -1,11 +1,11 @@
 package com.mandarina.game.gamestates;
 
-import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.main.Game;
+import com.mandarina.game.main.GameCts;
 import com.mandarina.game.ui.MenuButton;
 import com.mandarina.utilz.LoadSave;
 
-import javafx.scene.canvas.GraphicsContext;
+import com.mandarina.game.main.GameDrawer;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
@@ -44,7 +44,7 @@ public class Menu {
 			mb.update();
 	}
 
-	public void draw(GraphicsContext g) {
+	public void draw(GameDrawer g) {
 		g.drawImage(backgroundImgPink, 0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
 		g.drawImage(backgroundImg, menuX, menuY, menuWidth, menuHeight);
 

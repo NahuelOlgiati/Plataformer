@@ -8,7 +8,7 @@ import com.mandarina.game.levels.Level;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.utilz.LoadSave;
 
-import javafx.scene.canvas.GraphicsContext;
+import com.mandarina.game.main.GameDrawer;
 
 public class LevelManager {
 
@@ -62,7 +62,7 @@ public class LevelManager {
 		playing.setMaxLvlOffsetY(level.getLvlOffsetY());
 	}
 
-	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		this.background.draw(g, lvlOffsetX, lvlOffsetY);
 		this.backgroundCloud.draw(g, lvlOffsetX, lvlOffsetY);
 		if (drawRain)

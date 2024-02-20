@@ -1,7 +1,6 @@
 package com.mandarina.game.objects;
 
-import com.mandarina.game.constants.DialogueCts;
-import com.mandarina.game.constants.GameCts;
+import com.mandarina.game.main.GameCts;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -23,7 +22,7 @@ public class Dialogue {
 		if (aniTick >= GameCts.ANI_SPEED) {
 			aniTick = 0;
 			aniIndex++;
-			if (aniIndex >= DialogueCts.GetSpriteAmount(type)) {
+			if (aniIndex >= 5) {
 				active = false;
 				aniIndex = 0;
 			}

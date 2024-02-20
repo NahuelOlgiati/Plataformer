@@ -1,10 +1,9 @@
 package com.mandarina.game.objects;
 
-import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.constants.ProjectileCts;
-
 import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.GraphicsContext;
+
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import javafx.scene.image.Image;
 
 public class Projectile {
@@ -29,7 +28,7 @@ public class Projectile {
 				hitbox.getHeight());
 	}
 
-	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image cannonBallSprite) {
+	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image cannonBallSprite) {
 		g.drawImage(cannonBallSprite, (int) (getHitbox().getMinX() - lvlOffsetX),
 				(int) getHitbox().getMinY() - lvlOffsetY, ProjectileCts.CANNON_BALL_WIDTH,
 				ProjectileCts.CANNON_BALL_HEIGHT);

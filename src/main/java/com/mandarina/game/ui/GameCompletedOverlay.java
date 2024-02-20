@@ -1,11 +1,10 @@
 package com.mandarina.game.ui;
 
-import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.utilz.LoadSave;
-
-import javafx.scene.canvas.GraphicsContext;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -36,7 +35,7 @@ public class GameCompletedOverlay {
 
 	}
 
-	public void draw(GraphicsContext g) {
+	public void draw(GameDrawer g) {
 		g.setFill(new Color(0, 0, 0, 0.5));
 		g.fillRect(0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
 

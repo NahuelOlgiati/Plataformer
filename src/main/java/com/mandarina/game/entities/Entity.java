@@ -2,12 +2,11 @@ package com.mandarina.game.entities;
 
 import static com.mandarina.utilz.HelpMethods.CanMoveHere;
 
-import com.mandarina.game.constants.DirectionCts;
-import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.levels.LevelData;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
@@ -44,14 +43,14 @@ public abstract class Entity {
 		this.height = height;
 	}
 
-	protected void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[][] animations, int row, int spriteW,
+	protected void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[][] animations, int row, int spriteW,
 			int spriteH, int offsetX, int offsetY) {
 		g.drawImage(animations[row][getAniIndex()], (int) (hitbox.getMinX() - lvlOffsetX - offsetX + flipX()),
 				(int) hitbox.getMinY() - lvlOffsetY - offsetY + (int) pushDrawOffset, spriteW * flipW(), spriteH);
 
 		// For Debug
-//		drawHitbox(g, lvlOffsetX, lvlOffsetY);
-//		drawAttackBox(g, lvlOffsetX, lvlOffsetY);
+		drawHitbox(g, lvlOffsetX, lvlOffsetY);
+		drawAttackBox(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	protected void updateAttackBox() {
@@ -122,13 +121,13 @@ public abstract class Entity {
 					hitbox.getHeight());
 	}
 
-	protected void drawAttackBox(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+	protected void drawAttackBox(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		g.setStroke(Color.RED);
 		g.strokeRect(attackBox.getMinX() - lvlOffsetX, attackBox.getMinY() - lvlOffsetY, attackBox.getWidth(),
 				attackBox.getHeight());
 	}
 
-	protected void drawHitbox(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+	protected void drawHitbox(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		g.setStroke(Color.PINK);
 		g.strokeRect((int) (hitbox.getMinX() - lvlOffsetX), (int) (hitbox.getMinY() - lvlOffsetY),
 				(int) hitbox.getWidth(), (int) hitbox.getHeight());

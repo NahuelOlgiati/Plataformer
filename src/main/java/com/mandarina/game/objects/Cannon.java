@@ -1,11 +1,11 @@
 package com.mandarina.game.objects;
 
-import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.constants.ObjectCts;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.GraphicsContext;
+
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import javafx.scene.image.Image;
 
 public class Cannon extends GameObject {
@@ -20,7 +20,7 @@ public class Cannon extends GameObject {
 				hitbox.getHeight());
 	}
 
-	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[] animations) {
+	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[] animations) {
 		int x = (int) (getHitbox().getMinX() - lvlOffsetX);
 		int width = ObjectCts.CANNON_WIDTH;
 

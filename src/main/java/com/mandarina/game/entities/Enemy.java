@@ -7,14 +7,13 @@ import static com.mandarina.utilz.HelpMethods.IsEntityOnFloor;
 import static com.mandarina.utilz.HelpMethods.IsFloor;
 import static com.mandarina.utilz.HelpMethods.IsSightClear;
 
-import com.mandarina.game.constants.DirectionCts;
-import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.entities.player.Player;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.LevelData;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.GraphicsContext;
+
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import javafx.scene.image.Image;
 
 public abstract class Enemy extends Entity {
@@ -34,7 +33,7 @@ public abstract class Enemy extends Entity {
 
 	protected abstract void updateBehavior(Playing playing);
 
-	public abstract void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[][] animations);
+	public abstract void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[][] animations);
 
 	protected abstract int getSpriteAmount(EnemyState state);
 

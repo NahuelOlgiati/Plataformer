@@ -1,11 +1,11 @@
 package com.mandarina.game.objects;
 
-import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.constants.ObjectCts;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.GraphicsContext;
+
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import javafx.scene.image.Image;
 
 public class Spike extends GameObject {
@@ -18,7 +18,7 @@ public class Spike extends GameObject {
 		hitbox = new Rectangle2D(x + xDrawOffset, y + yDrawOffset, 32, 16);
 	}
 
-	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image image) {
+	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image image) {
 		g.drawImage(image, (int) (getHitbox().getMinX() - lvlOffsetX),
 				(int) (getHitbox().getMinY() - getyDrawOffset() - lvlOffsetY), ObjectCts.SPIKE_WIDTH,
 				ObjectCts.SPIKE_HEIGHT);

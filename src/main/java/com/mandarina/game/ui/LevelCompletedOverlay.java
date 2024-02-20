@@ -1,12 +1,11 @@
 package com.mandarina.game.ui;
 
-import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.constants.UICts;
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import com.mandarina.utilz.LoadSave;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -28,8 +27,8 @@ public class LevelCompletedOverlay {
 		int menuX = (int) (330 * GameCts.SCALE);
 		int nextX = (int) (445 * GameCts.SCALE);
 		int y = (int) (195 * GameCts.SCALE);
-		next = new UrmButton(nextX, y, UICts.URMButtons.URM_SIZE, UICts.URMButtons.URM_SIZE, 0);
-		menu = new UrmButton(menuX, y, UICts.URMButtons.URM_SIZE, UICts.URMButtons.URM_SIZE, 2);
+		next = new UrmButton(nextX, y, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 0);
+		menu = new UrmButton(menuX, y, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 2);
 	}
 
 	private void initImg() {
@@ -40,7 +39,7 @@ public class LevelCompletedOverlay {
 		bgY = (int) (75 * GameCts.SCALE);
 	}
 
-	public void draw(GraphicsContext g) {
+	public void draw(GameDrawer g) {
 		g.setFill(new Color(0, 0, 0, 0.5));
 		g.fillRect(0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
 

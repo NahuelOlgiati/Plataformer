@@ -1,9 +1,8 @@
 package com.mandarina.game.leveldata;
 
-import com.mandarina.game.constants.GameCts;
 import com.mandarina.utilz.LoadSave;
-
-import javafx.scene.canvas.GraphicsContext;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import javafx.scene.image.Image;
 
 public class Tile {
@@ -16,7 +15,7 @@ public class Tile {
 		this.aniIndex = aniIndex;
 	}
 
-	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[] imgs) {
+	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[] imgs) {
 		g.drawImage(imgs[aniIndex], x - lvlOffsetX, y - lvlOffsetY, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
 	}
 

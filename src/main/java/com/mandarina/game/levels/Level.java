@@ -1,6 +1,6 @@
 package com.mandarina.game.levels;
 
-import com.mandarina.game.constants.GameCts;
+import com.mandarina.game.main.GameCts;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.lvlbuilder.PNGMetadata;
 

@@ -1,4 +1,4 @@
-player por delante de palmera (agregar multiples canvas)
-enemigos travados en esq
+player por delante de palmera (agregar multiples capas)
 fullscreen
 false walls
+agregar enemigos nuevos

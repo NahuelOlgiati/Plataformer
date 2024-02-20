@@ -3,22 +3,18 @@ package com.mandarina.game.levels;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mandarina.game.constants.EntityCts;
-import com.mandarina.game.constants.GameCts;
+import com.mandarina.game.entities.Crabby;
 import com.mandarina.game.entities.Enemy;
-import com.mandarina.game.entities.crabby.Crabby;
-import com.mandarina.game.entities.crabby.CrabbyAtlas;
-import com.mandarina.game.entities.pinkstar.Pinkstar;
-import com.mandarina.game.entities.pinkstar.PinkstarAtlas;
-import com.mandarina.game.entities.shark.Shark;
-import com.mandarina.game.entities.shark.SharkAtlas;
-import com.mandarina.game.entities.titan.Titan;
-import com.mandarina.game.entities.titan.TitanAtlas;
+import com.mandarina.game.entities.EntityCts;
+import com.mandarina.game.entities.Pinkstar;
+import com.mandarina.game.entities.Shark;
+import com.mandarina.game.entities.Titan;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 
 import javafx.geometry.Point2D;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
@@ -43,10 +39,10 @@ public class LevelEntities {
 	public LevelEntities(LvlBuilderImage img) {
 		this.height = (int) img.getHeight();
 		this.width = (int) img.getWidth();
-		this.crabbySprite = CrabbyAtlas.getAnimations();
-		this.pinkstarSprite = PinkstarAtlas.getAnimations();
-		this.sharkSprite = SharkAtlas.getAnimations();
-		this.titanSprite = TitanAtlas.getAnimations();
+		this.crabbySprite = Crabby.load();
+		this.pinkstarSprite = Pinkstar.load();
+		this.sharkSprite = Shark.load();
+		this.titanSprite = Titan.load();
 		load(img);
 	}
 
@@ -61,7 +57,7 @@ public class LevelEntities {
 		return isAnyActive;
 	}
 
-	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		for (Crabby c : crabs) {
 			if (c.isActive()) {
 				c.draw(g, lvlOffsetX, lvlOffsetY, crabbySprite);

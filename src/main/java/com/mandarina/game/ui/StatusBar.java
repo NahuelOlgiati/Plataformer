@@ -1,10 +1,9 @@
 package com.mandarina.game.ui;
 
-import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.entities.player.Player;
 import com.mandarina.utilz.LoadSave;
-
-import javafx.scene.canvas.GraphicsContext;
+import com.mandarina.game.entities.Player;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
@@ -60,7 +59,7 @@ public class StatusBar {
 		}
 	}
 
-	public void draw(GraphicsContext g) {
+	public void draw(GameDrawer g) {
 		// Background ui
 		g.drawImage(statusBarImg, statusBarX, statusBarY, statusBarWidth, statusBarHeight);
 
