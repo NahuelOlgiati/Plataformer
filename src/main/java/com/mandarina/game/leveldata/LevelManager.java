@@ -1,7 +1,10 @@
 
-package com.mandarina.game.levels;
+package com.mandarina.game.leveldata;
+
+import java.util.Random;
 
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.levels.Level;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.utilz.LoadSave;
 
@@ -14,10 +17,22 @@ public class LevelManager {
 	private int lvlIndex;
 	private int numOfLevels;
 
+	private Background background;
+	private BackgroundCloud backgroundCloud;
+
+	private Random rnd = new Random();
+	private Rain rain;
+	private boolean drawRain;
+
 	public LevelManager(Playing playing) {
 		this.playing = playing;
 		this.lvlIndex = 0;
 		this.numOfLevels = LoadSave.GetNumOfLevels();
+
+		this.background = new Background();
+		this.backgroundCloud = new BackgroundCloud();
+		this.rain = null;
+		this.drawRain = false;
 	}
 
 	public void loadNextLevel() {
@@ -35,6 +50,12 @@ public class LevelManager {
 	}
 
 	public void loadLevel(Level level) {
+		this.drawRain = rnd.nextFloat() >= 0.8f; // 20%
+		if (drawRain) {
+			rain = new Rain();
+		} else {
+			rain = null;
+		}
 		playing.getObjectManager().loadObjects(level);
 		playing.getEnemyManager().loadEnemies(level);
 		playing.setMaxLvlOffsetX(level.getLvlOffsetX());
@@ -42,10 +63,18 @@ public class LevelManager {
 	}
 
 	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
+		this.background.draw(g, lvlOffsetX, lvlOffsetY);
+		this.backgroundCloud.draw(g, lvlOffsetX, lvlOffsetY);
+		if (drawRain)
+			this.rain.draw(g, lvlOffsetX, lvlOffsetY);
+
 		getCurrentLevel().getLevelData().draw(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	public void update() {
+		if (drawRain)
+			this.rain.update(playing.getLvlOffsetX(), playing.getLvlOffsetY());
+
 		getCurrentLevel().getLevelData().update();
 	}
 

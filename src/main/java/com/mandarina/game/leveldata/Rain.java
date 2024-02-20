@@ -1,4 +1,4 @@
-package com.mandarina.game.effects;
+package com.mandarina.game.leveldata;
 
 import java.util.Random;
 

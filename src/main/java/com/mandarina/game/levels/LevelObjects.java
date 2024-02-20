@@ -3,12 +3,14 @@ package com.mandarina.game.levels;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mandarina.game.constants.DialogueCts;
 import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.constants.ObjectCts;
 import com.mandarina.game.constants.ProjectileCts;
 import com.mandarina.game.objects.Cannon;
 import com.mandarina.game.objects.CannonBall;
 import com.mandarina.game.objects.Container;
+import com.mandarina.game.objects.Dialogue;
 import com.mandarina.game.objects.Potion;
 import com.mandarina.game.objects.Projectile;
 import com.mandarina.game.objects.Spike;
@@ -34,6 +36,8 @@ public class LevelObjects {
 	private Spike[] spikes;
 	private Cannon[] cannons;
 	private Tree[] trees;
+	private Image[] dialogueQuestionSprite;
+	private Image[] dialogueExclamationSprite;
 
 	public LevelObjects(LvlBuilderImage img) {
 		this.height = (int) img.getHeight();
@@ -44,17 +48,20 @@ public class LevelObjects {
 		this.cannonSprite = Cannon.load();
 		this.cannonBallSprite = CannonBall.load();
 		this.treeSprite = Tree.load();
+		this.dialogueQuestionSprite = Dialogue.loadQuestions();
+		this.dialogueExclamationSprite = Dialogue.loadExclamations();
 		load(img);
 	}
 
 	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, List<Potion> potions,
-			List<Projectile> projectiles) {
+			List<Projectile> projectiles, List<Dialogue> dialogues) {
 		drawPotions(g, lvlOffsetX, lvlOffsetY, potions);
 		drawContainers(g, lvlOffsetX, lvlOffsetY);
 		drawTraps(g, lvlOffsetX, lvlOffsetY);
 		drawCannons(g, lvlOffsetX, lvlOffsetY);
 		drawProjectiles(g, lvlOffsetX, lvlOffsetY, projectiles);
 		drawBackgroundTrees(g, lvlOffsetX, lvlOffsetY);
+		drawDialogues(g, lvlOffsetX, lvlOffsetY, dialogues);
 	}
 
 	private void drawBackgroundTrees(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
@@ -103,6 +110,18 @@ public class LevelObjects {
 						(int) (p.getHitbox().getMinX() - p.getxDrawOffset() - lvlOffsetX),
 						(int) (p.getHitbox().getMinY() - p.getyDrawOffset() - lvlOffsetY), ObjectCts.POTION_WIDTH,
 						ObjectCts.POTION_HEIGHT);
+			}
+	}
+
+	private void drawDialogues(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, List<Dialogue> dialogues) {
+		for (Dialogue d : dialogues)
+			if (d.isActive()) {
+				if (d.getType() == DialogueCts.QUESTION)
+					g.drawImage(dialogueQuestionSprite[d.getAniIndex()], d.getX() - lvlOffsetX, d.getY() - lvlOffsetY,
+							DialogueCts.DIALOGUE_WIDTH, DialogueCts.DIALOGUE_HEIGHT);
+				else
+					g.drawImage(dialogueExclamationSprite[d.getAniIndex()], d.getX() - lvlOffsetX,
+							d.getY() - lvlOffsetY, DialogueCts.DIALOGUE_WIDTH, DialogueCts.DIALOGUE_HEIGHT);
 			}
 	}
 

@@ -1,15 +1,18 @@
-package com.mandarina.game.effects;
+package com.mandarina.game.objects;
 
 import com.mandarina.game.constants.DialogueCts;
 import com.mandarina.game.constants.GameCts;
+import com.mandarina.utilz.LoadSave;
 
-public class DialogueEffect {
+import javafx.scene.image.Image;
+
+public class Dialogue {
 
 	private int x, y, type;
 	private int aniIndex, aniTick;
 	private boolean active = true;
 
-	public DialogueEffect(int x, int y, int type) {
+	public Dialogue(int x, int y, int type) {
 		this.x = x;
 		this.y = y;
 		this.type = type;
@@ -55,5 +58,13 @@ public class DialogueEffect {
 
 	public boolean isActive() {
 		return active;
+	}
+
+	public static Image[] loadQuestions() {
+		return LoadSave.GetAnimations(5, 14, 12, LoadSave.GetAtlas(LoadSave.QUESTION));
+	}
+
+	public static Image[] loadExclamations() {
+		return LoadSave.GetAnimations(5, 14, 12, LoadSave.GetAtlas(LoadSave.EXCLAMATION));
 	}
 }

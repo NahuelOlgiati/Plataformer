@@ -1,4 +1,4 @@
-package com.mandarina.game.objects;
+package com.mandarina.game.leveldata;
 
 import com.mandarina.game.constants.GameCts;
 import com.mandarina.utilz.LoadSave;

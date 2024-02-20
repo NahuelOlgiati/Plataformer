@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mandarina.game.constants.DialogueCts;
 import com.mandarina.game.constants.GameCts;
 import com.mandarina.game.constants.ObjectCts;
 import com.mandarina.game.entities.Enemy;
@@ -25,6 +26,7 @@ public class ObjectManager {
 
 	private List<Potion> potions;
 	private List<Projectile> projectiles;
+	private List<Dialogue> dialogues = new ArrayList<Dialogue>();
 
 	public ObjectManager(Playing playing) {
 		this.playing = playing;
@@ -34,10 +36,11 @@ public class ObjectManager {
 		this.currentLevel = level;
 		this.potions = new ArrayList<Potion>(Arrays.asList(level.getLevelObjects().getPotions()));
 		this.projectiles = new ArrayList<Projectile>();
+		loadDialogues();
 	}
 
 	public void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY) {
-		currentLevel.getLevelObjects().draw(g, lvlOffsetX, lvlOffsetY, this.potions, this.projectiles);
+		currentLevel.getLevelObjects().draw(g, lvlOffsetX, lvlOffsetY, this.potions, this.projectiles, this.dialogues);
 	}
 
 	public void checkSpikesTouched(Player p) {
@@ -84,7 +87,7 @@ public class ObjectManager {
 			}
 	}
 
-	public void update(LevelData lvlData, Player player) {
+	public void update() {
 		updateBackgroundTrees();
 		for (Potion p : potions)
 			if (p.isActive())
@@ -94,8 +97,13 @@ public class ObjectManager {
 			if (c.isActive())
 				c.update();
 
-		updateCannons(lvlData, player);
-		updateProjectiles(lvlData, player);
+		updateCannons(currentLevel.getLevelData(), playing.getPlayer());
+		updateProjectiles(currentLevel.getLevelData(), playing.getPlayer());
+
+		for (Dialogue d : dialogues)
+			if (d.isActive())
+				d.update();
+
 	}
 
 	private void updateBackgroundTrees() {
@@ -103,14 +111,14 @@ public class ObjectManager {
 			bt.update();
 	}
 
-	private void updateProjectiles(LevelData lvlData, Player player) {
+	private void updateProjectiles(LevelData levelData, Player player) {
 		for (Projectile p : projectiles)
 			if (p.isActive()) {
 				p.updatePos();
 				if (p.getHitbox().intersects(player.getHitbox())) {
 					player.changeHealth(-25);
 					p.setActive(false);
-				} else if (IsProjectileHittingLevel(p, lvlData))
+				} else if (IsProjectileHittingLevel(p, levelData))
 					p.setActive(false);
 			}
 	}
@@ -128,13 +136,13 @@ public class ObjectManager {
 		}
 	}
 
-	private void updateCannons(LevelData lvlData, Player player) {
+	private void updateCannons(LevelData levelData, Player player) {
 		for (Cannon c : currentLevel.getLevelObjects().getCannons()) {
 			if (!c.doAnimation)
 				if (c.getTileY() == player.getTileY())
 					if (isPlayerInRange(c, player))
 						if (isPlayerInfrontOfCannon(c, player))
-							if (CanCannonSeePlayer(lvlData, player.getHitbox(), c.getHitbox(), c.getTileY()))
+							if (CanCannonSeePlayer(levelData, player.getHitbox(), c.getHitbox(), c.getTileY()))
 								c.setAnimation(true);
 
 			c.update();
@@ -151,6 +159,27 @@ public class ObjectManager {
 		projectiles.add(new Projectile((int) c.getHitbox().getMinX(), (int) c.getHitbox().getMinY(), dir));
 	}
 
+	private void loadDialogues() {
+		dialogues.clear();
+		for (int i = 0; i < 10; i++)
+			dialogues.add(new Dialogue(0, 0, DialogueCts.EXCLAMATION));
+		for (int i = 0; i < 10; i++)
+			dialogues.add(new Dialogue(0, 0, DialogueCts.QUESTION));
+
+		for (Dialogue d : dialogues)
+			d.deactive();
+	}
+
+	public void addDialogue(int x, int y, int type) {
+		dialogues.add(new Dialogue(x, y - (int) (GameCts.SCALE * 15), type));
+		for (Dialogue d : dialogues)
+			if (!d.isActive())
+				if (d.getType() == type) {
+					d.reset(x, -(int) (GameCts.SCALE * 15));
+					return;
+				}
+	}
+
 	public void resetAllObjects() {
 		loadObjects(playing.getLevelManager().getCurrentLevel());
 		for (Potion p : potions)
@@ -159,5 +188,6 @@ public class ObjectManager {
 			c.reset();
 		for (Cannon c : currentLevel.getLevelObjects().getCannons())
 			c.reset();
+		loadDialogues();
 	}
 }

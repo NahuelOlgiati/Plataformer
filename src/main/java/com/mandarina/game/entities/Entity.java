@@ -109,7 +109,7 @@ public abstract class Entity {
 		}
 	}
 
-	protected void pushBack(int pushBackDir, LevelData lvlData, float speedMulti) {
+	protected void pushBack(int pushBackDir, LevelData levelData, float speedMulti) {
 		float xSpeed = 0;
 		if (pushBackDir == DirectionCts.LEFT)
 			xSpeed = -walkSpeed;
@@ -117,7 +117,7 @@ public abstract class Entity {
 			xSpeed = walkSpeed;
 
 		if (CanMoveHere(hitbox.getMinX() + xSpeed * speedMulti, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(),
-				lvlData))
+				levelData))
 			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed * speedMulti, hitbox.getMinY(), hitbox.getWidth(),
 					hitbox.getHeight());
 	}

@@ -10,7 +10,6 @@ import com.mandarina.game.entities.Enemy;
 import com.mandarina.game.entities.EnemyState;
 import com.mandarina.game.entities.player.Player;
 import com.mandarina.game.gamestates.Playing;
-import com.mandarina.game.levels.LevelData;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -31,24 +30,25 @@ public class Pinkstar extends Enemy {
 	}
 
 	@Override
-	public void update(LevelData lvlData, Playing playing) {
-		super.update(lvlData, playing);
+	public void update(Playing playing) {
+		super.update(playing);
 		updateAttackBox();
 	}
 
 	@Override
-	protected void updateBehavior(LevelData lvlData, Playing playing) {
+	protected void updateBehavior(Playing playing) {
+		var levelData = playing.getLevelData();
 		if (firstUpdate)
-			firstUpdateCheck(lvlData);
+			firstUpdateCheck(levelData);
 
 		if (inAir)
-			inAirChecks(lvlData, playing);
+			inAirChecks(playing);
 		else {
 			switch (state) {
 			case IDLE:
 				preRoll = true;
 				if (tickAfterRollInIdle >= 120) {
-					if (IsFloor(hitbox, lvlData))
+					if (IsFloor(hitbox, levelData))
 						newState(EnemyState.RUNNING);
 					else
 						inAir = true;
@@ -58,25 +58,25 @@ public class Pinkstar extends Enemy {
 					tickAfterRollInIdle++;
 				break;
 			case RUNNING:
-				if (canSeePlayer(lvlData, playing.getPlayer())) {
+				if (canSeePlayer(levelData, playing.getPlayer())) {
 					newState(EnemyState.ATTACK);
 					setWalkDir(playing.getPlayer());
 				}
-				move(lvlData, playing);
+				move(playing);
 				break;
 			case ATTACK:
 				if (preRoll) {
 					if (aniIndex >= 3)
 						preRoll = false;
 				} else {
-					move(lvlData, playing);
+					move(playing);
 					checkPlayerHit(playing.getPlayer());
 					checkRollOver(playing);
 				}
 				break;
 			case HIT:
 				if (aniIndex <= getSpriteAmount(state) - 2)
-					pushBack(pushBackDir, lvlData, 2f);
+					pushBack(pushBackDir, levelData, 2f);
 				updatePushBackDrawOffset();
 				tickAfterRollInIdle = 120;
 
@@ -140,7 +140,8 @@ public class Pinkstar extends Enemy {
 
 	}
 
-	private void move(LevelData lvlData, Playing playing) {
+	private void move(Playing playing) {
+		var levelData = playing.getLevelData();
 		float xSpeed = 0;
 
 		if (walkDir == DirectionCts.LEFT)
@@ -151,8 +152,8 @@ public class Pinkstar extends Enemy {
 		if (EnemyState.ATTACK.equals(state))
 			xSpeed *= 2;
 
-		if (CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(), lvlData))
-			if (IsFloor(hitbox, xSpeed, lvlData)) {
+		if (CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(), levelData))
+			if (IsFloor(hitbox, xSpeed, levelData)) {
 				hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(),
 						hitbox.getHeight());
 				return;
@@ -177,7 +178,7 @@ public class Pinkstar extends Enemy {
 
 	private void rollOver(Playing playing) {
 		newState(EnemyState.IDLE);
-		playing.addDialogue((int) hitbox.getMinX(), (int) hitbox.getMinY(), DialogueCts.QUESTION);
+		playing.getObjectManager().addDialogue((int) hitbox.getMinX(), (int) hitbox.getMinY(), DialogueCts.QUESTION);
 	}
 
 }

@@ -7,7 +7,6 @@ import com.mandarina.game.entities.Enemy;
 import com.mandarina.game.entities.EnemyState;
 import com.mandarina.game.entities.player.Player;
 import com.mandarina.game.gamestates.Playing;
-import com.mandarina.game.levels.LevelData;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -22,36 +21,38 @@ public class Crabby extends Enemy {
 	}
 
 	@Override
-	public void update(LevelData lvlData, Playing playing) {
-		super.update(lvlData, playing);
+	public void update(Playing playing) {
+		super.update(playing);
 		updateAttackBox();
 	}
 
 	@Override
-	protected void updateBehavior(LevelData lvlData, Playing playing) {
+	protected void updateBehavior(Playing playing) {
+		var levelData = playing.getLevelData();
 		if (firstUpdate)
-			firstUpdateCheck(lvlData);
+			firstUpdateCheck(levelData);
 
 		if (inAir) {
-			inAirChecks(lvlData, playing);
+			inAirChecks(playing);
 		} else {
 			switch (state) {
 			case IDLE:
-				if (IsFloor(hitbox, lvlData))
+				if (IsFloor(hitbox, levelData))
 					newState(EnemyState.RUNNING);
 				else
 					inAir = true;
 				break;
 			case RUNNING:
-				if (canSeePlayer(lvlData, playing.getPlayer())) {
+				if (canSeePlayer(levelData, playing.getPlayer())) {
 					turnTowardsPlayer(playing.getPlayer());
 					if (isPlayerCloseForAttack(playing.getPlayer()))
 						newState(EnemyState.ATTACK);
 				}
-				move(lvlData);
+				move(levelData);
 
 				if (inAir)
-					playing.addDialogue((int) hitbox.getMinX(), (int) hitbox.getMinY(), DialogueCts.EXCLAMATION);
+					playing.getObjectManager().addDialogue((int) hitbox.getMinX(), (int) hitbox.getMinY(),
+							DialogueCts.EXCLAMATION);
 
 				break;
 			case ATTACK:
@@ -62,7 +63,7 @@ public class Crabby extends Enemy {
 				break;
 			case HIT:
 				if (aniIndex <= getSpriteAmount(state) - 2)
-					pushBack(pushBackDir, lvlData, 2f);
+					pushBack(pushBackDir, levelData, 2f);
 				updatePushBackDrawOffset();
 				break;
 			}

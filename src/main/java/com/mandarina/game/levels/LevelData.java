@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mandarina.game.constants.GameCts;
-import com.mandarina.game.objects.Grass;
-import com.mandarina.game.tile.Tile;
-import com.mandarina.game.tile.Water;
+import com.mandarina.game.leveldata.Grass;
+import com.mandarina.game.leveldata.Tile;
+import com.mandarina.game.leveldata.Water;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 
 import javafx.scene.canvas.GraphicsContext;

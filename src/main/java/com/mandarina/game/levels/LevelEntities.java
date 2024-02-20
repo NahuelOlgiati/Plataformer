@@ -50,11 +50,11 @@ public class LevelEntities {
 		load(img);
 	}
 
-	public boolean update(LevelData lvlData, Playing playing) {
+	public boolean update(Playing playing) {
 		boolean isAnyActive = false;
 		for (Enemy e : enemys) {
 			if (e.isActive()) {
-				e.update(lvlData, playing);
+				e.update(playing);
 				isAnyActive = true;
 			}
 		}

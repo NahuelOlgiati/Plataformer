@@ -9,7 +9,6 @@ import com.mandarina.game.entities.Enemy;
 import com.mandarina.game.entities.EnemyState;
 import com.mandarina.game.entities.player.Player;
 import com.mandarina.game.gamestates.Playing;
-import com.mandarina.game.levels.LevelData;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -24,34 +23,35 @@ public class Shark extends Enemy {
 	}
 
 	@Override
-	public void update(LevelData lvlData, Playing playing) {
-		super.update(lvlData, playing);
+	public void update(Playing playing) {
+		super.update(playing);
 		updateAttackBoxFlip();
 	}
 
 	@Override
-	protected void updateBehavior(LevelData lvlData, Playing playing) {
+	protected void updateBehavior(Playing playing) {
+		var levelData = playing.getLevelData();
 		if (firstUpdate)
-			firstUpdateCheck(lvlData);
+			firstUpdateCheck(levelData);
 
 		if (inAir)
-			inAirChecks(lvlData, playing);
+			inAirChecks(playing);
 		else {
 			switch (state) {
 			case IDLE:
-				if (IsFloor(hitbox, lvlData))
+				if (IsFloor(hitbox, levelData))
 					newState(EnemyState.RUNNING);
 				else
 					inAir = true;
 				break;
 			case RUNNING:
-				if (canSeePlayer(lvlData, playing.getPlayer())) {
+				if (canSeePlayer(levelData, playing.getPlayer())) {
 					turnTowardsPlayer(playing.getPlayer());
 					if (isPlayerCloseForAttack(playing.getPlayer()))
 						newState(EnemyState.ATTACK);
 				}
 
-				move(lvlData);
+				move(levelData);
 				break;
 			case ATTACK:
 				if (aniIndex == 0)
@@ -59,13 +59,13 @@ public class Shark extends Enemy {
 				else if (aniIndex == 3) {
 					if (!attackChecked)
 						checkPlayerHit(attackBox, playing.getPlayer());
-					attackMove(lvlData, playing);
+					attackMove(playing);
 				}
 
 				break;
 			case HIT:
 				if (aniIndex <= getSpriteAmount(state) - 2)
-					pushBack(pushBackDir, lvlData, 2f);
+					pushBack(pushBackDir, levelData, 2f);
 				updatePushBackDrawOffset();
 				break;
 			}
@@ -93,7 +93,8 @@ public class Shark extends Enemy {
 		return distance <= attackDistance * 2;
 	}
 
-	private void attackMove(LevelData lvlData, Playing playing) {
+	private void attackMove(Playing playing) {
+		var levelData = playing.getLevelData();
 		float xSpeed = 0;
 
 		if (walkDir == DirectionCts.LEFT)
@@ -102,15 +103,15 @@ public class Shark extends Enemy {
 			xSpeed = walkSpeed;
 
 		if (CanMoveHere(hitbox.getMinX() + xSpeed * 4, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(),
-				lvlData)) {
-			if (IsFloor(hitbox, xSpeed * 4, lvlData)) {
+				levelData)) {
+			if (IsFloor(hitbox, xSpeed * 4, levelData)) {
 				hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed * 4, hitbox.getMinY(), hitbox.getWidth(),
 						hitbox.getHeight());
 				return;
 			}
 		}
 		newState(EnemyState.IDLE);
-		playing.addDialogue((int) hitbox.getMinX(), (int) hitbox.getMinY(), DialogueCts.EXCLAMATION);
+		playing.getObjectManager().addDialogue((int) hitbox.getMinX(), (int) hitbox.getMinY(), DialogueCts.EXCLAMATION);
 	}
 
 	private void checkPlayerHit(Rectangle2D attackBox, Player player) {

@@ -6,7 +6,6 @@ import com.mandarina.game.entities.shark.Shark;
 import com.mandarina.game.entities.titan.Titan;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.Level;
-import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.levels.LevelEntities;
 
 import javafx.geometry.Rectangle2D;
@@ -26,8 +25,7 @@ public class EnemyManager {
 	}
 
 	public void update() {
-		LevelData lvlData = currentLevel.getLevelData();
-		boolean isAnyActive = currentLevel.getLevelEntities().update(lvlData, playing);
+		boolean isAnyActive = currentLevel.getLevelEntities().update(playing);
 		if (!isAnyActive)
 			playing.setLevelCompleted(true);
 	}

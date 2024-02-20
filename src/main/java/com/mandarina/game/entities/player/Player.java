@@ -66,7 +66,7 @@ public class Player extends Entity {
 	}
 
 	public void update() {
-		LevelData lvlData = playing.getLevelManager().getCurrentLevel().getLevelData();
+		LevelData levelData = playing.getLevelManager().getCurrentLevel().getLevelData();
 		if (currentHealth <= 0) {
 			if (!PlayerState.DEAD.equals(state)) {
 				state = PlayerState.DEAD;
@@ -76,7 +76,7 @@ public class Player extends Entity {
 				audioPlayer.playEffect(AudioPlayer.DIE);
 
 				// Check if player died in air
-				if (!IsEntityOnFloor(hitbox, lvlData)) {
+				if (!IsEntityOnFloor(hitbox, levelData)) {
 					inAir = true;
 					airSpeed = 0;
 				}
@@ -91,7 +91,7 @@ public class Player extends Entity {
 				// Fall if in air
 				if (inAir) {
 					if (CanMoveHere(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
-							hitbox.getHeight(), lvlData)) {
+							hitbox.getHeight(), levelData)) {
 						hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
 								hitbox.getHeight());
 						airSpeed += GameCts.GRAVITY;
@@ -110,7 +110,7 @@ public class Player extends Entity {
 
 		if (PlayerState.HIT.equals(state)) {
 			if (aniIndex <= PlayerAtlas.GetSpriteAmount(state) - 3)
-				pushBack(pushBackDir, lvlData, 1.25f);
+				pushBack(pushBackDir, levelData, 1.25f);
 			updatePushBackDrawOffset();
 		} else
 			updatePos();
@@ -209,8 +209,8 @@ public class Player extends Entity {
 				if (PlayerState.HIT.equals(state)) {
 					newState(PlayerState.IDLE);
 					airSpeed = 0f;
-					LevelData lvlData = playing.getLevelManager().getCurrentLevel().getLevelData();
-					if (!IsFloor(hitbox, 0, lvlData))
+					LevelData levelData = playing.getLevelData();
+					if (!IsFloor(hitbox, 0, levelData))
 						inAir = true;
 				}
 			}
@@ -290,14 +290,14 @@ public class Player extends Entity {
 			xSpeed *= 3;
 		}
 
-		LevelData lvlData = playing.getLevelManager().getCurrentLevel().getLevelData();
+		LevelData levelData = playing.getLevelData();
 		if (!inAir)
-			if (!IsEntityOnFloor(hitbox, lvlData))
+			if (!IsEntityOnFloor(hitbox, levelData))
 				inAir = true;
 
 		if (inAir && !powerAttackActive) {
 			if (CanMoveHere(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(), hitbox.getHeight(),
-					lvlData)) {
+					levelData)) {
 				hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
 						hitbox.getHeight());
 				airSpeed += GameCts.GRAVITY;
@@ -332,8 +332,9 @@ public class Player extends Entity {
 	}
 
 	private void updateXPos(float xSpeed) {
-		LevelData lvlData = playing.getLevelManager().getCurrentLevel().getLevelData();
-		if (CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(), lvlData)) {
+		LevelData levelData = playing.getLevelData();
+		if (CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(),
+				levelData)) {
 			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(),
 					hitbox.getHeight());
 		} else {
@@ -424,8 +425,8 @@ public class Player extends Entity {
 		hitbox = new Rectangle2D(x, y, hitbox.getWidth(), hitbox.getHeight());
 		resetAttackBox();
 
-		LevelData lvlData = playing.getLevelManager().getCurrentLevel().getLevelData();
-		if (!IsEntityOnFloor(hitbox, lvlData)) {
+		LevelData levelData = playing.getLevelData();
+		if (!IsEntityOnFloor(hitbox, levelData)) {
 			inAir = true;
 		}
 	}

@@ -32,7 +32,7 @@ public abstract class Enemy extends Entity {
 		walkSpeed = GameCts.SCALE * 0.35f;
 	}
 
-	protected abstract void updateBehavior(LevelData lvlData, Playing playing);
+	protected abstract void updateBehavior(Playing playing);
 
 	public abstract void draw(GraphicsContext g, int lvlOffsetX, int lvlOffsetY, Image[][] animations);
 
@@ -40,8 +40,8 @@ public abstract class Enemy extends Entity {
 
 	protected abstract int getMaxHealth();
 
-	public void update(LevelData lvlData, Playing playing) {
-		updateBehavior(lvlData, playing);
+	public void update(Playing playing) {
+		updateBehavior(playing);
 		updateAnimationTick();
 	}
 
@@ -50,24 +50,25 @@ public abstract class Enemy extends Entity {
 		this.attackBoxOffsetX = (int) (GameCts.SCALE * attackBoxOffsetX);
 	}
 
-	protected void firstUpdateCheck(LevelData lvlData) {
-		if (!IsEntityOnFloor(hitbox, lvlData))
+	protected void firstUpdateCheck(LevelData levelData) {
+		if (!IsEntityOnFloor(hitbox, levelData))
 			inAir = true;
 		firstUpdate = false;
 	}
 
-	protected void inAirChecks(LevelData lvlData, Playing playing) {
+	protected void inAirChecks(Playing playing) {
+		var levelData = playing.getLevelData();
 		if (!EnemyState.HIT.equals(state) && !EnemyState.DEAD.equals(state)) {
-			updateInAir(lvlData);
+			updateInAir(levelData);
 			playing.getObjectManager().checkSpikesTouched(this);
-			if (IsEntityInWater(hitbox, lvlData))
+			if (IsEntityInWater(hitbox, levelData))
 				hurt(maxHealth);
 		}
 	}
 
-	protected void updateInAir(LevelData lvlData) {
+	protected void updateInAir(LevelData levelData) {
 		if (CanMoveHere(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(), hitbox.getHeight(),
-				lvlData)) {
+				levelData)) {
 			hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
 					hitbox.getHeight());
 			airSpeed += GameCts.GRAVITY;
@@ -79,7 +80,7 @@ public abstract class Enemy extends Entity {
 		}
 	}
 
-	protected void move(LevelData lvlData) {
+	protected void move(LevelData levelData) {
 		float xSpeed = 0;
 
 		if (walkDir == DirectionCts.LEFT)
@@ -87,8 +88,8 @@ public abstract class Enemy extends Entity {
 		else
 			xSpeed = walkSpeed;
 
-		if (CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(), lvlData))
-			if (IsFloor(hitbox, xSpeed, lvlData)) {
+		if (CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(), levelData))
+			if (IsFloor(hitbox, xSpeed, levelData)) {
 				hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(),
 						hitbox.getHeight());
 				return;
@@ -105,11 +106,11 @@ public abstract class Enemy extends Entity {
 		}
 	}
 
-	protected boolean canSeePlayer(LevelData lvlData, Player player) {
+	protected boolean canSeePlayer(LevelData levelData, Player player) {
 		int playerTileY = (int) (player.getHitbox().getMinY() / GameCts.TILES_SIZE);
 		if (playerTileY == tileY)
 			if (isPlayerInRange(player)) {
-				if (IsSightClear(lvlData, hitbox, player.hitbox, tileY))
+				if (IsSightClear(levelData, hitbox, player.hitbox, tileY))
 					return true;
 			}
 		return false;
