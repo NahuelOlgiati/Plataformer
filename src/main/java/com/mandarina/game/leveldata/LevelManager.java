@@ -5,12 +5,12 @@ import java.util.Random;
 
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.Level;
+import com.mandarina.game.main.GameDrawer;
+import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.utilz.LoadSave;
 
-import com.mandarina.game.main.GameDrawer;
-
-public class LevelManager {
+public class LevelManager implements LayerDrawer {
 
 	private Playing playing;
 	private Level currentLevel;
@@ -62,13 +62,19 @@ public class LevelManager {
 		playing.setMaxLvlOffsetY(level.getLvlOffsetY());
 	}
 
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	@Override
+	public void drawL1(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		this.background.draw(g, lvlOffsetX, lvlOffsetY);
 		this.backgroundCloud.draw(g, lvlOffsetX, lvlOffsetY);
 		if (drawRain)
 			this.rain.draw(g, lvlOffsetX, lvlOffsetY);
 
-		getCurrentLevel().getLevelData().draw(g, lvlOffsetX, lvlOffsetY);
+		getCurrentLevel().getLevelData().drawL1(g, lvlOffsetX, lvlOffsetY);
+	}
+
+	@Override
+	public void drawL2(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		getCurrentLevel().getLevelData().drawL2(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	public void update() {

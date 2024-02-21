@@ -3,10 +3,11 @@ package com.mandarina.game.entities;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.game.main.LayerDrawer;
 
 import javafx.geometry.Rectangle2D;
 
-public class EnemyManager {
+public class EnemyManager implements LayerDrawer {
 
 	private Playing playing;
 	private Level currentLevel;
@@ -25,8 +26,14 @@ public class EnemyManager {
 			playing.setLevelCompleted(true);
 	}
 
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
-		currentLevel.getLevelEntities().draw(g, lvlOffsetX, lvlOffsetY);
+	@Override
+	public void drawL1(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		currentLevel.getLevelEntities().drawL1(g, lvlOffsetX, lvlOffsetY);
+	}
+
+	@Override
+	public void drawL2(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		currentLevel.getLevelEntities().drawL2(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	public void checkEnemyHit(Rectangle2D attackBox, int playerDamage) {

@@ -1,5 +1,8 @@
 package com.mandarina.lvlbuilder;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.effect.Blend;
@@ -37,6 +40,18 @@ public enum TileFeature {
 		blend.setTopInput(imageInput);
 		blend.setMode(BlendMode.ADD);
 		iw.setEffect(blend);
+	}
+
+	public boolean[][] get(LvlBuilderImage img, RGB rgb, int width, int height) {
+		boolean[][] isTraversable = new boolean[height][width];
+		PNGMetadata metadata = new PNGMetadata(img);
+		Map<Integer, Integer> map = metadata.getMetadata().get(PNGMetadata.getKey(rgb, this.getKeyCode()));
+		if (map != null) {
+			for (Entry<Integer, Integer> e : map.entrySet()) {
+				isTraversable[e.getValue()][e.getKey()] = true;
+			}
+		}
+		return isTraversable;
 	}
 
 	public KeyCode getKeyCode() {

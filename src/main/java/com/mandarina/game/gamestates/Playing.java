@@ -139,11 +139,14 @@ public class Playing {
 	}
 
 	public void draw(GameDrawer g) {
-		levelManager.draw(g, lvlOffsetX, lvlOffsetY);
+		levelManager.drawL1(g, lvlOffsetX, lvlOffsetY);
+		objectManager.drawL1(g, lvlOffsetX, lvlOffsetY);
+		enemyManager.drawL1(g, lvlOffsetX, lvlOffsetY);
 		player.draw(g, lvlOffsetX, lvlOffsetY);
-		objectManager.draw(g, lvlOffsetX, lvlOffsetY);
-		enemyManager.draw(g, lvlOffsetX, lvlOffsetY);
-		
+		levelManager.drawL2(g, lvlOffsetX, lvlOffsetY);
+		objectManager.drawL2(g, lvlOffsetX, lvlOffsetY);
+		enemyManager.drawL2(g, lvlOffsetX, lvlOffsetY);
+
 		statusBar.draw(g);
 
 		if (paused) {

@@ -6,19 +6,24 @@ import java.util.List;
 import com.mandarina.game.leveldata.Grass;
 import com.mandarina.game.leveldata.Tile;
 import com.mandarina.game.leveldata.Water;
-import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.game.main.LayerDrawer;
+import com.mandarina.lvlbuilder.LvlBuilderImage;
+import com.mandarina.lvlbuilder.RGB;
+import com.mandarina.lvlbuilder.TileFeature;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
 
-public class LevelData {
+public class LevelData implements LayerDrawer {
 
 	private int height;
 	private int width;
 	private boolean[][] isSolid;
 	private boolean[][] isWater;
+	private boolean[][] isTraversable;
 
 	private Image[] tileSprite;
 	private Image[] waterSprite;
@@ -33,6 +38,7 @@ public class LevelData {
 		this.width = (int) img.getWidth();
 		this.isSolid = new boolean[height][width];
 		this.isWater = new boolean[height][width];
+		this.isTraversable = new boolean[height][width];
 		this.tileSprite = Tile.load();
 		this.waterSprite = Water.load();
 		this.grassSprite = Grass.load();
@@ -45,7 +51,8 @@ public class LevelData {
 		}
 	}
 
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	@Override
+	public void drawL1(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		for (Tile t : tile) {
 			t.draw(g, lvlOffsetX, lvlOffsetY, tileSprite);
 		}
@@ -55,6 +62,12 @@ public class LevelData {
 		for (Grass s : grass) {
 			s.draw(g, lvlOffsetX, lvlOffsetY, grassSprite);
 		}
+	}
+
+	@Override
+	public void drawL2(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		// TODO Auto-generated method stub
+
 	}
 
 	public void load(LvlBuilderImage img) {
@@ -72,6 +85,7 @@ public class LevelData {
 		this.tile = tile.toArray(new Tile[tile.size()]);
 		this.water = water.toArray(new Water[water.size()]);
 		this.grass = grass.toArray(new Grass[grass.size()]);
+		this.isTraversable = TileFeature.TRAVERSABLE.get(img, RGB.RED, width, height);
 	}
 
 	public void addRed(int red, int x, int y, List<Tile> tile, List<Water> water, List<Grass> grass) {
@@ -116,4 +130,9 @@ public class LevelData {
 	public boolean[][] getIsWater() {
 		return isWater;
 	}
+
+	public boolean[][] getIsTraversable() {
+		return isTraversable;
+	}
+
 }

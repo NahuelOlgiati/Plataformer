@@ -142,8 +142,7 @@ public class LvlBuilderMenu {
 	}
 
 	private void loadMetadata(LvlBuilderImage image) {
-		PNGMetadata metadata = new PNGMetadata();
-		metadata.load(image);
+		PNGMetadata metadata = new PNGMetadata(image);
 		metadata.log();
 		lvlBuilder.setMetadata(metadata);
 		loadManePaneMetadata(lvlBuilder.getRedMainPane(), RGB.RED, metadata);

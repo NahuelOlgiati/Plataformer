@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.game.objects.Cannon;
 import com.mandarina.game.objects.CannonBall;
 import com.mandarina.game.objects.Container;
@@ -22,7 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
 
-public class LevelObjects {
+public class LevelObjects implements LayerDrawer {
 
 	private int height;
 	private int width;
@@ -53,15 +54,16 @@ public class LevelObjects {
 		load(img);
 	}
 
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Potion> potions, List<Projectile> projectiles,
-			List<Dialogue> dialogues) {
-		drawPotions(g, lvlOffsetX, lvlOffsetY, potions);
+	@Override
+	public void drawL1(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		drawContainers(g, lvlOffsetX, lvlOffsetY);
 		drawTraps(g, lvlOffsetX, lvlOffsetY);
 		drawCannons(g, lvlOffsetX, lvlOffsetY);
-		drawProjectiles(g, lvlOffsetX, lvlOffsetY, projectiles);
+	}
+
+	@Override
+	public void drawL2(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		drawTrees(g, lvlOffsetX, lvlOffsetY);
-		drawDialogues(g, lvlOffsetX, lvlOffsetY, dialogues);
 	}
 
 	private void drawTrees(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
@@ -69,7 +71,7 @@ public class LevelObjects {
 			bt.draw(g, lvlOffsetX, lvlOffsetY, treeSprite);
 	}
 
-	private void drawProjectiles(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Projectile> projectiles) {
+	public void drawProjectiles(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Projectile> projectiles) {
 		for (Projectile p : projectiles)
 			if (p.isActive())
 				g.drawImage(cannonBallSprite, (int) (p.getHitbox().getMinX() - lvlOffsetX),
@@ -100,7 +102,7 @@ public class LevelObjects {
 			}
 	}
 
-	private void drawPotions(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Potion> potions) {
+	public void drawPotions(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Potion> potions) {
 		for (Potion p : potions)
 			if (p.isActive()) {
 				int type = 0;
@@ -113,7 +115,7 @@ public class LevelObjects {
 			}
 	}
 
-	private void drawDialogues(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Dialogue> dialogues) {
+	public void drawDialogues(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Dialogue> dialogues) {
 		for (Dialogue d : dialogues)
 			if (d.isActive()) {
 				if (d.getType() == DialogueCts.QUESTION)

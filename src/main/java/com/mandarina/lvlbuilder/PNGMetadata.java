@@ -14,9 +14,9 @@ public class PNGMetadata {
 		this.metadata = new HashMap<String, Map<Integer, Integer>>();
 	}
 
-	public PNGMetadata load(LvlBuilderImage img) {
+	public PNGMetadata(LvlBuilderImage img) {
+		this.metadata = new HashMap<String, Map<Integer, Integer>>();
 		LvlBuilderMetada.readFeatures(img, this);
-		return this;
 	}
 
 	public void add(RGB rgb, KeyCode keyCode, Map<Integer, Integer> coordMap) {
@@ -104,4 +104,16 @@ public class PNGMetadata {
 	public Map<String, Map<Integer, Integer>> getMetadata() {
 		return metadata;
 	}
+	
+    private static int[][] mapToArray(Map<Integer, Integer> map) {
+        int[][] array = new int[map.size()][2];
+        int index = 0;
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            array[index][0] = entry.getKey();
+            array[index][1] = entry.getValue();
+            index++;
+        }
+        return array;
+    }
 }

@@ -12,13 +12,13 @@ import com.mandarina.game.entities.Player;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.levels.LevelData;
+import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
+import com.mandarina.game.main.LayerDrawer;
 
 import javafx.geometry.Rectangle2D;
 
-import com.mandarina.game.main.GameCts;
-import com.mandarina.game.main.GameDrawer;
-
-public class ObjectManager {
+public class ObjectManager implements LayerDrawer {
 
 	private Playing playing;
 	private Level currentLevel;
@@ -38,8 +38,18 @@ public class ObjectManager {
 		loadDialogues();
 	}
 
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
-		currentLevel.getLevelObjects().draw(g, lvlOffsetX, lvlOffsetY, this.potions, this.projectiles, this.dialogues);
+	@Override
+	public void drawL1(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		currentLevel.getLevelObjects().drawL1(g, lvlOffsetX, lvlOffsetY);
+		currentLevel.getLevelObjects().drawPotions(g, lvlOffsetX, lvlOffsetY, this.potions);
+		currentLevel.getLevelObjects().drawProjectiles(g, lvlOffsetX, lvlOffsetY, this.projectiles);
+		currentLevel.getLevelObjects().drawDialogues(g, lvlOffsetX, lvlOffsetY, this.dialogues);
+
+	}
+
+	@Override
+	public void drawL2(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		currentLevel.getLevelObjects().drawL2(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	public void checkSpikesTouched(Player p) {

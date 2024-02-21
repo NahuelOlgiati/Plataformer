@@ -12,6 +12,7 @@ import com.mandarina.game.entities.Titan;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 
 import javafx.geometry.Point2D;
@@ -19,7 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
 
-public class LevelEntities {
+public class LevelEntities implements LayerDrawer {
 
 	private int height;
 	private int width;
@@ -57,7 +58,8 @@ public class LevelEntities {
 		return isAnyActive;
 	}
 
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	@Override
+	public void drawL1(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		for (Crabby c : crabs) {
 			if (c.isActive()) {
 				c.draw(g, lvlOffsetX, lvlOffsetY, crabbySprite);
@@ -78,6 +80,11 @@ public class LevelEntities {
 				t.draw(g, lvlOffsetX, lvlOffsetY, titanSprite);
 			}
 		}
+	}
+
+	@Override
+	public void drawL2(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		// TODO Auto-generated method stub
 	}
 
 	public void load(LvlBuilderImage img) {

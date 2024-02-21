@@ -49,7 +49,12 @@ public class HelpMethods {
 	}
 
 	public static boolean IsTileSolid(int xTile, int yTile, LevelData levelData) {
-		return levelData.getIsSolid()[yTile][xTile];
+		boolean isTraversable = levelData.getIsTraversable()[yTile][xTile];
+		if (isTraversable) {
+			return false;
+		} else {
+			return levelData.getIsSolid()[yTile][xTile];
+		}
 	}
 
 	public static float GetEntityXPosNextToWall(Rectangle2D hitbox, float xSpeed) {
