@@ -35,7 +35,7 @@ public class LvlBuilder {
 	private ScrollPane blueSidePane;
 	private ScrollPane blueMainPane;
 
-	private PNGMetadata metadata;
+	private PNGMetadata pm;
 
 	private Label mousePositionLabel;
 	private HBox root;
@@ -60,7 +60,7 @@ public class LvlBuilder {
 	private Scene getScene() {
 		createSidePanes();
 		createMainPanes();
-		this.metadata = new PNGMetadata();
+		this.pm = new PNGMetadata();
 		this.mousePositionLabel = new Label();
 
 		root = new HBox(redSidePane, redMainPane);
@@ -77,7 +77,7 @@ public class LvlBuilder {
 				for (TileFeature e : TileFeature.values()) {
 					if (event.getCode() == e.getKeyCode()) {
 						e.apply(selectedTile.getImageView());
-						this.metadata.add(rgb, e.getKeyCode(), selectedTile.getX(), selectedTile.getY());
+						e.add(this.pm, rgb, selectedTile);
 					}
 				}
 			}
@@ -309,11 +309,11 @@ public class LvlBuilder {
 		return blueMainPane;
 	}
 
-	public PNGMetadata getMetadata() {
-		return metadata;
+	public PNGMetadata getPNGMetadata() {
+		return pm;
 	}
 
-	public void setMetadata(PNGMetadata metadata) {
-		this.metadata = metadata;
+	public void setPNGMetadata(PNGMetadata pm) {
+		this.pm = pm;
 	}
 }

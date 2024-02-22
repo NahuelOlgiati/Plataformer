@@ -72,9 +72,11 @@ public class LevelData implements LayerDrawer {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void load(LvlBuilderImage img) {
 		PNGMetadata pngMetadata = new PNGMetadata(img);
-		List<Pair<Integer, Integer>> traversable = TileFeature.TRAVERSABLE.get(pngMetadata, RGB.RED);
+		List<Pair<Integer, Integer>> traversable = (List<Pair<Integer, Integer>>) TileFeature.TRAVERSABLE
+				.get(pngMetadata, RGB.RED);
 		List<Tile> tile = new ArrayList<Tile>();
 		List<Tile> tileL2 = new ArrayList<Tile>();
 		List<Water> water = new ArrayList<Water>();
@@ -102,7 +104,8 @@ public class LevelData implements LayerDrawer {
 				water.add(new Water(GameCts.TILES_SIZE * x, GameCts.TILES_SIZE * y, red));
 				break;
 			default:
-				boolean isTraversable = traversable.contains(new Pair<Integer, Integer>(x, y));
+				boolean isTraversable = traversable == null ? false
+						: traversable.contains(new Pair<Integer, Integer>(x, y));
 				isSolid[y][x] = !isTraversable;
 				Tile t = new Tile(GameCts.TILES_SIZE * x, GameCts.TILES_SIZE * y, red);
 				if (isTraversable) {

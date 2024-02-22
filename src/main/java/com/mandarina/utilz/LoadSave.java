@@ -99,12 +99,12 @@ public class LoadSave {
 						try (InputStream is = r.getInputStream()) {
 							return new LvlBuilderImage(is, r);
 						} catch (IOException e) {
-							System.out.println(e);
+							e.printStackTrace();
 							return null;
 						}
 					}).orElse(null);
 		} catch (IOException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -119,7 +119,7 @@ public class LoadSave {
 					.of(new PathMatchingResourcePatternResolver(cl).getResources(pathNormalization(path) + "/*"))
 					.count();
 		} catch (IOException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 		return 0;
 	}

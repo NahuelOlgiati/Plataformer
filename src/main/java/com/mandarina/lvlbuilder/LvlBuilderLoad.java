@@ -43,12 +43,12 @@ public class LvlBuilderLoad {
 						try (InputStream is = r.getInputStream()) {
 							return new LvlBuilderImage(is, r);
 						} catch (Throwable e) {
-							System.out.println(e);
+							e.printStackTrace();
 							return null;
 						}
 					}).toArray(LvlBuilderImage[]::new);
 		} catch (Throwable e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -122,7 +122,7 @@ public class LvlBuilderLoad {
 				return image;
 			}
 		} catch (Throwable e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 		return null;
 	}

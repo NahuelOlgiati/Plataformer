@@ -3,8 +3,6 @@ package com.mandarina.lvlbuilder;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -21,47 +19,64 @@ import org.w3c.dom.NodeList;
 
 public class LvlBuilderMetada {
 
-	public static void readFeatures(LvlBuilderImage img, PNGMetadata pngMetadata) {
+	public static void readFeatures(LvlBuilderImage img, PNGMetadata pm) {
 		try (ImageInputStream input = ImageIO.createImageInputStream(img.getResource().getFile())) {
 			Iterator<ImageReader> readers = ImageIO.getImageReaders(input);
-			ImageReader reader = (ImageReader) readers.next(); // TODO: Validate that there are readers
+			ImageReader reader = (ImageReader) readers.next();
 			reader.setInput(input);
 			IIOMetadata metadata = reader.getImageMetadata(0);
 			for (TileFeature tf : TileFeature.values()) {
 				for (RGB rgb : RGB.values()) {
 					String key = PNGMetadata.getKey(rgb, tf.getKeyCode());
 					String textEntry = getTextEntry(metadata, key);
-					if (textEntry != null) {
-						Map<Integer, Integer> coords = pngMetadata.getCoords(textEntry);
-						pngMetadata.add(rgb, tf.getKeyCode(), coords);
+					if (textEntry != null && !textEntry.isEmpty()) {
+						Object object = tf.fromString(pm, rgb, textEntry);
+						pm.add(rgb, tf.getKeyCode(), object);
 					}
 				}
 			}
 		} catch (IOException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
 
-	public static void writeMetadata(File file, PNGMetadata pngMetadata) {
+	public static void writeMetadata(File file, PNGMetadata pm) {
 		try (ImageInputStream input = ImageIO.createImageInputStream(file);
 				ImageOutputStream output = ImageIO.createImageOutputStream(file)) {
 			Iterator<ImageReader> readers = ImageIO.getImageReaders(input);
-			ImageReader reader = (ImageReader) readers.next(); // TODO: Validate that there are readers
+			ImageReader reader = (ImageReader) readers.next();
 			reader.setInput(input);
 			IIOImage image = reader.readAll(0, null);
 			IIOMetadata metadata = image.getMetadata();
 			clearMetadata(metadata);
-			for (Entry<String, Map<Integer, Integer>> e : pngMetadata.getMetadata().entrySet()) {
-				String value = pngMetadata.toString(e.getKey());
-				if (value != null) {
-					addTextEntry(metadata, e.getKey(), value);
+			for (TileFeature tf : TileFeature.values()) {
+				for (RGB rgb : RGB.values()) {
+					String textEntry = tf.toString(pm, rgb);
+					if (textEntry != null && !textEntry.isEmpty()) {
+						String key = PNGMetadata.getKey(rgb, tf.getKeyCode());
+						addTextEntry(metadata, key, textEntry);
+					}
 				}
 			}
-			ImageWriter writer = ImageIO.getImageWriter(reader); // TODO: Validate that there are writers
+			ImageWriter writer = ImageIO.getImageWriter(reader);
 			writer.setOutput(output);
 			writer.write(image);
 		} catch (Throwable e) {
-			System.out.println(e);
+			e.printStackTrace();
+		}
+	}
+
+	public static void log(PNGMetadata pm) {
+		for (TileFeature tf : TileFeature.values()) {
+			for (RGB rgb : RGB.values()) {
+				String textEntry = tf.toString(pm, rgb);
+				if (textEntry != null && !textEntry.isEmpty()) {
+					String key = PNGMetadata.getKey(rgb, tf.getKeyCode());
+					System.out.println(key);
+					System.out.println(textEntry);
+					System.out.println();
+				}
+			}
 		}
 	}
 
