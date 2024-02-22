@@ -104,16 +104,4 @@ public class PNGMetadata {
 	public Map<String, Map<Integer, Integer>> getMetadata() {
 		return metadata;
 	}
-	
-    private static int[][] mapToArray(Map<Integer, Integer> map) {
-        int[][] array = new int[map.size()][2];
-        int index = 0;
-
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            array[index][0] = entry.getKey();
-            array[index][1] = entry.getValue();
-            index++;
-        }
-        return array;
-    }
 }
