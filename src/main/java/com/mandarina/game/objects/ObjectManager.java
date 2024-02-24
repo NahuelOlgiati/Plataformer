@@ -33,7 +33,7 @@ public class ObjectManager implements LayerDrawer {
 
 	public void loadObjects(Level level) {
 		this.currentLevel = level;
-		this.potions = new ArrayList<Potion>(Arrays.asList(level.getLevelObjects().getPotions()));
+		this.potions = new ArrayList<Potion>(Arrays.asList(level.getLevelObjects().getPotion().getItems()));
 		this.projectiles = new ArrayList<Projectile>();
 		loadDialogues();
 	}
@@ -41,7 +41,6 @@ public class ObjectManager implements LayerDrawer {
 	@Override
 	public void drawL1(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		currentLevel.getLevelObjects().drawL1(g, lvlOffsetX, lvlOffsetY);
-		currentLevel.getLevelObjects().drawPotions(g, lvlOffsetX, lvlOffsetY, this.potions);
 		currentLevel.getLevelObjects().drawProjectiles(g, lvlOffsetX, lvlOffsetY, this.projectiles);
 		currentLevel.getLevelObjects().drawDialogues(g, lvlOffsetX, lvlOffsetY, this.dialogues);
 
@@ -53,13 +52,13 @@ public class ObjectManager implements LayerDrawer {
 	}
 
 	public void checkSpikesTouched(Player p) {
-		for (Spike s : currentLevel.getLevelObjects().getSpikes())
+		for (Spike s : currentLevel.getLevelObjects().getSpike().getItems())
 			if (s.getHitbox().intersects(p.getHitbox()))
 				p.kill();
 	}
 
 	public void checkSpikesTouched(Enemy e) {
-		for (Spike s : currentLevel.getLevelObjects().getSpikes())
+		for (Spike s : currentLevel.getLevelObjects().getSpike().getItems())
 			if (s.getHitbox().intersects(e.getHitbox()))
 				e.hurt(200);
 	}
@@ -82,7 +81,7 @@ public class ObjectManager implements LayerDrawer {
 	}
 
 	public void checkObjectHit(Rectangle2D attackbox) {
-		for (Container c : currentLevel.getLevelObjects().getContainers())
+		for (Container c : currentLevel.getLevelObjects().getContainer().getItems())
 			if (c.isActive() && !c.doAnimation) {
 				if (c.getHitbox().intersects(attackbox)) {
 					c.setAnimation(true);
@@ -102,7 +101,7 @@ public class ObjectManager implements LayerDrawer {
 			if (p.isActive())
 				p.update();
 
-		for (Container c : currentLevel.getLevelObjects().getContainers())
+		for (Container c : currentLevel.getLevelObjects().getContainer().getItems())
 			if (c.isActive())
 				c.update();
 
@@ -116,7 +115,7 @@ public class ObjectManager implements LayerDrawer {
 	}
 
 	private void updateBackgroundTrees() {
-		for (Tree bt : currentLevel.getLevelObjects().getTrees())
+		for (Tree bt : currentLevel.getLevelObjects().getTree().getItems())
 			bt.update();
 	}
 
@@ -146,7 +145,7 @@ public class ObjectManager implements LayerDrawer {
 	}
 
 	private void updateCannons(LevelData levelData, Player player) {
-		for (Cannon c : currentLevel.getLevelObjects().getCannons()) {
+		for (Cannon c : currentLevel.getLevelObjects().getCannon().getItems()) {
 			if (!c.doAnimation)
 				if (c.getTileY() == player.getTileY())
 					if (isPlayerInRange(c, player))
@@ -193,9 +192,9 @@ public class ObjectManager implements LayerDrawer {
 		loadObjects(playing.getLevelManager().getCurrentLevel());
 		for (Potion p : potions)
 			p.reset();
-		for (Container c : currentLevel.getLevelObjects().getContainers())
+		for (Container c : currentLevel.getLevelObjects().getContainer().getItems())
 			c.reset();
-		for (Cannon c : currentLevel.getLevelObjects().getCannons())
+		for (Cannon c : currentLevel.getLevelObjects().getCannon().getItems())
 			c.reset();
 		loadDialogues();
 	}

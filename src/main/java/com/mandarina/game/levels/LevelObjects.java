@@ -1,11 +1,11 @@
 package com.mandarina.game.levels;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
+import com.mandarina.game.main.LayerManager;
 import com.mandarina.game.objects.Cannon;
 import com.mandarina.game.objects.CannonBall;
 import com.mandarina.game.objects.Container;
@@ -31,14 +31,14 @@ public class LevelObjects implements LayerDrawer {
 	private Image[][] potionSprite, containerSprite, treeSprite;
 	private Image[] cannonSprite;
 	private Image spikeSprite, cannonBallSprite;
-
-	private Potion[] potions;
-	private Container[] containers;
-	private Spike[] spikes;
-	private Cannon[] cannons;
-	private Tree[] trees;
 	private Image[] dialogueQuestionSprite;
 	private Image[] dialogueExclamationSprite;
+
+	private LayerManager<Potion> potion;
+	private LayerManager<Container> container;
+	private LayerManager<Spike> spike;
+	private LayerManager<Cannon> cannon;
+	private LayerManager<Tree> tree;
 
 	public LevelObjects(LvlBuilderImage img) {
 		this.height = (int) img.getHeight();
@@ -51,24 +51,101 @@ public class LevelObjects implements LayerDrawer {
 		this.treeSprite = Tree.load();
 		this.dialogueQuestionSprite = Dialogue.loadQuestions();
 		this.dialogueExclamationSprite = Dialogue.loadExclamations();
+		this.potion = new LayerManager<Potion>() {
+
+			@Override
+			public Class<Potion> getClazz() {
+				return Potion.class;
+			}
+
+			@Override
+			public void draw(Potion p, GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+				if (p.isActive()) {
+					int type = 0;
+					if (p.getObjType() == ObjectCts.RED_POTION)
+						type = 1;
+					g.drawImage(potionSprite[type][p.getAniIndex()],
+							(int) (p.getHitbox().getMinX() - p.getxDrawOffset() - lvlOffsetX),
+							(int) (p.getHitbox().getMinY() - p.getyDrawOffset() - lvlOffsetY), ObjectCts.POTION_WIDTH,
+							ObjectCts.POTION_HEIGHT);
+				}
+			}
+		};
+		this.container = new LayerManager<Container>() {
+
+			@Override
+			public Class<Container> getClazz() {
+				return Container.class;
+			}
+
+			@Override
+			public void draw(Container c, GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+				if (c.isActive()) {
+					int type = 0;
+					if (c.getObjType() == ObjectCts.BARREL)
+						type = 1;
+					g.drawImage(containerSprite[type][c.getAniIndex()],
+							(int) (c.getHitbox().getMinX() - c.getxDrawOffset() - lvlOffsetX),
+							(int) (c.getHitbox().getMinY() - c.getyDrawOffset() - lvlOffsetY),
+							ObjectCts.CONTAINER_WIDTH, ObjectCts.CONTAINER_HEIGHT);
+				}
+			}
+		};
+		this.spike = new LayerManager<Spike>() {
+
+			@Override
+			public Class<Spike> getClazz() {
+				return Spike.class;
+			}
+
+			@Override
+			public void draw(Spike s, GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+				s.draw(g, lvlOffsetX, lvlOffsetY, spikeSprite);
+			}
+		};
+		this.cannon = new LayerManager<Cannon>() {
+
+			@Override
+			public Class<Cannon> getClazz() {
+				return Cannon.class;
+			}
+
+			@Override
+			public void draw(Cannon c, GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+				c.draw(g, lvlOffsetX, lvlOffsetY, cannonSprite);
+			}
+		};
+		this.tree = new LayerManager<Tree>(2) {
+
+			@Override
+			public Class<Tree> getClazz() {
+				return Tree.class;
+			}
+
+			@Override
+			public void draw(Tree t, GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+				t.draw(g, lvlOffsetX, lvlOffsetY, treeSprite);
+			}
+		};
 		load(img);
 	}
 
 	@Override
 	public void drawL1(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
-		drawContainers(g, lvlOffsetX, lvlOffsetY);
-		drawTraps(g, lvlOffsetX, lvlOffsetY);
-		drawCannons(g, lvlOffsetX, lvlOffsetY);
+		this.potion.drawL1(g, lvlOffsetX, lvlOffsetY);
+		this.container.drawL1(g, lvlOffsetX, lvlOffsetY);
+		this.spike.drawL1(g, lvlOffsetX, lvlOffsetY);
+		this.cannon.drawL1(g, lvlOffsetX, lvlOffsetY);
+		this.tree.drawL1(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	@Override
 	public void drawL2(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
-		drawTrees(g, lvlOffsetX, lvlOffsetY);
-	}
-
-	private void drawTrees(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
-		for (Tree bt : getTrees())
-			bt.draw(g, lvlOffsetX, lvlOffsetY, treeSprite);
+		this.potion.drawL2(g, lvlOffsetX, lvlOffsetY);
+		this.container.drawL2(g, lvlOffsetX, lvlOffsetY);
+		this.spike.drawL2(g, lvlOffsetX, lvlOffsetY);
+		this.cannon.drawL2(g, lvlOffsetX, lvlOffsetY);
+		this.tree.drawL2(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	public void drawProjectiles(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Projectile> projectiles) {
@@ -77,42 +154,6 @@ public class LevelObjects implements LayerDrawer {
 				g.drawImage(cannonBallSprite, (int) (p.getHitbox().getMinX() - lvlOffsetX),
 						(int) p.getHitbox().getMinY() - lvlOffsetY, ProjectileCts.CANNON_BALL_WIDTH,
 						ProjectileCts.CANNON_BALL_HEIGHT);
-	}
-
-	private void drawCannons(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
-		for (Cannon c : getCannons())
-			c.draw(g, lvlOffsetX, lvlOffsetY, cannonSprite);
-	}
-
-	private void drawTraps(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
-		for (Spike s : getSpikes())
-			s.draw(g, lvlOffsetX, lvlOffsetY, spikeSprite);
-	}
-
-	private void drawContainers(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
-		for (Container gc : containers)
-			if (gc.isActive()) {
-				int type = 0;
-				if (gc.getObjType() == ObjectCts.BARREL)
-					type = 1;
-				g.drawImage(containerSprite[type][gc.getAniIndex()],
-						(int) (gc.getHitbox().getMinX() - gc.getxDrawOffset() - lvlOffsetX),
-						(int) (gc.getHitbox().getMinY() - gc.getyDrawOffset() - lvlOffsetY), ObjectCts.CONTAINER_WIDTH,
-						ObjectCts.CONTAINER_HEIGHT);
-			}
-	}
-
-	public void drawPotions(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Potion> potions) {
-		for (Potion p : potions)
-			if (p.isActive()) {
-				int type = 0;
-				if (p.getObjType() == ObjectCts.RED_POTION)
-					type = 1;
-				g.drawImage(potionSprite[type][p.getAniIndex()],
-						(int) (p.getHitbox().getMinX() - p.getxDrawOffset() - lvlOffsetX),
-						(int) (p.getHitbox().getMinY() - p.getyDrawOffset() - lvlOffsetY), ObjectCts.POTION_WIDTH,
-						ObjectCts.POTION_HEIGHT);
-			}
 	}
 
 	public void drawDialogues(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Dialogue> dialogues) {
@@ -128,40 +169,34 @@ public class LevelObjects implements LayerDrawer {
 	}
 
 	public void load(LvlBuilderImage img) {
-		List<Potion> potions = new ArrayList<Potion>();
-		List<Container> containers = new ArrayList<Container>();
-		List<Spike> spikes = new ArrayList<Spike>();
-		List<Cannon> cannons = new ArrayList<Cannon>();
-		List<Tree> trees = new ArrayList<Tree>();
 		PixelReader pixelReader = img.getPixelReader();
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				Color c = pixelReader.getColor(x, y);
 				int blue = (int) (c.getBlue() * 255);
-				addBlue(blue, x, y, potions, containers, spikes, cannons, trees);
+				addBlue(blue, x, y);
 			}
 		}
-		this.potions = potions.toArray(new Potion[potions.size()]);
-		this.containers = containers.toArray(new Container[containers.size()]);
-		this.spikes = spikes.toArray(new Spike[spikes.size()]);
-		this.cannons = cannons.toArray(new Cannon[cannons.size()]);
-		this.trees = trees.toArray(new Tree[trees.size()]);
+		this.potion.consolidate();
+		this.container.consolidate();
+		this.spike.consolidate();
+		this.cannon.consolidate();
+		this.tree.consolidate();
 	}
 
-	public void addBlue(int blue, int x, int y, List<Potion> potions, List<Container> containers, List<Spike> spikes,
-			List<Cannon> cannons, List<Tree> trees) {
+	public void addBlue(int blue, int x, int y) {
 		if (blue != GameCts.EMPTY_TILE_VALUE) {
 			switch (blue) {
 			case ObjectCts.RED_POTION, ObjectCts.BLUE_POTION ->
-				potions.add(new Potion(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
+				potion.add(new Potion(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
 			case ObjectCts.BOX, ObjectCts.BARREL ->
-				containers.add(new Container(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
+				container.add(new Container(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
 			case ObjectCts.SPIKE ->
-				spikes.add(new Spike(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, ObjectCts.SPIKE));
+				spike.add(new Spike(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, ObjectCts.SPIKE));
 			case ObjectCts.CANNON_LEFT, ObjectCts.CANNON_RIGHT ->
-				cannons.add(new Cannon(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
+				cannon.add(new Cannon(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
 			case ObjectCts.TREE_UP, ObjectCts.TREE_RIGHT, ObjectCts.TREE_LEFT ->
-				trees.add(new Tree(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
+				tree.add(new Tree(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
 			}
 		}
 	}
@@ -174,23 +209,23 @@ public class LevelObjects implements LayerDrawer {
 		return width;
 	}
 
-	public Potion[] getPotions() {
-		return potions;
+	public LayerManager<Potion> getPotion() {
+		return potion;
 	}
 
-	public Container[] getContainers() {
-		return containers;
+	public LayerManager<Container> getContainer() {
+		return container;
 	}
 
-	public Spike[] getSpikes() {
-		return spikes;
+	public LayerManager<Spike> getSpike() {
+		return spike;
 	}
 
-	public Cannon[] getCannons() {
-		return cannons;
+	public LayerManager<Cannon> getCannon() {
+		return cannon;
 	}
 
-	public Tree[] getTrees() {
-		return trees;
+	public LayerManager<Tree> getTree() {
+		return tree;
 	}
 }
