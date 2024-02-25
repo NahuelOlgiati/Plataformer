@@ -17,7 +17,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.AnchorPane;
 
 public class LvlBuilderLoad {
 
@@ -53,8 +53,8 @@ public class LvlBuilderLoad {
 		return null;
 	}
 
-	public static List<VBox> getItems(RGB rgb) {
-		List<VBox> items = new ArrayList<VBox>();
+	public static List<AnchorPane> getItems(RGB rgb) {
+		List<AnchorPane> items = new ArrayList<AnchorPane>();
 		LvlBuilderImage[] getAllRGB = GetAllRGB(rgb);
 		for (LvlBuilderImage image : getAllRGB) {
 			if (image.isTiled()) {
@@ -82,11 +82,11 @@ public class LvlBuilderLoad {
 		return null;
 	}
 
-	private static List<VBox> getBoxes(LvlBuilderImage... images) {
-		List<VBox> vboxCollection = new ArrayList<VBox>();
+	private static List<AnchorPane> getBoxes(LvlBuilderImage... images) {
+		List<AnchorPane> vboxCollection = new ArrayList<AnchorPane>();
 		for (LvlBuilderImage image : images) {
 			ImageView imageView = new ImageView(image);
-			VBox square = LvlBuilderUtil.newSelectableVBox(imageView);
+			AnchorPane square = LvlBuilderUtil.newSelectableVBox(imageView);
 			vboxCollection.add(square);
 		}
 		return vboxCollection;

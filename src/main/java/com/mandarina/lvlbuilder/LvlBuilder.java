@@ -12,9 +12,11 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -116,14 +118,14 @@ public class LvlBuilder {
 		}
 	}
 
-	private ScrollPane createSidePane(List<VBox> tiles) {
+	private ScrollPane createSidePane(List<AnchorPane> tiles) {
 		VBox pane = new VBox();
-		int maxElementsPerRow = 5;
+		int maxElementsPerRow = 6;
 		int gap = 2;
 
 		for (int i = 0; i < tiles.size(); i += maxElementsPerRow) {
 			int endIndex = Math.min(i + maxElementsPerRow, tiles.size());
-			List<VBox> rowTiles = tiles.subList(i, endIndex);
+			List<AnchorPane> rowTiles = tiles.subList(i, endIndex);
 			HBox row = new HBox(gap);
 			row.setSpacing(gap); // Set hgap
 			row.getChildren().addAll(rowTiles);
@@ -162,7 +164,7 @@ public class LvlBuilder {
 			HBox row = new HBox();
 			LvlBuilderUtil.setSize(row, LvlBuilderCts.TILE_WIDTH, LvlBuilderCts.TILE_HEIGHT);
 			for (int j = 0; j < mainPaneX; j++) {
-				VBox square = LvlBuilderUtil.newSelectableVBox();
+				AnchorPane square = LvlBuilderUtil.newSelectableVBox();
 				row.getChildren().add(square);
 			}
 
@@ -216,7 +218,7 @@ public class LvlBuilder {
 	}
 
 	private void removeTile(MouseEvent event, VBox pane) {
-		VBox square = LvlBuilderUtil.getSquare(event, pane);
+		AnchorPane square = LvlBuilderUtil.getSquare(event, pane);
 		square.getChildren().clear();
 	}
 
@@ -232,6 +234,18 @@ public class LvlBuilder {
 		return null;
 	}
 
+	private VBox getCurrentMainPane() {
+		switch (this.rgb) {
+		case RED:
+			return this.getRedMainPane();
+		case GREEN:
+			return this.getGreenMainPane();
+		case BLUE:
+			return this.getBlueMainPane();
+		}
+		return null;
+	}
+
 	private void selectTile(MouseEvent event, VBox pane) {
 		ImageView iv = LvlBuilderUtil.getImageView(event, pane);
 		if (iv != null) {
@@ -241,7 +255,8 @@ public class LvlBuilder {
 				Pair<Integer, Integer> coords = LvlBuilderUtil.getCoords(event);
 				SelectedTile st = new SelectedTile(iv, rgb, coords);
 				this.selectedTiles.add(st);
-				st.getImageView().setEffect(LvlBuilderUtil.selectedEffect);
+				AnchorPane square = LvlBuilderUtil.getSquare(coords, pane);
+				LvlBuilderUtil.setEffect(square, LvlBuilderUtil.selectedEffect);
 			}
 		}
 	}
@@ -249,7 +264,7 @@ public class LvlBuilder {
 	private void fromClipboard(MouseEvent event, VBox pane) {
 		ClipboardContent currentClipboar = getCurrentClipboar();
 		if (currentClipboar.hasImage()) {
-			VBox square = LvlBuilderUtil.getSquare(event, pane);
+			AnchorPane square = LvlBuilderUtil.getSquare(event, pane);
 			square.getChildren().clear();
 			LvlBuilderImage image = (LvlBuilderImage) currentClipboar.getImage();
 			ImageView droppedImageView = new ImageView(image);
@@ -273,16 +288,19 @@ public class LvlBuilder {
 	}
 
 	private void applyFeature(KeyEvent event) {
-		if (selectedTiles != null) {
+		if (selectedTiles != null && event.getCode() != KeyCode.ALT) {
 			for (SelectedTile st : selectedTiles) {
 				for (TileFeature e : TileFeature.values()) {
 					if (event.getCode() == e.getKeyCode()) {
-						e.apply(st.getImageView());
+						e.apply(st.getCoords(), rgb, getCurrentMainPane());
 						e.add(this.pm, rgb, st);
-						this.selectedTiles = null;
 					}
 				}
 			}
+			for (SelectedTile st : selectedTiles) {
+				st.getImageView().setEffect(null);
+			}
+			this.selectedTiles = null;
 		}
 	}
 
@@ -302,16 +320,16 @@ public class LvlBuilder {
 		this.mainPaneY = mainPaneY;
 	}
 
-	public ScrollPane getRedMainPane() {
-		return redMainPane;
+	public VBox getRedMainPane() {
+		return (VBox) redMainPane.getContent();
 	}
 
-	public ScrollPane getGreenMainPane() {
-		return greenMainPane;
+	public VBox getGreenMainPane() {
+		return (VBox) greenMainPane.getContent();
 	}
 
-	public ScrollPane getBlueMainPane() {
-		return blueMainPane;
+	public VBox getBlueMainPane() {
+		return (VBox) blueMainPane.getContent();
 	}
 
 	public PNGMetadata getPNGMetadata() {

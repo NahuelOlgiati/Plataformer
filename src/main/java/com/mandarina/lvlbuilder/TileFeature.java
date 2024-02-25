@@ -6,14 +6,10 @@ import java.util.Map;
 
 import com.mandarina.utilz.LoadSave;
 
-import javafx.scene.control.ScrollPane;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.ImageInput;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
@@ -21,32 +17,28 @@ public enum TileFeature {
 
 	TRAVERSABLE(KeyCode.T, "traversable.png") {
 		@Override
-		public void apply(ImageView iw) {
-			if (isApplicable(iw)) {
-				apply(iw, getIcon());
+		public void apply(Pair<Integer, Integer> coord, RGB rgb, VBox pane) {
+			if (isApplicable()) {
+				apply(coord, pane);
 			}
+		}
+
+		private boolean isApplicable() {
+			return true;
 		}
 
 		@Override
 		@SuppressWarnings("unchecked")
-		public void apply(PNGMetadata metadata, RGB rgb, ScrollPane mainPane) {
+		public void apply(PNGMetadata metadata, RGB rgb, VBox pane) {
 			List<Pair<Integer, Integer>> values = (List<Pair<Integer, Integer>>) get(metadata, rgb);
 			if (values != null) {
-				for (Pair<Integer, Integer> p : values) {
-					Integer x = p.getKey();
-					Integer y = p.getValue();
-					VBox mainPaneBox = (VBox) mainPane.getContent();
-					HBox row = (HBox) mainPaneBox.getChildren().get(y);
-					VBox square = (VBox) row.getChildren().get(x);
-					ImageView iv = (ImageView) square.getChildren().get(0);
-					apply(iv);
+				for (Pair<Integer, Integer> coord : values) {
+					ImageView iv = LvlBuilderUtil.getImageView(coord, pane);
+					if (iv != null) {
+						apply(coord, rgb, pane);
+					}
 				}
 			}
-		}
-
-		@Override
-		public boolean isApplicable(ImageView iw) {
-			return true;
 		}
 
 		@Override
@@ -115,11 +107,9 @@ public enum TileFeature {
 	private KeyCode keyCode;
 	private String icon;
 
-	public abstract void apply(ImageView iw);
+	public abstract void apply(Pair<Integer, Integer> coord, RGB rgb, VBox pane);
 
-	public abstract void apply(PNGMetadata metadata, RGB rgb, ScrollPane mainPane);
-
-	public abstract boolean isApplicable(ImageView iw);
+	public abstract void apply(PNGMetadata metadata, RGB rgb, VBox pane);
 
 	public abstract Object get(PNGMetadata pm, RGB rgb);
 
@@ -134,15 +124,18 @@ public enum TileFeature {
 		this.icon = icon;
 	}
 
-	private static void apply(ImageView iw, String icon) {
-		Blend blend = new Blend();
-		LvlBuilderImage image = (LvlBuilderImage) iw.getImage();
-		Image featureImg = LoadSave.GetFeature(icon);
-		ImageInput imageInput = new ImageInput(featureImg, iw.getX() + image.getWidth() - featureImg.getWidth() - 2,
-				iw.getY() + image.getHeight() - featureImg.getHeight() - 2);
-		blend.setTopInput(imageInput);
-		blend.setMode(BlendMode.ADD);
-		iw.setEffect(blend);
+	private static void apply(Pair<Integer, Integer> coord, VBox pane) {
+		AnchorPane ap = LvlBuilderUtil.getSquare(coord, pane);
+		ImageView i2 = new ImageView(LoadSave.GetFeature("0.png"));
+		ImageView i3 = new ImageView(LoadSave.GetFeature("1.png"));
+		ImageView i4 = new ImageView(LoadSave.GetFeature("2.png"));
+		ImageView i5 = new ImageView(LoadSave.GetFeature("3.png"));
+		ImageView i6 = new ImageView(LoadSave.GetFeature("4.png"));
+		ImageView i7 = new ImageView(LoadSave.GetFeature("nosolid.png"));
+		FlowPane fp = new FlowPane();
+		fp.setMaxWidth(LvlBuilderCts.TILE_WIDTH);
+		fp.getChildren().addAll(i2, i3, i4, i5, i6, i7);
+		ap.getChildren().add(fp);
 	}
 
 	public KeyCode getKeyCode() {

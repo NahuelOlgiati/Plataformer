@@ -33,12 +33,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 public class LvlBuilderMenu {
 
@@ -125,16 +127,17 @@ public class LvlBuilderMenu {
 
 	private void loadLevel(Image img) {
 		PixelReader pixelReader = img.getPixelReader();
-		for (int j = 0; j < img.getHeight(); j++) {
-			for (int i = 0; i < img.getWidth(); i++) {
-				Color c = pixelReader.getColor(i, j);
+		for (int y = 0; y < img.getHeight(); y++) {
+			for (int x = 0; x < img.getWidth(); x++) {
+				Color c = pixelReader.getColor(x, y);
 				int red = (int) (c.getRed() * 255);
 				int green = (int) (c.getGreen() * 255);
 				int blue = (int) (c.getBlue() * 255);
 
-				loadManePane(lvlBuilder.getRedMainPane(), j, i, RGB.RED, red);
-				loadManePane(lvlBuilder.getGreenMainPane(), j, i, RGB.GREEN, green);
-				loadManePane(lvlBuilder.getBlueMainPane(), j, i, RGB.BLUE, blue);
+				Pair<Integer, Integer> coords = new Pair<Integer, Integer>(x, y);
+				loadManePane(coords, lvlBuilder.getRedMainPane(), RGB.RED, red);
+				loadManePane(coords, lvlBuilder.getGreenMainPane(), RGB.GREEN, green);
+				loadManePane(coords, lvlBuilder.getBlueMainPane(), RGB.BLUE, blue);
 			}
 		}
 	}
@@ -148,10 +151,8 @@ public class LvlBuilderMenu {
 		loadManePaneMetadata(lvlBuilder.getBlueMainPane(), RGB.BLUE, pm);
 	}
 
-	private void loadManePane(ScrollPane mainPane, int x, int y, RGB rgb, int value) {
-		VBox mainPaneBox = (VBox) mainPane.getContent();
-		HBox row = (HBox) mainPaneBox.getChildren().get(x);
-		VBox square = (VBox) row.getChildren().get(y);
+	private void loadManePane(Pair<Integer, Integer> coords, VBox mainPane, RGB rgb, int value) {
+		AnchorPane square = LvlBuilderUtil.getSquare(coords, mainPane);
 		square.getChildren().clear();
 		if (value != GameCts.EMPTY_TILE_VALUE) {
 			LvlBuilderImage vi = LvlBuilderLoad.getImage(rgb, value);
@@ -163,7 +164,7 @@ public class LvlBuilderMenu {
 		}
 	}
 
-	private void loadManePaneMetadata(ScrollPane mainPane, RGB rgb, PNGMetadata pm) {
+	private void loadManePaneMetadata(VBox mainPane, RGB rgb, PNGMetadata pm) {
 		for (TileFeature tf : TileFeature.values()) {
 			tf.apply(pm, rgb, mainPane);
 		}
@@ -203,29 +204,27 @@ public class LvlBuilderMenu {
 	private Canvas getCanvas() {
 		Canvas canvas = new Canvas(lvlBuilder.getMainPaneX(), lvlBuilder.getMainPaneY());
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		for (int j = 0; j < lvlBuilder.getMainPaneY(); j++) {
-			for (int i = 0; i < lvlBuilder.getMainPaneX(); i++) {
-				int redValue = getRGBValue(lvlBuilder.getRedMainPane(), j, i);
-				int greenValue = getRGBValue(lvlBuilder.getGreenMainPane(), j, i);
-				int blueValue = getRGBValue(lvlBuilder.getBlueMainPane(), j, i);
+		for (int y = 0; y < lvlBuilder.getMainPaneY(); y++) {
+			for (int x = 0; x < lvlBuilder.getMainPaneX(); x++) {
+				Pair<Integer, Integer> coords = new Pair<>(x, y);
+				int redValue = getRGBValue(coords, lvlBuilder.getRedMainPane());
+				int greenValue = getRGBValue(coords, lvlBuilder.getGreenMainPane());
+				int blueValue = getRGBValue(coords, lvlBuilder.getBlueMainPane());
 				Color color = Color.rgb(redValue, greenValue, blueValue);
 				gc.setFill(color);
-				gc.fillRect(i, j, 1, 1);
+				gc.fillRect(x, y, 1, 1);
 			}
 		}
 		return canvas;
 	}
 
-	private int getRGBValue(ScrollPane mainPane, int rowIndex, int colIndex) {
+	private int getRGBValue(Pair<Integer, Integer> coords, VBox mainPane) {
 		int rgbValue = GameCts.EMPTY_TILE_VALUE;
-		VBox mainBox = (VBox) mainPane.getContent();
-		HBox row = (HBox) mainBox.getChildren().get(rowIndex);
-		VBox col = (VBox) row.getChildren().get(colIndex);
-		if (col.getChildren().size() == 1) {
-			ImageView iv = (ImageView) col.getChildren().get(0);
+		ImageView iv = LvlBuilderUtil.getImageView(coords, mainPane);
+		if (iv != null) {
 			LvlBuilderImage vi = (LvlBuilderImage) iv.getImage();
 			if (vi == null) {
-				System.out.println(rowIndex + "," + colIndex);
+				System.out.println(coords);
 			}
 			rgbValue = vi.getValue();
 		}
@@ -233,36 +232,29 @@ public class LvlBuilderMenu {
 	}
 
 	private void showInputDialog(ActionEvent event) {
-		// Create the grid pane for the input fields
 		GridPane grid = new GridPane();
 		grid.setHgap(10);
 		grid.setVgap(10);
 
-		// Create the text fields for X and Y values
 		TextField xField = new TextField("80");
 		TextField yField = new TextField("12");
 
-		// Add labels and text fields to the grid
 		grid.add(new Label("X:"), 0, 0);
 		grid.add(xField, 1, 0);
 		grid.add(new Label("Y:"), 0, 1);
 		grid.add(yField, 1, 1);
 
-		// Create the dialog
 		Dialog<ButtonType> dialog = new Dialog<>();
 		dialog.setTitle("Enter Values");
 		dialog.setHeaderText(null);
 		dialog.getDialogPane().setContent(grid);
 
-		// Add OK and Cancel buttons
 		ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
 		ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 		dialog.getDialogPane().getButtonTypes().addAll(okButton, cancelButton);
 
-		// Show the dialog and wait for user input
 		dialog.showAndWait().ifPresent(result -> {
 			if (result == okButton) {
-				// Process the entered values
 				try {
 					int x = Integer.parseInt(xField.getText());
 					int y = Integer.parseInt(yField.getText());
@@ -280,17 +272,17 @@ public class LvlBuilderMenu {
 		lvlBuilder.setMainPaneX(x);
 		lvlBuilder.setMainPaneY(y);
 
-		VBox redMainPaneBox = (VBox) lvlBuilder.getRedMainPane().getContent();
-		resizeMainPane(redMainPaneBox, currentCanvasX, currentCanvasY, x, y);
-		LvlBuilderUtil.setSize(redMainPaneBox, LvlBuilderCts.TILE_WIDTH * x, LvlBuilderCts.TILE_HEIGHT * y);
+		VBox redMainPane = lvlBuilder.getRedMainPane();
+		resizeMainPane(redMainPane, currentCanvasX, currentCanvasY, x, y);
+		LvlBuilderUtil.setSize(redMainPane, LvlBuilderCts.TILE_WIDTH * x, LvlBuilderCts.TILE_HEIGHT * y);
 
-		VBox greenMainPaneBox = (VBox) lvlBuilder.getGreenMainPane().getContent();
-		resizeMainPane(greenMainPaneBox, currentCanvasX, currentCanvasY, x, y);
-		LvlBuilderUtil.setSize(greenMainPaneBox, LvlBuilderCts.TILE_WIDTH * x, LvlBuilderCts.TILE_HEIGHT * y);
+		VBox greenMainPane = lvlBuilder.getGreenMainPane();
+		resizeMainPane(greenMainPane, currentCanvasX, currentCanvasY, x, y);
+		LvlBuilderUtil.setSize(greenMainPane, LvlBuilderCts.TILE_WIDTH * x, LvlBuilderCts.TILE_HEIGHT * y);
 
-		VBox blueMainPaneBox = (VBox) lvlBuilder.getBlueMainPane().getContent();
-		resizeMainPane(blueMainPaneBox, currentCanvasX, currentCanvasY, x, y);
-		LvlBuilderUtil.setSize(blueMainPaneBox, LvlBuilderCts.TILE_WIDTH * x, LvlBuilderCts.TILE_HEIGHT * y);
+		VBox blueMainPane = lvlBuilder.getBlueMainPane();
+		resizeMainPane(blueMainPane, currentCanvasX, currentCanvasY, x, y);
+		LvlBuilderUtil.setSize(blueMainPane, LvlBuilderCts.TILE_WIDTH * x, LvlBuilderCts.TILE_HEIGHT * y);
 	}
 
 	private void resizeMainPane(VBox mainPane, int currentCanvasX, int currentCanvasY, int newCanvasX, int newCanvasY) {
@@ -299,7 +291,7 @@ public class LvlBuilderMenu {
 				HBox newRow = new HBox();
 				LvlBuilderUtil.setSize(newRow, LvlBuilderCts.TILE_WIDTH, LvlBuilderCts.TILE_HEIGHT);
 				for (int j = 0; j < newCanvasX; j++) {
-					VBox square = LvlBuilderUtil.newSelectableVBox();
+					AnchorPane square = LvlBuilderUtil.newSelectableVBox();
 					newRow.getChildren().add(square);
 				}
 				mainPane.getChildren().add(newRow);
@@ -312,7 +304,7 @@ public class LvlBuilderMenu {
 			HBox currentRow = (HBox) row;
 			if (newCanvasX > currentCanvasX) {
 				for (int i = currentCanvasX; i < newCanvasX; i++) {
-					VBox square = LvlBuilderUtil.newSelectableVBox();
+					AnchorPane square = LvlBuilderUtil.newSelectableVBox();
 					currentRow.getChildren().add(square);
 				}
 			} else if (newCanvasX < currentCanvasX) {

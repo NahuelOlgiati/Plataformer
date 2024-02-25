@@ -6,6 +6,7 @@ import javafx.scene.effect.Effect;
 import javafx.scene.effect.SepiaTone;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -13,7 +14,7 @@ import javafx.util.Pair;
 
 public class LvlBuilderUtil {
 
-	private static final Effect overEffect = new DropShadow();
+	public static final Effect overEffect = new DropShadow();
 	public static final Effect selectedEffect = new SepiaTone();
 
 	public static void setSize(Region r, int width, int height) {
@@ -34,34 +35,36 @@ public class LvlBuilderUtil {
 		to.setVvalue(from.getVvalue());
 	}
 
+	public static ImageView getImageView(Pair<Integer, Integer> coords, VBox pane) {
+		AnchorPane square = getSquare(coords, pane);
+		return getImageView(square);
+	}
+
 	public static ImageView getImageView(MouseEvent event, VBox pane) {
-		ImageView iv = null;
-		VBox square = getSquare(event, pane);
-		if (square.getChildren().size() == 1) {
-			iv = (ImageView) square.getChildren().get(0);
-		}
-		return iv;
+		AnchorPane square = getSquare(event, pane);
+		return getImageView(square);
 	}
 
 	public static ImageView getImageView(MouseEvent event, VBox pane, Integer gap) {
-		ImageView iv = null;
-		VBox square = getSquare(event, pane, gap);
-		if (square.getChildren().size() == 1) {
-			iv = (ImageView) square.getChildren().get(0);
-		}
-		return iv;
+		AnchorPane square = getSquare(event, pane, gap);
+		return getImageView(square);
 	}
 
-	public static VBox getSquare(MouseEvent event, VBox pane) {
+	public static AnchorPane getSquare(Pair<Integer, Integer> coords, VBox pane) {
+		HBox row = (HBox) pane.getChildren().get(coords.getValue());
+		return (AnchorPane) row.getChildren().get(coords.getKey());
+	}
+
+	public static AnchorPane getSquare(MouseEvent event, VBox pane) {
 		Pair<Integer, Integer> coords = getCoords(event);
 		HBox row = (HBox) pane.getChildren().get(coords.getValue());
-		return (VBox) row.getChildren().get(coords.getKey());
+		return (AnchorPane) row.getChildren().get(coords.getKey());
 	}
 
-	public static VBox getSquare(MouseEvent event, VBox pane, Integer gap) {
+	public static AnchorPane getSquare(MouseEvent event, VBox pane, Integer gap) {
 		Pair<Integer, Integer> coords = getCoords(event, gap);
 		HBox row = (HBox) pane.getChildren().get(coords.getValue());
-		return (VBox) row.getChildren().get(coords.getKey());
+		return (AnchorPane) row.getChildren().get(coords.getKey());
 	}
 
 	public static Pair<Integer, Integer> getCoords(MouseEvent event) {
@@ -76,51 +79,51 @@ public class LvlBuilderUtil {
 		return new Pair<Integer, Integer>(colIndex, rowIndex);
 	}
 
-	public static VBox newSelectableVBox(ImageView imageView) {
+	public static AnchorPane newSelectableVBox(ImageView imageView) {
 		setFitSize(imageView, LvlBuilderCts.TILE_WIDTH, LvlBuilderCts.TILE_HEIGHT);
-		VBox square = LvlBuilderUtil.newSelectableVBox();
+		AnchorPane square = newSelectableVBox();
 		square.getChildren().add(imageView);
 		return square;
 	}
 
-	public static VBox newSelectableVBox() {
-		VBox vbox = new VBox();
-		setSize(vbox, LvlBuilderCts.TILE_WIDTH, LvlBuilderCts.TILE_HEIGHT);
-		vbox.setOnMouseEntered(event -> {
-			if (isEffect(vbox, null)) {
-				setEffect(vbox, overEffect);
+	public static AnchorPane newSelectableVBox() {
+		AnchorPane ap = new AnchorPane();
+		setSize(ap, LvlBuilderCts.TILE_WIDTH, LvlBuilderCts.TILE_HEIGHT);
+		ap.setOnMouseEntered(event -> {
+			if (isEffect(ap, null)) {
+				setEffect(ap, overEffect);
 			}
 		});
-		vbox.setOnMouseExited(event -> {
-			if (isEffect(vbox, overEffect)) {
-				setEffect(vbox, null);
+		ap.setOnMouseExited(event -> {
+			if (isEffect(ap, overEffect)) {
+				setEffect(ap, null);
 			}
 		});
-		return vbox;
+		return ap;
 	}
 
-	private static ImageView getImageView(VBox vbox) {
-		if (vbox.getChildren().size() == 1)
-			return ((ImageView) vbox.getChildren().get(0));
+	public static ImageView getImageView(AnchorPane ap) {
+		if (ap.getChildren().size() >= 1)
+			return ((ImageView) ap.getChildren().get(0));
 		return null;
 	}
 
-	private static void setEffect(VBox vbox, Effect effect) {
-		ImageView iv = getImageView(vbox);
+	public static void setEffect(AnchorPane ap, Effect effect) {
+		ImageView iv = getImageView(ap);
 		if (iv != null) {
 			iv.setEffect(effect);
 		}
 	}
 
-	private static Effect getEffect(VBox vbox) {
-		ImageView iv = getImageView(vbox);
+	public static Effect getEffect(AnchorPane ap) {
+		ImageView iv = getImageView(ap);
 		if (iv != null) {
 			return iv.getEffect();
 		}
 		return null;
 	}
 
-	private static boolean isEffect(VBox vbox, Effect effect) {
-		return effect == null ? getEffect(vbox) == null : effect.equals(getEffect(vbox));
+	public static boolean isEffect(AnchorPane ap, Effect effect) {
+		return effect == null ? getEffect(ap) == null : effect.equals(getEffect(ap));
 	}
 }
