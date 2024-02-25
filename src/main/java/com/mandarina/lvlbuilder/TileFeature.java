@@ -103,10 +103,10 @@ public enum TileFeature {
 			Map<String, Object> metadata = pm.getMetadata();
 			if (metadata.containsKey(key)) {
 				List<Pair<Integer, Integer>> inner = (List<Pair<Integer, Integer>>) metadata.get(key);
-				inner.add(new Pair<Integer, Integer>(st.getX(), st.getY()));
+				inner.add(st.getCoords());
 			} else {
 				ArrayList<Pair<Integer, Integer>> inner = new ArrayList<Pair<Integer, Integer>>();
-				inner.add(new Pair<Integer, Integer>(st.getX(), st.getY()));
+				inner.add(st.getCoords());
 				metadata.put(key, inner);
 			}
 		}

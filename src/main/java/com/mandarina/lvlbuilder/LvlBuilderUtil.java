@@ -1,15 +1,15 @@
 package com.mandarina.lvlbuilder;
 
-import javafx.collections.ObservableList;
-import javafx.event.EventTarget;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.SepiaTone;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 public class LvlBuilderUtil {
 
@@ -34,31 +34,46 @@ public class LvlBuilderUtil {
 		to.setVvalue(from.getVvalue());
 	}
 
-	public static ImageView getImageView(EventTarget target) {
-		try {
-			if (target instanceof ImageView imageView) {
-				return imageView;
-			}
-			if (((Pane) target).getChildren() instanceof ImageView imageView) {
-				return imageView;
-			}
-			if (((Pane) target).getChildren() instanceof ObservableList<?> && //
-					((ObservableList<?>) ((Pane) target).getChildren()).size() == 1 && //
-					((ObservableList<?>) ((Pane) target).getChildren()).get(0) instanceof ImageView imageView) {
-				return imageView;
-			}
-		} catch (Exception e) {
+	public static ImageView getImageView(MouseEvent event, VBox pane) {
+		ImageView iv = null;
+		VBox square = getSquare(event, pane);
+		if (square.getChildren().size() == 1) {
+			iv = (ImageView) square.getChildren().get(0);
 		}
-		return null;
+		return iv;
 	}
 
-	public static void debug(EventTarget target) {
-		System.out.println(target);
-		System.out.println(((Pane) target).getChildren());
-		System.out.println(((Pane) target).getChildren());
-		System.out.println(((Pane) target).getChildren() instanceof ObservableList);
-		System.out.println(((Pane) target).getChildren() instanceof ImageView);
-		System.out.println();
+	public static ImageView getImageView(MouseEvent event, VBox pane, Integer gap) {
+		ImageView iv = null;
+		VBox square = getSquare(event, pane, gap);
+		if (square.getChildren().size() == 1) {
+			iv = (ImageView) square.getChildren().get(0);
+		}
+		return iv;
+	}
+
+	public static VBox getSquare(MouseEvent event, VBox pane) {
+		Pair<Integer, Integer> coords = getCoords(event);
+		HBox row = (HBox) pane.getChildren().get(coords.getValue());
+		return (VBox) row.getChildren().get(coords.getKey());
+	}
+
+	public static VBox getSquare(MouseEvent event, VBox pane, Integer gap) {
+		Pair<Integer, Integer> coords = getCoords(event, gap);
+		HBox row = (HBox) pane.getChildren().get(coords.getValue());
+		return (VBox) row.getChildren().get(coords.getKey());
+	}
+
+	public static Pair<Integer, Integer> getCoords(MouseEvent event) {
+		int colIndex = (int) (event.getX() / LvlBuilderCts.TILE_WIDTH);
+		int rowIndex = (int) (event.getY() / LvlBuilderCts.TILE_HEIGHT);
+		return new Pair<Integer, Integer>(colIndex, rowIndex);
+	}
+
+	public static Pair<Integer, Integer> getCoords(MouseEvent event, Integer gap) {
+		int colIndex = (int) (event.getX() / (LvlBuilderCts.TILE_WIDTH + gap));
+		int rowIndex = (int) (event.getY() / (LvlBuilderCts.TILE_HEIGHT + gap));
+		return new Pair<Integer, Integer>(colIndex, rowIndex);
 	}
 
 	public static VBox newSelectableVBox(ImageView imageView) {
