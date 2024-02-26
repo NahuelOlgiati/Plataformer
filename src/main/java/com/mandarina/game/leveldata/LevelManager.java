@@ -77,6 +77,16 @@ public class LevelManager implements LayerDrawer {
 		getCurrentLevel().getLevelData().drawL2(g, lvlOffsetX, lvlOffsetY);
 	}
 
+	@Override
+	public void drawL3(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		getCurrentLevel().getLevelData().drawL3(g, lvlOffsetX, lvlOffsetY);
+	}
+
+	@Override
+	public void drawL4(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		getCurrentLevel().getLevelData().drawL4(g, lvlOffsetX, lvlOffsetY);
+	}
+
 	public void update() {
 		if (drawRain)
 			this.rain.update(playing.getLvlOffsetX(), playing.getLvlOffsetY());

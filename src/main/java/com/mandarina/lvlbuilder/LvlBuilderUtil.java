@@ -7,6 +7,7 @@ import javafx.scene.effect.SepiaTone;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -106,6 +107,18 @@ public class LvlBuilderUtil {
 		if (ap.getChildren().size() >= 1)
 			return ((ImageView) ap.getChildren().get(0));
 		return null;
+	}
+
+	public static FlowPane getOrCreateFlowPane(AnchorPane ap) {
+		FlowPane fp;
+		if (ap.getChildren().size() > 1) {
+			fp = (FlowPane) ap.getChildren().get(1);
+		} else {
+			fp = new FlowPane();
+			fp.setMaxWidth(LvlBuilderCts.TILE_WIDTH);
+			ap.getChildren().add(fp);
+		}
+		return fp;
 	}
 
 	public static void setEffect(AnchorPane ap, Effect effect) {

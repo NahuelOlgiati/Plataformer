@@ -30,7 +30,7 @@ public class LvlBuilderMetada {
 					String key = PNGMetadata.getKey(rgb, tf.getKeyCode());
 					String textEntry = getTextEntry(metadata, key);
 					if (textEntry != null && !textEntry.isEmpty()) {
-						Object object = tf.fromString(pm, rgb, textEntry);
+						Object object = tf.getManager().fromString(pm, rgb, textEntry);
 						pm.add(rgb, tf.getKeyCode(), object);
 					}
 				}
@@ -51,7 +51,7 @@ public class LvlBuilderMetada {
 			clearMetadata(metadata);
 			for (TileFeature tf : TileFeature.values()) {
 				for (RGB rgb : RGB.values()) {
-					String textEntry = tf.toString(pm, rgb);
+					String textEntry = tf.getManager().toString(pm, rgb);
 					if (textEntry != null && !textEntry.isEmpty()) {
 						String key = PNGMetadata.getKey(rgb, tf.getKeyCode());
 						addTextEntry(metadata, key, textEntry);
@@ -69,7 +69,7 @@ public class LvlBuilderMetada {
 	public static void log(PNGMetadata pm) {
 		for (TileFeature tf : TileFeature.values()) {
 			for (RGB rgb : RGB.values()) {
-				String textEntry = tf.toString(pm, rgb);
+				String textEntry = tf.getManager().toString(pm, rgb);
 				if (textEntry != null && !textEntry.isEmpty()) {
 					String key = PNGMetadata.getKey(rgb, tf.getKeyCode());
 					System.out.println(key);

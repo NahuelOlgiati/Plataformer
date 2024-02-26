@@ -292,8 +292,7 @@ public class LvlBuilder {
 			for (SelectedTile st : selectedTiles) {
 				for (TileFeature e : TileFeature.values()) {
 					if (event.getCode() == e.getKeyCode()) {
-						e.apply(st.getCoords(), rgb, getCurrentMainPane());
-						e.add(this.pm, rgb, st);
+						e.getManager().applyTo(st.getCoords(), pm, rgb, getCurrentMainPane());
 					}
 				}
 			}

@@ -36,6 +36,16 @@ public class EnemyManager implements LayerDrawer {
 		currentLevel.getLevelEntities().drawL2(g, lvlOffsetX, lvlOffsetY);
 	}
 
+	@Override
+	public void drawL3(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		currentLevel.getLevelEntities().drawL3(g, lvlOffsetX, lvlOffsetY);
+	}
+
+	@Override
+	public void drawL4(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		currentLevel.getLevelEntities().drawL4(g, lvlOffsetX, lvlOffsetY);
+	}
+
 	public void checkEnemyHit(Rectangle2D attackBox, int playerDamage) {
 		for (Enemy e : currentLevel.getLevelEntities().getEnemys())
 			if (e.isActive())

@@ -8,6 +8,7 @@ import com.mandarina.game.levels.Level;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.Game;
 import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.ObjectManager;
 import com.mandarina.game.ui.GameCompletedOverlay;
 import com.mandarina.game.ui.GameOverOverlay;
@@ -17,7 +18,6 @@ import com.mandarina.game.ui.StatusBar;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 
 import javafx.geometry.Rectangle2D;
-import com.mandarina.game.main.GameDrawer;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -142,10 +142,20 @@ public class Playing {
 		levelManager.drawL1(g, lvlOffsetX, lvlOffsetY);
 		objectManager.drawL1(g, lvlOffsetX, lvlOffsetY);
 		enemyManager.drawL1(g, lvlOffsetX, lvlOffsetY);
+
 		player.draw(g, lvlOffsetX, lvlOffsetY);
+
 		levelManager.drawL2(g, lvlOffsetX, lvlOffsetY);
 		objectManager.drawL2(g, lvlOffsetX, lvlOffsetY);
 		enemyManager.drawL2(g, lvlOffsetX, lvlOffsetY);
+
+		levelManager.drawL3(g, lvlOffsetX, lvlOffsetY);
+		objectManager.drawL3(g, lvlOffsetX, lvlOffsetY);
+		enemyManager.drawL3(g, lvlOffsetX, lvlOffsetY);
+
+		levelManager.drawL4(g, lvlOffsetX, lvlOffsetY);
+		objectManager.drawL4(g, lvlOffsetX, lvlOffsetY);
+		enemyManager.drawL4(g, lvlOffsetX, lvlOffsetY);
 
 		statusBar.draw(g);
 

@@ -147,6 +147,24 @@ public class LevelObjects implements LayerDrawer {
 		this.cannon.drawL2(g, lvlOffsetX, lvlOffsetY);
 		this.tree.drawL2(g, lvlOffsetX, lvlOffsetY);
 	}
+	
+	@Override
+	public void drawL3(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		this.potion.drawL3(g, lvlOffsetX, lvlOffsetY);
+		this.container.drawL3(g, lvlOffsetX, lvlOffsetY);
+		this.spike.drawL3(g, lvlOffsetX, lvlOffsetY);
+		this.cannon.drawL3(g, lvlOffsetX, lvlOffsetY);
+		this.tree.drawL3(g, lvlOffsetX, lvlOffsetY);
+	}
+	
+	@Override
+	public void drawL4(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		this.potion.drawL4(g, lvlOffsetX, lvlOffsetY);
+		this.container.drawL4(g, lvlOffsetX, lvlOffsetY);
+		this.spike.drawL4(g, lvlOffsetX, lvlOffsetY);
+		this.cannon.drawL4(g, lvlOffsetX, lvlOffsetY);
+		this.tree.drawL4(g, lvlOffsetX, lvlOffsetY);
+	}
 
 	public void drawProjectiles(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Projectile> projectiles) {
 		for (Projectile p : projectiles)

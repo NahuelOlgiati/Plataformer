@@ -87,6 +87,16 @@ public class LevelEntities implements LayerDrawer {
 		// TODO Auto-generated method stub
 	}
 
+	@Override
+	public void drawL3(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void drawL4(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		// TODO Auto-generated method stub
+	}
+
 	public void load(LvlBuilderImage img) {
 		List<Enemy> enemys = new ArrayList<Enemy>();
 		List<Crabby> crabs = new ArrayList<Crabby>();

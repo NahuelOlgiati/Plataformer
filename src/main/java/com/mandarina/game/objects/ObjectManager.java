@@ -51,6 +51,16 @@ public class ObjectManager implements LayerDrawer {
 		currentLevel.getLevelObjects().drawL2(g, lvlOffsetX, lvlOffsetY);
 	}
 
+	@Override
+	public void drawL3(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		currentLevel.getLevelObjects().drawL3(g, lvlOffsetX, lvlOffsetY);
+	}
+
+	@Override
+	public void drawL4(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		currentLevel.getLevelObjects().drawL4(g, lvlOffsetX, lvlOffsetY);
+	}
+
 	public void checkSpikesTouched(Player p) {
 		for (Spike s : currentLevel.getLevelObjects().getSpike().getItems())
 			if (s.getHitbox().intersects(p.getHitbox()))

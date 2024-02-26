@@ -166,7 +166,7 @@ public class LvlBuilderMenu {
 
 	private void loadManePaneMetadata(VBox mainPane, RGB rgb, PNGMetadata pm) {
 		for (TileFeature tf : TileFeature.values()) {
-			tf.apply(pm, rgb, mainPane);
+			tf.getManager().applyFrom(pm, rgb, mainPane);
 		}
 	}
 

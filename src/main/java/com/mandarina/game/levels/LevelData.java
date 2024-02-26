@@ -101,18 +101,40 @@ public class LevelData implements LayerDrawer {
 		this.water.drawL2(g, lvlOffsetX, lvlOffsetY);
 		this.grass.drawL2(g, lvlOffsetX, lvlOffsetY);
 	}
+	
+	@Override
+	public void drawL3(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		this.tile.drawL3(g, lvlOffsetX, lvlOffsetY);
+		this.water.drawL3(g, lvlOffsetX, lvlOffsetY);
+		this.grass.drawL3(g, lvlOffsetX, lvlOffsetY);
+	}
+	
+	@Override
+	public void drawL4(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+		this.tile.drawL4(g, lvlOffsetX, lvlOffsetY);
+		this.water.drawL4(g, lvlOffsetX, lvlOffsetY);
+		this.grass.drawL4(g, lvlOffsetX, lvlOffsetY);
+	}
 
 	@SuppressWarnings("unchecked")
 	public void load(LvlBuilderImage img) {
 		PNGMetadata pngMetadata = new PNGMetadata(img);
-		List<Pair<Integer, Integer>> traversable = (List<Pair<Integer, Integer>>) TileFeature.TRAVERSABLE
+		List<Pair<Integer, Integer>> nosolid = (List<Pair<Integer, Integer>>) TileFeature.NOSOLID.getManager()
+				.get(pngMetadata, RGB.RED);
+		List<Pair<Integer, Integer>> layer1 = (List<Pair<Integer, Integer>>) TileFeature.LAYER1.getManager()
+				.get(pngMetadata, RGB.RED);
+		List<Pair<Integer, Integer>> layer2 = (List<Pair<Integer, Integer>>) TileFeature.LAYER2.getManager()
+				.get(pngMetadata, RGB.RED);
+		List<Pair<Integer, Integer>> layer3 = (List<Pair<Integer, Integer>>) TileFeature.LAYER3.getManager()
+				.get(pngMetadata, RGB.RED);
+		List<Pair<Integer, Integer>> layer4 = (List<Pair<Integer, Integer>>) TileFeature.LAYER4.getManager()
 				.get(pngMetadata, RGB.RED);
 		PixelReader pixelReader = img.getPixelReader();
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				Color c = pixelReader.getColor(x, y);
 				int red = (int) (c.getRed() * 255);
-				addRed(red, x, y, traversable);
+				addRed(red, x, y, nosolid, layer1, layer2, layer3, layer4);
 			}
 		}
 		this.tile.consolidate();
@@ -120,7 +142,9 @@ public class LevelData implements LayerDrawer {
 		this.grass.consolidate();
 	}
 
-	private void addRed(int red, int x, int y, List<Pair<Integer, Integer>> traversable) {
+	private void addRed(int red, int x, int y, List<Pair<Integer, Integer>> nosolid,
+			List<Pair<Integer, Integer>> layer1, List<Pair<Integer, Integer>> layer2,
+			List<Pair<Integer, Integer>> layer3, List<Pair<Integer, Integer>> layer4) {
 		if (red != GameCts.EMPTY_TILE_VALUE) {
 			switch (red) {
 			case 48, 49:
@@ -128,14 +152,27 @@ public class LevelData implements LayerDrawer {
 				this.water.add(new Water(GameCts.TILES_SIZE * x, GameCts.TILES_SIZE * y, red));
 				break;
 			default:
-				boolean isTraversable = traversable == null ? false
-						: traversable.contains(new Pair<Integer, Integer>(x, y));
-				isSolid[y][x] = !isTraversable;
+				boolean isNosolid = nosolid == null ? false : nosolid.contains(new Pair<Integer, Integer>(x, y));
+				isSolid[y][x] = !isNosolid;
 				Tile t = new Tile(GameCts.TILES_SIZE * x, GameCts.TILES_SIZE * y, red);
-				if (isTraversable) {
-					tile.add(t, 2);
-				} else {
+
+				boolean isLayer1 = layer1 == null ? false : layer1.contains(new Pair<Integer, Integer>(x, y));
+				boolean isLayer2 = layer2 == null ? false : layer2.contains(new Pair<Integer, Integer>(x, y));
+				boolean isLayer3 = layer3 == null ? false : layer3.contains(new Pair<Integer, Integer>(x, y));
+				boolean isLayer4 = layer4 == null ? false : layer4.contains(new Pair<Integer, Integer>(x, y));
+
+				if (!isLayer1 && !isLayer2 && !isLayer3 && !isLayer4) {
 					tile.add(t);
+				} else if (isLayer1) {
+					tile.add(t);
+				} else if (isLayer2) {
+					tile.add(t, 2);
+				} else if (isLayer3) {
+					System.out.println("isLayer3");
+					tile.add(t, 3);
+				} else if (isLayer4) {
+					System.out.println("isLayer4");
+					tile.add(t, 4);
 				}
 				addGrass(red, x, y);
 				break;
