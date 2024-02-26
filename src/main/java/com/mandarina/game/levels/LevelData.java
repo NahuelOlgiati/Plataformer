@@ -10,9 +10,9 @@ import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.game.main.LayerManager;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
-import com.mandarina.lvlbuilder.PNGMetadata;
 import com.mandarina.lvlbuilder.RGB;
-import com.mandarina.lvlbuilder.TileFeature;
+import com.mandarina.lvlbuilder.feature.PNGMetadata;
+import com.mandarina.lvlbuilder.feature.TileFeature;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
@@ -34,7 +34,7 @@ public class LevelData implements LayerDrawer {
 	private LayerManager<Water> water;
 	private LayerManager<Grass> grass;
 
-	public LevelData(LvlBuilderImage img) {
+	public LevelData(LvlBuilderImage img, PNGMetadata pngMetadata) {
 		this.height = (int) img.getHeight();
 		this.width = (int) img.getWidth();
 		this.isSolid = new boolean[height][width];
@@ -79,7 +79,7 @@ public class LevelData implements LayerDrawer {
 				r.draw(g, lvlOffsetX, lvlOffsetY, grassSprite);
 			}
 		};
-		load(img);
+		load(img, pngMetadata);
 	}
 
 	public void update() {
@@ -101,14 +101,14 @@ public class LevelData implements LayerDrawer {
 		this.water.drawL2(g, lvlOffsetX, lvlOffsetY);
 		this.grass.drawL2(g, lvlOffsetX, lvlOffsetY);
 	}
-	
+
 	@Override
 	public void drawL3(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		this.tile.drawL3(g, lvlOffsetX, lvlOffsetY);
 		this.water.drawL3(g, lvlOffsetX, lvlOffsetY);
 		this.grass.drawL3(g, lvlOffsetX, lvlOffsetY);
 	}
-	
+
 	@Override
 	public void drawL4(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		this.tile.drawL4(g, lvlOffsetX, lvlOffsetY);
@@ -117,8 +117,7 @@ public class LevelData implements LayerDrawer {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void load(LvlBuilderImage img) {
-		PNGMetadata pngMetadata = new PNGMetadata(img);
+	public void load(LvlBuilderImage img, PNGMetadata pngMetadata) {
 		List<Pair<Integer, Integer>> nosolid = (List<Pair<Integer, Integer>>) TileFeature.NOSOLID.getManager()
 				.get(pngMetadata, RGB.RED);
 		List<Pair<Integer, Integer>> layer1 = (List<Pair<Integer, Integer>>) TileFeature.LAYER1.getManager()
@@ -168,10 +167,8 @@ public class LevelData implements LayerDrawer {
 				} else if (isLayer2) {
 					tile.add(t, 2);
 				} else if (isLayer3) {
-					System.out.println("isLayer3");
 					tile.add(t, 3);
 				} else if (isLayer4) {
-					System.out.println("isLayer4");
 					tile.add(t, 4);
 				}
 				addGrass(red, x, y);

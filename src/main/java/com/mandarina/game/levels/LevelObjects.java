@@ -18,6 +18,7 @@ import com.mandarina.game.objects.ProjectileCts;
 import com.mandarina.game.objects.Spike;
 import com.mandarina.game.objects.Tree;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
+import com.mandarina.lvlbuilder.feature.PNGMetadata;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
@@ -40,7 +41,7 @@ public class LevelObjects implements LayerDrawer {
 	private LayerManager<Cannon> cannon;
 	private LayerManager<Tree> tree;
 
-	public LevelObjects(LvlBuilderImage img) {
+	public LevelObjects(LvlBuilderImage img, PNGMetadata pngMetadata) {
 		this.height = (int) img.getHeight();
 		this.width = (int) img.getWidth();
 		this.potionSprite = Potion.load();
@@ -147,7 +148,7 @@ public class LevelObjects implements LayerDrawer {
 		this.cannon.drawL2(g, lvlOffsetX, lvlOffsetY);
 		this.tree.drawL2(g, lvlOffsetX, lvlOffsetY);
 	}
-	
+
 	@Override
 	public void drawL3(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		this.potion.drawL3(g, lvlOffsetX, lvlOffsetY);
@@ -156,7 +157,7 @@ public class LevelObjects implements LayerDrawer {
 		this.cannon.drawL3(g, lvlOffsetX, lvlOffsetY);
 		this.tree.drawL3(g, lvlOffsetX, lvlOffsetY);
 	}
-	
+
 	@Override
 	public void drawL4(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
 		this.potion.drawL4(g, lvlOffsetX, lvlOffsetY);

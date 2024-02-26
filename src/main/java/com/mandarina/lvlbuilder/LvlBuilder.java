@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.mandarina.lvlbuilder.feature.PNGMetadata;
+import com.mandarina.lvlbuilder.feature.TileFeature;
 import com.mandarina.main.AppStage;
 
 import javafx.scene.Scene;

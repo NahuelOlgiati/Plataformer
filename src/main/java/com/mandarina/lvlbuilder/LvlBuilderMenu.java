@@ -12,6 +12,9 @@ import org.springframework.core.io.FileUrlResource;
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.main.Game;
 import com.mandarina.game.main.GameCts;
+import com.mandarina.lvlbuilder.feature.PNGMetadataUtil;
+import com.mandarina.lvlbuilder.feature.PNGMetadata;
+import com.mandarina.lvlbuilder.feature.TileFeature;
 import com.mandarina.main.AppStage;
 
 import javafx.embed.swing.SwingFXUtils;
@@ -144,7 +147,7 @@ public class LvlBuilderMenu {
 
 	private void loadMetadata(LvlBuilderImage image) {
 		PNGMetadata pm = new PNGMetadata(image);
-		LvlBuilderMetada.log(pm);
+		PNGMetadataUtil.log(pm);
 		lvlBuilder.setPNGMetadata(pm);
 		loadManePaneMetadata(lvlBuilder.getRedMainPane(), RGB.RED, pm);
 		loadManePaneMetadata(lvlBuilder.getGreenMainPane(), RGB.GREEN, pm);
@@ -184,8 +187,8 @@ public class LvlBuilderMenu {
 			Canvas canvas = getCanvas();
 			writeCanvasImage(canvas, file);
 			PNGMetadata pm = lvlBuilder.getPNGMetadata();
-			LvlBuilderMetada.writeMetadata(file, pm);
-			LvlBuilderMetada.log(pm);
+			PNGMetadataUtil.writeMetadata(file, pm);
+			PNGMetadataUtil.log(pm);
 		}
 	}
 

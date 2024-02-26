@@ -1,4 +1,4 @@
-package com.mandarina.lvlbuilder;
+package com.mandarina.lvlbuilder.feature;
 
 import javafx.scene.input.KeyCode;
 
@@ -13,9 +13,9 @@ public enum TileFeature {
 
 	private KeyCode keyCode;
 	private String icon;
-	protected FeatureManager manager;
+	protected FeatureManager<?> manager;
 
-	TileFeature(KeyCode keyCode, String icon, FeatureManager manager) {
+	TileFeature(KeyCode keyCode, String icon, FeatureManager<?> manager) {
 		this.keyCode = keyCode;
 		this.icon = icon;
 		this.manager = manager;
@@ -29,7 +29,7 @@ public enum TileFeature {
 		return icon;
 	}
 
-	public FeatureManager getManager() {
+	public FeatureManager<?> getManager() {
 		return manager;
 	}
 }

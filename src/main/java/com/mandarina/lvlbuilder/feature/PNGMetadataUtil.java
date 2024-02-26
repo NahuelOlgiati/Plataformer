@@ -1,4 +1,4 @@
-package com.mandarina.lvlbuilder;
+package com.mandarina.lvlbuilder.feature;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,10 @@ import javax.imageio.stream.ImageOutputStream;
 
 import org.w3c.dom.NodeList;
 
-public class LvlBuilderMetada {
+import com.mandarina.lvlbuilder.LvlBuilderImage;
+import com.mandarina.lvlbuilder.RGB;
+
+public class PNGMetadataUtil {
 
 	public static void readFeatures(LvlBuilderImage img, PNGMetadata pm) {
 		try (ImageInputStream input = ImageIO.createImageInputStream(img.getResource().getFile())) {

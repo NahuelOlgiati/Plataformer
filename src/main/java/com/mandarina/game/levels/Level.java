@@ -2,10 +2,12 @@ package com.mandarina.game.levels;
 
 import com.mandarina.game.main.GameCts;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
+import com.mandarina.lvlbuilder.feature.PNGMetadata;
 
 public class Level {
 
 	private LvlBuilderImage img;
+	private PNGMetadata pngMetadata;
 
 	private LevelData levelData;
 	private LevelEntities levelEntities;
@@ -16,9 +18,10 @@ public class Level {
 
 	public Level(LvlBuilderImage img) {
 		this.img = img;
-		this.levelData = new LevelData(img);
-		this.levelEntities = new LevelEntities(img);
-		this.levelObjects = new LevelObjects(img);
+		this.pngMetadata = new PNGMetadata(img);
+		this.levelData = new LevelData(img, pngMetadata);
+		this.levelEntities = new LevelEntities(img, pngMetadata);
+		this.levelObjects = new LevelObjects(img, pngMetadata);
 		calcLvlOffsets();
 	}
 

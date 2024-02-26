@@ -1,7 +1,10 @@
-package com.mandarina.lvlbuilder;
+package com.mandarina.lvlbuilder.feature;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.mandarina.lvlbuilder.LvlBuilderImage;
+import com.mandarina.lvlbuilder.RGB;
 
 import javafx.scene.input.KeyCode;
 
@@ -15,7 +18,7 @@ public class PNGMetadata {
 
 	public PNGMetadata(LvlBuilderImage img) {
 		this.metadata = new HashMap<String, Object>();
-		LvlBuilderMetada.readFeatures(img, this);
+		PNGMetadataUtil.readFeatures(img, this);
 	}
 
 	public void add(RGB rgb, KeyCode keyCode, Object object) {

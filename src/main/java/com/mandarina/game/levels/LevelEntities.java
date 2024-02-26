@@ -14,6 +14,7 @@ import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
+import com.mandarina.lvlbuilder.feature.PNGMetadata;
 
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -37,7 +38,7 @@ public class LevelEntities implements LayerDrawer {
 	private Titan[] titans;
 	private Point2D playerSpawn;
 
-	public LevelEntities(LvlBuilderImage img) {
+	public LevelEntities(LvlBuilderImage img, PNGMetadata pngMetadata) {
 		this.height = (int) img.getHeight();
 		this.width = (int) img.getWidth();
 		this.crabbySprite = Crabby.load();
