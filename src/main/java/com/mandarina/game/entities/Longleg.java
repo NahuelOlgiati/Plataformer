@@ -14,13 +14,14 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
-public class Shark extends Enemy {
+public class Longleg extends Enemy {
 
-	public Shark(Point2D spawn) {
-		super(spawn, EntityCts.SHARK);
-		initSize(SharkCts.SPRITE_WIDTH_DEFAULT, SharkCts.SPRITE_HEIGHT_DEFAULT);
-		initHitbox(SharkCts.HITBOX_WIDTH, SharkCts.HITBOX_HEIGHT);
-		initAttackBox(SharkCts.ATTACK_HITBOX_WIDTH, SharkCts.ATTACK_HITBOX_HEIGHT, SharkCts.ATTACK_HITBOX_OFFSET_X);
+	public Longleg(Point2D spawn) {
+		super(spawn, EntityCts.LONGLEG);
+		initSize(LonglegCts.SPRITE_WIDTH_DEFAULT, LonglegCts.SPRITE_HEIGHT_DEFAULT);
+		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_WIDTH);
+		initAttackBox(LonglegCts.ATTACK_HITBOX_WIDTH, LonglegCts.ATTACK_HITBOX_HEIGHT,
+				LonglegCts.ATTACK_HITBOX_OFFSET_X);
 	}
 
 	@Override
@@ -66,7 +67,7 @@ public class Shark extends Enemy {
 				break;
 			case HIT:
 				if (aniIndex <= getSpriteAmount(state) - 2)
-					pushBack(pushBackDir, levelData, 2);
+					pushBack(pushBackDir, levelData, 0.5);
 				updatePushBackDrawOffset();
 				break;
 			}
@@ -75,9 +76,9 @@ public class Shark extends Enemy {
 
 	@Override
 	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(SharkCts.SPRITE_WIDTH_DEFAULT),
-				AppStage.Scale(SharkCts.SPRITE_HEIGHT_DEFAULT), AppStage.Scale(SharkCts.DRAW_OFFSET_X_DEFAULT),
-				AppStage.Scale(SharkCts.DRAW_OFFSET_Y_DEFAULT));
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(LonglegCts.SPRITE_WIDTH_DEFAULT),
+				AppStage.Scale(LonglegCts.SPRITE_HEIGHT_DEFAULT), AppStage.Scale(LonglegCts.DRAW_OFFSET_X_DEFAULT),
+				AppStage.Scale(LonglegCts.DRAW_OFFSET_Y_DEFAULT));
 	}
 
 	@Override
@@ -87,12 +88,21 @@ public class Shark extends Enemy {
 
 	@Override
 	protected int getMaxHealth() {
-		return SharkCts.HEALTH;
+		return LonglegCts.HEALTH;
 	}
 
 	private boolean isPlayerCloseForAttack(Player player) {
 		int distance = getCurrentPlayerDistance(player);
 		return distance <= attackDistance * 2;
+	}
+
+	private void checkPlayerHit(Rectangle2D attackBox, Player player) {
+		if (attackBox.intersects(player.getHitbox()))
+			player.changeHealth(-LonglegCts.DAMAGE, this);
+		else {
+			return;
+		}
+		attackChecked = true;
 	}
 
 	private void attackMove(Playing playing) {
@@ -112,44 +122,37 @@ public class Shark extends Enemy {
 				return;
 			}
 		}
+
 		newState(EnemyState.IDLE);
 		playing.getObjectManager().addDialogue((int) hitbox.getMinX(), (int) hitbox.getMinY(), DialogueCts.EXCLAMATION);
-	}
-
-	private void checkPlayerHit(Rectangle2D attackBox, Player player) {
-		if (attackBox.intersects(player.getHitbox()))
-			player.changeHealth(-SharkCts.DAMAGE, this);
-		else {
-			return;
-		}
-		attackChecked = true;
 	}
 
 	private static int GetSpriteAmount(EnemyState state) {
 		switch (state) {
 		case IDLE:
-			return 8;
+			return 6;
 		case RUNNING:
 			return 6;
 		case ATTACK:
-			return 8;
+			return 6;
 		case HIT:
-			return 4;
+			return 6;
 		case DEAD:
-			return 5;
+			return 6;
 		}
 		return 0;
 	}
 
 	public static Image[][] load() {
-		return LoadSave.GetAnimations(SharkCts.ATLAS_SIZE_X, SharkCts.ATLAS_SIZE_Y, SharkCts.SPRITE_WIDTH_DEFAULT,
-				SharkCts.SPRITE_HEIGHT_DEFAULT, LoadSave.GetAtlas(SharkCts.ATLAS_IMAGE));
+		return LoadSave.GetAnimations(LonglegCts.ATLAS_SIZE_X, LonglegCts.ATLAS_SIZE_Y, LonglegCts.SPRITE_WIDTH_DEFAULT,
+				LonglegCts.SPRITE_HEIGHT_DEFAULT, LoadSave.GetAtlas(LonglegCts.ATLAS_IMAGE));
 	}
 
 	public void scale() {
 		super.scale();
-		initSize(SharkCts.SPRITE_WIDTH_DEFAULT, SharkCts.SPRITE_HEIGHT_DEFAULT);
-		initHitbox(SharkCts.HITBOX_WIDTH, SharkCts.HITBOX_HEIGHT);
-		initAttackBox(SharkCts.ATTACK_HITBOX_WIDTH, SharkCts.ATTACK_HITBOX_HEIGHT, SharkCts.ATTACK_HITBOX_OFFSET_X);
+		initSize(LonglegCts.SPRITE_WIDTH_DEFAULT, LonglegCts.SPRITE_HEIGHT_DEFAULT);
+		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_WIDTH);
+		initAttackBox(LonglegCts.ATTACK_HITBOX_WIDTH, LonglegCts.ATTACK_HITBOX_HEIGHT,
+				LonglegCts.ATTACK_HITBOX_OFFSET_X);
 	}
 }

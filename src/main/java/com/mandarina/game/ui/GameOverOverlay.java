@@ -2,8 +2,8 @@ package com.mandarina.game.ui;
 
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.gamestates.Playing;
-import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -14,36 +14,37 @@ public class GameOverOverlay {
 
 	private Playing playing;
 	private Image img;
-	private int imgX, imgY, imgW, imgH;
+	private double imgX, imgY, imgW, imgH;
 	private UrmButton menu, play;
 
 	public GameOverOverlay(Playing playing) {
 		this.playing = playing;
+		img = LoadSave.GetSprite(LoadSave.DEATH_SCREEN);
 		createImg();
 		createButtons();
 	}
 
 	private void createButtons() {
-		int menuX = (int) (335 * GameCts.SCALE);
-		int playX = (int) (440 * GameCts.SCALE);
-		int y = (int) (195 * GameCts.SCALE);
-		play = new UrmButton(playX, y, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 0);
-		menu = new UrmButton(menuX, y, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 2);
+		int menuX = AppStage.Scale(335);
+		int playX = AppStage.Scale(440);
+		int y = AppStage.Scale(195);
+		play = new UrmButton(playX, y, AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT),
+				AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT), 0);
+		menu = new UrmButton(menuX, y, AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT),
+				AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT), 2);
 
 	}
 
 	private void createImg() {
-		img = LoadSave.GetSprite(LoadSave.DEATH_SCREEN);
-		imgW = (int) (img.getWidth() * GameCts.SCALE);
-		imgH = (int) (img.getHeight() * GameCts.SCALE);
-		imgX = GameCts.GAME_WIDTH / 2 - imgW / 2;
-		imgY = (int) (100 * GameCts.SCALE);
-
+		imgW = AppStage.Scale(img.getWidth());
+		imgH = AppStage.Scale(img.getHeight());
+		imgX = AppStage.GetGameWidth() / 2 - imgW / 2;
+		imgY = AppStage.Scale(100);
 	}
 
 	public void draw(GameDrawer g) {
 		g.setFill(new Color(0, 0, 0, 0.5));
-		g.fillRect(0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
+		g.fillRect(0, 0, AppStage.GetGameWidth(), AppStage.GetGameHeight());
 
 		g.drawImage(img, imgX, imgY, imgW, imgH);
 
@@ -91,6 +92,11 @@ public class GameOverOverlay {
 			menu.setMousePressed(true);
 		else if (isIn(play, e))
 			play.setMousePressed(true);
+	}
+
+	public void scale() {
+		createImg();
+		createButtons();
 	}
 
 }

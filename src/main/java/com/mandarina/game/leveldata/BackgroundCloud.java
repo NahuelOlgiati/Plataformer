@@ -2,9 +2,10 @@ package com.mandarina.game.leveldata;
 
 import java.util.Random;
 
-import com.mandarina.utilz.LoadSave;
-import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
+import com.mandarina.utilz.LoadSave;
+
 import javafx.scene.image.Image;
 
 public class BackgroundCloud {
@@ -17,18 +18,29 @@ public class BackgroundCloud {
 		bigCloud = LoadSave.GetSprite(LoadSave.BIG_CLOUDS);
 		smallCloud = LoadSave.GetSprite(LoadSave.SMALL_CLOUDS);
 		smallCloudsPos = new int[8];
-		for (int i = 0; i < smallCloudsPos.length; i++)
-			smallCloudsPos[i] = (int) (90 * GameCts.SCALE) + rnd.nextInt((int) (100 * GameCts.SCALE));
+		initSmallCloudsPos();
 	}
 
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	private void initSmallCloudsPos() {
+		for (int i = 0; i < smallCloudsPos.length; i++)
+			smallCloudsPos[i] = AppStage.Scale(90) + rnd.nextInt(AppStage.Scale(100));
+	}
+
+	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		for (int i = 0; i < 4; i++)
-			g.drawImage(bigCloud, i * BackgroundCloudCts.BIG_CLOUD_WIDTH - (int) (lvlOffsetX * 0.3), (int) (204 * GameCts.SCALE),
-					BackgroundCloudCts.BIG_CLOUD_WIDTH, BackgroundCloudCts.BIG_CLOUD_HEIGHT);
+			g.drawImage(bigCloud,
+					i * AppStage.Scale(BackgroundCloudCts.BIG_CLOUD_WIDTH_DEFAULT) - (int) (lvlOffsetX * 0.3),
+					AppStage.Scale(204), AppStage.Scale(BackgroundCloudCts.BIG_CLOUD_WIDTH_DEFAULT),
+					AppStage.Scale(BackgroundCloudCts.BIG_CLOUD_HEIGHT_DEFAULT));
 
 		for (int i = 0; i < smallCloudsPos.length; i++)
-			g.drawImage(smallCloud, BackgroundCloudCts.SMALL_CLOUD_WIDTH * 4 * i - (int) (lvlOffsetX * 0.7), smallCloudsPos[i],
-					BackgroundCloudCts.SMALL_CLOUD_WIDTH, BackgroundCloudCts.SMALL_CLOUD_HEIGHT);
+			g.drawImage(smallCloud,
+					AppStage.Scale(BackgroundCloudCts.SMALL_CLOUD_WIDTH_DEFAULT) * 4 * i - (int) (lvlOffsetX * 0.7),
+					smallCloudsPos[i], AppStage.Scale(BackgroundCloudCts.SMALL_CLOUD_WIDTH_DEFAULT),
+					AppStage.Scale(BackgroundCloudCts.SMALL_CLOUD_HEIGHT_DEFAULT));
 	}
 
+	public void scale() {
+		initSmallCloudsPos();
+	}
 }

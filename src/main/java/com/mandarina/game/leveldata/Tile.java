@@ -1,22 +1,27 @@
 package com.mandarina.game.leveldata;
 
-import com.mandarina.utilz.LoadSave;
-import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
+import com.mandarina.utilz.LoadSave;
+
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
-public class Tile {
+public class Tile extends GameData {
 
-	private int x, y, aniIndex;
+	private int aniIndex;
 
-	public Tile(int x, int y, int aniIndex) {
-		this.x = x;
-		this.y = y;
+	public Tile(Point2D spawn, int aniIndex) {
+		super(spawn);
 		this.aniIndex = aniIndex;
 	}
 
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[] imgs) {
-		g.drawImage(imgs[aniIndex], x - lvlOffsetX, y - lvlOffsetY, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
+	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[] imgs) {
+		g.drawImage(imgs[aniIndex], x - lvlOffsetX, y - lvlOffsetY, AppStage.GetTileSize(), AppStage.GetTileSize());
+
+//		g.setStroke(Color.PINK);
+//		g.strokeRect(x - lvlOffsetX, y - lvlOffsetY, AppStage.GetTileSize(), AppStage.GetTileSize());
 	}
 
 	public static Image[] load() {

@@ -5,7 +5,7 @@ import com.mandarina.game.main.Game;
 
 public enum GameState {
 
-	PLAYING, LVLBUILDER, MENU, OPTIONS, QUIT, CREDITS;
+	PLAYING, LVLBUILDER, MENU, LOADING, OPTIONS, QUIT, CREDITS;
 
 	private static GameState state;
 	private static Game game;

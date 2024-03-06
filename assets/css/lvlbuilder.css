@@ -1,0 +1,595 @@
+.root {
+  -color-dark: rgb(0, 0, 0);
+  -color-light: rgb(255, 255, 255);
+  -color-base-0: rgb(242, 242, 247);
+  -color-base-1: rgb(229, 229, 234);
+  -color-base-2: rgb(209, 209, 214);
+  -color-base-3: rgb(199, 199, 204);
+  -color-base-4: rgb(174, 174, 178);
+  -color-base-5: rgb(142, 142, 147);
+  -color-base-6: #636366;
+  -color-base-7: #48484A;
+  -color-base-8: #3A3A3C;
+  -color-base-9: #2C2C2E;
+  -color-accent-0: #bfdeff;
+  -color-accent-1: #99caff;
+  -color-accent-2: #73b6ff;
+  -color-accent-3: #4da2ff;
+  -color-accent-4: #268eff;
+  -color-accent-5: rgb(0, 122, 255);
+  -color-accent-6: #0068d9;
+  -color-accent-7: #0055b3;
+  -color-accent-8: #00438c;
+  -color-accent-9: #003166;
+  -color-success-0: #c7f0cd;
+  -color-success-1: #a5e7af;
+  -color-success-2: #83de91;
+  -color-success-3: #62d573;
+  -color-success-4: #40cc55;
+  -color-success-5: rgb(30, 195, 55);
+  -color-success-6: #1aa62f;
+  -color-success-7: #158927;
+  -color-success-8: #116b1e;
+  -color-success-9: #0c4e16;
+  -color-warning-0: #ffe5bf;
+  -color-warning-1: #ffd599;
+  -color-warning-2: #ffc573;
+  -color-warning-3: #ffb54d;
+  -color-warning-4: #ffa526;
+  -color-warning-5: rgb(255, 149, 0);
+  -color-warning-6: #d97f00;
+  -color-warning-7: #b36800;
+  -color-warning-8: #8c5200;
+  -color-warning-9: #663c00;
+  -color-danger-0: #ffcecb;
+  -color-danger-1: #ffb1ac;
+  -color-danger-2: #ff938d;
+  -color-danger-3: #ff766e;
+  -color-danger-4: #ff584f;
+  -color-danger-5: rgb(255, 59, 48);
+  -color-danger-6: #d93229;
+  -color-danger-7: #b32922;
+  -color-danger-8: #8c201a;
+  -color-danger-9: #661813;
+  -color-fg-default: rgb(0, 0, 0);
+  -color-fg-muted: #636366;
+  -color-fg-subtle: rgb(138, 138, 142);
+  -color-fg-emphasis: rgb(255, 255, 255);
+  -color-bg-default: rgb(255, 255, 255);
+  -color-bg-overlay: rgb(255, 255, 255);
+  -color-bg-subtle: rgb(242, 242, 247);
+  -color-bg-inset: rgb(242, 242, 247);
+  -color-border-default: rgb(209, 209, 214);
+  -color-border-muted: #d1d1d6;
+  -color-border-subtle: rgb(217, 217, 217);
+  -color-shadow-default: rgb(209, 209, 214);
+  -color-neutral-emphasis-plus: #48484A;
+  -color-neutral-emphasis: #636366;
+  -color-neutral-muted: rgb(210, 210, 212);
+  -color-neutral-subtle: rgb(244, 244, 244);
+  -color-accent-fg: rgb(0, 122, 255);
+  -color-accent-emphasis: rgb(0, 122, 255);
+  -color-accent-muted: rgb(153, 202, 255);
+  -color-accent-subtle: rgb(230, 242, 255);
+  -color-warning-fg: rgb(255, 149, 0);
+  -color-warning-emphasis: #d97f00;
+  -color-warning-muted: rgb(255, 213, 153);
+  -color-warning-subtle: rgb(255, 244, 230);
+  -color-success-fg: #1aa62f;
+  -color-success-emphasis: rgb(30, 195, 55);
+  -color-success-muted: rgb(165, 231, 175);
+  -color-success-subtle: rgb(233, 249, 235);
+  -color-danger-fg: rgb(255, 59, 48);
+  -color-danger-emphasis: rgb(255, 59, 48);
+  -color-danger-muted: rgb(255, 177, 172);
+  -color-danger-subtle: rgb(255, 226, 224);
+  -color-chart-1: #f3622d;
+  -color-chart-2: #fba71b;
+  -color-chart-3: #57b757;
+  -color-chart-4: #41a9c9;
+  -color-chart-5: #4258c9;
+  -color-chart-6: #9a42c8;
+  -color-chart-7: #c84164;
+  -color-chart-8: #888888;
+  -color-chart-1-alpha70: rgba(243, 98, 45, 0.7);
+  -color-chart-2-alpha70: rgba(251, 167, 27, 0.7);
+  -color-chart-3-alpha70: rgba(87, 183, 87, 0.7);
+  -color-chart-4-alpha70: rgba(65, 169, 201, 0.7);
+  -color-chart-5-alpha70: rgba(66, 88, 201, 0.7);
+  -color-chart-6-alpha70: rgba(154, 66, 200, 0.7);
+  -color-chart-7-alpha70: rgba(200, 65, 100, 0.7);
+  -color-chart-8-alpha70: rgba(136, 136, 136, 0.7);
+  -color-chart-1-alpha20: rgba(243, 98, 45, 0.2);
+  -color-chart-2-alpha20: rgba(251, 167, 27, 0.2);
+  -color-chart-3-alpha20: rgba(87, 183, 87, 0.2);
+  -color-chart-4-alpha20: rgba(65, 169, 201, 0.2);
+  -color-chart-5-alpha20: rgba(66, 88, 201, 0.2);
+  -color-chart-6-alpha20: rgba(154, 66, 200, 0.2);
+  -color-chart-7-alpha20: rgba(200, 65, 100, 0.2);
+  -color-chart-8-alpha20: rgba(136, 136, 136, 0.2);
+  -fx-background-color: -color-bg-default;
+  -fx-font-size: 14px;
+  -fx-background-radius: inherit;
+  -fx-background-insets: inherit;
+  -fx-padding: inherit;
+}
+
+.menu-bar {
+  -fx-background-color: -color-border-muted, -color-bg-subtle;
+  -fx-background-insets: 0 0 0 0, 0 0 1 0;
+  -fx-background-radius: 0;
+  -fx-padding: 0;
+}
+.menu-bar > .container {
+  -fx-padding: 4px 4px 4px 4px;
+}
+.menu-bar > .container > .menu-button {
+  -fx-background-color: transparent;
+  -fx-background-insets: 0 0 1px 0;
+  -fx-background-radius: 5px;
+  -fx-padding: 4px 10px 4px 10px;
+  -fx-effect: none;
+}
+.menu-bar > .container > .menu-button > .label {
+  -fx-padding: 0;
+  -fx-text-fill: -color-fg-default;
+}
+.menu-bar > .container > .menu-button > .arrow-button {
+  -fx-padding: 0;
+}
+.menu-bar > .container > .menu-button > .arrow-button > .arrow {
+  -fx-padding: 0;
+  -fx-background-color: transparent;
+}
+.menu-bar > .container > .menu-button:hover, .menu-bar > .container > .menu-button:focused, .menu-bar > .container > .menu-button:showing {
+  -fx-background-color: -color-base-1, -color-base-1;
+}
+
+.menu {
+  -fx-background-color: transparent;
+}
+.menu > .right-container > .arrow {
+  -fx-shape: "M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z";
+  -fx-scale-shape: false;
+  -fx-background-color: -color-fg-muted;
+}
+
+.menu-up-arrow {
+  -fx-shape: "M7 14l5-5 5 5z";
+  -fx-scale-shape: true;
+  -fx-background-color: -color-fg-muted;
+  -fx-padding: 3px 4px 3px 4px;
+}
+
+.menu-down-arrow {
+  -fx-shape: "M7 10l5 5 5-5z";
+  -fx-scale-shape: true;
+  -fx-background-color: -color-fg-muted;
+  -fx-padding: 3px 4px 3px 4px;
+}
+
+.menu-item {
+  -fx-background-color: -color-bg-default;
+  -fx-padding: 6px 12px 6px 12px;
+  -fx-background-radius: 5px;
+}
+.menu-item > .graphic-container {
+  -fx-padding: 0 6px 0 0;
+}
+.menu-item > .label {
+  -fx-padding: 0 1em 0 0;
+  -fx-text-fill: -color-fg-default;
+}
+.menu-item > .left-container {
+  -fx-padding: 0 1em 0 0;
+}
+.menu-item > .right-container {
+  -fx-padding: 0 0 0 0.5em;
+}
+.menu-item:focused {
+  -fx-background-color: -color-accent-emphasis, -color-accent-emphasis;
+}
+.menu-item:focused > .label {
+  -fx-text-fill: -color-fg-emphasis;
+}
+.menu-item:focused > .right-container > .arrow {
+  -fx-background-color: -color-fg-emphasis;
+}
+.menu-item:focused .font-icon, .menu-item:focused .ikonli-font-icon {
+  -fx-icon-color: -color-fg-emphasis;
+  -fx-fill: -color-fg-emphasis;
+}
+.menu-item:disabled {
+  -fx-opacity: 0.4;
+}
+
+.radio-menu-item:checked > .left-container > .radio,
+.check-menu-item:checked > .left-container > .check {
+  -fx-shape: "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z";
+  -fx-scale-shape: true;
+  -fx-background-color: -color-fg-muted;
+  -fx-min-height: 0.85em;
+  -fx-min-width: 0.85em;
+  -fx-max-height: 0.85em;
+  -fx-max-width: 0.85em;
+}
+
+.radio-menu-item:hover:checked > .left-container > .radio,
+.radio-menu-item:focused:checked > .left-container > .radio,
+.check-menu-item:hover:checked > .left-container > .check,
+.check-menu-item:focused:checked > .left-container > .check {
+  -fx-background-color: -color-fg-emphasis;
+}
+
+.caption-menu-item {
+  -fx-padding: 6px 12px 6px 12px;
+}
+.caption-menu-item:hover, .caption-menu-item:focused, .caption-menu-item:pressed {
+  -fx-background-color: transparent;
+}
+.caption-menu-item:hover > .label, .caption-menu-item:focused > .label, .caption-menu-item:pressed > .label {
+  -fx-text-fill: -color-fg-muted;
+}
+.caption-menu-item > .label {
+  -fx-text-fill: -color-fg-muted;
+}
+.caption-menu-item > .label > .text {
+  -fx-font-weight: bold;
+}
+
+.context-menu {
+  -fx-background-color: -color-border-muted, -color-bg-default;
+  -fx-background-insets: 0, 1;
+  -fx-padding: 5px 5px 5px 5px;
+  -fx-background-radius: 6px, 5px;
+  -fx-effect: dropshadow(three-pass-box, -color-shadow-default, 6px, 0.3, 0, 2);
+}
+.context-menu > .scroll-arrow {
+  -fx-padding: 0.5em;
+  -fx-background-color: transparent;
+}
+.context-menu > .scroll-arrow:hover {
+  -fx-background-color: -color-accent-emphasis;
+  -fx-text-fill: -color-fg-emphasis;
+}
+.context-menu .separator:horizontal {
+  -fx-padding: 0.25em 0 0.25em 0;
+}
+.context-menu .separator:horizontal .line {
+  -fx-border-color: -color-border-muted transparent transparent transparent;
+  -fx-border-insets: 1px 0.5em 0 0.5em;
+}
+
+.context-menu:show-mnemonics > .mnemonic-underline,
+.menu:show-mnemonics > .mnemonic-underline,
+.menu-bar:show-mnemonics > .mnemonic-underline,
+.menu-item > .label:show-mnemonics > .mnemonic-underline {
+  -fx-stroke: -color-fg-default;
+}
+
+.menu-button,
+.split-menu-button {
+  -color-button-bg: rgb(255, 255, 255);
+  -color-button-fg: -color-fg-default;
+  -color-button-border: -color-border-default;
+  -color-button-bg-hover: -color-base-1;
+  -color-button-fg-hover: -color-button-fg;
+  -color-button-border-hover: -color-button-border;
+  -color-button-bg-focused: -color-button-bg;
+  -color-button-fg-focused: -color-button-fg;
+  -color-button-border-focused: -color-accent-emphasis;
+  -color-button-bg-pressed: -color-bg-subtle;
+  -color-button-fg-pressed: -color-button-fg;
+  -color-button-border-pressed: transparent;
+  -color-button-shadow: -color-shadow-default;
+  -fx-background-color: -color-button-border, -color-button-bg;
+  -fx-background-insets: 0, 1px;
+  -fx-background-radius: 6px, 5px;
+  -fx-graphic-text-gap: 6px;
+  -fx-text-fill: -color-button-fg;
+  -fx-alignment: CENTER;
+  -fx-effect: dropshadow(gaussian, -color-button-shadow, 3px, -2, 0, 1);
+  -fx-padding: 0;
+  -fx-alignment: CENTER_LEFT;
+}
+.menu-button .font-icon, .menu-button .ikonli-font-icon,
+.split-menu-button .font-icon,
+.split-menu-button .ikonli-font-icon {
+  -fx-icon-color: -color-button-fg;
+  -fx-fill: -color-button-fg;
+}
+.menu-button:disabled,
+.split-menu-button:disabled {
+  -fx-opacity: 0.4;
+  -fx-effect: none;
+}
+.menu-button:show-mnemonics > .mnemonic-underline,
+.split-menu-button:show-mnemonics > .mnemonic-underline {
+  -fx-stroke: -color-button-fg;
+}
+.menu-button.button-icon,
+.split-menu-button.button-icon {
+  -fx-padding: 6px;
+  -fx-content-display: graphic-only;
+}
+.menu-button.button-circle,
+.split-menu-button.button-circle {
+  -fx-background-radius: 50;
+  -fx-padding: 6px 8px 6px 8px;
+  -fx-content-display: graphic-only;
+  -fx-effect: none;
+}
+.menu-button.left-pill,
+.split-menu-button.left-pill {
+  -fx-background-radius: 6px 0 0 6px, 5px 0 0 5px;
+  -fx-background-insets: 0, 1px 0 1px 1px;
+  -fx-effect: none;
+}
+.menu-button.left-pill:hover, .menu-button.left-pill:focused,
+.split-menu-button.left-pill:hover,
+.split-menu-button.left-pill:focused {
+  -fx-background-insets: 0, 1px;
+}
+.menu-button.center-pill,
+.split-menu-button.center-pill {
+  -fx-background-radius: 0;
+  -fx-background-insets: 0, 1px 0 1px 0;
+  -fx-effect: none;
+}
+.menu-button.center-pill:hover, .menu-button.center-pill:focused,
+.split-menu-button.center-pill:hover,
+.split-menu-button.center-pill:focused {
+  -fx-background-insets: 0, 1px;
+}
+.menu-button.right-pill,
+.split-menu-button.right-pill {
+  -fx-background-radius: 0 6px 6px 0, 0 5px 5px 0;
+  -fx-background-insets: 0, 1px 1px 1px 0;
+  -fx-effect: none;
+}
+.menu-button.right-pill:hover, .menu-button.right-pill:focused,
+.split-menu-button.right-pill:hover,
+.split-menu-button.right-pill:focused {
+  -fx-background-insets: 0, 1px;
+}
+.menu-button > .label,
+.split-menu-button > .label {
+  -fx-padding: 6px 12px 6px 12px;
+  -fx-text-fill: -color-button-fg;
+}
+.menu-button > .arrow-button,
+.split-menu-button > .arrow-button {
+  -fx-padding: 6px 12px 6px 0;
+}
+.menu-button > .arrow-button > .arrow,
+.split-menu-button > .arrow-button > .arrow {
+  -fx-shape: "M10 17l5-5-5-5v10z";
+  -fx-scale-shape: false;
+  -fx-background-color: -color-button-fg;
+  -fx-min-width: 0.5em;
+}
+.menu-button:openvertically > .arrow-button > .arrow,
+.split-menu-button:openvertically > .arrow-button > .arrow {
+  -fx-shape: "M7 10l5 5 5-5z";
+  -fx-scale-shape: false;
+}
+.menu-button:show-mnemonics > .label > .mnemonic-underline,
+.split-menu-button:show-mnemonics > .label > .mnemonic-underline {
+  -fx-stroke: -color-button-fg;
+}
+.menu-button.button-icon,
+.split-menu-button.button-icon {
+  -fx-padding: 0;
+}
+.menu-button:hover,
+.split-menu-button:hover {
+  -fx-background-color: -color-button-border-hover, -color-button-bg-hover;
+  -fx-opacity: 0.9;
+}
+.menu-button:hover > .label,
+.split-menu-button:hover > .label {
+  -fx-text-fill: -color-button-fg-hover;
+}
+.menu-button:hover > .arrow-button > .arrow,
+.split-menu-button:hover > .arrow-button > .arrow {
+  -fx-background-color: -color-button-fg-hover;
+}
+.menu-button:hover .font-icon, .menu-button:hover .ikonli-font-icon,
+.split-menu-button:hover .font-icon,
+.split-menu-button:hover .ikonli-font-icon {
+  -fx-icon-color: -color-button-fg-hover;
+  -fx-fill: -color-button-fg-hover;
+}
+.menu-button:focused,
+.split-menu-button:focused {
+  -fx-background-color: -color-button-border-focused, -color-button-bg-focused;
+}
+.menu-button:focused > .label,
+.split-menu-button:focused > .label {
+  -fx-text-fill: -color-button-fg-focused;
+}
+.menu-button:focused > .arrow-button > .arrow,
+.split-menu-button:focused > .arrow-button > .arrow {
+  -fx-background-color: -color-button-fg-focused;
+}
+.menu-button:focused .font-icon, .menu-button:focused .ikonli-font-icon,
+.split-menu-button:focused .font-icon,
+.split-menu-button:focused .ikonli-font-icon {
+  -fx-icon-color: -color-button-fg-focused;
+  -fx-fill: -color-button-fg-focused;
+}
+.menu-button:armed, .menu-button:focused:armed,
+.split-menu-button:armed,
+.split-menu-button:focused:armed {
+  -fx-background-color: -color-button-border-pressed, -color-button-bg-pressed;
+  -fx-text-fill: -color-button-fg-pressed;
+}
+.menu-button:armed > .label, .menu-button:focused:armed > .label,
+.split-menu-button:armed > .label,
+.split-menu-button:focused:armed > .label {
+  -fx-text-fill: -color-button-fg-pressed;
+}
+.menu-button:armed > .arrow-button > .arrow, .menu-button:focused:armed > .arrow-button > .arrow,
+.split-menu-button:armed > .arrow-button > .arrow,
+.split-menu-button:focused:armed > .arrow-button > .arrow {
+  -fx-background-color: -color-button-fg-pressed;
+}
+.menu-button:armed .font-icon, .menu-button:armed .ikonli-font-icon, .menu-button:focused:armed .font-icon, .menu-button:focused:armed .ikonli-font-icon,
+.split-menu-button:armed .font-icon,
+.split-menu-button:armed .ikonli-font-icon,
+.split-menu-button:focused:armed .font-icon,
+.split-menu-button:focused:armed .ikonli-font-icon {
+  -fx-icon-color: -color-button-fg-pressed;
+  -fx-fill: -color-button-fg-pressed;
+}
+.menu-button.button-outlined,
+.split-menu-button.button-outlined {
+  -color-button-bg: -color-bg-default;
+  -color-button-fg: -color-fg-default;
+  -color-button-bg-hover: -color-base-1;
+  -color-button-fg-hover: -color-button-fg;
+}
+.menu-button.accent,
+.split-menu-button.accent {
+  -color-button-bg: -color-accent-emphasis;
+  -color-button-fg: -color-fg-emphasis;
+  -color-button-border: -color-accent-emphasis;
+  -color-button-bg-hover: -color-accent-emphasis;
+  -color-button-fg-hover: -color-fg-emphasis;
+  -color-button-border-hover: -color-accent-emphasis;
+  -color-button-bg-focused: -color-accent-6;
+  -color-button-fg-focused: -color-fg-emphasis;
+  -color-button-border-focused: -color-accent-emphasis;
+  -color-button-bg-pressed: -color-accent-emphasis;
+  -color-button-fg-pressed: -color-fg-emphasis;
+  -color-button-border-pressed: transparent;
+}
+.menu-button.accent.button-outlined,
+.split-menu-button.accent.button-outlined {
+  -color-button-bg: -color-bg-default;
+  -color-button-fg: -color-accent-fg;
+  -color-button-bg-hover: -color-accent-emphasis;
+  -color-button-fg-hover: -color-fg-emphasis;
+}
+.menu-button.accent.flat,
+.split-menu-button.accent.flat {
+  -color-button-fg: -color-accent-fg;
+  -color-button-bg-hover: -color-accent-subtle;
+}
+.menu-button.success,
+.split-menu-button.success {
+  -color-button-bg: -color-success-emphasis;
+  -color-button-fg: -color-fg-emphasis;
+  -color-button-border: -color-success-emphasis;
+  -color-button-bg-hover: -color-success-emphasis;
+  -color-button-fg-hover: -color-fg-emphasis;
+  -color-button-border-hover: -color-success-emphasis;
+  -color-button-bg-focused: -color-success-6;
+  -color-button-fg-focused: -color-fg-emphasis;
+  -color-button-border-focused: -color-success-emphasis;
+  -color-button-bg-pressed: -color-success-emphasis;
+  -color-button-fg-pressed: -color-fg-emphasis;
+  -color-button-border-pressed: transparent;
+}
+.menu-button.success.button-outlined,
+.split-menu-button.success.button-outlined {
+  -color-button-bg: -color-bg-default;
+  -color-button-fg: -color-success-fg;
+  -color-button-bg-hover: -color-success-emphasis;
+  -color-button-fg-hover: -color-fg-emphasis;
+}
+.menu-button.success.flat,
+.split-menu-button.success.flat {
+  -color-button-fg: -color-success-fg;
+  -color-button-bg-hover: -color-success-subtle;
+}
+.menu-button.danger,
+.split-menu-button.danger {
+  -color-button-bg: -color-danger-emphasis;
+  -color-button-fg: -color-fg-emphasis;
+  -color-button-border: -color-danger-emphasis;
+  -color-button-bg-hover: -color-danger-emphasis;
+  -color-button-fg-hover: -color-fg-emphasis;
+  -color-button-border-hover: -color-danger-emphasis;
+  -color-button-bg-focused: -color-danger-6;
+  -color-button-fg-focused: -color-fg-emphasis;
+  -color-button-border-focused: -color-danger-emphasis;
+  -color-button-bg-pressed: -color-danger-emphasis;
+  -color-button-fg-pressed: -color-fg-emphasis;
+  -color-button-border-pressed: transparent;
+}
+.menu-button.danger.button-outlined,
+.split-menu-button.danger.button-outlined {
+  -color-button-bg: -color-bg-default;
+  -color-button-fg: -color-danger-fg;
+  -color-button-bg-hover: -color-danger-emphasis;
+  -color-button-fg-hover: -color-fg-emphasis;
+}
+.menu-button.danger.flat,
+.split-menu-button.danger.flat {
+  -color-button-fg: -color-danger-fg;
+  -color-button-bg-hover: -color-danger-subtle;
+}
+.menu-button.flat,
+.split-menu-button.flat {
+  -color-button-bg: transparent;
+  -color-button-fg: -color-fg-default;
+  -color-button-border: transparent;
+  -color-button-bg-hover: -color-bg-subtle;
+  -color-button-fg-hover: -color-button-fg;
+  -color-button-border-hover: -color-bg-subtle;
+  -color-button-bg-focused: -color-button-bg;
+  -color-button-fg-focused: -color-button-fg;
+  -color-button-border-focused: -color-button-bg;
+  -color-button-bg-pressed: -color-button-bg;
+  -color-button-fg-pressed: -color-button-fg;
+  -color-button-border-pressed: transparent;
+  -fx-effect: none;
+}
+.menu-button:disabled > .label,
+.split-menu-button:disabled > .label {
+  -fx-opacity: 1;
+}
+
+.menu-button.no-arrow > .arrow-button {
+  -fx-padding: 0;
+}
+.menu-button.no-arrow > .arrow-button > .arrow {
+  -fx-shape: none;
+  -fx-scale-shape: false;
+  -fx-min-width: -1;
+}
+
+.split-menu-button > .label {
+  -fx-padding: 6px 6px 6px 12px;
+}
+.split-menu-button:hover > .arrow-button, .split-menu-button:focused:hover > .arrow-button {
+  -fx-background-color: -color-accent-emphasis;
+  -fx-background-insets: 1px;
+  -fx-background-radius: 5px;
+  -fx-border-color: transparent;
+  -fx-opacity: 1;
+}
+.split-menu-button:hover > .arrow-button > .arrow, .split-menu-button:focused:hover > .arrow-button > .arrow {
+  -fx-background-color: -color-fg-emphasis;
+  -fx-opacity: 1;
+}
+.split-menu-button:default:hover > .arrow-button, .split-menu-button.accent:hover > .arrow-button, .split-menu-button.success:hover > .arrow-button, .split-menu-button.danger:hover > .arrow-button {
+  -fx-background-color: -color-fg-emphasis;
+}
+.split-menu-button:default:hover > .arrow-button > .arrow, .split-menu-button.accent:hover > .arrow-button > .arrow, .split-menu-button.success:hover > .arrow-button > .arrow, .split-menu-button.danger:hover > .arrow-button > .arrow {
+  -fx-background-color: -color-button-bg-hover;
+}
+.split-menu-button.button-outlined:hover > .arrow-button, .split-menu-button.button-outlined:focused > .arrow-button {
+  -color-button-fg: -color-fg-default;
+}
+.split-menu-button.button-outlined:hover:default > .arrow-button, .split-menu-button.button-outlined:hover.accent > .arrow-button, .split-menu-button.button-outlined:hover.success > .arrow-button, .split-menu-button.button-outlined:hover.danger > .arrow-button, .split-menu-button.button-outlined:focused:default > .arrow-button, .split-menu-button.button-outlined:focused.accent > .arrow-button, .split-menu-button.button-outlined:focused.success > .arrow-button, .split-menu-button.button-outlined:focused.danger > .arrow-button {
+  -color-button-fg: -color-fg-emphasis;
+}
+.split-menu-button > .arrow-button {
+  -fx-padding: 6px 12px 6px 12px;
+  -fx-background-radius: 0 5px 5px 0;
+  -fx-border-color: -color-button-fg;
+  -fx-border-width: 0 0 0 0.75px;
+  -fx-border-insets: 7px 0 7px 0;
+}

@@ -12,6 +12,7 @@ import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Point2D;
@@ -24,12 +25,10 @@ public class Player extends Entity {
 	private boolean moving = false, attacking = false;
 	private boolean left, right, jump;
 
-	// Jumping / Gravity
-	private float jumpSpeed = -2.25f * GameCts.SCALE;
-	private float fallSpeedAfterCollision = 0.5f * GameCts.SCALE;
+	private double jumpSpeed;
+	private double fallSpeedAfterCollision;
 
 	private Playing playing;
-	private AudioPlayer audioPlayer;
 	private PlayerState state;
 
 	private int tileY = 0;
@@ -37,68 +36,35 @@ public class Player extends Entity {
 	private boolean powerAttackActive;
 	private int powerAttackTick;
 
-	public Player(float x, float y, Playing playing, AudioPlayer audioPlayer) {
-		super(x, y, PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT);
-		this.playing = playing;
-		this.audioPlayer = audioPlayer;
+	public Player(Point2D spawn) {
+		super(spawn);
 		this.state = PlayerState.IDLE;
 		this.walkDir = DirectionCts.RIGHT;
 		this.maxHealth = PlayerCts.HEALTH;
 		this.currentHealth = maxHealth;
-		this.walkSpeed = GameCts.SCALE * 1.0f;
 		this.animations = load();
+		this.walkSpeed = AppStage.Scale(1.0);
+		this.jumpSpeed = AppStage.Scale(-2.25);
+		this.fallSpeedAfterCollision = AppStage.Scale(0.5);
+		initSize(PlayerCts.SPRITE_WIDTH_DEFAULT, PlayerCts.SPRITE_HEIGHT_DEFAULT);
 		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
 		initAttackBox(PlayerCts.ATTACK_HITBOX_WIDTH, PlayerCts.ATTACK_HITBOX_HEIGHT, PlayerCts.ATTACK_HITBOX_OFFSET_X);
 	}
 
-	public void setSpawn(Point2D spawn) {
-		this.x = (float) spawn.getX();
-		this.y = (float) spawn.getY();
-		hitbox = new Rectangle2D(x, y, hitbox.getWidth(), hitbox.getHeight());
+	public void setPlaying(Playing playing) {
+		this.playing = playing;
 	}
 
-	private void initAttackBox(int width, int height, int attackBoxOffsetX) {
-		attackBox = new Rectangle2D(x, y, (int) (width * GameCts.SCALE), (int) (height * GameCts.SCALE));
-		this.attackBoxOffsetX = (int) (GameCts.SCALE * attackBoxOffsetX);
+	@Override
+	protected void initAttackBox(int w, int h, int attackBoxOffsetX) {
+		super.initAttackBox(w, h, attackBoxOffsetX);
 		resetAttackBox();
 	}
 
 	public void update() {
 		LevelData levelData = playing.getLevelManager().getCurrentLevel().getLevelData();
 		if (currentHealth <= 0) {
-			if (!PlayerState.DEAD.equals(state)) {
-				state = PlayerState.DEAD;
-				aniTick = 0;
-				aniIndex = 0;
-				playing.setPlayerDying(true);
-				audioPlayer.playEffect(AudioPlayer.DIE);
-
-				// Check if player died in air
-				if (!IsEntityOnFloor(hitbox, levelData)) {
-					inAir = true;
-					airSpeed = 0;
-				}
-			} else if (aniIndex == GetSpriteAmount(PlayerState.DEAD) - 1 && aniTick >= GameCts.ANI_SPEED - 1) {
-				playing.setGameOver(true);
-				audioPlayer.stopSong();
-				audioPlayer.playEffect(AudioPlayer.GAMEOVER);
-			} else {
-				updateAnimationTick();
-
-				// Fall if in air
-				if (inAir) {
-					if (CanMoveHere(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
-							hitbox.getHeight(), levelData)) {
-						hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
-								hitbox.getHeight());
-						airSpeed += GameCts.GRAVITY;
-					} else {
-						inAir = false;
-					}
-				}
-
-			}
-
+			updateNoHealth(levelData);
 			return;
 		}
 
@@ -107,7 +73,7 @@ public class Player extends Entity {
 
 		if (PlayerState.HIT.equals(state)) {
 			if (aniIndex <= GetSpriteAmount(state) - 3)
-				pushBack(pushBackDir, levelData, 1.25f);
+				pushBack(pushBackDir, levelData, 1.25);
 			updatePushBackDrawOffset();
 		} else
 			updatePos();
@@ -116,7 +82,7 @@ public class Player extends Entity {
 			checkPotionTouched();
 			checkSpikesTouched();
 			checkInsideWater();
-			tileY = (int) (hitbox.getMinY() / GameCts.TILES_SIZE);
+			tileY = (int) (hitbox.getMinY() / AppStage.GetTileSize());
 			if (powerAttackActive) {
 				powerAttackTick++;
 				if (powerAttackTick >= 35) {
@@ -131,6 +97,41 @@ public class Player extends Entity {
 
 		updateAnimationTick();
 		setAnimation();
+	}
+
+	private void updateNoHealth(LevelData levelData) {
+		if (!PlayerState.DEAD.equals(state)) {
+			state = PlayerState.DEAD;
+			aniTick = 0;
+			aniIndex = 0;
+			playing.setPlayerDying(true);
+			playing.getGame().getAudioPlayer().playEffect(AudioPlayer.DIE);
+
+			// Check if player died in air
+			if (!IsEntityOnFloor(hitbox, levelData)) {
+				inAir = true;
+				airSpeed = 0;
+			}
+		} else if (aniIndex == GetSpriteAmount(PlayerState.DEAD) - 1 && aniTick >= GameCts.ANI_SPEED - 1) {
+			playing.setGameOver(true);
+			playing.getGame().getAudioPlayer().stopSong();
+			playing.getGame().getAudioPlayer().playEffect(AudioPlayer.GAMEOVER);
+		} else {
+			updateAnimationTick();
+
+			// Fall if in air
+			if (inAir) {
+				if (CanMoveHere(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(), hitbox.getHeight(),
+						levelData)) {
+					hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
+							hitbox.getHeight());
+					airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
+				} else {
+					inAir = false;
+				}
+			}
+
+		}
 	}
 
 	private void checkInsideWater() {
@@ -156,7 +157,7 @@ public class Player extends Entity {
 
 		playing.checkEnemyHit(attackBox);
 		playing.checkObjectHit(attackBox);
-		audioPlayer.playAttackSound();
+		playing.getGame().getAudioPlayer().playAttackSound();
 	}
 
 	private void updateWalkDir() {
@@ -173,9 +174,11 @@ public class Player extends Entity {
 			changeWalkDir(DirectionCts.LEFT);
 	}
 
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT,
-				PlayerCts.DRAW_OFFSET_X, PlayerCts.DRAW_OFFSET_Y);
+	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
+		int spriteWidth = AppStage.Scale(PlayerCts.SPRITE_WIDTH_DEFAULT);
+		int spriteHeight = AppStage.Scale(PlayerCts.SPRITE_HEIGHT_DEFAULT);
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), spriteWidth, spriteHeight,
+				AppStage.Scale(PlayerCts.DRAW_OFFSET_X_DEFAULT), AppStage.Scale(PlayerCts.DRAW_OFFSET_Y_DEFAULT));
 	}
 
 	@Override
@@ -247,8 +250,9 @@ public class Player extends Entity {
 				return;
 			}
 		}
-		if (!state.equals(startAni))
+		if (!state.equals(startAni)) {
 			resetAniTick();
+		}
 	}
 
 	private void resetAniTick() {
@@ -267,7 +271,7 @@ public class Player extends Entity {
 				if ((!left && !right) || (right && left))
 					return;
 
-		float xSpeed = 0;
+		double xSpeed = 0;
 
 		if (left && !right) {
 			xSpeed -= walkSpeed;
@@ -297,7 +301,7 @@ public class Player extends Entity {
 					levelData)) {
 				hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
 						hitbox.getHeight());
-				airSpeed += GameCts.GRAVITY;
+				airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 				updateXPos(xSpeed);
 			} else {
 				hitbox = new Rectangle2D(hitbox.getMinX(), GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed),
@@ -318,7 +322,7 @@ public class Player extends Entity {
 	private void jump() {
 		if (inAir)
 			return;
-		audioPlayer.playEffect(AudioPlayer.JUMP);
+		playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
 		inAir = true;
 		airSpeed = jumpSpeed;
 	}
@@ -328,7 +332,7 @@ public class Player extends Entity {
 		airSpeed = 0;
 	}
 
-	private void updateXPos(float xSpeed) {
+	private void updateXPos(double xSpeed) {
 		LevelData levelData = playing.getLevelData();
 		if (CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(),
 				levelData)) {
@@ -405,7 +409,7 @@ public class Player extends Entity {
 
 	public void resetAll() {
 		resetDirBooleans();
-		inAir = false;
+		inAir = true;
 		attacking = false;
 		moving = false;
 		airSpeed = 0f;
@@ -415,6 +419,7 @@ public class Player extends Entity {
 		powerAttackTick = 0;
 		playing.getStatusBar().resetPower();
 
+		toSpawn();
 		hitbox = new Rectangle2D(x, y, hitbox.getWidth(), hitbox.getHeight());
 		resetAttackBox();
 
@@ -450,7 +455,7 @@ public class Player extends Entity {
 		aniIndex = 0;
 	}
 
-	public float getMaxHealth() {
+	public double getMaxHealth() {
 		return maxHealth;
 	}
 
@@ -478,5 +483,15 @@ public class Player extends Entity {
 	public static Image[][] load() {
 		return LoadSave.GetAnimations(PlayerCts.ATLAS_SIZE_X, PlayerCts.ATLAS_SIZE_Y, PlayerCts.SPRITE_WIDTH_DEFAULT,
 				PlayerCts.SPRITE_HEIGHT_DEFAULT, LoadSave.GetAtlas(PlayerCts.ATLAS_IMAGE));
+	}
+
+	public void scale() {
+		super.scale();
+		this.walkSpeed = AppStage.Scale(1.0);
+		this.jumpSpeed = AppStage.Scale(-2.25);
+		this.fallSpeedAfterCollision = AppStage.Scale(0.5);
+		initSize(PlayerCts.SPRITE_WIDTH_DEFAULT, PlayerCts.SPRITE_HEIGHT_DEFAULT);
+		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
+		initAttackBox(PlayerCts.ATTACK_HITBOX_WIDTH, PlayerCts.ATTACK_HITBOX_HEIGHT, PlayerCts.ATTACK_HITBOX_OFFSET_X);
 	}
 }

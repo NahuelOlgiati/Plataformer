@@ -12,10 +12,11 @@ import com.mandarina.game.entities.Player;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.levels.LevelData;
-import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
+import com.mandarina.main.AppStage;
 
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 
 public class ObjectManager implements LayerDrawer {
@@ -39,25 +40,24 @@ public class ObjectManager implements LayerDrawer {
 	}
 
 	@Override
-	public void drawL1(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL1(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		currentLevel.getLevelObjects().drawL1(g, lvlOffsetX, lvlOffsetY);
 		currentLevel.getLevelObjects().drawProjectiles(g, lvlOffsetX, lvlOffsetY, this.projectiles);
 		currentLevel.getLevelObjects().drawDialogues(g, lvlOffsetX, lvlOffsetY, this.dialogues);
-
 	}
 
 	@Override
-	public void drawL2(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL2(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		currentLevel.getLevelObjects().drawL2(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	@Override
-	public void drawL3(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL3(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		currentLevel.getLevelObjects().drawL3(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	@Override
-	public void drawL4(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL4(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		currentLevel.getLevelObjects().drawL4(g, lvlOffsetX, lvlOffsetY);
 	}
 
@@ -98,8 +98,9 @@ public class ObjectManager implements LayerDrawer {
 					int type = 0;
 					if (c.getObjType() == ObjectCts.BARREL)
 						type = 1;
-					potions.add(new Potion((int) (c.getHitbox().getMinX() + c.getHitbox().getWidth() / 2),
-							(int) (c.getHitbox().getMinY() - c.getHitbox().getHeight() / 2), type));
+					Point2D p = new Point2D((int) (c.getHitbox().getMinX() + c.getHitbox().getWidth() / 2),
+							(int) (c.getHitbox().getMinY() - c.getHitbox().getHeight() / 2));
+					potions.add(new Potion(p, type));
 					return;
 				}
 			}
@@ -143,7 +144,7 @@ public class ObjectManager implements LayerDrawer {
 
 	private boolean isPlayerInRange(Cannon c, Player player) {
 		int absValue = (int) Math.abs(player.getHitbox().getMinX() - c.getHitbox().getMinX());
-		return absValue <= GameCts.TILES_SIZE * 5;
+		return absValue <= AppStage.GetTileSize() * 5;
 	}
 
 	private boolean isPlayerInfrontOfCannon(Cannon c, Player player) {
@@ -173,27 +174,26 @@ public class ObjectManager implements LayerDrawer {
 		int dir = 1;
 		if (c.getObjType() == ObjectCts.CANNON_LEFT)
 			dir = -1;
-
-		projectiles.add(new Projectile((int) c.getHitbox().getMinX(), (int) c.getHitbox().getMinY(), dir));
+		projectiles.add(new Projectile(c.getSpawn(), dir));
 	}
 
 	private void loadDialogues() {
 		dialogues.clear();
 		for (int i = 0; i < 10; i++)
-			dialogues.add(new Dialogue(0, 0, DialogueCts.EXCLAMATION));
+			dialogues.add(new Dialogue(new Point2D(0, 0), DialogueCts.EXCLAMATION));
 		for (int i = 0; i < 10; i++)
-			dialogues.add(new Dialogue(0, 0, DialogueCts.QUESTION));
+			dialogues.add(new Dialogue(new Point2D(0, 0), DialogueCts.QUESTION));
 
 		for (Dialogue d : dialogues)
 			d.deactive();
 	}
 
 	public void addDialogue(int x, int y, int type) {
-		dialogues.add(new Dialogue(x, y - (int) (GameCts.SCALE * 15), type));
+		dialogues.add(new Dialogue(new Point2D(x, y - AppStage.Scale(15)), type));
 		for (Dialogue d : dialogues)
 			if (!d.isActive())
-				if (d.getType() == type) {
-					d.reset(x, -(int) (GameCts.SCALE * 15));
+				if (d.getObjType() == type) {
+					d.reset(x, -AppStage.Scale(15));
 					return;
 				}
 	}
@@ -207,5 +207,18 @@ public class ObjectManager implements LayerDrawer {
 		for (Cannon c : currentLevel.getLevelObjects().getCannon().getItems())
 			c.reset();
 		loadDialogues();
+	}
+
+	public void scale() {
+		currentLevel.getLevelObjects().scale();
+		for (Potion p : this.potions) {
+			p.scale();
+		}
+		for (Projectile p : this.projectiles) {
+			p.scale();
+		}
+		for (Dialogue d : this.dialogues) {
+			d.scale();
+		}
 	}
 }

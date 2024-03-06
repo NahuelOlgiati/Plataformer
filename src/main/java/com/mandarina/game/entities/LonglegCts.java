@@ -1,6 +1,6 @@
 package com.mandarina.game.entities;
 
-public class TitanCts {
+public class LonglegCts {
 	public static final int HEALTH = 100;
 	public static final int DAMAGE = 40;
 
@@ -19,7 +19,7 @@ public class TitanCts {
 	public static final int ATTACK_HITBOX_HEIGHT = 20;
 	public static final int ATTACK_HITBOX_OFFSET_X = 30;
 
-	public static final String ATLAS_IMAGE = "titan.png";
+	public static final String ATLAS_IMAGE = "longleg.png";
 	public static final int ATLAS_SIZE_X = 6;
 	public static final int ATLAS_SIZE_Y = 5;
 }

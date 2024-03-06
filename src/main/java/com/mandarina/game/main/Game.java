@@ -4,6 +4,7 @@ import com.mandarina.game.audio.AudioPlayer;
 import com.mandarina.game.gamestates.Credits;
 import com.mandarina.game.gamestates.GameOptions;
 import com.mandarina.game.gamestates.GameState;
+import com.mandarina.game.gamestates.Loading;
 import com.mandarina.game.gamestates.Menu;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.ui.AudioOptions;
@@ -14,6 +15,7 @@ import com.mandarina.main.AppStage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Game {
 
@@ -21,6 +23,7 @@ public class Game {
 
 	private Playing playing;
 	private Menu menu;
+	private Loading loading;
 	private Credits credits;
 	private LvlBuilder lvlBuilder;
 	private GameOptions gameOptions;
@@ -43,7 +46,6 @@ public class Game {
 		Stage stage = AppStage.get().getStage();
 		stage.setTitle("Plataformer");
 		stage.setScene(scene);
-		stage.setResizable(false);
 		stage.sizeToScene();
 		stage.centerOnScreen();
 		stage.setOnCloseRequest(e -> System.exit(0));
@@ -55,10 +57,15 @@ public class Game {
 		stage.show();
 	}
 
+	public void clear() {
+		this.audioPlayer.dispose();
+		scene = null;
+	}
+
 	private Scene getScene() {
 		initClasses();
 
-		this.gameDrawer = new GameDrawer(GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
+		this.gameDrawer = new GameDrawer(GameCts.GAME_WIDTH_DEFAULT, GameCts.GAME_HEIGHT_DEFAULT);
 		Group root = new Group();
 		this.gameDrawer.init(root);
 
@@ -103,14 +110,15 @@ public class Game {
 
 	private void initClasses() {
 		audioOptions = new AudioOptions(this);
-		audioPlayer = new AudioPlayer(audioOptions.getVolumeButton().getVolume());
+		audioPlayer = new AudioPlayer(this);
 		menu = new Menu(this);
+		loading = new Loading();
 		playing = new Playing(this);
 		playing.loadNextLevel();
 		credits = new Credits();
 		lvlBuilder = new LvlBuilder();
-		gameOptions = new GameOptions(audioOptions);
-		gameInputs = new GameInputs(playing, menu, gameOptions, credits);
+		gameOptions = new GameOptions(this);
+		gameInputs = new GameInputs(this);
 	}
 
 	private void update() {
@@ -126,10 +134,23 @@ public class Game {
 	private void repaint() {
 		switch (GameState.get()) {
 		case MENU -> menu.draw(this.gameDrawer);
+		case LOADING -> loading.draw(this.gameDrawer);
 		case PLAYING -> playing.draw(this.gameDrawer);
 		case OPTIONS -> gameOptions.draw(this.gameDrawer);
 		case CREDITS -> credits.draw(this.gameDrawer);
 		}
+	}
+
+	public void scale() {
+		this.gameDrawer.scale();
+		this.playing.scale();
+		this.menu.scale();
+		this.loading.scale();
+		this.credits.scale();
+//		this.lvlBuilder.scale();
+		this.gameOptions.scale();
+		this.audioOptions.scale();
+//		this.audioPlayer.scale(); rename GameAudio
 	}
 
 	public void windowFocusLost() {

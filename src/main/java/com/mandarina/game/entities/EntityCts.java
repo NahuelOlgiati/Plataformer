@@ -6,4 +6,5 @@ public class EntityCts {
 	public static final int PINKSTAR = 1;
 	public static final int SHARK = 2;
 	public static final int TITAN = 3;
+	public static final int LONGLEG = 4;
 }

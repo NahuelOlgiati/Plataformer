@@ -9,31 +9,33 @@ import static com.mandarina.utilz.HelpMethods.IsSightClear;
 
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.LevelData;
-
-import javafx.geometry.Rectangle2D;
-
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
+
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public abstract class Enemy extends Entity {
 	protected EnemyState state;
 	protected boolean firstUpdate = true;
 	protected int tileY;
-	protected float attackDistance = GameCts.TILES_SIZE;
+	protected double attackDistance;
 	protected boolean active = true;
 
-	public Enemy(float x, float y, int width, int height, int enemyType) {
-		super(x, y, width, height);
+	public Enemy(Point2D spawn, int enemyType) {
+		super(spawn);
 		this.state = EnemyState.IDLE;
 		maxHealth = getMaxHealth();
 		currentHealth = maxHealth;
-		walkSpeed = GameCts.SCALE * 0.35f;
+		attackDistance = AppStage.GetTileSize();
+		walkSpeed = AppStage.Scale(0.35f);
 	}
 
 	protected abstract void updateBehavior(Playing playing);
 
-	public abstract void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[][] animations);
+	public abstract void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations);
 
 	protected abstract int getSpriteAmount(EnemyState state);
 
@@ -42,11 +44,6 @@ public abstract class Enemy extends Entity {
 	public void update(Playing playing) {
 		updateBehavior(playing);
 		updateAnimationTick();
-	}
-
-	protected void initAttackBox(int w, int h, int attackBoxOffsetX) {
-		attackBox = new Rectangle2D(x, y, (int) (w * GameCts.SCALE), (int) (h * GameCts.SCALE));
-		this.attackBoxOffsetX = (int) (GameCts.SCALE * attackBoxOffsetX);
 	}
 
 	protected void firstUpdateCheck(LevelData levelData) {
@@ -70,17 +67,17 @@ public abstract class Enemy extends Entity {
 				levelData)) {
 			hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
 					hitbox.getHeight());
-			airSpeed += GameCts.GRAVITY;
+			airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 		} else {
 			inAir = false;
 			hitbox = new Rectangle2D(hitbox.getMinX(), GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed),
 					hitbox.getWidth(), hitbox.getHeight());
-			tileY = (int) (hitbox.getMinY() / GameCts.TILES_SIZE);
+			tileY = AppStage.GetTilesIn(hitbox.getMinY());
 		}
 	}
 
 	protected void move(LevelData levelData) {
-		float xSpeed = 0;
+		double xSpeed = 0;
 
 		if (walkDir == DirectionCts.LEFT)
 			xSpeed = -walkSpeed;
@@ -106,7 +103,7 @@ public abstract class Enemy extends Entity {
 	}
 
 	protected boolean canSeePlayer(LevelData levelData, Player player) {
-		int playerTileY = (int) (player.getHitbox().getMinY() / GameCts.TILES_SIZE);
+		int playerTileY = AppStage.GetTilesIn(player.getHitbox().getMinY());
 		if (playerTileY == tileY)
 			if (isPlayerInRange(player)) {
 				if (IsSightClear(levelData, hitbox, player.hitbox, tileY))
@@ -155,6 +152,10 @@ public abstract class Enemy extends Entity {
 	}
 
 	public void resetEnemy() {
+		this.inAir = true;
+		this.walkDir = DirectionCts.LEFT;
+		this.pushBackOffsetDir = DirectionCts.UP;
+		toSpawn();
 		hitbox = new Rectangle2D(x, y, hitbox.getWidth(), hitbox.getHeight());
 		firstUpdate = true;
 		currentHealth = maxHealth;
@@ -176,5 +177,11 @@ public abstract class Enemy extends Entity {
 		this.state = state;
 		aniTick = 0;
 		aniIndex = 0;
+	}
+
+	public void scale() {
+		super.scale();
+		attackDistance = AppStage.GetTileSize();
+		walkSpeed = AppStage.Scale(0.35);
 	}
 }

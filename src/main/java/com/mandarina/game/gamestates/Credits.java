@@ -7,8 +7,8 @@ import com.mandarina.game.entities.Crabby;
 import com.mandarina.game.entities.Pinkstar;
 import com.mandarina.game.entities.Shark;
 import com.mandarina.game.entities.Titan;
-import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -17,42 +17,42 @@ import javafx.scene.input.KeyEvent;
 
 public class Credits {
 	private Image backgroundImg, creditsImg;
-	private int bgX, bgY, bgW, bgH;
-	private float bgYfloat;
+	private double bgX, bgY, bgW, bgH;
+	private double bgYdouble;
 
 	private List<ShowEntity> entitiesList;
 
 	public Credits() {
 		backgroundImg = LoadSave.GetSprite(LoadSave.MENU_BACKGROUND_IMG);
 		creditsImg = LoadSave.GetSprite(LoadSave.CREDITS);
-		bgW = (int) (creditsImg.getWidth() * GameCts.SCALE);
-		bgH = (int) (creditsImg.getHeight() * GameCts.SCALE);
-		bgX = GameCts.GAME_WIDTH / 2 - bgW / 2;
-		bgY = GameCts.GAME_HEIGHT;
+		bgW = AppStage.Scale(creditsImg.getWidth());
+		bgH = AppStage.Scale(creditsImg.getHeight());
+		bgX = AppStage.GetGameWidth() / 2 - bgW / 2;
+		bgY = AppStage.GetGameHeight();
 		loadEntities();
 	}
 
 	private void loadEntities() {
 		entitiesList = new ArrayList<ShowEntity>();
-		entitiesList.add(new ShowEntity(Titan.load()[2], (int) (GameCts.GAME_WIDTH * 0.05),
-				(int) (GameCts.GAME_HEIGHT * 0.45)));
-		entitiesList.add(new ShowEntity(Crabby.load()[1], (int) (GameCts.GAME_WIDTH * 0.2),
-				(int) (GameCts.GAME_HEIGHT * 0.75)));
-		entitiesList.add(new ShowEntity(Shark.load()[3], (int) (GameCts.GAME_WIDTH * 0.7),
-				(int) (GameCts.GAME_HEIGHT * 0.75)));
-		entitiesList.add(new ShowEntity(Pinkstar.load()[3], (int) (GameCts.GAME_WIDTH * 0.8),
-				(int) (GameCts.GAME_HEIGHT * 0.8)));
+		entitiesList.add(new ShowEntity(Titan.load()[2], (int) (AppStage.GetGameWidth() * 0.05),
+				(int) (AppStage.GetGameHeight() * 0.45)));
+		entitiesList.add(new ShowEntity(Crabby.load()[1], (int) (AppStage.GetGameWidth() * 0.2),
+				(int) (AppStage.GetGameHeight() * 0.75)));
+		entitiesList.add(new ShowEntity(Shark.load()[3], (int) (AppStage.GetGameWidth() * 0.7),
+				(int) (AppStage.GetGameHeight() * 0.75)));
+		entitiesList.add(new ShowEntity(Pinkstar.load()[3], (int) (AppStage.GetGameWidth() * 0.8),
+				(int) (AppStage.GetGameHeight() * 0.8)));
 	}
 
 	public void update() {
-		bgYfloat -= 0.2f;
+		bgYdouble -= 0.2f;
 		for (ShowEntity se : entitiesList)
 			se.update();
 	}
 
 	public void draw(GameDrawer g) {
-		g.drawImage(backgroundImg, 0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
-		g.drawImage(creditsImg, bgX, (int) (bgY + bgYfloat), bgW, bgH);
+		g.drawImage(backgroundImg, 0, 0, AppStage.GetGameWidth(), AppStage.GetGameHeight());
+		g.drawImage(creditsImg, bgX, bgY + bgYdouble, bgW, bgH);
 
 		for (ShowEntity se : entitiesList)
 			se.draw(g);
@@ -60,7 +60,7 @@ public class Credits {
 
 	public void keyReleased(KeyEvent e) {
 		if (e.getCode() == KeyCode.ESCAPE) {
-			bgYfloat = 0;
+			bgYdouble = 0;
 			GameState.setState(GameState.MENU);
 		}
 	}
@@ -90,6 +90,14 @@ public class Credits {
 			}
 
 		}
+	}
+
+	public void scale() {
+		bgW = AppStage.Scale(creditsImg.getWidth());
+		bgH = AppStage.Scale(creditsImg.getHeight());
+		bgX = AppStage.GetGameWidth() / 2 - bgW / 2;
+		bgY = AppStage.GetGameHeight();
+		loadEntities();
 	}
 
 }

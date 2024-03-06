@@ -6,7 +6,9 @@ import java.util.List;
 import com.mandarina.game.entities.Crabby;
 import com.mandarina.game.entities.Enemy;
 import com.mandarina.game.entities.EntityCts;
+import com.mandarina.game.entities.Longleg;
 import com.mandarina.game.entities.Pinkstar;
+import com.mandarina.game.entities.Player;
 import com.mandarina.game.entities.Shark;
 import com.mandarina.game.entities.Titan;
 import com.mandarina.game.gamestates.Playing;
@@ -14,7 +16,6 @@ import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
-import com.mandarina.lvlbuilder.feature.PNGMetadata;
 
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -23,29 +24,30 @@ import javafx.scene.paint.Color;
 
 public class LevelEntities implements LayerDrawer {
 
-	private int height;
-	private int width;
+	private Level level;
 
 	private Image[][] crabbySprite;
 	private Image[][] pinkstarSprite;
 	private Image[][] sharkSprite;
 	private Image[][] titanSprite;
+	private Image[][] longlegSprite;
 
 	private Enemy[] enemys;
 	private Crabby[] crabs;
 	private Pinkstar[] pinkstars;
 	private Shark[] sharks;
 	private Titan[] titans;
-	private Point2D playerSpawn;
+	private Longleg[] longlegs;
+	private Player player;
 
-	public LevelEntities(LvlBuilderImage img, PNGMetadata pngMetadata) {
-		this.height = (int) img.getHeight();
-		this.width = (int) img.getWidth();
+	public LevelEntities(Level level) {
+		this.level = level;
 		this.crabbySprite = Crabby.load();
 		this.pinkstarSprite = Pinkstar.load();
 		this.sharkSprite = Shark.load();
 		this.titanSprite = Titan.load();
-		load(img);
+		this.longlegSprite = Longleg.load();
+		load(level.getImg());
 	}
 
 	public boolean update(Playing playing) {
@@ -60,7 +62,7 @@ public class LevelEntities implements LayerDrawer {
 	}
 
 	@Override
-	public void drawL1(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL1(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		for (Crabby c : crabs) {
 			if (c.isActive()) {
 				c.draw(g, lvlOffsetX, lvlOffsetY, crabbySprite);
@@ -81,20 +83,25 @@ public class LevelEntities implements LayerDrawer {
 				t.draw(g, lvlOffsetX, lvlOffsetY, titanSprite);
 			}
 		}
+		for (Longleg l : longlegs) {
+			if (l.isActive()) {
+				l.draw(g, lvlOffsetX, lvlOffsetY, longlegSprite);
+			}
+		}
 	}
 
 	@Override
-	public void drawL2(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL2(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void drawL3(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL3(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void drawL4(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL4(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		// TODO Auto-generated method stub
 	}
 
@@ -104,12 +111,13 @@ public class LevelEntities implements LayerDrawer {
 		List<Pinkstar> pinkstars = new ArrayList<Pinkstar>();
 		List<Shark> sharks = new ArrayList<Shark>();
 		List<Titan> titans = new ArrayList<Titan>();
+		List<Longleg> longlegs = new ArrayList<Longleg>();
 		PixelReader pixelReader = img.getPixelReader();
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
+		for (int y = 0; y < this.level.getHeight(); y++) {
+			for (int x = 0; x < this.level.getWidth(); x++) {
 				Color c = pixelReader.getColor(x, y);
 				int green = (int) (c.getGreen() * 255);
-				addGreen(green, x, y, enemys, crabs, pinkstars, sharks, titans);
+				addGreen(green, new Point2D(x, y), enemys, crabs, pinkstars, sharks, titans, longlegs);
 			}
 		}
 		this.enemys = enemys.toArray(new Enemy[enemys.size()]);
@@ -117,68 +125,58 @@ public class LevelEntities implements LayerDrawer {
 		this.pinkstars = pinkstars.toArray(new Pinkstar[pinkstars.size()]);
 		this.sharks = sharks.toArray(new Shark[sharks.size()]);
 		this.titans = titans.toArray(new Titan[titans.size()]);
+		this.longlegs = longlegs.toArray(new Longleg[longlegs.size()]);
 	}
 
-	public void addGreen(int green, int x, int y, List<Enemy> enemys, List<Crabby> crabs, List<Pinkstar> pinkstars,
-			List<Shark> sharks, List<Titan> titans) {
+	public void addGreen(int green, Point2D spawn, List<Enemy> enemys, List<Crabby> crabs, List<Pinkstar> pinkstars,
+			List<Shark> sharks, List<Titan> titans, List<Longleg> longlegs) {
 		if (green != GameCts.EMPTY_TILE_VALUE) {
 			switch (green) {
 			case EntityCts.CRABBY:
-				Crabby c = new Crabby(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE);
+				Crabby c = new Crabby(spawn);
 				enemys.add(c);
 				crabs.add(c);
 				break;
 			case EntityCts.PINKSTAR:
-				Pinkstar p = new Pinkstar(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE);
+				Pinkstar p = new Pinkstar(spawn);
 				enemys.add(p);
 				pinkstars.add(p);
 				break;
 			case EntityCts.SHARK:
-				Shark s = new Shark(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE);
+				Shark s = new Shark(spawn);
 				enemys.add(s);
 				sharks.add(s);
 				break;
 			case EntityCts.TITAN:
-				Titan t = new Titan(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE);
+				Titan t = new Titan(spawn);
 				enemys.add(t);
 				titans.add(t);
 				break;
+			case EntityCts.LONGLEG:
+				Longleg l = new Longleg(spawn);
+				enemys.add(l);
+				longlegs.add(l);
+				break;
 			case EntityCts.PLAYER:
-				this.playerSpawn = new Point2D(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE);
+				this.player = new Player(spawn);
 				break;
 			}
 		}
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public int getWidth() {
-		return width;
 	}
 
 	public Enemy[] getEnemys() {
 		return enemys;
 	}
 
-	public Crabby[] getCrabs() {
-		return crabs;
+	public Player getPlayer() {
+		return player;
 	}
 
-	public Pinkstar[] getPinkstars() {
-		return pinkstars;
-	}
-
-	public Shark[] getSharks() {
-		return sharks;
-	}
-
-	public Titan[] getTitans() {
-		return titans;
-	}
-
-	public Point2D getPlayerSpawn() {
-		return playerSpawn;
+	public void scale() {
+		for (Enemy e : enemys) {
+			if (e.isActive()) {
+				e.scale();
+			}
+		}
 	}
 }

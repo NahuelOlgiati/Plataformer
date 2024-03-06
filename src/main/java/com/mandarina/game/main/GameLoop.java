@@ -12,7 +12,7 @@ public abstract class GameLoop {
 
 	private static final boolean SHOW_FPS_UPS = false;
 
-	private static final int UPS_SET = 180;
+	private static final int UPS_SET = 100;
 	private static final int FPS_SET = 60;
 
 	private static final int DELTA_SET = UPS_SET / FPS_SET;
@@ -21,15 +21,22 @@ public abstract class GameLoop {
 	private static final Duration KEYFRAME_UPDATE_DURATION = Duration.seconds(1.0 / UPS_SET);
 	private static final Duration KEYFRAME_REPAINT_DURATION = Duration.seconds(1.0 / FPS_SET);
 
-	private int frames = 0;
-	private int updates = 0;
+	private int frames;
+	private int updates;
 
 	private Timeline updateTimeline;
 	private Timeline repaintTimer;
 
-	private int delta = 0;
+	private int delta;
 
 	public GameLoop() {
+		init();
+	}
+
+	private void init() {
+		this.frames = 0;
+		this.updates = 0;
+		this.delta = 0;
 		updateTimeline = new Timeline(new KeyFrame(KEYFRAME_UPDATE_DURATION, new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -48,9 +55,9 @@ public abstract class GameLoop {
 		repaintTimer = new Timeline(new KeyFrame(KEYFRAME_REPAINT_DURATION, new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				Platform.runLater(() -> {
+//				Platform.runLater(() -> {
 					repaint();
-				});
+//				});
 				frames++;
 				delta -= DELTA_SET;
 
@@ -70,6 +77,7 @@ public abstract class GameLoop {
 	}
 
 	public void start() {
+		init();
 		updateTimeline.play();
 		repaintTimer.play();
 	}
@@ -77,6 +85,8 @@ public abstract class GameLoop {
 	public void stop() {
 		updateTimeline.stop();
 		repaintTimer.stop();
+		updateTimeline = null;
+		repaintTimer = null;
 	}
 
 	public abstract void update();

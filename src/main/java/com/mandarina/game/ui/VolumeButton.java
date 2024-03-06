@@ -1,6 +1,7 @@
 package com.mandarina.game.ui;
 
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -16,15 +17,16 @@ public class VolumeButton extends PauseButton {
 	private int index = 0;
 	private boolean mouseOver, mousePressed;
 	private int buttonX, minX, maxX;
-	private float volume;
+	private double volume;
 
 	public VolumeButton(int x, int y, int width, int height) {
 		super(x, y, width, height);
-		sliderBounds = new Rectangle(x - 5, y, VolumeButtonCts.SLIDER_WIDTH, height);
-		minX = (int) (sliderBounds.getX() + VolumeButtonCts.VOLUME_WIDTH / 2);
-		maxX = (int) (sliderBounds.getX() + VolumeButtonCts.SLIDER_WIDTH - VolumeButtonCts.VOLUME_WIDTH / 2);
+		sliderBounds = new Rectangle(x - 5, y, AppStage.Scale(VolumeButtonCts.SLIDER_WIDTH_DEFAULT), height);
+		minX = (int) (sliderBounds.getX() + AppStage.Scale(VolumeButtonCts.VOLUME_WIDTH_DEFAULT) / 2);
+		maxX = (int) (sliderBounds.getX() + AppStage.Scale(VolumeButtonCts.SLIDER_WIDTH_DEFAULT)
+				- AppStage.Scale(VolumeButtonCts.VOLUME_WIDTH_DEFAULT) / 2);
 		loadImgs();
-		setVolume(0.75f);
+		setVolume(0.75);
 		updateVolume();
 	}
 
@@ -32,11 +34,11 @@ public class VolumeButton extends PauseButton {
 		Image temp = LoadSave.GetSprite(LoadSave.VOLUME_BUTTONS);
 		imgs = new Image[3];
 		for (int i = 0; i < imgs.length; i++)
-			imgs[i] = LoadSave.GetSubimage(temp, i, 0, VolumeButtonCts.VOLUME_DEFAULT_WIDTH,
-					VolumeButtonCts.VOLUME_DEFAULT_HEIGHT);
+			imgs[i] = LoadSave.GetSubimage(temp, i, 0, VolumeButtonCts.VOLUME_WIDTH_DEFAULT,
+					VolumeButtonCts.VOLUME_HEIGHT_DEFAULT);
 
-		slider = new WritableImage(temp.getPixelReader(), 3 * VolumeButtonCts.VOLUME_DEFAULT_WIDTH, 0,
-				VolumeButtonCts.SLIDER_DEFAULT_WIDTH, VolumeButtonCts.VOLUME_DEFAULT_HEIGHT);
+		slider = new WritableImage(temp.getPixelReader(), 3 * VolumeButtonCts.VOLUME_WIDTH_DEFAULT, 0,
+				VolumeButtonCts.SLIDER_WIDTH_DEFAULT, VolumeButtonCts.VOLUME_HEIGHT_DEFAULT);
 	}
 
 	public void update() {
@@ -50,8 +52,8 @@ public class VolumeButton extends PauseButton {
 	public void draw(GameDrawer g) {
 		g.drawImage(slider, sliderBounds.getX(), sliderBounds.getY(), sliderBounds.getWidth(),
 				sliderBounds.getHeight());
-		g.drawImage(imgs[index], buttonX - VolumeButtonCts.VOLUME_WIDTH / 2, bounds.getY(),
-				VolumeButtonCts.VOLUME_WIDTH, bounds.getHeight());
+		g.drawImage(imgs[index], buttonX - AppStage.Scale(VolumeButtonCts.VOLUME_WIDTH_DEFAULT) / 2, bounds.getY(),
+				AppStage.Scale(VolumeButtonCts.VOLUME_WIDTH_DEFAULT), bounds.getHeight());
 //		drawBoundBox(g);
 //		drawSliderBoundBox(g);
 	}
@@ -73,18 +75,18 @@ public class VolumeButton extends PauseButton {
 			buttonX = maxX;
 		else
 			buttonX = x;
-		bounds.setX(buttonX - VolumeButtonCts.VOLUME_WIDTH / 2);
+		bounds.setX(buttonX - AppStage.Scale(VolumeButtonCts.VOLUME_WIDTH_DEFAULT) / 2);
 		updateVolume();
 	}
 
 	private void updateVolume() {
-		float range = maxX - minX;
-		float value = buttonX - minX;
+		double range = maxX - minX;
+		double value = buttonX - minX;
 		volume = value / range;
 	}
 
-	private void setVolume(float targetVolume) {
-		float range = maxX - minX;
+	public void setVolume(double targetVolume) {
+		double range = maxX - minX;
 		changeX((int) (minX + (range * targetVolume)));
 	}
 
@@ -109,7 +111,7 @@ public class VolumeButton extends PauseButton {
 		this.mousePressed = mousePressed;
 	}
 
-	public float getVolume() {
+	public double getVolume() {
 		return volume;
 	}
 

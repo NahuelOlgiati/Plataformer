@@ -12,8 +12,8 @@ import org.springframework.core.io.FileUrlResource;
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.main.Game;
 import com.mandarina.game.main.GameCts;
-import com.mandarina.lvlbuilder.feature.PNGMetadataUtil;
 import com.mandarina.lvlbuilder.feature.PNGMetadata;
+import com.mandarina.lvlbuilder.feature.PNGMetadataUtil;
 import com.mandarina.lvlbuilder.feature.TileFeature;
 import com.mandarina.main.AppStage;
 
@@ -115,6 +115,7 @@ public class LvlBuilderMenu {
 				Game game = GameState.getGame();
 				game.show();
 				game.start();
+				lvlBuilder.close();
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
@@ -126,6 +127,7 @@ public class LvlBuilderMenu {
 		Game game = GameState.getGame();
 		game.show();
 		game.start();
+		lvlBuilder.close();
 	}
 
 	private void loadLevel(Image img) {

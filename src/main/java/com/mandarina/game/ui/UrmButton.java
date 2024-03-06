@@ -1,6 +1,7 @@
 package com.mandarina.game.ui;
 
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -21,8 +22,8 @@ public class UrmButton extends PauseButton {
 		Image temp = LoadSave.GetSprite(LoadSave.URM_BUTTONS);
 		imgs = new Image[3];
 		for (int i = 0; i < imgs.length; i++)
-			imgs[i] = LoadSave.GetSubimage(temp, i, rowIndex, URMButtonCts.URM_DEFAULT_SIZE,
-					URMButtonCts.URM_DEFAULT_SIZE);
+			imgs[i] = LoadSave.GetSubimage(temp, i, rowIndex, URMButtonCts.URM_SIZE_DEFAULT,
+					URMButtonCts.URM_SIZE_DEFAULT);
 	}
 
 	public void update() {
@@ -36,7 +37,8 @@ public class UrmButton extends PauseButton {
 
 	public void draw(GameDrawer g) {
 		Rectangle b = getBounds();
-		g.drawImage(imgs[index], b.getX(), b.getY(), URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE);
+		g.drawImage(imgs[index], b.getX(), b.getY(), AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT),
+				AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT));
 	}
 
 	public void resetBools() {

@@ -7,31 +7,28 @@ import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.game.main.LayerManager;
 import com.mandarina.game.objects.Cannon;
-import com.mandarina.game.objects.CannonBall;
 import com.mandarina.game.objects.Container;
 import com.mandarina.game.objects.Dialogue;
-import com.mandarina.game.objects.DialogueCts;
 import com.mandarina.game.objects.ObjectCts;
 import com.mandarina.game.objects.Potion;
 import com.mandarina.game.objects.Projectile;
-import com.mandarina.game.objects.ProjectileCts;
 import com.mandarina.game.objects.Spike;
 import com.mandarina.game.objects.Tree;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
-import com.mandarina.lvlbuilder.feature.PNGMetadata;
+import com.mandarina.main.AppStage;
 
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
 
 public class LevelObjects implements LayerDrawer {
 
-	private int height;
-	private int width;
+	private Level level;
 
 	private Image[][] potionSprite, containerSprite, treeSprite;
 	private Image[] cannonSprite;
-	private Image spikeSprite, cannonBallSprite;
+	private Image spikeSprite, projectileSprite;
 	private Image[] dialogueQuestionSprite;
 	private Image[] dialogueExclamationSprite;
 
@@ -41,14 +38,13 @@ public class LevelObjects implements LayerDrawer {
 	private LayerManager<Cannon> cannon;
 	private LayerManager<Tree> tree;
 
-	public LevelObjects(LvlBuilderImage img, PNGMetadata pngMetadata) {
-		this.height = (int) img.getHeight();
-		this.width = (int) img.getWidth();
+	public LevelObjects(Level level) {
+		this.level = level;
 		this.potionSprite = Potion.load();
 		this.containerSprite = Container.load();
 		this.spikeSprite = Spike.load();
 		this.cannonSprite = Cannon.load();
-		this.cannonBallSprite = CannonBall.load();
+		this.projectileSprite = Projectile.load();
 		this.treeSprite = Tree.load();
 		this.dialogueQuestionSprite = Dialogue.loadQuestions();
 		this.dialogueExclamationSprite = Dialogue.loadExclamations();
@@ -60,15 +56,16 @@ public class LevelObjects implements LayerDrawer {
 			}
 
 			@Override
-			public void draw(Potion p, GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+			public void draw(Potion p, GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 				if (p.isActive()) {
 					int type = 0;
 					if (p.getObjType() == ObjectCts.RED_POTION)
 						type = 1;
 					g.drawImage(potionSprite[type][p.getAniIndex()],
 							(int) (p.getHitbox().getMinX() - p.getxDrawOffset() - lvlOffsetX),
-							(int) (p.getHitbox().getMinY() - p.getyDrawOffset() - lvlOffsetY), ObjectCts.POTION_WIDTH,
-							ObjectCts.POTION_HEIGHT);
+							(int) (p.getHitbox().getMinY() - p.getyDrawOffset() - lvlOffsetY),
+							AppStage.Scale(ObjectCts.POTION_WIDTH_DEFAULT),
+							AppStage.Scale(ObjectCts.POTION_HEIGHT_DEFAULT));
 				}
 			}
 		};
@@ -80,7 +77,7 @@ public class LevelObjects implements LayerDrawer {
 			}
 
 			@Override
-			public void draw(Container c, GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+			public void draw(Container c, GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 				if (c.isActive()) {
 					int type = 0;
 					if (c.getObjType() == ObjectCts.BARREL)
@@ -88,7 +85,8 @@ public class LevelObjects implements LayerDrawer {
 					g.drawImage(containerSprite[type][c.getAniIndex()],
 							(int) (c.getHitbox().getMinX() - c.getxDrawOffset() - lvlOffsetX),
 							(int) (c.getHitbox().getMinY() - c.getyDrawOffset() - lvlOffsetY),
-							ObjectCts.CONTAINER_WIDTH, ObjectCts.CONTAINER_HEIGHT);
+							AppStage.Scale(ObjectCts.CONTAINER_WIDTH_DEFAULT),
+							AppStage.Scale(ObjectCts.CONTAINER_HEIGHT_DEFAULT));
 				}
 			}
 		};
@@ -100,7 +98,7 @@ public class LevelObjects implements LayerDrawer {
 			}
 
 			@Override
-			public void draw(Spike s, GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+			public void draw(Spike s, GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 				s.draw(g, lvlOffsetX, lvlOffsetY, spikeSprite);
 			}
 		};
@@ -112,7 +110,7 @@ public class LevelObjects implements LayerDrawer {
 			}
 
 			@Override
-			public void draw(Cannon c, GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+			public void draw(Cannon c, GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 				c.draw(g, lvlOffsetX, lvlOffsetY, cannonSprite);
 			}
 		};
@@ -124,15 +122,15 @@ public class LevelObjects implements LayerDrawer {
 			}
 
 			@Override
-			public void draw(Tree t, GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+			public void draw(Tree t, GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 				t.draw(g, lvlOffsetX, lvlOffsetY, treeSprite);
 			}
 		};
-		load(img);
+		load(level.getImg());
 	}
 
 	@Override
-	public void drawL1(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL1(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		this.potion.drawL1(g, lvlOffsetX, lvlOffsetY);
 		this.container.drawL1(g, lvlOffsetX, lvlOffsetY);
 		this.spike.drawL1(g, lvlOffsetX, lvlOffsetY);
@@ -141,7 +139,7 @@ public class LevelObjects implements LayerDrawer {
 	}
 
 	@Override
-	public void drawL2(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL2(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		this.potion.drawL2(g, lvlOffsetX, lvlOffsetY);
 		this.container.drawL2(g, lvlOffsetX, lvlOffsetY);
 		this.spike.drawL2(g, lvlOffsetX, lvlOffsetY);
@@ -150,7 +148,7 @@ public class LevelObjects implements LayerDrawer {
 	}
 
 	@Override
-	public void drawL3(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL3(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		this.potion.drawL3(g, lvlOffsetX, lvlOffsetY);
 		this.container.drawL3(g, lvlOffsetX, lvlOffsetY);
 		this.spike.drawL3(g, lvlOffsetX, lvlOffsetY);
@@ -159,7 +157,7 @@ public class LevelObjects implements LayerDrawer {
 	}
 
 	@Override
-	public void drawL4(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL4(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		this.potion.drawL4(g, lvlOffsetX, lvlOffsetY);
 		this.container.drawL4(g, lvlOffsetX, lvlOffsetY);
 		this.spike.drawL4(g, lvlOffsetX, lvlOffsetY);
@@ -167,30 +165,23 @@ public class LevelObjects implements LayerDrawer {
 		this.tree.drawL4(g, lvlOffsetX, lvlOffsetY);
 	}
 
-	public void drawProjectiles(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Projectile> projectiles) {
+	public void drawProjectiles(GameDrawer g, double lvlOffsetX, double lvlOffsetY, List<Projectile> projectiles) {
 		for (Projectile p : projectiles)
 			if (p.isActive())
-				g.drawImage(cannonBallSprite, (int) (p.getHitbox().getMinX() - lvlOffsetX),
-						(int) p.getHitbox().getMinY() - lvlOffsetY, ProjectileCts.CANNON_BALL_WIDTH,
-						ProjectileCts.CANNON_BALL_HEIGHT);
+				p.draw(g, lvlOffsetX, lvlOffsetY, projectileSprite);
 	}
 
-	public void drawDialogues(GameDrawer g, int lvlOffsetX, int lvlOffsetY, List<Dialogue> dialogues) {
+	public void drawDialogues(GameDrawer g, double lvlOffsetX, double lvlOffsetY, List<Dialogue> dialogues) {
 		for (Dialogue d : dialogues)
 			if (d.isActive()) {
-				if (d.getType() == DialogueCts.QUESTION)
-					g.drawImage(dialogueQuestionSprite[d.getAniIndex()], d.getX() - lvlOffsetX, d.getY() - lvlOffsetY,
-							DialogueCts.DIALOGUE_WIDTH, DialogueCts.DIALOGUE_HEIGHT);
-				else
-					g.drawImage(dialogueExclamationSprite[d.getAniIndex()], d.getX() - lvlOffsetX,
-							d.getY() - lvlOffsetY, DialogueCts.DIALOGUE_WIDTH, DialogueCts.DIALOGUE_HEIGHT);
+				d.draw(g, lvlOffsetX, lvlOffsetY, dialogueQuestionSprite, dialogueExclamationSprite);
 			}
 	}
 
 	public void load(LvlBuilderImage img) {
 		PixelReader pixelReader = img.getPixelReader();
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
+		for (int y = 0; y < this.level.getHeight(); y++) {
+			for (int x = 0; x < this.level.getWidth(); x++) {
 				Color c = pixelReader.getColor(x, y);
 				int blue = (int) (c.getBlue() * 255);
 				addBlue(blue, x, y);
@@ -205,27 +196,15 @@ public class LevelObjects implements LayerDrawer {
 
 	public void addBlue(int blue, int x, int y) {
 		if (blue != GameCts.EMPTY_TILE_VALUE) {
+			Point2D spawn = new Point2D(x, y);
 			switch (blue) {
-			case ObjectCts.RED_POTION, ObjectCts.BLUE_POTION ->
-				potion.add(new Potion(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
-			case ObjectCts.BOX, ObjectCts.BARREL ->
-				container.add(new Container(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
-			case ObjectCts.SPIKE ->
-				spike.add(new Spike(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, ObjectCts.SPIKE));
-			case ObjectCts.CANNON_LEFT, ObjectCts.CANNON_RIGHT ->
-				cannon.add(new Cannon(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
-			case ObjectCts.TREE_UP, ObjectCts.TREE_RIGHT, ObjectCts.TREE_LEFT ->
-				tree.add(new Tree(x * GameCts.TILES_SIZE, y * GameCts.TILES_SIZE, blue));
+			case ObjectCts.RED_POTION, ObjectCts.BLUE_POTION -> potion.add(new Potion(spawn, blue));
+			case ObjectCts.BOX, ObjectCts.BARREL -> container.add(new Container(spawn, blue));
+			case ObjectCts.SPIKE -> spike.add(new Spike(spawn, ObjectCts.SPIKE));
+			case ObjectCts.CANNON_LEFT, ObjectCts.CANNON_RIGHT -> cannon.add(new Cannon(spawn, blue));
+			case ObjectCts.TREE_UP, ObjectCts.TREE_RIGHT, ObjectCts.TREE_LEFT -> tree.add(new Tree(spawn, blue));
 			}
 		}
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public int getWidth() {
-		return width;
 	}
 
 	public LayerManager<Potion> getPotion() {
@@ -246,5 +225,20 @@ public class LevelObjects implements LayerDrawer {
 
 	public LayerManager<Tree> getTree() {
 		return tree;
+	}
+
+	public void scale() {
+		for (Container c : this.container.getItems()) {
+			c.scale();
+		}
+		for (Spike s : this.spike.getItems()) {
+			s.scale();
+		}
+		for (Cannon c : this.cannon.getItems()) {
+			c.scale();
+		}
+		for (Tree t : this.tree.getItems()) {
+			t.scale();
+		}
 	}
 }

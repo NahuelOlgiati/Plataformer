@@ -2,9 +2,11 @@ package com.mandarina.game.ui;
 
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.gamestates.Playing;
-import com.mandarina.utilz.LoadSave;
-import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
+//import com.mandarina.main.AppStage;
+import com.mandarina.utilz.LoadSave;
+
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -13,31 +15,31 @@ public class GameCompletedOverlay {
 	private Playing playing;
 	private Image img;
 	private MenuButton quit, credit;
-	private int imgX, imgY, imgW, imgH;
+	private double imgX, imgY, imgW, imgH;
 
 	public GameCompletedOverlay(Playing playing) {
 		this.playing = playing;
+		img = LoadSave.GetSprite(LoadSave.GAME_COMPLETED);
 		createImg();
 		createButtons();
 	}
 
 	private void createButtons() {
-		quit = new MenuButton(GameCts.GAME_WIDTH / 2, (int) (270 * GameCts.SCALE), 2, GameState.MENU);
-		credit = new MenuButton(GameCts.GAME_WIDTH / 2, (int) (200 * GameCts.SCALE), 3, GameState.CREDITS);
+		quit = new MenuButton(AppStage.GetGameWidth() / 2, AppStage.Scale(270), 2, GameState.MENU);
+		credit = new MenuButton(AppStage.GetGameWidth() / 2, AppStage.Scale(200), 3, GameState.CREDITS);
 	}
 
 	private void createImg() {
-		img = LoadSave.GetSprite(LoadSave.GAME_COMPLETED);
-		imgW = (int) (img.getWidth() * GameCts.SCALE);
-		imgH = (int) (img.getHeight() * GameCts.SCALE);
-		imgX = GameCts.GAME_WIDTH / 2 - imgW / 2;
-		imgY = (int) (100 * GameCts.SCALE);
+		imgW = AppStage.Scale(img.getWidth());
+		imgH = AppStage.Scale(img.getHeight());
+		imgX = AppStage.GetGameWidth() / 2 - imgW / 2;
+		imgY = AppStage.Scale(100);
 
 	}
 
 	public void draw(GameDrawer g) {
 		g.setFill(new Color(0, 0, 0, 0.5));
-		g.fillRect(0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
+		g.fillRect(0, 0, AppStage.GetGameWidth(), AppStage.GetGameHeight());
 
 		g.drawImage(img, imgX, imgY, imgW, imgH);
 
@@ -87,5 +89,10 @@ public class GameCompletedOverlay {
 			quit.setMousePressed(true);
 		else if (isIn(credit, e))
 			credit.setMousePressed(true);
+	}
+
+	public void scale() {
+		createImg();
+		createButtons();
 	}
 }

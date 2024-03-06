@@ -1,40 +1,41 @@
 package com.mandarina.game.audio;
 
-import java.io.IOException;
-import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Random;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.BooleanControl;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import com.mandarina.game.main.Game;
+
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class AudioPlayer {
 
-	public static int MENU_1 = 0;
-	public static int LEVEL_1 = 1;
-	public static int LEVEL_2 = 2;
+	private static ClassLoader cl = Thread.currentThread().getContextClassLoader();
+
+	public static final int MENU_1 = 0;
+	public static final int LEVEL_1 = 1;
+	public static final int LEVEL_2 = 2;
 	public static int BUILD = 3;
 
-	public static int DIE = 0;
-	public static int JUMP = 1;
-	public static int GAMEOVER = 2;
-	public static int LVL_COMPLETED = 3;
-	public static int ATTACK_ONE = 4;
-	public static int ATTACK_TWO = 5;
-	public static int ATTACK_THREE = 6;
+	public static final int DIE = 0;
+	public static final int JUMP = 1;
+	public static final int GAMEOVER = 2;
+	public static final int LVL_COMPLETED = 3;
+	public static final int ATTACK_ONE = 4;
+	public static final int ATTACK_TWO = 5;
+	public static final int ATTACK_THREE = 6;
 
-	private Clip[] songs, effects;
+	private MediaPlayer[] songs;
+	private MediaPlayer[] effects;
 	private int currentSongId;
-	private float volume;
 	private boolean songMute, effectMute;
 	private Random rand = new Random();
 
-	public AudioPlayer(float volume) {
-		this.volume = volume;
+	private Game game;
+
+	public AudioPlayer(Game game) {
+		this.game = game;
 		loadSongs();
 		loadEffects();
 		playSong(MENU_1);
@@ -42,49 +43,52 @@ public class AudioPlayer {
 
 	private void loadSongs() {
 		String[] names = { "menu", "level1", "level2", "build" };
-		songs = new Clip[names.length];
-		for (int i = 0; i < songs.length; i++)
-			songs[i] = getClip(names[i]);
+		songs = new MediaPlayer[names.length];
+		for (int i = 0; i < songs.length; i++) {
+			songs[i] = getMediaPlayer(names[i]);
+		}
 	}
 
 	private void loadEffects() {
 		String[] effectNames = { "die", "jump", "gameover", "lvlcompleted", "attack1", "attack2", "attack3" };
-		effects = new Clip[effectNames.length];
-		for (int i = 0; i < effects.length; i++)
-			effects[i] = getClip(effectNames[i]);
-
-		updateEffectsVolume();
-
-	}
-
-	private Clip getClip(String name) {
-		URL url = getClass().getResource("/assets/audio/" + name + ".wav");
-		AudioInputStream audio;
-
-		try {
-			audio = AudioSystem.getAudioInputStream(url);
-			Clip c = AudioSystem.getClip();
-			c.open(audio);
-			return c;
-
-		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-
-			e.printStackTrace();
+		effects = new MediaPlayer[effectNames.length];
+		for (int i = 0; i < effects.length; i++) {
+			effects[i] = getMediaPlayer(effectNames[i]);
 		}
-
-		return null;
-
 	}
 
-	public void setVolume(float volume) {
-		this.volume = volume;
+	public static Media GetAudio(String fileName) {
+		return GetAudio(Paths.get("assets", "audio", fileName));
+	}
+
+	private static Media GetAudio(Path path) {
+		return new Media(cl.getResource(pathNormalization(path)).toString());
+	}
+
+	private static String pathNormalization(Path path) {
+		return path.toString().replace('\\', '/');
+	}
+
+	private MediaPlayer getMediaPlayer(String name) {
+		return new MediaPlayer(GetAudio(name + ".wav"));
+	}
+
+	public void setVolume(double volume) {
+		game.getAudioOptions().getVolumeButton().setVolume(volume);
 		updateSongVolume();
 		updateEffectsVolume();
 	}
 
 	public void stopSong() {
-		if (songs[currentSongId].isActive())
-			songs[currentSongId].stop();
+		MediaPlayer mp = songs[currentSongId];
+		if (mp.getStatus() == MediaPlayer.Status.PLAYING)
+			mp.stop();
+	}
+
+	public void dispose() {
+		for (MediaPlayer mp : songs) {
+			mp.dispose();
+		}
 	}
 
 	public void setLevelSong(int lvlIndex) {
@@ -106,53 +110,47 @@ public class AudioPlayer {
 	}
 
 	public void playEffect(int effect) {
-		if (effects[effect].getMicrosecondPosition() > 0)
-			effects[effect].setMicrosecondPosition(0);
-		effects[effect].start();
+		MediaPlayer mp = effects[effect];
+		mp.stop();
+		mp.seek(mp.getStartTime());
+		mp.play();
 	}
 
 	public void playSong(int song) {
 		stopSong();
-
 		currentSongId = song;
-		updateSongVolume();
-		songs[currentSongId].setMicrosecondPosition(0);
-		songs[currentSongId].loop(Clip.LOOP_CONTINUOUSLY);
+		MediaPlayer mp = songs[currentSongId];
+		mp.seek(mp.getStartTime());
+		mp.play();
 	}
 
 	public void toggleSongMute() {
 		this.songMute = !songMute;
-		for (Clip c : songs) {
-			BooleanControl booleanControl = (BooleanControl) c.getControl(BooleanControl.Type.MUTE);
-			booleanControl.setValue(songMute);
+		for (MediaPlayer song : songs) {
+			song.setMute(songMute);
 		}
 	}
 
 	public void toggleEffectMute() {
 		this.effectMute = !effectMute;
-		for (Clip c : effects) {
-			BooleanControl booleanControl = (BooleanControl) c.getControl(BooleanControl.Type.MUTE);
-			booleanControl.setValue(effectMute);
+		for (MediaPlayer effect : effects) {
+			effect.setMute(effectMute);
 		}
 		if (!effectMute)
 			playEffect(JUMP);
 	}
 
 	private void updateSongVolume() {
-		FloatControl gainControl = (FloatControl) songs[currentSongId].getControl(FloatControl.Type.MASTER_GAIN);
-		float range = gainControl.getMaximum() - gainControl.getMinimum();
-		float gain = (range * volume) + gainControl.getMinimum();
-		gainControl.setValue(gain);
-
-	}
-
-	private void updateEffectsVolume() {
-		for (Clip c : effects) {
-			FloatControl gainControl = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
-			float range = gainControl.getMaximum() - gainControl.getMinimum();
-			float gain = (range * volume) + gainControl.getMinimum();
-			gainControl.setValue(gain);
+		double volume = game.getAudioOptions().getVolumeButton().getVolume();
+		for (MediaPlayer song : songs) {
+			song.setVolume(volume);
 		}
 	}
 
+	private void updateEffectsVolume() {
+		double volume = game.getAudioOptions().getVolumeButton().getVolume();
+		for (MediaPlayer effect : effects) {
+			effect.setVolume(volume);
+		}
+	}
 }

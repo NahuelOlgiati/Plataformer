@@ -8,8 +8,10 @@ import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
@@ -20,8 +22,9 @@ public class Pinkstar extends Enemy {
 	private int tickAfterRollInIdle;
 	private int rollDurationTick, rollDuration = 300;
 
-	public Pinkstar(float x, float y) {
-		super(x, y, PinkstarCts.SPRITE_WIDTH, PinkstarCts.SPRITE_HEIGHT, EntityCts.PINKSTAR);
+	public Pinkstar(Point2D spawn) {
+		super(spawn, EntityCts.PINKSTAR);
+		initSize(PinkstarCts.SPRITE_WIDTH_DEFAULT, PinkstarCts.SPRITE_HEIGHT_DEFAULT);
 		initHitbox(PinkstarCts.HITBOX_WIDTH, PinkstarCts.HITBOX_HEIGHT);
 		initAttackBox(PinkstarCts.ATTACK_HITBOX_WIDTH, PinkstarCts.ATTACK_HITBOX_HEIGHT,
 				PinkstarCts.ATTACK_HITBOX_OFFSET_X);
@@ -74,7 +77,7 @@ public class Pinkstar extends Enemy {
 				break;
 			case HIT:
 				if (aniIndex <= getSpriteAmount(state) - 2)
-					pushBack(pushBackDir, levelData, 2f);
+					pushBack(pushBackDir, levelData, 2);
 				updatePushBackDrawOffset();
 				tickAfterRollInIdle = 120;
 
@@ -84,9 +87,10 @@ public class Pinkstar extends Enemy {
 	}
 
 	@Override
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), PinkstarCts.SPRITE_WIDTH, PinkstarCts.SPRITE_HEIGHT,
-				PinkstarCts.DRAW_OFFSET_X, PinkstarCts.DRAW_OFFSET_Y);
+	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(PinkstarCts.SPRITE_WIDTH_DEFAULT),
+				AppStage.Scale(PinkstarCts.SPRITE_HEIGHT_DEFAULT), AppStage.Scale(PinkstarCts.DRAW_OFFSET_X_DEFAULT),
+				AppStage.Scale(PinkstarCts.DRAW_OFFSET_Y_DEFAULT));
 	}
 
 	@Override
@@ -139,7 +143,7 @@ public class Pinkstar extends Enemy {
 
 	private void move(Playing playing) {
 		var levelData = playing.getLevelData();
-		float xSpeed = 0;
+		double xSpeed = 0;
 
 		if (walkDir == DirectionCts.LEFT)
 			xSpeed = -walkSpeed;
@@ -198,5 +202,13 @@ public class Pinkstar extends Enemy {
 		return LoadSave.GetAnimations(PinkstarCts.ATLAS_SIZE_X, PinkstarCts.ATLAS_SIZE_Y,
 				PinkstarCts.SPRITE_WIDTH_DEFAULT, PinkstarCts.SPRITE_HEIGHT_DEFAULT,
 				LoadSave.GetAtlas(PinkstarCts.ATLAS_IMAGE));
+	}
+
+	public void scale() {
+		super.scale();
+		initSize(PinkstarCts.SPRITE_WIDTH_DEFAULT, PinkstarCts.SPRITE_HEIGHT_DEFAULT);
+		initHitbox(PinkstarCts.HITBOX_WIDTH, PinkstarCts.HITBOX_HEIGHT);
+		initAttackBox(PinkstarCts.ATTACK_HITBOX_WIDTH, PinkstarCts.ATTACK_HITBOX_HEIGHT,
+				PinkstarCts.ATTACK_HITBOX_OFFSET_X);
 	}
 }

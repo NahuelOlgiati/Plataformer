@@ -1,5 +1,7 @@
 package com.mandarina.game.main;
 
+import com.mandarina.main.AppStage;
+
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -8,11 +10,14 @@ import javafx.scene.paint.Color;
 
 public class GameDrawer {
 
+	private double widthDefault, heightDefault;
 	private Canvas canvas;
 	private GraphicsContext ctx;
 
-	public GameDrawer(double width, double height) {
-		this.canvas = new Canvas(GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
+	public GameDrawer(double widthDefault, double heightDefault) {
+		this.widthDefault = widthDefault;
+		this.heightDefault = heightDefault;
+		this.canvas = new Canvas(AppStage.Scale(widthDefault), AppStage.Scale(heightDefault));
 		this.ctx = this.canvas.getGraphicsContext2D();
 	}
 
@@ -38,5 +43,14 @@ public class GameDrawer {
 
 	public void fillRect(double x, double y, double w, double h) {
 		ctx.fillRect(x, y, w, h);
+	}
+
+	public void setLineWidth(double w) {
+		ctx.setLineWidth(w);
+	}
+
+	public void scale() {
+		this.canvas.setWidth(AppStage.Scale(widthDefault));
+		this.canvas.setHeight(AppStage.Scale(heightDefault));
 	}
 }

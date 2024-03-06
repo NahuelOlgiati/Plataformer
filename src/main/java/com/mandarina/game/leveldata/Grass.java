@@ -1,32 +1,31 @@
 package com.mandarina.game.leveldata;
 
-import com.mandarina.utilz.LoadSave;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
+import com.mandarina.utilz.LoadSave;
+
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
-public class Grass {
+public class Grass extends GameData {
 
-	private int x, y, type;
+	private int type;
 
-	public Grass(int x, int y, int type) {
-		this.x = x;
-		this.y = y;
+	public Grass(Point2D spawn, int type) {
+		super(spawn);
 		this.type = type;
 	}
 
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[] grassImgs) {
-		g.drawImage(grassImgs[getType()], getX() - lvlOffsetX, getY() - lvlOffsetY, (int) (32 * GameCts.SCALE),
-				(int) (32 * GameCts.SCALE));
+	@Override
+	protected void init() {
+		this.x = spawn.getX() * AppStage.GetTileSize();
+		this.y = spawn.getY() * AppStage.GetTileSize() - AppStage.GetTileSize();
 	}
 
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-
+	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[] grassImgs) {
+		g.drawImage(grassImgs[getType()], x - lvlOffsetX, y - lvlOffsetY, AppStage.GetTileSize(),
+				AppStage.GetTileSize());
 	}
 
 	public int getType() {

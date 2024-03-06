@@ -21,7 +21,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
 public class LvlBuilder {
@@ -30,7 +32,7 @@ public class LvlBuilder {
 	private int mainPaneX = 80;
 	private int mainPaneY = 12;
 
-	private Scene scene;
+	private Stage stage;
 
 	private ScrollPane redSidePane;
 	private ScrollPane redMainPane;
@@ -53,17 +55,17 @@ public class LvlBuilder {
 	private Set<SelectedTile> selectedTiles;
 
 	public void show() {
-		if (scene == null) {
-			scene = getScene();
+		if (stage == null) {
+			stage = getStage();
 		}
-		Stage stage = AppStage.get().getStage();
-		stage.setScene(scene);
-		stage.setTitle("Lvl Builder");
-		stage.setResizable(false);
 		stage.show();
 	}
 
-	private Scene getScene() {
+	public void close() {
+		stage.close();
+	}
+
+	private Stage getStage() {
 		createSidePanes();
 		createMainPanes();
 		this.pm = new PNGMetadata();
@@ -78,7 +80,18 @@ public class LvlBuilder {
 		MenuBar menuBar = lvlBuilderMenu.getMenuBar();
 		VBox vbox = new VBox(menuBar, root, mousePositionLabel);
 		Scene scene = new Scene(vbox, LvlBuilderCts.WINDOW_X, LvlBuilderCts.WINDOW_Y);
-		return scene;
+		scene.getStylesheets().add(LvlBuilderLoad.GetCSS().toExternalForm());
+
+		Stage newStage = new Stage();
+		newStage.setTitle("Lvl Builder");
+		newStage.initModality(Modality.APPLICATION_MODAL);
+		newStage.initStyle(StageStyle.UNDECORATED);
+		Stage primaryStage = AppStage.get().getStage();
+		newStage.initOwner(primaryStage);
+		newStage.setScene(scene);
+		newStage.setResizable(false);
+		newStage.setOnHidden(event -> primaryStage.requestFocus());
+		return newStage;
 	}
 
 	private void updateMousePosition(MouseEvent event) {

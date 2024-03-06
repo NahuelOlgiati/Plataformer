@@ -1,37 +1,40 @@
 package com.mandarina.game.objects;
 
-import javafx.geometry.Rectangle2D;
-
-import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
+import com.mandarina.utilz.LoadSave;
+
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
-public class Projectile {
+public class Projectile extends GameObject {
 	private Rectangle2D hitbox;
 	private int dir;
 	private boolean active = true;
 
-	public Projectile(int x, int y, int dir) {
-		int xOffset = (int) (-3 * GameCts.SCALE);
-		int yOffset = (int) (5 * GameCts.SCALE);
+	public Projectile(Point2D spawn, int dir) {
+		super(spawn, ObjectCts.PROJECTILE);
+		this.dir = dir;
+		int xOffset = AppStage.Scale(-3);
+		int yOffset = AppStage.Scale(5);
 
 		if (dir == 1)
-			xOffset = (int) (29 * GameCts.SCALE);
+			xOffset = AppStage.Scale(29);
 
-		hitbox = new Rectangle2D(x + xOffset, y + yOffset, ProjectileCts.CANNON_BALL_WIDTH,
-				ProjectileCts.CANNON_BALL_HEIGHT);
-		this.dir = dir;
+		hitbox = new Rectangle2D(x + xOffset, y + yOffset, AppStage.Scale(ProjectileCts.CANNON_BALL_WIDTH_DEFAULT),
+				AppStage.Scale(ProjectileCts.CANNON_BALL_HEIGHT_DEFAULT));
 	}
 
 	public void updatePos() {
-		hitbox = new Rectangle2D(hitbox.getMinX() + dir * ProjectileCts.SPEED, hitbox.getMinY(), hitbox.getWidth(),
-				hitbox.getHeight());
+		hitbox = new Rectangle2D(hitbox.getMinX() + dir * AppStage.Scale(ProjectileCts.SPEED_DEFAULT), hitbox.getMinY(),
+				hitbox.getWidth(), hitbox.getHeight());
 	}
 
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image cannonBallSprite) {
-		g.drawImage(cannonBallSprite, (int) (getHitbox().getMinX() - lvlOffsetX),
-				(int) getHitbox().getMinY() - lvlOffsetY, ProjectileCts.CANNON_BALL_WIDTH,
-				ProjectileCts.CANNON_BALL_HEIGHT);
+	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image cannonBallSprite) {
+		g.drawImage(cannonBallSprite, getHitbox().getMinX() - lvlOffsetX, getHitbox().getMinY() - lvlOffsetY,
+				AppStage.Scale(ProjectileCts.CANNON_BALL_WIDTH_DEFAULT),
+				AppStage.Scale(ProjectileCts.CANNON_BALL_HEIGHT_DEFAULT));
 	}
 
 	public void setPos(int x, int y) {
@@ -48,6 +51,22 @@ public class Projectile {
 
 	public boolean isActive() {
 		return active;
+	}
+
+	public static Image load() {
+		return LoadSave.GetSprite(LoadSave.CANNON_BALL);
+	}
+
+	public void scale() {
+		super.scale();
+		int xOffset = AppStage.Scale(-3);
+		int yOffset = AppStage.Scale(5);
+
+		if (dir == 1)
+			xOffset = AppStage.Scale(29);
+
+		hitbox = new Rectangle2D(x + xOffset, y + yOffset, AppStage.Scale(ProjectileCts.CANNON_BALL_WIDTH_DEFAULT),
+				AppStage.Scale(ProjectileCts.CANNON_BALL_HEIGHT_DEFAULT));
 	}
 
 }

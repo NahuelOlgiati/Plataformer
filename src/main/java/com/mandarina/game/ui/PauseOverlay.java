@@ -2,8 +2,8 @@ package com.mandarina.game.ui;
 
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.gamestates.Playing;
-import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -13,44 +13,43 @@ public class PauseOverlay {
 
 	private Playing playing;
 	private Image backgroundImg;
-	private int bgX, bgY, bgW, bgH;
-	private AudioOptions audioOptions;
+	private double bgX, bgY, bgW, bgH;
 	private UrmButton menuB, replayB, unpauseB;
 
-	public PauseOverlay(Playing playing, AudioOptions audioOptions) {
+	public PauseOverlay(Playing playing) {
 		this.playing = playing;
-		this.audioOptions = audioOptions;
+		backgroundImg = LoadSave.GetSprite(LoadSave.PAUSE_BACKGROUND);
 		loadBackground();
 		createUrmButtons();
 	}
 
 	private void createUrmButtons() {
-		int menuX = (int) (313 * GameCts.SCALE);
-		int replayX = (int) (387 * GameCts.SCALE);
-		int unpauseX = (int) (462 * GameCts.SCALE);
-		int bY = (int) (325 * GameCts.SCALE);
+		int menuX = AppStage.Scale(313);
+		int replayX = AppStage.Scale(387);
+		int unpauseX = AppStage.Scale(462);
+		int bY = AppStage.Scale(325);
 
-		menuB = new UrmButton(menuX, bY, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 2);
-		replayB = new UrmButton(replayX, bY, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 1);
-		unpauseB = new UrmButton(unpauseX, bY, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 0);
+		menuB = new UrmButton(menuX, bY, AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT),
+				AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT), 2);
+		replayB = new UrmButton(replayX, bY, AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT),
+				AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT), 1);
+		unpauseB = new UrmButton(unpauseX, bY, AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT),
+				AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT), 0);
 	}
 
 	private void loadBackground() {
-		backgroundImg = LoadSave.GetSprite(LoadSave.PAUSE_BACKGROUND);
-		bgW = (int) (backgroundImg.getWidth() * GameCts.SCALE);
-		bgH = (int) (backgroundImg.getHeight() * GameCts.SCALE);
-		bgX = GameCts.GAME_WIDTH / 2 - bgW / 2;
-		bgY = (int) (25 * GameCts.SCALE);
+		bgW = AppStage.Scale(backgroundImg.getWidth());
+		bgH = AppStage.Scale(backgroundImg.getHeight());
+		bgX = AppStage.GetGameWidth() / 2 - bgW / 2;
+		bgY = AppStage.Scale(25);
 	}
 
 	public void update() {
-
 		menuB.update();
 		replayB.update();
 		unpauseB.update();
 
-		audioOptions.update();
-
+		playing.getGame().getAudioOptions().update();
 	}
 
 	public void draw(GameDrawer g) {
@@ -62,12 +61,12 @@ public class PauseOverlay {
 		replayB.draw(g);
 		unpauseB.draw(g);
 
-		audioOptions.draw(g);
+		playing.getGame().getAudioOptions().draw(g);
 
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		audioOptions.mouseDragged(e);
+		playing.getGame().getAudioOptions().mouseDragged(e);
 	}
 
 	public void mousePressed(MouseEvent e) {
@@ -78,7 +77,7 @@ public class PauseOverlay {
 		else if (isIn(e, unpauseB))
 			unpauseB.setMousePressed(true);
 		else
-			audioOptions.mousePressed(e);
+			playing.getGame().getAudioOptions().mousePressed(e);
 	}
 
 	public void mouseReleased(MouseEvent e) {
@@ -97,7 +96,7 @@ public class PauseOverlay {
 			if (unpauseB.isMousePressed())
 				playing.unpauseGame();
 		} else
-			audioOptions.mouseReleased(e);
+			playing.getGame().getAudioOptions().mouseReleased(e);
 
 		menuB.resetBools();
 		replayB.resetBools();
@@ -117,11 +116,16 @@ public class PauseOverlay {
 		else if (isIn(e, unpauseB))
 			unpauseB.setMouseOver(true);
 		else
-			audioOptions.mouseMoved(e);
+			playing.getGame().getAudioOptions().mouseMoved(e);
 	}
 
 	private boolean isIn(MouseEvent e, PauseButton b) {
 		return b.getBounds().contains(e.getX(), e.getY());
+	}
+
+	public void scale() {
+		loadBackground();
+		createUrmButtons();
 	}
 
 }

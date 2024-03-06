@@ -1,20 +1,20 @@
 package com.mandarina.game.objects;
 
 import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
-public class Dialogue {
+public class Dialogue extends GameObject {
 
-	private int x, y, type;
 	private int aniIndex, aniTick;
 	private boolean active = true;
 
-	public Dialogue(int x, int y, int type) {
-		this.x = x;
-		this.y = y;
-		this.type = type;
+	public Dialogue(Point2D spawn, int type) {
+		super(spawn, type);
 	}
 
 	public void update() {
@@ -29,6 +29,18 @@ public class Dialogue {
 		}
 	}
 
+	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[] dialogueQuestionSprite,
+			Image[] dialogueExclamationSprite) {
+		if (getObjType() == DialogueCts.QUESTION)
+			g.drawImage(dialogueQuestionSprite[getAniIndex()], x - lvlOffsetX, y - lvlOffsetY,
+					AppStage.Scale(DialogueCts.DIALOGUE_WIDTH_DEFAULT),
+					AppStage.Scale(DialogueCts.DIALOGUE_HEIGHT_DEFAULT));
+		else
+			g.drawImage(dialogueExclamationSprite[getAniIndex()], x - lvlOffsetX, y - lvlOffsetY,
+					AppStage.Scale(DialogueCts.DIALOGUE_WIDTH_DEFAULT),
+					AppStage.Scale(DialogueCts.DIALOGUE_HEIGHT_DEFAULT));
+	}
+
 	public void deactive() {
 		active = false;
 	}
@@ -41,18 +53,6 @@ public class Dialogue {
 
 	public int getAniIndex() {
 		return aniIndex;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public int getType() {
-		return type;
 	}
 
 	public boolean isActive() {

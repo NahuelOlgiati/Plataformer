@@ -1,8 +1,8 @@
 package com.mandarina.game.ui;
 
 import com.mandarina.game.main.Game;
-import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
 
 import javafx.scene.input.MouseEvent;
 
@@ -20,17 +20,20 @@ public class AudioOptions {
 	}
 
 	private void createVolumeButton() {
-		int vX = (int) (309 * GameCts.SCALE);
-		int vY = (int) (278 * GameCts.SCALE);
-		volumeButton = new VolumeButton(vX, vY, VolumeButtonCts.VOLUME_WIDTH, VolumeButtonCts.VOLUME_HEIGHT);
+		int vX = AppStage.Scale(309);
+		int vY = AppStage.Scale(278);
+		volumeButton = new VolumeButton(vX, vY, AppStage.Scale(VolumeButtonCts.VOLUME_WIDTH_DEFAULT),
+				AppStage.Scale(VolumeButtonCts.VOLUME_HEIGHT_DEFAULT));
 	}
 
 	private void createSoundButtons() {
-		int soundX = (int) (450 * GameCts.SCALE);
-		int musicY = (int) (140 * GameCts.SCALE);
-		int sfxY = (int) (186 * GameCts.SCALE);
-		musicButton = new SoundButton(soundX, musicY, SoundButtonCts.SIZE, SoundButtonCts.SIZE);
-		sfxButton = new SoundButton(soundX, sfxY, SoundButtonCts.SIZE, SoundButtonCts.SIZE);
+		int soundX = AppStage.Scale(450);
+		int musicY = AppStage.Scale(140);
+		int sfxY = AppStage.Scale(186);
+		musicButton = new SoundButton(soundX, musicY, AppStage.Scale(SoundButtonCts.SIZE_DEFAULT),
+				AppStage.Scale(SoundButtonCts.SIZE_DEFAULT));
+		sfxButton = new SoundButton(soundX, sfxY, AppStage.Scale(SoundButtonCts.SIZE_DEFAULT),
+				AppStage.Scale(SoundButtonCts.SIZE_DEFAULT));
 	}
 
 	public void update() {
@@ -51,9 +54,9 @@ public class AudioOptions {
 
 	public void mouseDragged(MouseEvent e) {
 		if (volumeButton.isMousePressed()) {
-			float valueBefore = volumeButton.getVolume();
+			double valueBefore = volumeButton.getVolume();
 			volumeButton.changeX((int) e.getX());
-			float valueAfter = volumeButton.getVolume();
+			double valueAfter = volumeButton.getVolume();
 			if (valueBefore != valueAfter)
 				game.getAudioPlayer().setVolume(valueAfter);
 		}
@@ -108,5 +111,10 @@ public class AudioOptions {
 
 	public VolumeButton getVolumeButton() {
 		return volumeButton;
+	}
+
+	public void scale() {
+		createVolumeButton();
+		createSoundButtons();
 	}
 }

@@ -2,22 +2,31 @@ package com.mandarina.game.objects;
 
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
 
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
 
 public class GameObject {
 
-	protected int x, y, objType;
+	private Point2D spawn;
+	protected double x, y;
+	protected int objType;
 	protected Rectangle2D hitbox;
 	protected boolean doAnimation, active = true;
 	protected int aniTick, aniIndex;
 	protected int xDrawOffset, yDrawOffset;
 
-	public GameObject(int x, int y, int objType) {
-		this.x = x;
-		this.y = y;
+	public GameObject(Point2D spawn, int objType) {
+		this.spawn = spawn;
 		this.objType = objType;
+		init();
+	}
+
+	private void init() {
+		this.x = spawn.getX() * AppStage.GetTileSize();
+		this.y = spawn.getY() * AppStage.GetTileSize();
 	}
 
 	protected void updateAnimationTick() {
@@ -61,10 +70,10 @@ public class GameObject {
 	}
 
 	protected void initHitbox(int width, int height) {
-		hitbox = new Rectangle2D(x, y, (int) (width * GameCts.SCALE), (int) (height * GameCts.SCALE));
+		hitbox = new Rectangle2D(x, y, AppStage.Scale(width), AppStage.Scale(height));
 	}
 
-	public void drawHitbox(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawHitbox(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		g.setStroke(Color.PINK);
 		g.strokeRect(hitbox.getMinX() - lvlOffsetX, hitbox.getMinY() - lvlOffsetY, hitbox.getWidth(),
 				hitbox.getHeight());
@@ -72,6 +81,10 @@ public class GameObject {
 
 	public int getObjType() {
 		return objType;
+	}
+
+	public Point2D getSpawn() {
+		return spawn;
 	}
 
 	public Rectangle2D getHitbox() {
@@ -104,6 +117,10 @@ public class GameObject {
 
 	public int getAniTick() {
 		return aniTick;
+	}
+
+	public void scale() {
+		init();
 	}
 
 }

@@ -2,6 +2,7 @@ package com.mandarina.game.ui;
 
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -9,24 +10,27 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
 public class MenuButton {
-	private int xPos, yPos, rowIndex, index;
-	private int xOffsetCenter = MenuButtonCts.WIDTH / 2;
+	private double xPos, yPos;
+	private int rowIndex, index;
+	private int xOffsetCenter;
 	private GameState state;
 	private Image[] imgs;
 	private boolean mouseOver, mousePressed;
 	private Rectangle bounds;
 
-	public MenuButton(int xPos, int yPos, int rowIndex, GameState state) {
+	public MenuButton(double xPos, double yPos, int rowIndex, GameState state) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.rowIndex = rowIndex;
 		this.state = state;
 		loadImgs();
+		this.xOffsetCenter = AppStage.Scale(MenuButtonCts.WIDTH_DEFAULT) / 2;
 		initBounds();
 	}
 
 	private void initBounds() {
-		bounds = new Rectangle(xPos - xOffsetCenter, yPos, MenuButtonCts.WIDTH, MenuButtonCts.HEIGHT);
+		bounds = new Rectangle(xPos - xOffsetCenter, yPos, AppStage.Scale(MenuButtonCts.WIDTH_DEFAULT),
+				AppStage.Scale(MenuButtonCts.HEIGHT_DEFAULT));
 	}
 
 	private void loadImgs() {
@@ -39,7 +43,8 @@ public class MenuButton {
 	}
 
 	public void draw(GameDrawer g) {
-		g.drawImage(imgs[index], xPos - xOffsetCenter, yPos, MenuButtonCts.WIDTH, MenuButtonCts.HEIGHT);
+		g.drawImage(imgs[index], xPos - xOffsetCenter, yPos, AppStage.Scale(MenuButtonCts.WIDTH_DEFAULT),
+				AppStage.Scale(MenuButtonCts.HEIGHT_DEFAULT));
 	}
 
 	public void update() {

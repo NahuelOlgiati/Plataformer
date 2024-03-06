@@ -2,26 +2,21 @@ package com.mandarina.game.objects;
 
 import java.util.Random;
 
-import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
-public class Tree {
+public class Tree extends GameObject {
 
-	private int x, y, type, aniIndex, aniTick;
+	private int aniIndex, aniTick;
 
-	public Tree(int x, int y, int type) {
-		this.x = x;
-		this.y = y;
-		this.type = type;
-
-		// Sets the aniIndex to a random value, to get some variations for the trees so
-		// they all don't move in synch.
+	public Tree(Point2D spawn, int type) {
+		super(spawn, type);
 		Random r = new Random();
 		aniIndex = r.nextInt(4);
-
 	}
 
 	public void update() {
@@ -34,13 +29,13 @@ public class Tree {
 		}
 	}
 
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[][] treeImgs) {
-		int type = getType();
+	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] treeImgs) {
+		int type = getObjType();
 		if (type == 9)
 			type = 8;
 		int index = type - 7;
-		g.drawImage(treeImgs[index][getAniIndex()], getX() - lvlOffsetX + GetTreeOffsetX(getType()),
-				getY() - lvlOffsetY + GetTreeOffsetY(getType()), GetTreeWidth(getType()), GetTreeHeight(getType()));
+		g.drawImage(treeImgs[index][getAniIndex()], x - lvlOffsetX + GetTreeOffsetX(getObjType()),
+				y - lvlOffsetY + GetTreeOffsetY(getObjType()), GetTreeWidth(getObjType()), GetTreeHeight(getObjType()));
 	}
 
 	public static Image[][] load() {
@@ -56,26 +51,26 @@ public class Tree {
 		return treeImgs;
 	}
 
-	public static int GetTreeOffsetX(int treeType) {
+	public static double GetTreeOffsetX(int treeType) {
 		switch (treeType) {
 		case ObjectCts.TREE_UP:
-			return (GameCts.TILES_SIZE / 2) - (GetTreeWidth(treeType) / 2);
+			return (AppStage.GetTileSize() / 2) - (GetTreeWidth(treeType) / 2);
 		case ObjectCts.TREE_RIGHT:
-			return (int) (GameCts.TILES_SIZE / 2.5f);
+			return (int) (AppStage.GetTileSize() / 2.5);
 		case ObjectCts.TREE_LEFT:
-			return (int) (GameCts.TILES_SIZE / 1.65f);
+			return (int) (AppStage.GetTileSize() / 1.65);
 		}
 
 		return 0;
 	}
 
-	public static int GetTreeOffsetY(int treeType) {
+	public static double GetTreeOffsetY(int treeType) {
 
 		switch (treeType) {
 		case ObjectCts.TREE_UP:
-			return -GetTreeHeight(treeType) + GameCts.TILES_SIZE * 2;
+			return -GetTreeHeight(treeType) + AppStage.GetTileSize() * 2;
 		case ObjectCts.TREE_RIGHT, ObjectCts.TREE_LEFT:
-			return -GetTreeHeight(treeType) + (int) (GameCts.TILES_SIZE / 1.25f);
+			return -GetTreeHeight(treeType) + (int) (AppStage.GetTileSize() / 1.25);
 		}
 		return 0;
 
@@ -84,11 +79,11 @@ public class Tree {
 	public static int GetTreeWidth(int treeType) {
 		switch (treeType) {
 		case ObjectCts.TREE_UP:
-			return (int) (39 * GameCts.SCALE);
+			return AppStage.Scale(39);
 		case ObjectCts.TREE_RIGHT:
-			return (int) (62 * GameCts.SCALE);
+			return AppStage.Scale(62);
 		case ObjectCts.TREE_LEFT:
-			return -(int) (62 * GameCts.SCALE);
+			return AppStage.Scale(-62);
 
 		}
 		return 0;
@@ -97,9 +92,9 @@ public class Tree {
 	public static int GetTreeHeight(int treeType) {
 		switch (treeType) {
 		case ObjectCts.TREE_UP:
-			return (int) (92 * GameCts.SCALE);
+			return AppStage.Scale(92);
 		case ObjectCts.TREE_RIGHT, ObjectCts.TREE_LEFT:
-			return (int) (54 * GameCts.SCALE);
+			return AppStage.Scale(54);
 
 		}
 		return 0;
@@ -113,27 +108,4 @@ public class Tree {
 		this.aniIndex = aniIndex;
 	}
 
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
 }

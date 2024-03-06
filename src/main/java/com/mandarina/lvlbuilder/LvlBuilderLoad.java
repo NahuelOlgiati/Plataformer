@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -25,6 +26,10 @@ public class LvlBuilderLoad {
 
 	private static String pathNormalization(Path path) {
 		return path.toString().replace('\\', '/');
+	}
+
+	public static URL GetCSS() {
+		return cl.getResource(pathNormalization(Paths.get("assets", "css")) + "/lvlbuilder.css");
 	}
 
 	public static LvlBuilderImage[] GetAllRGB() {

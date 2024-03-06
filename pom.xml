@@ -33,6 +33,11 @@
 			<version>${javafx.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-media</artifactId>
+			<version>${javafx.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>6.1.3</version>
@@ -169,7 +174,7 @@
 								<argument>${project.build.directory}/mods</argument>
 								<argument>--add-modules</argument>
 								<argument>
-									java.logging,javafx.base,javafx.controls,javafx.graphics,javafx.swing</argument>
+									java.logging,javafx.base,javafx.controls,javafx.graphics,javafx.swing,javafx.media</argument>
 							</arguments>
 						</configuration>
 					</execution>

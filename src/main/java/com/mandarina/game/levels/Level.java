@@ -3,36 +3,58 @@ package com.mandarina.game.levels;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.lvlbuilder.feature.PNGMetadata;
+import com.mandarina.main.AppStage;
 
 public class Level {
 
 	private LvlBuilderImage img;
-	private PNGMetadata pngMetadata;
+	private PNGMetadata pm;
+
+	private int height;
+	private int width;
 
 	private LevelData levelData;
 	private LevelEntities levelEntities;
 	private LevelObjects levelObjects;
 
-	private int maxLvlOffsetX;
-	private int maxLvlOffsetY;
+	private double maxLvlOffsetX;
+	private double maxLvlOffsetY;
 
 	public Level(LvlBuilderImage img) {
 		this.img = img;
-		this.pngMetadata = new PNGMetadata(img);
-		this.levelData = new LevelData(img, pngMetadata);
-		this.levelEntities = new LevelEntities(img, pngMetadata);
-		this.levelObjects = new LevelObjects(img, pngMetadata);
+		this.pm = new PNGMetadata(img);
+		this.height = (int) img.getHeight();
+		this.width = (int) img.getWidth();
+		this.levelData = new LevelData(this);
+		this.levelEntities = new LevelEntities(this);
+		this.levelObjects = new LevelObjects(this);
 		calcLvlOffsets();
 	}
 
 	private void calcLvlOffsets() {
 		int lvlTilesWide = (int) img.getWidth();
 		int maxTilesOffsetX = lvlTilesWide - GameCts.TILES_IN_WIDTH;
-		maxLvlOffsetX = GameCts.TILES_SIZE * maxTilesOffsetX;
+		maxLvlOffsetX = AppStage.GetTileSize() * maxTilesOffsetX;
 
 		int lvlTilesHeight = (int) img.getHeight();
 		int maxTilesOffsetY = lvlTilesHeight - GameCts.TILES_IN_HEIGHT;
-		maxLvlOffsetY = GameCts.TILES_SIZE * maxTilesOffsetY;
+		maxLvlOffsetY = AppStage.GetTileSize() * maxTilesOffsetY;
+	}
+
+	public LvlBuilderImage getImg() {
+		return img;
+	}
+
+	public PNGMetadata getPm() {
+		return pm;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public int getWidth() {
+		return width;
 	}
 
 	public LevelData getLevelData() {
@@ -47,11 +69,15 @@ public class Level {
 		return levelObjects;
 	}
 
-	public int getLvlOffsetX() {
+	public double getMaxLvlOffsetX() {
 		return maxLvlOffsetX;
 	}
 
-	public int getLvlOffsetY() {
+	public double getMaxLvlOffsetY() {
 		return maxLvlOffsetY;
+	}
+
+	public void scale() {
+		calcLvlOffsets();
 	}
 }

@@ -5,15 +5,18 @@ import static com.mandarina.utilz.HelpMethods.IsEntityOnFloor;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public class Crabby extends Enemy {
 
-	public Crabby(float x, float y) {
-		super(x, y, CrabbyCts.SPRITE_WIDTH, CrabbyCts.SPRITE_HEIGHT, EntityCts.CRABBY);
+	public Crabby(Point2D spawn) {
+		super(spawn, EntityCts.CRABBY);
+		initSize(CrabbyCts.SPRITE_WIDTH_DEFAULT, CrabbyCts.SPRITE_HEIGHT_DEFAULT);
 		initHitbox(CrabbyCts.HITBOX_WIDTH, CrabbyCts.HITBOX_HEIGHT);
 		initAttackBox(CrabbyCts.ATTACK_HITBOX_WIDTH, CrabbyCts.ATTACK_HITBOX_HEIGHT, CrabbyCts.ATTACK_HITBOX_OFFSET_X);
 	}
@@ -61,7 +64,7 @@ public class Crabby extends Enemy {
 				break;
 			case HIT:
 				if (aniIndex <= getSpriteAmount(state) - 2)
-					pushBack(pushBackDir, levelData, 2f);
+					pushBack(pushBackDir, levelData, 2);
 				updatePushBackDrawOffset();
 				break;
 			}
@@ -69,9 +72,10 @@ public class Crabby extends Enemy {
 	}
 
 	@Override
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), CrabbyCts.SPRITE_WIDTH, CrabbyCts.SPRITE_HEIGHT,
-				CrabbyCts.DRAW_OFFSET_X, CrabbyCts.DRAW_OFFSET_Y);
+	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(CrabbyCts.SPRITE_WIDTH_DEFAULT),
+				AppStage.Scale(CrabbyCts.SPRITE_HEIGHT_DEFAULT), AppStage.Scale(CrabbyCts.DRAW_OFFSET_X_DEFAULT),
+				AppStage.Scale(CrabbyCts.DRAW_OFFSET_Y_DEFAULT));
 	}
 
 	@Override
@@ -114,5 +118,12 @@ public class Crabby extends Enemy {
 	public static Image[][] load() {
 		return LoadSave.GetAnimations(CrabbyCts.ATLAS_SIZE_X, CrabbyCts.ATLAS_SIZE_Y, CrabbyCts.SPRITE_WIDTH_DEFAULT,
 				CrabbyCts.SPRITE_HEIGHT_DEFAULT, LoadSave.GetAtlas(CrabbyCts.ATLAS_IMAGE));
+	}
+
+	public void scale() {
+		super.scale();
+		initSize(CrabbyCts.SPRITE_WIDTH_DEFAULT, CrabbyCts.SPRITE_HEIGHT_DEFAULT);
+		initHitbox(CrabbyCts.HITBOX_WIDTH, CrabbyCts.HITBOX_HEIGHT);
+		initAttackBox(CrabbyCts.ATTACK_HITBOX_WIDTH, CrabbyCts.ATTACK_HITBOX_HEIGHT, CrabbyCts.ATTACK_HITBOX_OFFSET_X);
 	}
 }

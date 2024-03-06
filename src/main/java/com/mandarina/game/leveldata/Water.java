@@ -1,25 +1,27 @@
 package com.mandarina.game.leveldata;
 
-import com.mandarina.utilz.LoadSave;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
+import com.mandarina.utilz.LoadSave;
+
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
-public class Water {
+public class Water extends GameData {
 
-	private int x, y, type, aniIndex, aniTick;
+	private int type, aniIndex, aniTick;
 
-	public Water(int x, int y, int type) {
-		this.x = x;
-		this.y = y;
+	public Water(Point2D spawn, int type) {
+		super(spawn);
 		this.type = type;
 	}
 
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[] imgs) {
+	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[] imgs) {
 		if (type == 48)
-			g.drawImage(imgs[aniIndex], x - lvlOffsetX, y - lvlOffsetY, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
+			g.drawImage(imgs[aniIndex], x - lvlOffsetX, y - lvlOffsetY, AppStage.GetTileSize(), AppStage.GetTileSize());
 		else if (type == 49)
-			g.drawImage(imgs[4], x - lvlOffsetX, y - lvlOffsetY, GameCts.TILES_SIZE, GameCts.TILES_SIZE);
+			g.drawImage(imgs[4], x - lvlOffsetX, y - lvlOffsetY, AppStage.GetTileSize(), AppStage.GetTileSize());
 	}
 
 	public void update() {

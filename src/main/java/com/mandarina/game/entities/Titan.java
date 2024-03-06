@@ -7,15 +7,18 @@ import static com.mandarina.utilz.HelpMethods.IsFloor;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public class Titan extends Enemy {
 
-	public Titan(float x, float y) {
-		super(x, y, TitanCts.SPRITE_WIDTH, TitanCts.SPRITE_HEIGHT, EntityCts.TITAN);
+	public Titan(Point2D spawn) {
+		super(spawn, EntityCts.TITAN);
+		initSize(TitanCts.SPRITE_WIDTH_DEFAULT, TitanCts.SPRITE_HEIGHT_DEFAULT);
 		initHitbox(TitanCts.HITBOX_WIDTH, TitanCts.HITBOX_WIDTH);
 		initAttackBox(TitanCts.ATTACK_HITBOX_WIDTH, TitanCts.ATTACK_HITBOX_HEIGHT, TitanCts.ATTACK_HITBOX_OFFSET_X);
 	}
@@ -63,7 +66,7 @@ public class Titan extends Enemy {
 				break;
 			case HIT:
 				if (aniIndex <= getSpriteAmount(state) - 2)
-					pushBack(pushBackDir, levelData, 0.5f);
+					pushBack(pushBackDir, levelData, 0.5);
 				updatePushBackDrawOffset();
 				break;
 			}
@@ -71,9 +74,10 @@ public class Titan extends Enemy {
 	}
 
 	@Override
-	public void draw(GameDrawer g, int lvlOffsetX, int lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), TitanCts.SPRITE_WIDTH, TitanCts.SPRITE_HEIGHT,
-				TitanCts.DRAW_OFFSET_X, TitanCts.DRAW_OFFSET_Y);
+	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(TitanCts.SPRITE_WIDTH_DEFAULT),
+				AppStage.Scale(TitanCts.SPRITE_HEIGHT_DEFAULT), AppStage.Scale(TitanCts.DRAW_OFFSET_X_DEFAULT),
+				AppStage.Scale(TitanCts.DRAW_OFFSET_Y_DEFAULT));
 	}
 
 	@Override
@@ -102,7 +106,7 @@ public class Titan extends Enemy {
 
 	private void attackMove(Playing playing) {
 		var levelData = playing.getLevelData();
-		float xSpeed = 0;
+		double xSpeed = 0;
 
 		if (walkDir == DirectionCts.LEFT)
 			xSpeed = -walkSpeed;
@@ -141,5 +145,12 @@ public class Titan extends Enemy {
 	public static Image[][] load() {
 		return LoadSave.GetAnimations(TitanCts.ATLAS_SIZE_X, TitanCts.ATLAS_SIZE_Y, TitanCts.SPRITE_WIDTH_DEFAULT,
 				TitanCts.SPRITE_HEIGHT_DEFAULT, LoadSave.GetAtlas(TitanCts.ATLAS_IMAGE));
+	}
+
+	public void scale() {
+		super.scale();
+		initSize(TitanCts.SPRITE_WIDTH_DEFAULT, TitanCts.SPRITE_HEIGHT_DEFAULT);
+		initHitbox(TitanCts.HITBOX_WIDTH, TitanCts.HITBOX_WIDTH);
+		initAttackBox(TitanCts.ATTACK_HITBOX_WIDTH, TitanCts.ATTACK_HITBOX_HEIGHT, TitanCts.ATTACK_HITBOX_OFFSET_X);
 	}
 }

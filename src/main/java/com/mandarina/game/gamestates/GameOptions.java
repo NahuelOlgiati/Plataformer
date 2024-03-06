@@ -1,11 +1,11 @@
 package com.mandarina.game.gamestates;
 
-import com.mandarina.game.main.GameCts;
+import com.mandarina.game.main.Game;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.game.ui.AudioOptions;
 import com.mandarina.game.ui.PauseButton;
 import com.mandarina.game.ui.URMButtonCts;
 import com.mandarina.game.ui.UrmButton;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -13,56 +13,57 @@ import javafx.scene.input.MouseEvent;
 
 public class GameOptions {
 
-	private AudioOptions audioOptions;
 	private Image backgroundImg, optionsBackgroundImg;
-	private int bgX, bgY, bgW, bgH;
+	private double bgX, bgY, bgW, bgH;
 	private UrmButton menuB;
 
-	public GameOptions(AudioOptions audioOptions) {
+	private Game game;
+
+	public GameOptions(Game game) {
+		this.game = game;
+		backgroundImg = LoadSave.GetSprite(LoadSave.MENU_BACKGROUND_IMG);
+		optionsBackgroundImg = LoadSave.GetSprite(LoadSave.OPTIONS_MENU);
 		loadImgs();
 		loadButton();
-		this.audioOptions = audioOptions;
 	}
 
 	private void loadButton() {
-		int menuX = (int) (387 * GameCts.SCALE);
-		int menuY = (int) (325 * GameCts.SCALE);
+		int menuX = AppStage.Scale(387);
+		int menuY = AppStage.Scale(325);
 
-		menuB = new UrmButton(menuX, menuY, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 2);
+		menuB = new UrmButton(menuX, menuY, AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT),
+				AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT), 2);
 	}
 
 	private void loadImgs() {
-		backgroundImg = LoadSave.GetSprite(LoadSave.MENU_BACKGROUND_IMG);
-		optionsBackgroundImg = LoadSave.GetSprite(LoadSave.OPTIONS_MENU);
-
-		bgW = (int) (optionsBackgroundImg.getWidth() * GameCts.SCALE);
-		bgH = (int) (optionsBackgroundImg.getHeight() * GameCts.SCALE);
-		bgX = GameCts.GAME_WIDTH / 2 - bgW / 2;
-		bgY = (int) (33 * GameCts.SCALE);
+		bgW = AppStage.Scale(optionsBackgroundImg.getWidth());
+		bgH = AppStage.Scale(optionsBackgroundImg.getHeight());
+		bgX = AppStage.GetGameWidth() / 2 - bgW / 2;
+		bgY = AppStage.Scale(33);
 	}
 
 	public void update() {
 		menuB.update();
-		audioOptions.update();
+		this.game.getAudioOptions().update();
 	}
 
 	public void draw(GameDrawer g) {
-		g.drawImage(backgroundImg, 0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
+		g.drawImage(backgroundImg, 0, 0, AppStage.GetGameWidth(), AppStage.GetGameHeight());
 		g.drawImage(optionsBackgroundImg, bgX, bgY, bgW, bgH);
 
 		menuB.draw(g);
-		audioOptions.draw(g);
+		this.game.getAudioOptions().draw(g);
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		audioOptions.mouseDragged(e);
+		this.game.getAudioOptions().mouseDragged(e);
 	}
 
 	public void mousePressed(MouseEvent e) {
 		if (isIn(e, menuB)) {
 			menuB.setMousePressed(true);
 		} else
-			audioOptions.mousePressed(e);
+			this.game.getAudioOptions().mousePressed(e);
 	}
 
 	public void mouseReleased(MouseEvent e) {
@@ -70,7 +71,7 @@ public class GameOptions {
 			if (menuB.isMousePressed())
 				GameState.setState(GameState.MENU);
 		} else
-			audioOptions.mouseReleased(e);
+			this.game.getAudioOptions().mouseReleased(e);
 		menuB.resetBools();
 	}
 
@@ -80,11 +81,16 @@ public class GameOptions {
 		if (isIn(e, menuB))
 			menuB.setMouseOver(true);
 		else
-			audioOptions.mouseMoved(e);
+			this.game.getAudioOptions().mouseMoved(e);
 	}
 
 	private boolean isIn(MouseEvent e, PauseButton b) {
 		return b.getBounds().contains(e.getX(), e.getY());
+	}
+
+	public void scale() {
+		loadButton();
+		loadImgs();
 	}
 
 }

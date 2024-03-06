@@ -1,9 +1,11 @@
 package com.mandarina.game.ui;
 
-import com.mandarina.utilz.LoadSave;
 import com.mandarina.game.entities.Player;
-import com.mandarina.game.main.GameCts;
+import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
+import com.mandarina.utilz.LoadSave;
+
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
@@ -11,33 +13,51 @@ public class StatusBar {
 
 	private Image statusBarImg;
 
-	private int statusBarWidth = (int) (192 * GameCts.SCALE);
-	private int statusBarHeight = (int) (58 * GameCts.SCALE);
-	private int statusBarX = (int) (10 * GameCts.SCALE);
-	private int statusBarY = (int) (10 * GameCts.SCALE);
+	private int statusBarWidth;
+	private int statusBarHeight;
+	private int statusBarX;
+	private int statusBarY;
 
-	private int healthBarWidth = (int) (150 * GameCts.SCALE);
-	private int healthBarHeight = (int) (4 * GameCts.SCALE);
-	private int healthBarXStart = (int) (34 * GameCts.SCALE);
-	private int healthBarYStart = (int) (14 * GameCts.SCALE);
-	private int healthWidth = healthBarWidth;
+	private int healthBarWidth;
+	private int healthBarHeight;
+	private int healthBarXStart;
+	private int healthBarYStart;
+	private int healthWidth;
 
-	private int powerBarWidth = (int) (104 * GameCts.SCALE);
-	private int powerBarHeight = (int) (2 * GameCts.SCALE);
-	private int powerBarXStart = (int) (44 * GameCts.SCALE);
-	private int powerBarYStart = (int) (34 * GameCts.SCALE);
-	private int powerWidth = powerBarWidth;
+	private int powerBarWidth;
+	private int powerBarHeight;
+	private int powerBarXStart;
+	private int powerBarYStart;
+	private int powerWidth;
 
 	private int powerMaxValue = 200;
 	private int powerValue = powerMaxValue;
 	private int powerGrowSpeed = 15;
 	private int powerGrowTick;
 
-	private Player player;
+	private Playing playing;
 
-	public StatusBar(Player player) {
-		this.player = player;
-		loadAnimations();
+	public StatusBar(Playing playing) {
+		this.playing = playing;
+		this.statusBarImg = LoadSave.GetSprite(LoadSave.STATUS_BAR);
+
+		this.statusBarWidth = AppStage.Scale(192);
+		this.statusBarHeight = AppStage.Scale(58);
+		this.statusBarX = AppStage.Scale(10);
+		this.statusBarY = AppStage.Scale(10);
+
+		this.healthBarWidth = AppStage.Scale(150);
+		this.healthBarHeight = AppStage.Scale(4);
+		this.healthBarXStart = AppStage.Scale(34);
+		this.healthBarYStart = AppStage.Scale(14);
+
+		this.powerBarWidth = AppStage.Scale(104);
+		this.powerBarHeight = AppStage.Scale(2);
+		this.powerBarXStart = AppStage.Scale(44);
+		this.powerBarYStart = AppStage.Scale(34);
+
+		this.healthWidth = healthBarWidth;
+		this.powerWidth = powerBarWidth;
 	}
 
 	public void update() {
@@ -46,11 +66,12 @@ public class StatusBar {
 	}
 
 	public void updateHealthBar() {
+		Player player = playing.getPlayer();
 		healthWidth = (int) ((player.getCurrentHealth() / player.getMaxHealth()) * healthBarWidth);
 	}
 
 	public void updatePowerBar() {
-		powerWidth = (int) ((powerValue / (float) powerMaxValue) * powerBarWidth);
+		powerWidth = (int) ((powerValue / (double) powerMaxValue) * powerBarWidth);
 
 		powerGrowTick++;
 		if (powerGrowTick >= powerGrowSpeed) {
@@ -72,10 +93,6 @@ public class StatusBar {
 		g.fillRect(powerBarXStart + statusBarX, powerBarYStart + statusBarY, powerWidth, powerBarHeight);
 	}
 
-	public void loadAnimations() {
-		statusBarImg = LoadSave.GetSprite(LoadSave.STATUS_BAR);
-	}
-
 	public void changePower(int value) {
 		powerValue += value;
 		powerValue = Math.max(Math.min(powerValue, powerMaxValue), 0);
@@ -87,5 +104,22 @@ public class StatusBar {
 
 	public int getPowerValue() {
 		return powerValue;
+	}
+
+	public void scale() {
+		this.statusBarWidth = AppStage.Scale(192);
+		this.statusBarHeight = AppStage.Scale(58);
+		this.statusBarX = AppStage.Scale(10);
+		this.statusBarY = AppStage.Scale(10);
+
+		this.healthBarWidth = AppStage.Scale(150);
+		this.healthBarHeight = AppStage.Scale(4);
+		this.healthBarXStart = AppStage.Scale(34);
+		this.healthBarYStart = AppStage.Scale(14);
+
+		this.powerBarWidth = AppStage.Scale(104);
+		this.powerBarHeight = AppStage.Scale(2);
+		this.powerBarXStart = AppStage.Scale(44);
+		this.powerBarYStart = AppStage.Scale(34);
 	}
 }

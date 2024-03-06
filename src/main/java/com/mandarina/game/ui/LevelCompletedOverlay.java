@@ -2,8 +2,8 @@ package com.mandarina.game.ui;
 
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.gamestates.Playing;
-import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -15,33 +15,35 @@ public class LevelCompletedOverlay {
 	private Playing playing;
 	private UrmButton menu, next;
 	private Image img;
-	private int bgX, bgY, bgW, bgH;
+	private double bgX, bgY, bgW, bgH;
 
 	public LevelCompletedOverlay(Playing playing) {
 		this.playing = playing;
+		img = LoadSave.GetSprite(LoadSave.COMPLETED_IMG);
 		initImg();
 		initButtons();
 	}
 
 	private void initButtons() {
-		int menuX = (int) (330 * GameCts.SCALE);
-		int nextX = (int) (445 * GameCts.SCALE);
-		int y = (int) (195 * GameCts.SCALE);
-		next = new UrmButton(nextX, y, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 0);
-		menu = new UrmButton(menuX, y, URMButtonCts.URM_SIZE, URMButtonCts.URM_SIZE, 2);
+		int menuX = AppStage.Scale(330);
+		int nextX = AppStage.Scale(445);
+		int y = AppStage.Scale(195);
+		next = new UrmButton(nextX, y, AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT),
+				AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT), 0);
+		menu = new UrmButton(menuX, y, AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT),
+				AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT), 2);
 	}
 
 	private void initImg() {
-		img = LoadSave.GetSprite(LoadSave.COMPLETED_IMG);
-		bgW = (int) (img.getWidth() * GameCts.SCALE);
-		bgH = (int) (img.getHeight() * GameCts.SCALE);
-		bgX = GameCts.GAME_WIDTH / 2 - bgW / 2;
-		bgY = (int) (75 * GameCts.SCALE);
+		bgW = AppStage.Scale(img.getWidth());
+		bgH = AppStage.Scale(img.getHeight());
+		bgX = AppStage.GetGameWidth() / 2 - bgW / 2;
+		bgY = AppStage.Scale(75);
 	}
 
 	public void draw(GameDrawer g) {
 		g.setFill(new Color(0, 0, 0, 0.5));
-		g.fillRect(0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
+		g.fillRect(0, 0, AppStage.GetGameWidth(), AppStage.GetGameHeight());
 
 		g.drawImage(img, bgX, bgY, bgW, bgH);
 		next.draw(g);
@@ -88,6 +90,11 @@ public class LevelCompletedOverlay {
 			menu.setMousePressed(true);
 		else if (isIn(next, e))
 			next.setMousePressed(true);
+	}
+
+	public void scale() {
+		initImg();
+		initButtons();
 	}
 
 }

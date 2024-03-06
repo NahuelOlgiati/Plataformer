@@ -85,9 +85,9 @@ public abstract class LayerManager<T> {
 
 	public abstract Class<T> getClazz();
 
-	protected abstract void draw(T t, GameDrawer g, int lvlOffsetX, int lvlOffsetY);
+	protected abstract void draw(T t, GameDrawer g, double lvlOffsetX, double lvlOffsetY);
 
-	private void drawLayer(int num, GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	private void drawLayer(int num, GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		T[] l = getL(num);
 		if (l != null) {
 			for (T t : l) {
@@ -96,19 +96,19 @@ public abstract class LayerManager<T> {
 		}
 	}
 
-	public void drawL1(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL1(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		drawLayer(1, g, lvlOffsetX, lvlOffsetY);
 	}
 
-	public void drawL2(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL2(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		drawLayer(2, g, lvlOffsetX, lvlOffsetY);
 	}
 
-	public void drawL3(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL3(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		drawLayer(3, g, lvlOffsetX, lvlOffsetY);
 	}
 
-	public void drawL4(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL4(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		drawLayer(4, g, lvlOffsetX, lvlOffsetY);
 	}
 

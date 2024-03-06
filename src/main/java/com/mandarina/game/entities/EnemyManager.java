@@ -27,22 +27,22 @@ public class EnemyManager implements LayerDrawer {
 	}
 
 	@Override
-	public void drawL1(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL1(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		currentLevel.getLevelEntities().drawL1(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	@Override
-	public void drawL2(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL2(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		currentLevel.getLevelEntities().drawL2(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	@Override
-	public void drawL3(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL3(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		currentLevel.getLevelEntities().drawL3(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	@Override
-	public void drawL4(GameDrawer g, int lvlOffsetX, int lvlOffsetY) {
+	public void drawL4(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
 		currentLevel.getLevelEntities().drawL4(g, lvlOffsetX, lvlOffsetY);
 	}
 
@@ -61,4 +61,7 @@ public class EnemyManager implements LayerDrawer {
 			e.resetEnemy();
 	}
 
+	public void scale() {
+		currentLevel.getLevelEntities().scale();
+	}
 }

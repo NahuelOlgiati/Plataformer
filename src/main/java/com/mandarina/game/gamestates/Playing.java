@@ -7,15 +7,12 @@ import com.mandarina.game.leveldata.LevelManager;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.Game;
-import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.ObjectManager;
-import com.mandarina.game.ui.GameCompletedOverlay;
-import com.mandarina.game.ui.GameOverOverlay;
-import com.mandarina.game.ui.LevelCompletedOverlay;
-import com.mandarina.game.ui.PauseOverlay;
 import com.mandarina.game.ui.StatusBar;
+import com.mandarina.game.ui.UIManager;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
+import com.mandarina.main.AppStage;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyEvent;
@@ -31,22 +28,17 @@ public class Playing {
 	private LevelManager levelManager;
 	private EnemyManager enemyManager;
 	private ObjectManager objectManager;
-	private PauseOverlay pauseOverlay;
-	private GameOverOverlay gameOverOverlay;
-	private GameCompletedOverlay gameCompletedOverlay;
-	private LevelCompletedOverlay levelCompletedOverlay;
+	private UIManager uiManager;
 	private StatusBar statusBar;
 	private Level currentLevel;
 
-	private int lvlOffsetX;
-	private int maxLvlOffsetX;
-	private int leftBorder = (int) (0.25 * GameCts.GAME_WIDTH);
-	private int rightBorder = (int) (0.75 * GameCts.GAME_WIDTH);
+	private double lvlOffsetX;
+	private double lvlOffsetY;
 
-	private int lvlOffsetY;
-	private int maxLvlOffsetY;
-	private int bottomBorder = (int) (0.25 * GameCts.GAME_HEIGHT);
-	private int topBorder = (int) (0.75 * GameCts.GAME_HEIGHT);
+	private double leftBorder;
+	private double rightBorder;
+	private double bottomBorder;
+	private double topBorder;
 
 	private boolean paused = false;
 	private boolean gameOver;
@@ -56,6 +48,10 @@ public class Playing {
 
 	public Playing(Game game) {
 		this.game = game;
+		this.leftBorder = 0.25 * AppStage.GetGameWidth();
+		this.rightBorder = 0.75 * AppStage.GetGameWidth();
+		this.bottomBorder = 0.25 * AppStage.GetGameHeight();
+		this.topBorder = 0.75 * AppStage.GetGameHeight();
 		initClasses();
 	}
 
@@ -72,7 +68,8 @@ public class Playing {
 	}
 
 	private void loadLevel(Level level) {
-		player.setSpawn(level.getLevelEntities().getPlayerSpawn());
+		player = level.getLevelEntities().getPlayer();
+		player.setPlaying(this);
 		this.currentLevel = level;
 		resetAll();
 	}
@@ -81,26 +78,19 @@ public class Playing {
 		levelManager = new LevelManager(this);
 		enemyManager = new EnemyManager(this);
 		objectManager = new ObjectManager(this);
-
-		player = new Player(200, 200, this, game.getAudioPlayer());
-
-		pauseOverlay = new PauseOverlay(this, game.getAudioOptions());
-		gameOverOverlay = new GameOverOverlay(this);
-		levelCompletedOverlay = new LevelCompletedOverlay(this);
-		gameCompletedOverlay = new GameCompletedOverlay(this);
-
-		statusBar = new StatusBar(player);
+		uiManager = new UIManager(this);
+		statusBar = new StatusBar(this);
 	}
 
 	public void update() {
 		if (paused)
-			pauseOverlay.update();
+			uiManager.getPauseOverlay().update();
 		else if (lvlCompleted)
-			levelCompletedOverlay.update();
+			uiManager.getLevelCompletedOverlay().update();
 		else if (gameCompleted)
-			gameCompletedOverlay.update();
+			uiManager.getGameCompletedOverlay().update();
 		else if (gameOver)
-			gameOverOverlay.update();
+			uiManager.getGameOverOverlay().update();
 		else if (playerDying)
 			player.update();
 		else {
@@ -115,27 +105,27 @@ public class Playing {
 	}
 
 	private void checkCloseToBorderX() {
-		int playerX = (int) player.getHitbox().getMinX();
-		int diff = playerX - lvlOffsetX;
+		double playerX = player.getHitbox().getMinX();
+		double diff = playerX - lvlOffsetX;
 
 		if (diff > rightBorder)
 			lvlOffsetX += diff - rightBorder;
 		else if (diff < leftBorder)
 			lvlOffsetX += diff - leftBorder;
 
-		lvlOffsetX = Math.max(Math.min(lvlOffsetX, maxLvlOffsetX), 0);
+		lvlOffsetX = Math.max(Math.min(lvlOffsetX, currentLevel.getMaxLvlOffsetX()), 0);
 	}
 
 	private void checkCloseToBorderY() {
-		int playerY = (int) player.getHitbox().getMinY();
-		int diff = playerY - lvlOffsetY;
+		double playerY = player.getHitbox().getMinY();
+		double diff = playerY - lvlOffsetY;
 
 		if (diff > topBorder)
 			lvlOffsetY += diff - topBorder;
 		else if (diff < bottomBorder)
 			lvlOffsetY += diff - bottomBorder;
 
-		lvlOffsetY = Math.max(Math.min(lvlOffsetY, maxLvlOffsetY), 0);
+		lvlOffsetY = Math.max(Math.min(lvlOffsetY, currentLevel.getMaxLvlOffsetY()), 0);
 	}
 
 	public void draw(GameDrawer g) {
@@ -161,14 +151,14 @@ public class Playing {
 
 		if (paused) {
 			g.setFill(new Color(0, 0, 0, 0.6));
-			g.fillRect(0, 0, GameCts.GAME_WIDTH, GameCts.GAME_HEIGHT);
-			pauseOverlay.draw(g);
+			g.fillRect(0, 0, AppStage.GetGameWidth(), AppStage.GetGameHeight());
+			uiManager.getPauseOverlay().draw(g);
 		} else if (gameOver)
-			gameOverOverlay.draw(g);
+			uiManager.getGameOverOverlay().draw(g);
 		else if (lvlCompleted)
-			levelCompletedOverlay.draw(g);
+			uiManager.getLevelCompletedOverlay().draw(g);
 		else if (gameCompleted)
-			gameCompletedOverlay.draw(g);
+			uiManager.getGameCompletedOverlay().draw(g);
 	}
 
 	public void setGameCompleted() {
@@ -261,41 +251,41 @@ public class Playing {
 	public void mouseDragged(MouseEvent e) {
 		if (!gameOver && !gameCompleted && !lvlCompleted)
 			if (paused)
-				pauseOverlay.mouseDragged(e);
+				uiManager.getPauseOverlay().mouseDragged(e);
 	}
 
 	public void mousePressed(MouseEvent e) {
 		if (gameOver)
-			gameOverOverlay.mousePressed(e);
+			uiManager.getGameOverOverlay().mousePressed(e);
 		else if (paused)
-			pauseOverlay.mousePressed(e);
+			uiManager.getPauseOverlay().mousePressed(e);
 		else if (lvlCompleted)
-			levelCompletedOverlay.mousePressed(e);
+			uiManager.getLevelCompletedOverlay().mousePressed(e);
 		else if (gameCompleted)
-			gameCompletedOverlay.mousePressed(e);
+			uiManager.getGameCompletedOverlay().mousePressed(e);
 
 	}
 
 	public void mouseReleased(MouseEvent e) {
 		if (gameOver)
-			gameOverOverlay.mouseReleased(e);
+			uiManager.getGameOverOverlay().mouseReleased(e);
 		else if (paused)
-			pauseOverlay.mouseReleased(e);
+			uiManager.getPauseOverlay().mouseReleased(e);
 		else if (lvlCompleted)
-			levelCompletedOverlay.mouseReleased(e);
+			uiManager.getLevelCompletedOverlay().mouseReleased(e);
 		else if (gameCompleted)
-			gameCompletedOverlay.mouseReleased(e);
+			uiManager.getGameCompletedOverlay().mouseReleased(e);
 	}
 
 	public void mouseMoved(MouseEvent e) {
 		if (gameOver)
-			gameOverOverlay.mouseMoved(e);
+			uiManager.getGameOverOverlay().mouseMoved(e);
 		else if (paused)
-			pauseOverlay.mouseMoved(e);
+			uiManager.getPauseOverlay().mouseMoved(e);
 		else if (lvlCompleted)
-			levelCompletedOverlay.mouseMoved(e);
+			uiManager.getLevelCompletedOverlay().mouseMoved(e);
 		else if (gameCompleted)
-			gameCompletedOverlay.mouseMoved(e);
+			uiManager.getGameCompletedOverlay().mouseMoved(e);
 	}
 
 	public void setLevelCompleted(boolean levelCompleted) {
@@ -309,16 +299,12 @@ public class Playing {
 		this.lvlCompleted = levelCompleted;
 	}
 
+	public Game getGame() {
+		return game;
+	}
+
 	public void setLevelSong() {
 		this.game.getAudioPlayer().setLevelSong(this.getLevelManager().getLevelIndex());
-	}
-
-	public void setMaxLvlOffsetX(int lvlOffsetX) {
-		this.maxLvlOffsetX = lvlOffsetX;
-	}
-
-	public void setMaxLvlOffsetY(int lvlOffsetY) {
-		this.maxLvlOffsetY = lvlOffsetY;
 	}
 
 	public void unpauseGame() {
@@ -361,11 +347,25 @@ public class Playing {
 		return currentLevel.getLevelData();
 	}
 
-	public int getLvlOffsetX() {
+	public double getLvlOffsetX() {
 		return lvlOffsetX;
 	}
 
-	public int getLvlOffsetY() {
+	public double getLvlOffsetY() {
 		return lvlOffsetY;
+	}
+
+	public void scale() {
+		this.leftBorder = 0.25 * AppStage.GetGameWidth();
+		this.rightBorder = 0.75 * AppStage.GetGameWidth();
+		this.bottomBorder = 0.25 * AppStage.GetGameHeight();
+		this.topBorder = 0.75 * AppStage.GetGameHeight();
+		this.currentLevel.scale();
+		this.levelManager.scale();
+		this.objectManager.scale();
+		this.enemyManager.scale();
+		this.uiManager.scale();
+		this.player.scale();
+		this.statusBar.scale();
 	}
 }

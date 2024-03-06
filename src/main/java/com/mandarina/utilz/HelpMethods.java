@@ -1,8 +1,8 @@
 package com.mandarina.utilz;
 
 import com.mandarina.game.levels.LevelData;
-import com.mandarina.game.main.GameCts;
 import com.mandarina.game.objects.Projectile;
+import com.mandarina.main.AppStage;
 
 import javafx.geometry.Rectangle2D;
 
@@ -18,18 +18,33 @@ public class HelpMethods {
 	}
 
 	private static boolean IsSolid(double x, double y, LevelData levelData) {
-		int maxHeight = levelData.getHeight() * GameCts.TILES_SIZE;
+		double maxHeight = levelData.getLevel().getHeight() * AppStage.GetTileSize();
 		if (y < 0 || y >= maxHeight)
 			return true;
 
-		int maxWidth = levelData.getWidth() * GameCts.TILES_SIZE;
+		double maxWidth = levelData.getLevel().getWidth() * AppStage.GetTileSize();
 		if (x < 0 || x >= maxWidth)
 			return true;
 
-		double xIndex = x / GameCts.TILES_SIZE;
-		double yIndex = y / GameCts.TILES_SIZE;
+		int xIndex = AppStage.GetTilesIn(x);
+		int yIndex = AppStage.GetTilesIn(y);
 
-		return IsTileSolid((int) xIndex, (int) yIndex, levelData);
+		return IsTileSolid(xIndex, yIndex, levelData);
+	}
+
+	private static boolean IsSolid(double x, double y, int xTiles, int yTiles, LevelData levelData) {
+		double maxHeight = levelData.getLevel().getHeight() * AppStage.GetTileSize();
+		if (y < 0 || y >= maxHeight)
+			return true;
+
+		double maxWidth = levelData.getLevel().getWidth() * AppStage.GetTileSize();
+		if (x < 0 || x >= maxWidth)
+			return true;
+
+		int xIndex = AppStage.GetTilesIn(x) + xTiles;
+		int yIndex = AppStage.GetTilesIn(y) + yTiles;
+
+		return IsTileSolid(xIndex, yIndex, levelData);
 	}
 
 	public static boolean IsProjectileHittingLevel(Projectile p, LevelData levelData) {
@@ -43,8 +58,8 @@ public class HelpMethods {
 	}
 
 	private static boolean IsEntityInWater(double xPos, double yPos, LevelData levelData) {
-		int xCord = (int) (xPos / GameCts.TILES_SIZE);
-		int yCord = (int) (yPos / GameCts.TILES_SIZE);
+		int xCord = AppStage.GetTilesIn(xPos);
+		int yCord = AppStage.GetTilesIn(yPos);
 		return levelData.getIsWater()[yCord][xCord];
 	}
 
@@ -52,52 +67,52 @@ public class HelpMethods {
 		return levelData.getIsSolid()[yTile][xTile];
 	}
 
-	public static float GetEntityXPosNextToWall(Rectangle2D hitbox, float xSpeed) {
-		int currentTile = (int) (hitbox.getMinX() / GameCts.TILES_SIZE);
+	public static double GetEntityXPosNextToWall(Rectangle2D hitbox, double xSpeed) {
+		int currentTile = AppStage.GetTilesIn(hitbox.getMinX());
 		if (xSpeed > 0) {
 			// Right
-			int tileXPos = currentTile * GameCts.TILES_SIZE;
-			int xOffset = (int) (GameCts.TILES_SIZE - hitbox.getWidth());
+			double tileXPos = currentTile * AppStage.GetTileSize();
+			double xOffset = AppStage.GetTileSize() - hitbox.getWidth();
 			return tileXPos + xOffset - 1;
 		} else {
 			// Left
-			return currentTile * GameCts.TILES_SIZE;
+			return currentTile * AppStage.GetTileSize();
 		}
 	}
 
-	public static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D hitbox, float airSpeed) {
-		int currentTile = (int) (hitbox.getMinY() / GameCts.TILES_SIZE);
+	public static double GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D hitbox, double airSpeed) {
+		int currentTile = AppStage.GetTilesIn(hitbox.getMinY());
 		if (airSpeed > 0) {
 			// Falling - touching floor
-			int tileYPos = currentTile * GameCts.TILES_SIZE;
-			int yOffset = (int) (GameCts.TILES_SIZE - hitbox.getHeight());
+			double tileYPos = currentTile * AppStage.GetTileSize();
+			double yOffset = AppStage.GetTileSize() - hitbox.getHeight();
 			return tileYPos + yOffset - 1;
 		} else {
 			// Jumping
-			return currentTile * GameCts.TILES_SIZE;
+			return currentTile * AppStage.GetTileSize();
 		}
 	}
 
 	public static boolean IsEntityOnFloor(Rectangle2D hitbox, LevelData levelData) {
-		if (IsSolid(hitbox.getMinX(), hitbox.getMinY() + hitbox.getHeight() + 1, levelData) || IsSolid(
-				hitbox.getMinX() + hitbox.getWidth(), hitbox.getMinY() + hitbox.getHeight() + 1, levelData)) {
+		if (IsSolid(hitbox.getMinX(), hitbox.getMinY() + hitbox.getHeight(), 0, 1, levelData) || IsSolid(
+				hitbox.getMinX() + hitbox.getWidth(), hitbox.getMinY() + hitbox.getHeight(), 0, 1, levelData)) {
 			return true;
 		}
 		return false;
 	}
 
-	public static boolean IsFloor(Rectangle2D hitbox, float xSpeed, LevelData levelData) {
+	public static boolean IsFloor(Rectangle2D hitbox, double xSpeed, LevelData levelData) {
 		if (xSpeed > 0) {
-			return IsSolid(hitbox.getMinX() + hitbox.getWidth() + xSpeed, hitbox.getMinY() + hitbox.getHeight() + 1,
+			return IsSolid(hitbox.getMinX() + hitbox.getWidth() + xSpeed, hitbox.getMinY() + hitbox.getHeight(), 0, 1,
 					levelData);
 		} else {
-			return IsSolid(hitbox.getMinX() + xSpeed, hitbox.getMinY() + hitbox.getHeight() + 1, levelData);
+			return IsSolid(hitbox.getMinX() + xSpeed, hitbox.getMinY() + hitbox.getHeight(), 0, 1, levelData);
 		}
 	}
 
 	public static boolean IsFloor(Rectangle2D hitbox, LevelData levelData) {
-		if (!IsSolid(hitbox.getMinX() + hitbox.getWidth(), hitbox.getMinY() + hitbox.getHeight() + 1, levelData)
-				|| !IsSolid(hitbox.getMinX(), hitbox.getMinY() + hitbox.getHeight() + 1, levelData)) {
+		if (!IsSolid(hitbox.getMinX() + hitbox.getWidth(), hitbox.getMinY() + hitbox.getHeight(), 0, 1, levelData)
+				|| !IsSolid(hitbox.getMinX(), hitbox.getMinY() + hitbox.getHeight(), 0, 1, levelData)) {
 			return false;
 		}
 		return true;
@@ -105,8 +120,8 @@ public class HelpMethods {
 
 	public static boolean CanCannonSeePlayer(LevelData levelData, Rectangle2D firstHitbox, Rectangle2D secondHitbox,
 			int yTile) {
-		int firstXTile = (int) (firstHitbox.getMinX() / GameCts.TILES_SIZE);
-		int secondXTile = (int) (secondHitbox.getMinX() / GameCts.TILES_SIZE);
+		int firstXTile = AppStage.GetTilesIn(firstHitbox.getMinX());
+		int secondXTile = AppStage.GetTilesIn(secondHitbox.getMinX());
 
 		if (firstXTile > secondXTile) {
 			return IsAllTilesClear(secondXTile, firstXTile, yTile, levelData);
@@ -132,13 +147,13 @@ public class HelpMethods {
 	}
 
 	public static boolean IsSightClear(LevelData levelData, Rectangle2D enemyBox, Rectangle2D playerBox, int yTile) {
-		int firstXTile = (int) (enemyBox.getMinX() / GameCts.TILES_SIZE);
+		int firstXTile = AppStage.GetTilesIn(enemyBox.getMinX());
 
 		int secondXTile;
 		if (IsSolid(playerBox.getMinX(), playerBox.getMinY() + playerBox.getHeight() + 1, levelData))
-			secondXTile = (int) (playerBox.getMinX() / GameCts.TILES_SIZE);
+			secondXTile = AppStage.GetTilesIn(playerBox.getMinX());
 		else
-			secondXTile = (int) ((playerBox.getMinX() + playerBox.getWidth()) / GameCts.TILES_SIZE);
+			secondXTile = AppStage.GetTilesIn(playerBox.getMinX() + playerBox.getWidth());
 
 		if (firstXTile > secondXTile) {
 			return IsAllTilesWalkable(secondXTile, firstXTile, yTile, levelData);
