@@ -46,7 +46,7 @@ public class Player extends Entity {
 		this.walkSpeed = AppStage.Scale(1.0);
 		this.jumpSpeed = AppStage.Scale(-2.25);
 		this.fallSpeedAfterCollision = AppStage.Scale(0.5);
-		initSize(PlayerCts.SPRITE_WIDTH_DEFAULT, PlayerCts.SPRITE_HEIGHT_DEFAULT);
+		initSize(PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT);
 		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
 		initAttackBox(PlayerCts.ATTACK_HITBOX_WIDTH, PlayerCts.ATTACK_HITBOX_HEIGHT, PlayerCts.ATTACK_HITBOX_OFFSET_X);
 	}
@@ -175,10 +175,10 @@ public class Player extends Entity {
 	}
 
 	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		int spriteWidth = AppStage.Scale(PlayerCts.SPRITE_WIDTH_DEFAULT);
-		int spriteHeight = AppStage.Scale(PlayerCts.SPRITE_HEIGHT_DEFAULT);
+		int spriteWidth = AppStage.Scale(PlayerCts.SPRITE_WIDTH);
+		int spriteHeight = AppStage.Scale(PlayerCts.SPRITE_HEIGHT);
 		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), spriteWidth, spriteHeight,
-				AppStage.Scale(PlayerCts.DRAW_OFFSET_X_DEFAULT), AppStage.Scale(PlayerCts.DRAW_OFFSET_Y_DEFAULT));
+				AppStage.Scale(PlayerCts.DRAW_OFFSET_X), AppStage.Scale(PlayerCts.DRAW_OFFSET_Y));
 	}
 
 	@Override
@@ -481,8 +481,8 @@ public class Player extends Entity {
 	}
 
 	public static Image[][] load() {
-		return LoadSave.GetAnimations(PlayerCts.ATLAS_SIZE_X, PlayerCts.ATLAS_SIZE_Y, PlayerCts.SPRITE_WIDTH_DEFAULT,
-				PlayerCts.SPRITE_HEIGHT_DEFAULT, LoadSave.GetAtlas(PlayerCts.ATLAS_IMAGE));
+		return LoadSave.GetAnimations(PlayerCts.ATLAS_SIZE_X, PlayerCts.ATLAS_SIZE_Y, PlayerCts.SPRITE_WIDTH,
+				PlayerCts.SPRITE_HEIGHT, LoadSave.GetAtlas(PlayerCts.ATLAS_IMAGE));
 	}
 
 	public void scale() {
@@ -490,7 +490,7 @@ public class Player extends Entity {
 		this.walkSpeed = AppStage.Scale(1.0);
 		this.jumpSpeed = AppStage.Scale(-2.25);
 		this.fallSpeedAfterCollision = AppStage.Scale(0.5);
-		initSize(PlayerCts.SPRITE_WIDTH_DEFAULT, PlayerCts.SPRITE_HEIGHT_DEFAULT);
+		initSize(PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT);
 		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
 		initAttackBox(PlayerCts.ATTACK_HITBOX_WIDTH, PlayerCts.ATTACK_HITBOX_HEIGHT, PlayerCts.ATTACK_HITBOX_OFFSET_X);
 	}

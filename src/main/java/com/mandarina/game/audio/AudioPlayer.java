@@ -113,7 +113,7 @@ public class AudioPlayer {
 		MediaPlayer mp = effects[effect];
 		mp.stop();
 		mp.seek(mp.getStartTime());
-		mp.play();
+//		mp.play();
 	}
 
 	public void playSong(int song) {
@@ -121,7 +121,7 @@ public class AudioPlayer {
 		currentSongId = song;
 		MediaPlayer mp = songs[currentSongId];
 		mp.seek(mp.getStartTime());
-		mp.play();
+//		mp.play();
 	}
 
 	public void toggleSongMute() {

@@ -16,7 +16,7 @@ public class Crabby extends Enemy {
 
 	public Crabby(Point2D spawn) {
 		super(spawn, EntityCts.CRABBY);
-		initSize(CrabbyCts.SPRITE_WIDTH_DEFAULT, CrabbyCts.SPRITE_HEIGHT_DEFAULT);
+		initSize(CrabbyCts.SPRITE_WIDTH, CrabbyCts.SPRITE_HEIGHT);
 		initHitbox(CrabbyCts.HITBOX_WIDTH, CrabbyCts.HITBOX_HEIGHT);
 		initAttackBox(CrabbyCts.ATTACK_HITBOX_WIDTH, CrabbyCts.ATTACK_HITBOX_HEIGHT, CrabbyCts.ATTACK_HITBOX_OFFSET_X);
 	}
@@ -73,9 +73,9 @@ public class Crabby extends Enemy {
 
 	@Override
 	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(CrabbyCts.SPRITE_WIDTH_DEFAULT),
-				AppStage.Scale(CrabbyCts.SPRITE_HEIGHT_DEFAULT), AppStage.Scale(CrabbyCts.DRAW_OFFSET_X_DEFAULT),
-				AppStage.Scale(CrabbyCts.DRAW_OFFSET_Y_DEFAULT));
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(CrabbyCts.SPRITE_WIDTH),
+				AppStage.Scale(CrabbyCts.SPRITE_HEIGHT), AppStage.Scale(CrabbyCts.DRAW_OFFSET_X),
+				AppStage.Scale(CrabbyCts.DRAW_OFFSET_Y));
 	}
 
 	@Override
@@ -116,13 +116,13 @@ public class Crabby extends Enemy {
 	}
 
 	public static Image[][] load() {
-		return LoadSave.GetAnimations(CrabbyCts.ATLAS_SIZE_X, CrabbyCts.ATLAS_SIZE_Y, CrabbyCts.SPRITE_WIDTH_DEFAULT,
-				CrabbyCts.SPRITE_HEIGHT_DEFAULT, LoadSave.GetAtlas(CrabbyCts.ATLAS_IMAGE));
+		return LoadSave.GetAnimations(CrabbyCts.ATLAS_SIZE_X, CrabbyCts.ATLAS_SIZE_Y, CrabbyCts.SPRITE_WIDTH,
+				CrabbyCts.SPRITE_HEIGHT, LoadSave.GetAtlas(CrabbyCts.ATLAS_IMAGE));
 	}
 
 	public void scale() {
 		super.scale();
-		initSize(CrabbyCts.SPRITE_WIDTH_DEFAULT, CrabbyCts.SPRITE_HEIGHT_DEFAULT);
+		initSize(CrabbyCts.SPRITE_WIDTH, CrabbyCts.SPRITE_HEIGHT);
 		initHitbox(CrabbyCts.HITBOX_WIDTH, CrabbyCts.HITBOX_HEIGHT);
 		initAttackBox(CrabbyCts.ATTACK_HITBOX_WIDTH, CrabbyCts.ATTACK_HITBOX_HEIGHT, CrabbyCts.ATTACK_HITBOX_OFFSET_X);
 	}

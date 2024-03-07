@@ -3,7 +3,6 @@ package com.mandarina.game.main;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
@@ -55,9 +54,7 @@ public abstract class GameLoop {
 		repaintTimer = new Timeline(new KeyFrame(KEYFRAME_REPAINT_DURATION, new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-//				Platform.runLater(() -> {
-					repaint();
-//				});
+				repaint();
 				frames++;
 				delta -= DELTA_SET;
 

@@ -18,7 +18,7 @@ public class Shark extends Enemy {
 
 	public Shark(Point2D spawn) {
 		super(spawn, EntityCts.SHARK);
-		initSize(SharkCts.SPRITE_WIDTH_DEFAULT, SharkCts.SPRITE_HEIGHT_DEFAULT);
+		initSize(SharkCts.SPRITE_WIDTH, SharkCts.SPRITE_HEIGHT);
 		initHitbox(SharkCts.HITBOX_WIDTH, SharkCts.HITBOX_HEIGHT);
 		initAttackBox(SharkCts.ATTACK_HITBOX_WIDTH, SharkCts.ATTACK_HITBOX_HEIGHT, SharkCts.ATTACK_HITBOX_OFFSET_X);
 	}
@@ -75,9 +75,9 @@ public class Shark extends Enemy {
 
 	@Override
 	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(SharkCts.SPRITE_WIDTH_DEFAULT),
-				AppStage.Scale(SharkCts.SPRITE_HEIGHT_DEFAULT), AppStage.Scale(SharkCts.DRAW_OFFSET_X_DEFAULT),
-				AppStage.Scale(SharkCts.DRAW_OFFSET_Y_DEFAULT));
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(SharkCts.SPRITE_WIDTH),
+				AppStage.Scale(SharkCts.SPRITE_HEIGHT), AppStage.Scale(SharkCts.DRAW_OFFSET_X),
+				AppStage.Scale(SharkCts.DRAW_OFFSET_Y));
 	}
 
 	@Override
@@ -142,13 +142,13 @@ public class Shark extends Enemy {
 	}
 
 	public static Image[][] load() {
-		return LoadSave.GetAnimations(SharkCts.ATLAS_SIZE_X, SharkCts.ATLAS_SIZE_Y, SharkCts.SPRITE_WIDTH_DEFAULT,
-				SharkCts.SPRITE_HEIGHT_DEFAULT, LoadSave.GetAtlas(SharkCts.ATLAS_IMAGE));
+		return LoadSave.GetAnimations(SharkCts.ATLAS_SIZE_X, SharkCts.ATLAS_SIZE_Y, SharkCts.SPRITE_WIDTH,
+				SharkCts.SPRITE_HEIGHT, LoadSave.GetAtlas(SharkCts.ATLAS_IMAGE));
 	}
 
 	public void scale() {
 		super.scale();
-		initSize(SharkCts.SPRITE_WIDTH_DEFAULT, SharkCts.SPRITE_HEIGHT_DEFAULT);
+		initSize(SharkCts.SPRITE_WIDTH, SharkCts.SPRITE_HEIGHT);
 		initHitbox(SharkCts.HITBOX_WIDTH, SharkCts.HITBOX_HEIGHT);
 		initAttackBox(SharkCts.ATTACK_HITBOX_WIDTH, SharkCts.ATTACK_HITBOX_HEIGHT, SharkCts.ATTACK_HITBOX_OFFSET_X);
 	}

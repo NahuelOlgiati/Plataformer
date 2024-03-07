@@ -4,13 +4,10 @@ public class PlayerCts {
 	public static final int HEALTH = 100;
 	public static final int DAMAGE = 20;
 
-	public static final int SPRITE_WIDTH_DEFAULT = 44;
-
-	public static final int SPRITE_HEIGHT_DEFAULT = 62;
-
-	public static final int DRAW_OFFSET_X_DEFAULT = 10;
-
-	public static final int DRAW_OFFSET_Y_DEFAULT = 35;
+	public static final int SPRITE_WIDTH = 44;
+	public static final int SPRITE_HEIGHT = 62;
+	public static final int DRAW_OFFSET_X = 10;
+	public static final int DRAW_OFFSET_Y = 35;
 
 	public static final int HITBOX_WIDTH = 25;
 	public static final int HITBOX_HEIGHT = 27;

@@ -18,7 +18,7 @@ public class Longleg extends Enemy {
 
 	public Longleg(Point2D spawn) {
 		super(spawn, EntityCts.LONGLEG);
-		initSize(LonglegCts.SPRITE_WIDTH_DEFAULT, LonglegCts.SPRITE_HEIGHT_DEFAULT);
+		initSize(LonglegCts.SPRITE_WIDTH, LonglegCts.SPRITE_HEIGHT);
 		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_WIDTH);
 		initAttackBox(LonglegCts.ATTACK_HITBOX_WIDTH, LonglegCts.ATTACK_HITBOX_HEIGHT,
 				LonglegCts.ATTACK_HITBOX_OFFSET_X);
@@ -76,9 +76,9 @@ public class Longleg extends Enemy {
 
 	@Override
 	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(LonglegCts.SPRITE_WIDTH_DEFAULT),
-				AppStage.Scale(LonglegCts.SPRITE_HEIGHT_DEFAULT), AppStage.Scale(LonglegCts.DRAW_OFFSET_X_DEFAULT),
-				AppStage.Scale(LonglegCts.DRAW_OFFSET_Y_DEFAULT));
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(LonglegCts.SPRITE_WIDTH),
+				AppStage.Scale(LonglegCts.SPRITE_HEIGHT), AppStage.Scale(LonglegCts.DRAW_OFFSET_X),
+				AppStage.Scale(LonglegCts.DRAW_OFFSET_Y));
 	}
 
 	@Override
@@ -144,13 +144,13 @@ public class Longleg extends Enemy {
 	}
 
 	public static Image[][] load() {
-		return LoadSave.GetAnimations(LonglegCts.ATLAS_SIZE_X, LonglegCts.ATLAS_SIZE_Y, LonglegCts.SPRITE_WIDTH_DEFAULT,
-				LonglegCts.SPRITE_HEIGHT_DEFAULT, LoadSave.GetAtlas(LonglegCts.ATLAS_IMAGE));
+		return LoadSave.GetAnimations(LonglegCts.ATLAS_SIZE_X, LonglegCts.ATLAS_SIZE_Y, LonglegCts.SPRITE_WIDTH,
+				LonglegCts.SPRITE_HEIGHT, LoadSave.GetAtlas(LonglegCts.ATLAS_IMAGE));
 	}
 
 	public void scale() {
 		super.scale();
-		initSize(LonglegCts.SPRITE_WIDTH_DEFAULT, LonglegCts.SPRITE_HEIGHT_DEFAULT);
+		initSize(LonglegCts.SPRITE_WIDTH, LonglegCts.SPRITE_HEIGHT);
 		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_WIDTH);
 		initAttackBox(LonglegCts.ATTACK_HITBOX_WIDTH, LonglegCts.ATTACK_HITBOX_HEIGHT,
 				LonglegCts.ATTACK_HITBOX_OFFSET_X);

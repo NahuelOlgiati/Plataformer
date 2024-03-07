@@ -24,7 +24,7 @@ public class Pinkstar extends Enemy {
 
 	public Pinkstar(Point2D spawn) {
 		super(spawn, EntityCts.PINKSTAR);
-		initSize(PinkstarCts.SPRITE_WIDTH_DEFAULT, PinkstarCts.SPRITE_HEIGHT_DEFAULT);
+		initSize(PinkstarCts.SPRITE_WIDTH, PinkstarCts.SPRITE_HEIGHT);
 		initHitbox(PinkstarCts.HITBOX_WIDTH, PinkstarCts.HITBOX_HEIGHT);
 		initAttackBox(PinkstarCts.ATTACK_HITBOX_WIDTH, PinkstarCts.ATTACK_HITBOX_HEIGHT,
 				PinkstarCts.ATTACK_HITBOX_OFFSET_X);
@@ -88,9 +88,9 @@ public class Pinkstar extends Enemy {
 
 	@Override
 	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(PinkstarCts.SPRITE_WIDTH_DEFAULT),
-				AppStage.Scale(PinkstarCts.SPRITE_HEIGHT_DEFAULT), AppStage.Scale(PinkstarCts.DRAW_OFFSET_X_DEFAULT),
-				AppStage.Scale(PinkstarCts.DRAW_OFFSET_Y_DEFAULT));
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(PinkstarCts.SPRITE_WIDTH),
+				AppStage.Scale(PinkstarCts.SPRITE_HEIGHT), AppStage.Scale(PinkstarCts.DRAW_OFFSET_X),
+				AppStage.Scale(PinkstarCts.DRAW_OFFSET_Y));
 	}
 
 	@Override
@@ -199,14 +199,13 @@ public class Pinkstar extends Enemy {
 	}
 
 	public static Image[][] load() {
-		return LoadSave.GetAnimations(PinkstarCts.ATLAS_SIZE_X, PinkstarCts.ATLAS_SIZE_Y,
-				PinkstarCts.SPRITE_WIDTH_DEFAULT, PinkstarCts.SPRITE_HEIGHT_DEFAULT,
-				LoadSave.GetAtlas(PinkstarCts.ATLAS_IMAGE));
+		return LoadSave.GetAnimations(PinkstarCts.ATLAS_SIZE_X, PinkstarCts.ATLAS_SIZE_Y, PinkstarCts.SPRITE_WIDTH,
+				PinkstarCts.SPRITE_HEIGHT, LoadSave.GetAtlas(PinkstarCts.ATLAS_IMAGE));
 	}
 
 	public void scale() {
 		super.scale();
-		initSize(PinkstarCts.SPRITE_WIDTH_DEFAULT, PinkstarCts.SPRITE_HEIGHT_DEFAULT);
+		initSize(PinkstarCts.SPRITE_WIDTH, PinkstarCts.SPRITE_HEIGHT);
 		initHitbox(PinkstarCts.HITBOX_WIDTH, PinkstarCts.HITBOX_HEIGHT);
 		initAttackBox(PinkstarCts.ATTACK_HITBOX_WIDTH, PinkstarCts.ATTACK_HITBOX_HEIGHT,
 				PinkstarCts.ATTACK_HITBOX_OFFSET_X);

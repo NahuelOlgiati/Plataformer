@@ -18,7 +18,7 @@ public class Titan extends Enemy {
 
 	public Titan(Point2D spawn) {
 		super(spawn, EntityCts.TITAN);
-		initSize(TitanCts.SPRITE_WIDTH_DEFAULT, TitanCts.SPRITE_HEIGHT_DEFAULT);
+		initSize(TitanCts.SPRITE_WIDTH, TitanCts.SPRITE_HEIGHT);
 		initHitbox(TitanCts.HITBOX_WIDTH, TitanCts.HITBOX_WIDTH);
 		initAttackBox(TitanCts.ATTACK_HITBOX_WIDTH, TitanCts.ATTACK_HITBOX_HEIGHT, TitanCts.ATTACK_HITBOX_OFFSET_X);
 	}
@@ -75,9 +75,9 @@ public class Titan extends Enemy {
 
 	@Override
 	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(TitanCts.SPRITE_WIDTH_DEFAULT),
-				AppStage.Scale(TitanCts.SPRITE_HEIGHT_DEFAULT), AppStage.Scale(TitanCts.DRAW_OFFSET_X_DEFAULT),
-				AppStage.Scale(TitanCts.DRAW_OFFSET_Y_DEFAULT));
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(TitanCts.SPRITE_WIDTH),
+				AppStage.Scale(TitanCts.SPRITE_HEIGHT), AppStage.Scale(TitanCts.DRAW_OFFSET_X),
+				AppStage.Scale(TitanCts.DRAW_OFFSET_Y));
 	}
 
 	@Override
@@ -143,13 +143,13 @@ public class Titan extends Enemy {
 	}
 
 	public static Image[][] load() {
-		return LoadSave.GetAnimations(TitanCts.ATLAS_SIZE_X, TitanCts.ATLAS_SIZE_Y, TitanCts.SPRITE_WIDTH_DEFAULT,
-				TitanCts.SPRITE_HEIGHT_DEFAULT, LoadSave.GetAtlas(TitanCts.ATLAS_IMAGE));
+		return LoadSave.GetAnimations(TitanCts.ATLAS_SIZE_X, TitanCts.ATLAS_SIZE_Y, TitanCts.SPRITE_WIDTH,
+				TitanCts.SPRITE_HEIGHT, LoadSave.GetAtlas(TitanCts.ATLAS_IMAGE));
 	}
 
 	public void scale() {
 		super.scale();
-		initSize(TitanCts.SPRITE_WIDTH_DEFAULT, TitanCts.SPRITE_HEIGHT_DEFAULT);
+		initSize(TitanCts.SPRITE_WIDTH, TitanCts.SPRITE_HEIGHT);
 		initHitbox(TitanCts.HITBOX_WIDTH, TitanCts.HITBOX_WIDTH);
 		initAttackBox(TitanCts.ATTACK_HITBOX_WIDTH, TitanCts.ATTACK_HITBOX_HEIGHT, TitanCts.ATTACK_HITBOX_OFFSET_X);
 	}
