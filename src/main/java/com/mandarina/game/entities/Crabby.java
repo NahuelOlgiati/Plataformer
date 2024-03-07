@@ -5,7 +5,6 @@ import static com.mandarina.utilz.HelpMethods.IsEntityOnFloor;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
-import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Point2D;
@@ -16,7 +15,7 @@ public class Crabby extends Enemy {
 
 	public Crabby(Point2D spawn) {
 		super(spawn, EntityCts.CRABBY);
-		initSize(CrabbyCts.SPRITE_WIDTH, CrabbyCts.SPRITE_HEIGHT);
+		initDraw(CrabbyCts.SPRITE_WIDTH, CrabbyCts.SPRITE_HEIGHT, CrabbyCts.DRAW_OFFSET_X, CrabbyCts.DRAW_OFFSET_Y);
 		initHitbox(CrabbyCts.HITBOX_WIDTH, CrabbyCts.HITBOX_HEIGHT);
 		initAttackBox(CrabbyCts.ATTACK_HITBOX_WIDTH, CrabbyCts.ATTACK_HITBOX_HEIGHT, CrabbyCts.ATTACK_HITBOX_OFFSET_X);
 	}
@@ -73,9 +72,7 @@ public class Crabby extends Enemy {
 
 	@Override
 	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(CrabbyCts.SPRITE_WIDTH),
-				AppStage.Scale(CrabbyCts.SPRITE_HEIGHT), AppStage.Scale(CrabbyCts.DRAW_OFFSET_X),
-				AppStage.Scale(CrabbyCts.DRAW_OFFSET_Y));
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val());
 	}
 
 	@Override
@@ -122,7 +119,7 @@ public class Crabby extends Enemy {
 
 	public void scale() {
 		super.scale();
-		initSize(CrabbyCts.SPRITE_WIDTH, CrabbyCts.SPRITE_HEIGHT);
+		initDraw(CrabbyCts.SPRITE_WIDTH, CrabbyCts.SPRITE_HEIGHT, CrabbyCts.DRAW_OFFSET_X, CrabbyCts.DRAW_OFFSET_Y);
 		initHitbox(CrabbyCts.HITBOX_WIDTH, CrabbyCts.HITBOX_HEIGHT);
 		initAttackBox(CrabbyCts.ATTACK_HITBOX_WIDTH, CrabbyCts.ATTACK_HITBOX_HEIGHT, CrabbyCts.ATTACK_HITBOX_OFFSET_X);
 	}

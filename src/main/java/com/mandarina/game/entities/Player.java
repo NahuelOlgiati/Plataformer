@@ -46,7 +46,7 @@ public class Player extends Entity {
 		this.walkSpeed = AppStage.Scale(1.0);
 		this.jumpSpeed = AppStage.Scale(-2.25);
 		this.fallSpeedAfterCollision = AppStage.Scale(0.5);
-		initSize(PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT);
+		initDraw(PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT, PlayerCts.DRAW_OFFSET_X, PlayerCts.DRAW_OFFSET_Y);
 		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
 		initAttackBox(PlayerCts.ATTACK_HITBOX_WIDTH, PlayerCts.ATTACK_HITBOX_HEIGHT, PlayerCts.ATTACK_HITBOX_OFFSET_X);
 	}
@@ -175,18 +175,15 @@ public class Player extends Entity {
 	}
 
 	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		int spriteWidth = AppStage.Scale(PlayerCts.SPRITE_WIDTH);
-		int spriteHeight = AppStage.Scale(PlayerCts.SPRITE_HEIGHT);
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), spriteWidth, spriteHeight,
-				AppStage.Scale(PlayerCts.DRAW_OFFSET_X), AppStage.Scale(PlayerCts.DRAW_OFFSET_Y));
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val());
 	}
 
 	@Override
-	public int flipX() {
+	public double flipX() {
 		if (walkDir == DirectionCts.RIGHT)
 			return 0;
 		else
-			return width;
+			return drawWidth;
 	}
 
 	@Override
@@ -490,7 +487,7 @@ public class Player extends Entity {
 		this.walkSpeed = AppStage.Scale(1.0);
 		this.jumpSpeed = AppStage.Scale(-2.25);
 		this.fallSpeedAfterCollision = AppStage.Scale(0.5);
-		initSize(PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT);
+		initDraw(PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT, PlayerCts.DRAW_OFFSET_X, PlayerCts.DRAW_OFFSET_Y);
 		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
 		initAttackBox(PlayerCts.ATTACK_HITBOX_WIDTH, PlayerCts.ATTACK_HITBOX_HEIGHT, PlayerCts.ATTACK_HITBOX_OFFSET_X);
 	}

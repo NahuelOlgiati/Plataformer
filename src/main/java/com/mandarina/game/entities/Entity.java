@@ -15,7 +15,7 @@ public abstract class Entity {
 
 	private Point2D spawn;
 	protected double x, y;
-	protected int width, height;
+	protected double drawWidth, drawHeight, drawOffsetX, drawOffsetY;
 
 	protected int aniTick, aniIndex;
 
@@ -51,9 +51,11 @@ public abstract class Entity {
 		this.y = spawn.getY() * AppStage.GetTileSize();
 	}
 
-	protected void initSize(int width, int height) {
-		this.width = AppStage.Scale(width);
-		this.height = AppStage.Scale(height);
+	protected void initDraw(int width, int height, int offsetX, int offsetY) {
+		this.drawWidth = AppStage.Scale(width);
+		this.drawHeight = AppStage.Scale(height);
+		this.drawOffsetX = AppStage.Scale(offsetX);
+		this.drawOffsetY = AppStage.Scale(offsetY);
 	}
 
 	protected void initHitbox(int width, int height) {
@@ -65,10 +67,9 @@ public abstract class Entity {
 		this.attackBoxOffsetX = AppStage.Scale(attackBoxOffsetX);
 	}
 
-	protected void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations, int row, int spriteW,
-			int spriteH, int offsetX, int offsetY) {
-		g.drawImage(animations[row][getAniIndex()], hitbox.getMinX() - lvlOffsetX - offsetX + flipX(),
-				hitbox.getMinY() - lvlOffsetY - offsetY + pushDrawOffset, spriteW * flipW(), spriteH);
+	protected void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations, int row) {
+		g.drawImage(animations[row][getAniIndex()], hitbox.getMinX() - lvlOffsetX - drawOffsetX + flipX(),
+				hitbox.getMinY() - lvlOffsetY - drawOffsetY + pushDrawOffset, drawWidth * flipW(), drawHeight);
 
 		// For Debug
 		drawHitbox(g, lvlOffsetX, lvlOffsetY);
@@ -101,9 +102,9 @@ public abstract class Entity {
 		walkDir = direction;
 	}
 
-	public int flipX() {
+	public double flipX() {
 		if (walkDir == DirectionCts.RIGHT)
-			return width;
+			return drawWidth;
 		else
 			return 0;
 	}

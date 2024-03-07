@@ -7,7 +7,6 @@ import static com.mandarina.utilz.HelpMethods.IsFloor;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
-import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Point2D;
@@ -18,7 +17,7 @@ public class Shark extends Enemy {
 
 	public Shark(Point2D spawn) {
 		super(spawn, EntityCts.SHARK);
-		initSize(SharkCts.SPRITE_WIDTH, SharkCts.SPRITE_HEIGHT);
+		initDraw(SharkCts.SPRITE_WIDTH, SharkCts.SPRITE_HEIGHT, SharkCts.DRAW_OFFSET_X, SharkCts.DRAW_OFFSET_Y);
 		initHitbox(SharkCts.HITBOX_WIDTH, SharkCts.HITBOX_HEIGHT);
 		initAttackBox(SharkCts.ATTACK_HITBOX_WIDTH, SharkCts.ATTACK_HITBOX_HEIGHT, SharkCts.ATTACK_HITBOX_OFFSET_X);
 	}
@@ -75,9 +74,7 @@ public class Shark extends Enemy {
 
 	@Override
 	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(SharkCts.SPRITE_WIDTH),
-				AppStage.Scale(SharkCts.SPRITE_HEIGHT), AppStage.Scale(SharkCts.DRAW_OFFSET_X),
-				AppStage.Scale(SharkCts.DRAW_OFFSET_Y));
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val());
 	}
 
 	@Override
@@ -148,7 +145,7 @@ public class Shark extends Enemy {
 
 	public void scale() {
 		super.scale();
-		initSize(SharkCts.SPRITE_WIDTH, SharkCts.SPRITE_HEIGHT);
+		initDraw(SharkCts.SPRITE_WIDTH, SharkCts.SPRITE_HEIGHT, SharkCts.DRAW_OFFSET_X, SharkCts.DRAW_OFFSET_Y);
 		initHitbox(SharkCts.HITBOX_WIDTH, SharkCts.HITBOX_HEIGHT);
 		initAttackBox(SharkCts.ATTACK_HITBOX_WIDTH, SharkCts.ATTACK_HITBOX_HEIGHT, SharkCts.ATTACK_HITBOX_OFFSET_X);
 	}

@@ -8,7 +8,6 @@ import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
-import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Point2D;
@@ -24,7 +23,8 @@ public class Pinkstar extends Enemy {
 
 	public Pinkstar(Point2D spawn) {
 		super(spawn, EntityCts.PINKSTAR);
-		initSize(PinkstarCts.SPRITE_WIDTH, PinkstarCts.SPRITE_HEIGHT);
+		initDraw(PinkstarCts.SPRITE_WIDTH, PinkstarCts.SPRITE_HEIGHT, PinkstarCts.DRAW_OFFSET_X,
+				PinkstarCts.DRAW_OFFSET_Y);
 		initHitbox(PinkstarCts.HITBOX_WIDTH, PinkstarCts.HITBOX_HEIGHT);
 		initAttackBox(PinkstarCts.ATTACK_HITBOX_WIDTH, PinkstarCts.ATTACK_HITBOX_HEIGHT,
 				PinkstarCts.ATTACK_HITBOX_OFFSET_X);
@@ -88,9 +88,7 @@ public class Pinkstar extends Enemy {
 
 	@Override
 	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(PinkstarCts.SPRITE_WIDTH),
-				AppStage.Scale(PinkstarCts.SPRITE_HEIGHT), AppStage.Scale(PinkstarCts.DRAW_OFFSET_X),
-				AppStage.Scale(PinkstarCts.DRAW_OFFSET_Y));
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val());
 	}
 
 	@Override
@@ -205,7 +203,8 @@ public class Pinkstar extends Enemy {
 
 	public void scale() {
 		super.scale();
-		initSize(PinkstarCts.SPRITE_WIDTH, PinkstarCts.SPRITE_HEIGHT);
+		initDraw(PinkstarCts.SPRITE_WIDTH, PinkstarCts.SPRITE_HEIGHT, PinkstarCts.DRAW_OFFSET_X,
+				PinkstarCts.DRAW_OFFSET_Y);
 		initHitbox(PinkstarCts.HITBOX_WIDTH, PinkstarCts.HITBOX_HEIGHT);
 		initAttackBox(PinkstarCts.ATTACK_HITBOX_WIDTH, PinkstarCts.ATTACK_HITBOX_HEIGHT,
 				PinkstarCts.ATTACK_HITBOX_OFFSET_X);

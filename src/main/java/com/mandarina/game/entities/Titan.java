@@ -7,7 +7,6 @@ import static com.mandarina.utilz.HelpMethods.IsFloor;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
-import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Point2D;
@@ -18,7 +17,7 @@ public class Titan extends Enemy {
 
 	public Titan(Point2D spawn) {
 		super(spawn, EntityCts.TITAN);
-		initSize(TitanCts.SPRITE_WIDTH, TitanCts.SPRITE_HEIGHT);
+		initDraw(TitanCts.SPRITE_WIDTH, TitanCts.SPRITE_HEIGHT, TitanCts.DRAW_OFFSET_X, TitanCts.DRAW_OFFSET_Y);
 		initHitbox(TitanCts.HITBOX_WIDTH, TitanCts.HITBOX_WIDTH);
 		initAttackBox(TitanCts.ATTACK_HITBOX_WIDTH, TitanCts.ATTACK_HITBOX_HEIGHT, TitanCts.ATTACK_HITBOX_OFFSET_X);
 	}
@@ -75,9 +74,7 @@ public class Titan extends Enemy {
 
 	@Override
 	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(TitanCts.SPRITE_WIDTH),
-				AppStage.Scale(TitanCts.SPRITE_HEIGHT), AppStage.Scale(TitanCts.DRAW_OFFSET_X),
-				AppStage.Scale(TitanCts.DRAW_OFFSET_Y));
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val());
 	}
 
 	@Override
@@ -149,7 +146,7 @@ public class Titan extends Enemy {
 
 	public void scale() {
 		super.scale();
-		initSize(TitanCts.SPRITE_WIDTH, TitanCts.SPRITE_HEIGHT);
+		initDraw(TitanCts.SPRITE_WIDTH, TitanCts.SPRITE_HEIGHT, TitanCts.DRAW_OFFSET_X, TitanCts.DRAW_OFFSET_Y);
 		initHitbox(TitanCts.HITBOX_WIDTH, TitanCts.HITBOX_WIDTH);
 		initAttackBox(TitanCts.ATTACK_HITBOX_WIDTH, TitanCts.ATTACK_HITBOX_HEIGHT, TitanCts.ATTACK_HITBOX_OFFSET_X);
 	}

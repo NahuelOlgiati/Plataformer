@@ -7,7 +7,6 @@ import static com.mandarina.utilz.HelpMethods.IsFloor;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
-import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Point2D;
@@ -18,7 +17,7 @@ public class Longleg extends Enemy {
 
 	public Longleg(Point2D spawn) {
 		super(spawn, EntityCts.LONGLEG);
-		initSize(LonglegCts.SPRITE_WIDTH, LonglegCts.SPRITE_HEIGHT);
+		initDraw(LonglegCts.SPRITE_WIDTH, LonglegCts.SPRITE_HEIGHT, LonglegCts.DRAW_OFFSET_X, LonglegCts.DRAW_OFFSET_Y);
 		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_WIDTH);
 		initAttackBox(LonglegCts.ATTACK_HITBOX_WIDTH, LonglegCts.ATTACK_HITBOX_HEIGHT,
 				LonglegCts.ATTACK_HITBOX_OFFSET_X);
@@ -76,9 +75,7 @@ public class Longleg extends Enemy {
 
 	@Override
 	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val(), AppStage.Scale(LonglegCts.SPRITE_WIDTH),
-				AppStage.Scale(LonglegCts.SPRITE_HEIGHT), AppStage.Scale(LonglegCts.DRAW_OFFSET_X),
-				AppStage.Scale(LonglegCts.DRAW_OFFSET_Y));
+		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val());
 	}
 
 	@Override
@@ -150,7 +147,7 @@ public class Longleg extends Enemy {
 
 	public void scale() {
 		super.scale();
-		initSize(LonglegCts.SPRITE_WIDTH, LonglegCts.SPRITE_HEIGHT);
+		initDraw(LonglegCts.SPRITE_WIDTH, LonglegCts.SPRITE_HEIGHT, LonglegCts.DRAW_OFFSET_X, LonglegCts.DRAW_OFFSET_Y);
 		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_WIDTH);
 		initAttackBox(LonglegCts.ATTACK_HITBOX_WIDTH, LonglegCts.ATTACK_HITBOX_HEIGHT,
 				LonglegCts.ATTACK_HITBOX_OFFSET_X);
