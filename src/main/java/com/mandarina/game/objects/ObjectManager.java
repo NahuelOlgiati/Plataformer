@@ -1,7 +1,6 @@
 package com.mandarina.game.objects;
 
 import static com.mandarina.utilz.HelpMethods.CanCannonSeePlayer;
-import static com.mandarina.utilz.HelpMethods.IsProjectileHittingLevel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -137,7 +136,7 @@ public class ObjectManager implements LayerDrawer {
 				if (p.getHitbox().intersects(player.getHitbox())) {
 					player.changeHealth(-25);
 					p.setActive(false);
-				} else if (IsProjectileHittingLevel(p, levelData))
+				} else if (p.isProjectileHittingLevel(levelData))
 					p.setActive(false);
 			}
 	}

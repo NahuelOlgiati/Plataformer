@@ -1,8 +1,8 @@
 package com.mandarina.game.entities;
 
 import static com.mandarina.utilz.HelpMethods.CanMoveHere;
-import static com.mandarina.utilz.HelpMethods.GetEntityXPosNextToWall;
-import static com.mandarina.utilz.HelpMethods.GetEntityYPosUnderRoofOrAboveFloor;
+import static com.mandarina.utilz.HelpMethods.GetEntityMinXNextToWall;
+import static com.mandarina.utilz.HelpMethods.GetEntityMinYNextToPlane;
 import static com.mandarina.utilz.HelpMethods.IsEntityInWater;
 import static com.mandarina.utilz.HelpMethods.IsEntityOnFloor;
 import static com.mandarina.utilz.HelpMethods.IsFloor;
@@ -301,7 +301,7 @@ public class Player extends Entity {
 				airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 				updateXPos(xSpeed);
 			} else {
-				hitbox = new Rectangle2D(hitbox.getMinX(), GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed),
+				hitbox = new Rectangle2D(hitbox.getMinX(), GetEntityMinYNextToPlane(hitbox, airSpeed),
 						hitbox.getWidth(), hitbox.getHeight());
 				if (airSpeed > 0) {
 					resetInAir();
@@ -336,7 +336,7 @@ public class Player extends Entity {
 			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(),
 					hitbox.getHeight());
 		} else {
-			hitbox = new Rectangle2D(GetEntityXPosNextToWall(hitbox, xSpeed), hitbox.getMinY(), hitbox.getWidth(),
+			hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), hitbox.getMinY(), hitbox.getWidth(),
 					hitbox.getHeight());
 			if (powerAttackActive) {
 				powerAttackActive = false;

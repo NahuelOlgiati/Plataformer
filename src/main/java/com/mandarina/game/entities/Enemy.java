@@ -1,7 +1,7 @@
 package com.mandarina.game.entities;
 
 import static com.mandarina.utilz.HelpMethods.CanMoveHere;
-import static com.mandarina.utilz.HelpMethods.GetEntityYPosUnderRoofOrAboveFloor;
+import static com.mandarina.utilz.HelpMethods.GetEntityMinYNextToPlane;
 import static com.mandarina.utilz.HelpMethods.IsEntityInWater;
 import static com.mandarina.utilz.HelpMethods.IsEntityOnFloor;
 import static com.mandarina.utilz.HelpMethods.IsFloor;
@@ -70,7 +70,7 @@ public abstract class Enemy extends Entity {
 			airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 		} else {
 			inAir = false;
-			hitbox = new Rectangle2D(hitbox.getMinX(), GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed),
+			hitbox = new Rectangle2D(hitbox.getMinX(), GetEntityMinYNextToPlane(hitbox, airSpeed),
 					hitbox.getWidth(), hitbox.getHeight());
 			tileY = AppStage.GetTilesIn(hitbox.getMinY());
 		}

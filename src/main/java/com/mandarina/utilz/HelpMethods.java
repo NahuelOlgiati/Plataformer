@@ -1,7 +1,6 @@
 package com.mandarina.utilz;
 
 import com.mandarina.game.levels.LevelData;
-import com.mandarina.game.objects.Projectile;
 import com.mandarina.main.AppStage;
 
 import javafx.geometry.Rectangle2D;
@@ -17,12 +16,12 @@ public class HelpMethods {
 		return false;
 	}
 
-	private static boolean IsSolid(double x, double y, LevelData levelData) {
-		double maxHeight = levelData.getLevel().getHeight() * AppStage.GetTileSize();
+	public static boolean IsSolid(double x, double y, LevelData levelData) {
+		double maxHeight = levelData.getLevel().getHeight();
 		if (y < 0 || y >= maxHeight)
 			return true;
 
-		double maxWidth = levelData.getLevel().getWidth() * AppStage.GetTileSize();
+		double maxWidth = levelData.getLevel().getWidth();
 		if (x < 0 || x >= maxWidth)
 			return true;
 
@@ -33,11 +32,11 @@ public class HelpMethods {
 	}
 
 	private static boolean IsSolid(double x, double y, int xTiles, int yTiles, LevelData levelData) {
-		double maxHeight = levelData.getLevel().getHeight() * AppStage.GetTileSize();
+		double maxHeight = levelData.getLevel().getHeight();
 		if (y < 0 || y >= maxHeight)
 			return true;
 
-		double maxWidth = levelData.getLevel().getWidth() * AppStage.GetTileSize();
+		double maxWidth = levelData.getLevel().getWidth();
 		if (x < 0 || x >= maxWidth)
 			return true;
 
@@ -45,11 +44,6 @@ public class HelpMethods {
 		int yIndex = AppStage.GetTilesIn(y) + yTiles;
 
 		return IsTileSolid(xIndex, yIndex, levelData);
-	}
-
-	public static boolean IsProjectileHittingLevel(Projectile p, LevelData levelData) {
-		return IsSolid(p.getHitbox().getMinX() + p.getHitbox().getWidth() / 2,
-				p.getHitbox().getMinY() + p.getHitbox().getHeight() / 2, levelData);
 	}
 
 	public static boolean IsEntityInWater(Rectangle2D hitbox, LevelData levelData) {
@@ -67,30 +61,44 @@ public class HelpMethods {
 		return levelData.getIsSolid()[yTile][xTile];
 	}
 
-	public static double GetEntityXPosNextToWall(Rectangle2D hitbox, double xSpeed) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMinX());
+	public static double GetEntityMinXNextToWall(Rectangle2D hitbox, double xSpeed) {
 		if (xSpeed > 0) {
 			// Right
-			double tileXPos = currentTile * AppStage.GetTileSize();
-			double xOffset = AppStage.GetTileSize() - hitbox.getWidth();
-			return tileXPos + xOffset - 1;
+			return GetEntityMinXNextRightWall(hitbox);
 		} else {
 			// Left
-			return currentTile * AppStage.GetTileSize();
+			return GetEntityMinXNextLeftWall(hitbox);
 		}
 	}
 
-	public static double GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D hitbox, double airSpeed) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMinY());
+	private static double GetEntityMinXNextRightWall(Rectangle2D hitbox) {
+		int currentTile = AppStage.GetTilesIn(hitbox.getMinX()/* + hitbox.getWidth() / 2 */) + 1;
+		return currentTile * AppStage.GetTileSize() - hitbox.getWidth() - 1;
+	}
+
+	private static double GetEntityMinXNextLeftWall(Rectangle2D hitbox) {
+		int currentTile = AppStage.GetTilesIn(hitbox.getMinX()/* + hitbox.getWidth() / 2 */);
+		return currentTile * AppStage.GetTileSize() + 1;
+	}
+
+	public static double GetEntityMinYNextToPlane(Rectangle2D hitbox, double airSpeed) {
 		if (airSpeed > 0) {
 			// Falling - touching floor
-			double tileYPos = currentTile * AppStage.GetTileSize();
-			double yOffset = AppStage.GetTileSize() - hitbox.getHeight();
-			return tileYPos + yOffset - 1;
+			return GetEntityMinYAboveFloor(hitbox);
 		} else {
 			// Jumping
-			return currentTile * AppStage.GetTileSize();
+			return GetEntityMinYUnderRoof(hitbox);
 		}
+	}
+
+	private static double GetEntityMinYUnderRoof(Rectangle2D hitbox) {
+		int currentTile = AppStage.GetTilesIn(hitbox.getMinY()/* + hitbox.getHeight() / 2 */);
+		return currentTile * AppStage.GetTileSize() + 1;
+	}
+
+	private static double GetEntityMinYAboveFloor(Rectangle2D hitbox) {
+		int currentTile = AppStage.GetTilesIn(hitbox.getMinY()/* + hitbox.getHeight() / 2 */) + 1;
+		return currentTile * AppStage.GetTileSize() - hitbox.getHeight() - 1;
 	}
 
 	public static boolean IsEntityOnFloor(Rectangle2D hitbox, LevelData levelData) {
@@ -150,7 +158,7 @@ public class HelpMethods {
 		int firstXTile = AppStage.GetTilesIn(enemyBox.getMinX());
 
 		int secondXTile;
-		if (IsSolid(playerBox.getMinX(), playerBox.getMinY() + playerBox.getHeight() + 1, levelData))
+		if (IsSolid(playerBox.getMinX(), playerBox.getMinY() + playerBox.getHeight(), 0, 1, levelData))
 			secondXTile = AppStage.GetTilesIn(playerBox.getMinX());
 		else
 			secondXTile = AppStage.GetTilesIn(playerBox.getMinX() + playerBox.getWidth());

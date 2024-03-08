@@ -113,8 +113,8 @@ public class LevelEntities implements LayerDrawer {
 		List<Titan> titans = new ArrayList<Titan>();
 		List<Longleg> longlegs = new ArrayList<Longleg>();
 		PixelReader pixelReader = img.getPixelReader();
-		for (int y = 0; y < this.level.getHeight(); y++) {
-			for (int x = 0; x < this.level.getWidth(); x++) {
+		for (int y = 0; y < this.level.getImgHeight(); y++) {
+			for (int x = 0; x < this.level.getImgWidth(); x++) {
 				Color c = pixelReader.getColor(x, y);
 				int green = (int) (c.getGreen() * 255);
 				addGreen(green, new Point2D(x, y), enemys, crabs, pinkstars, sharks, titans, longlegs);

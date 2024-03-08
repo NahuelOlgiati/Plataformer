@@ -1,5 +1,8 @@
 package com.mandarina.game.objects;
 
+import static com.mandarina.utilz.HelpMethods.IsSolid;
+
+import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
@@ -35,6 +38,10 @@ public class Projectile extends GameObject {
 		g.drawImage(cannonBallSprite, getHitbox().getMinX() - lvlOffsetX, getHitbox().getMinY() - lvlOffsetY,
 				AppStage.Scale(ProjectileCts.CANNON_BALL_WIDTH_DEFAULT),
 				AppStage.Scale(ProjectileCts.CANNON_BALL_HEIGHT_DEFAULT));
+	}
+
+	public boolean isProjectileHittingLevel(LevelData levelData) {
+		return IsSolid(hitbox.getMinX() + hitbox.getWidth() / 2, hitbox.getMinY() + hitbox.getHeight() / 2, levelData);
 	}
 
 	public void setPos(int x, int y) {

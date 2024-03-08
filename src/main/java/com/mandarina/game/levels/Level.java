@@ -10,8 +10,11 @@ public class Level {
 	private LvlBuilderImage img;
 	private PNGMetadata pm;
 
-	private int height;
-	private int width;
+	private int imgHeight;
+	private int imgWidth;
+
+	private double height;
+	private double width;
 
 	private LevelData levelData;
 	private LevelEntities levelEntities;
@@ -23,8 +26,10 @@ public class Level {
 	public Level(LvlBuilderImage img) {
 		this.img = img;
 		this.pm = new PNGMetadata(img);
-		this.height = (int) img.getHeight();
-		this.width = (int) img.getWidth();
+		this.imgHeight = (int) img.getHeight();
+		this.imgWidth = (int) img.getWidth();
+		this.height = this.imgHeight * AppStage.GetTileSize();
+		this.width = this.imgWidth * AppStage.GetTileSize();
 		this.levelData = new LevelData(this);
 		this.levelEntities = new LevelEntities(this);
 		this.levelObjects = new LevelObjects(this);
@@ -49,16 +54,24 @@ public class Level {
 		return pm;
 	}
 
-	public int getHeight() {
+	public double getHeight() {
 		return height;
 	}
 
-	public int getWidth() {
+	public double getWidth() {
 		return width;
 	}
 
 	public LevelData getLevelData() {
 		return levelData;
+	}
+
+	public int getImgHeight() {
+		return imgHeight;
+	}
+
+	public int getImgWidth() {
+		return imgWidth;
 	}
 
 	public LevelEntities getLevelEntities() {
@@ -78,6 +91,8 @@ public class Level {
 	}
 
 	public void scale() {
+		this.height = this.imgHeight * AppStage.GetTileSize();
+		this.width = this.imgWidth * AppStage.GetTileSize();
 		calcLvlOffsets();
 	}
 }

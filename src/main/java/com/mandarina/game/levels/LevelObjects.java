@@ -180,8 +180,8 @@ public class LevelObjects implements LayerDrawer {
 
 	public void load(LvlBuilderImage img) {
 		PixelReader pixelReader = img.getPixelReader();
-		for (int y = 0; y < this.level.getHeight(); y++) {
-			for (int x = 0; x < this.level.getWidth(); x++) {
+		for (int y = 0; y < this.level.getImgHeight(); y++) {
+			for (int x = 0; x < this.level.getImgWidth(); x++) {
 				Color c = pixelReader.getColor(x, y);
 				int blue = (int) (c.getBlue() * 255);
 				addBlue(blue, x, y);

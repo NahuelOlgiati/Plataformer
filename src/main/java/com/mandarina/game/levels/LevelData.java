@@ -131,8 +131,8 @@ public class LevelData implements LayerDrawer {
 		List<Pair<Integer, Integer>> layer4 = (List<Pair<Integer, Integer>>) TileFeature.LAYER4.getManager()
 				.get(pngMetadata, RGB.RED);
 		PixelReader pixelReader = img.getPixelReader();
-		for (int y = 0; y < this.level.getHeight(); y++) {
-			for (int x = 0; x < this.level.getWidth(); x++) {
+		for (int y = 0; y < this.level.getImgHeight(); y++) {
+			for (int x = 0; x < this.level.getImgWidth(); x++) {
 				Color c = pixelReader.getColor(x, y);
 				int red = (int) (c.getRed() * 255);
 				addRed(red, new Point2D(x, y), nosolid, layer1, layer2, layer3, layer4);
