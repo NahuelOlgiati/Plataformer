@@ -13,10 +13,10 @@ public class AppStage {
 	private static float gameScale = GameCts.SCALE_DEFAULT;
 	private static float previusGameScale = gameScale;
 
-	private static double gameHeight;
-	private static double gameWidth;
-	private static double tileSize;
-	private static double previusTileSize;
+	private static float gameHeight;
+	private static float gameWidth;
+	private static float tileSize;
+	private static float previusTileSize;
 
 	private static boolean widthSet = false;
 	private static boolean heightSet = false;
@@ -111,28 +111,28 @@ public class AppStage {
 		return stage;
 	}
 
-	public static double GetGameHeight() {
+	public static float GetGameHeight() {
 		if (refresh) {
-			gameHeight = GetTileSize() * GameCts.TILES_IN_HEIGHT;
+			gameHeight = (float) (GetTileSize() * GameCts.TILES_IN_HEIGHT);
 		}
 		return gameHeight;
 	}
 
-	public static double GetGameWidth() {
+	public static float GetGameWidth() {
 		if (refresh) {
-			gameWidth = GetTileSize() * GameCts.TILES_IN_WIDTH;
+			gameWidth = (float) (GetTileSize() * GameCts.TILES_IN_WIDTH);
 		}
 		return gameWidth;
 	}
 
-	public static double GetTileSize() {
+	public static float GetTileSize() {
 		if (refresh) {
 			tileSize = GameCts.TILES_DEFAULT_SIZE * gameScale;
 		}
 		return tileSize;
 	}
 
-	public static double GetPreviusTileSize() {
+	public static float GetPreviusTileSize() {
 		if (refresh) {
 			previusTileSize = GameCts.TILES_DEFAULT_SIZE * previusGameScale;
 		}
