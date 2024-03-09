@@ -10,8 +10,8 @@ public class AppStage {
 
 	private static AppStage appStage;
 	private Stage stage;
-	private static double gameScale = GameCts.SCALE_DEFAULT;
-	private static double previusGameScale = gameScale;
+	private static float gameScale = GameCts.SCALE_DEFAULT;
+	private static float previusGameScale = gameScale;
 
 	private static double gameHeight;
 	private static double gameWidth;
@@ -68,7 +68,7 @@ public class AppStage {
 			Platform.runLater(() -> {
 //				GameState currentState = GameState.get();
 //				GameState.getGame().clear();
-				double calculateScaleFactor = calculateScaleFactor(screenWidth, screenHeight);
+				float calculateScaleFactor = calculateScaleFactor(screenWidth, screenHeight);
 				System.out.println(screenWidth);
 				System.out.println(screenHeight);
 				System.out.println(calculateScaleFactor);
@@ -97,10 +97,10 @@ public class AppStage {
 		refresh = false;
 	}
 
-	private static double calculateScaleFactor(double newWidth, double newHeight) {
+	private static float calculateScaleFactor(double newWidth, double newHeight) {
 		double widthScale = newWidth / GameCts.GAME_WIDTH_DEFAULT;
 		double heightScale = newHeight / GameCts.GAME_HEIGHT_DEFAULT;
-		return Math.min(widthScale, heightScale);
+		return (float) Math.min(widthScale, heightScale);
 	}
 
 	public static AppStage get() {
@@ -148,7 +148,7 @@ public class AppStage {
 	}
 
 	public static double Scale(double value) {
-		return (double) (value * gameScale);
+		return value * gameScale;
 	}
 
 }
