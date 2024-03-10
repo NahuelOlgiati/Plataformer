@@ -157,8 +157,9 @@ public class ObjectManager implements LayerDrawer {
 	private void updateCannons(LevelData levelData, Player player) {
 		for (Cannon c : currentLevel.getLevelObjects().getCannon().getItems()) {
 			if (!c.doAnimation)
-				if (c.getTileY() == player.getTileY())
-					if (isPlayerInRange(c, player))
+				if (isPlayerInRange(c, player))
+					if (c.getTileY() == AppStage
+							.GetTilesIn(player.getHitbox().getMinY() + player.getHitbox().getHeight() / 2))
 						if (isPlayerInfrontOfCannon(c, player))
 							if (CanCannonSeePlayer(levelData, player.getHitbox(), c.getHitbox(), c.getTileY()))
 								c.setAnimation(true);

@@ -19,7 +19,8 @@ public class Shark extends Enemy {
 		super(spawn, EntityCts.SHARK);
 		initDraw(SharkCts.SPRITE_WIDTH, SharkCts.SPRITE_HEIGHT, SharkCts.DRAW_OFFSET_X, SharkCts.DRAW_OFFSET_Y);
 		initHitbox(SharkCts.HITBOX_WIDTH, SharkCts.HITBOX_HEIGHT);
-		initAttackBox(SharkCts.ATTACK_HITBOX_WIDTH, SharkCts.ATTACK_HITBOX_HEIGHT, SharkCts.ATTACK_HITBOX_OFFSET_X);
+		initAttackBox(SharkCts.ATTACK_HITBOX_WIDTH, SharkCts.ATTACK_HITBOX_HEIGHT, SharkCts.ATTACK_HITBOX_OFFSET_X,
+				SharkCts.ATTACK_HITBOX_OFFSET_Y);
 	}
 
 	@Override
@@ -147,6 +148,7 @@ public class Shark extends Enemy {
 		super.scale();
 		initDraw(SharkCts.SPRITE_WIDTH, SharkCts.SPRITE_HEIGHT, SharkCts.DRAW_OFFSET_X, SharkCts.DRAW_OFFSET_Y);
 		initHitbox(SharkCts.HITBOX_WIDTH, SharkCts.HITBOX_HEIGHT);
-		initAttackBox(SharkCts.ATTACK_HITBOX_WIDTH, SharkCts.ATTACK_HITBOX_HEIGHT, SharkCts.ATTACK_HITBOX_OFFSET_X);
+		initAttackBox(SharkCts.ATTACK_HITBOX_WIDTH, SharkCts.ATTACK_HITBOX_HEIGHT, SharkCts.ATTACK_HITBOX_OFFSET_X,
+				SharkCts.ATTACK_HITBOX_OFFSET_Y);
 	}
 }

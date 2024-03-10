@@ -33,6 +33,7 @@ public abstract class Entity {
 	protected Rectangle2D attackBox;
 	protected boolean attackChecked;
 	protected int attackBoxOffsetX;
+	protected int attackBoxOffsetY;
 
 	protected int pushBackDir;
 	protected double pushDrawOffset;
@@ -62,9 +63,10 @@ public abstract class Entity {
 		hitbox = new Rectangle2D(x, y, AppStage.Scale(width), AppStage.Scale(height));
 	}
 
-	protected void initAttackBox(int w, int h, int attackBoxOffsetX) {
+	protected void initAttackBox(int w, int h, int attackBoxOffsetX, int attackBoxOffsetY) {
 		attackBox = new Rectangle2D(x, y, AppStage.Scale(w), AppStage.Scale(h));
 		this.attackBoxOffsetX = AppStage.Scale(attackBoxOffsetX);
+		this.attackBoxOffsetY = AppStage.Scale(attackBoxOffsetY);
 	}
 
 	protected void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations, int row) {
@@ -77,17 +79,18 @@ public abstract class Entity {
 	}
 
 	protected void updateAttackBox() {
-		attackBox = new Rectangle2D(hitbox.getMinX() - attackBoxOffsetX, hitbox.getMinY(), attackBox.getWidth(),
-				attackBox.getHeight());
+		attackBox = new Rectangle2D(hitbox.getMinX() - attackBoxOffsetX, hitbox.getMinY() - attackBoxOffsetY,
+				attackBox.getWidth(), attackBox.getHeight());
 	}
 
 	protected void updateAttackBoxFlip() {
 		if (walkDir == DirectionCts.RIGHT) {
-			attackBox = new Rectangle2D(hitbox.getMinX() + hitbox.getWidth(), hitbox.getMinY(), attackBox.getWidth(),
-					attackBox.getHeight());
+			attackBox = new Rectangle2D(hitbox.getMinX() - attackBoxOffsetX * flipW(),
+					hitbox.getMinY() - attackBoxOffsetY, attackBox.getWidth(), attackBox.getHeight());
 		} else {
-			attackBox = new Rectangle2D(hitbox.getMinX() - attackBoxOffsetX, hitbox.getMinY(), attackBox.getWidth(),
-					attackBox.getHeight());
+			attackBox = new Rectangle2D(
+					hitbox.getMinX() + hitbox.getWidth() - attackBox.getWidth() - attackBoxOffsetX * flipW(),
+					hitbox.getMinY() - attackBoxOffsetY, attackBox.getWidth(), attackBox.getHeight());
 		}
 	}
 

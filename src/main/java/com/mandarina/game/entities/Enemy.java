@@ -1,6 +1,7 @@
 package com.mandarina.game.entities;
 
 import static com.mandarina.utilz.HelpMethods.CanMoveHere;
+import static com.mandarina.utilz.HelpMethods.CanSeePlayer;
 import static com.mandarina.utilz.HelpMethods.GetEntityMinYNextToPlane;
 import static com.mandarina.utilz.HelpMethods.IsEntityInWater;
 import static com.mandarina.utilz.HelpMethods.IsEntityOnFloor;
@@ -70,8 +71,8 @@ public abstract class Enemy extends Entity {
 			airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 		} else {
 			inAir = false;
-			hitbox = new Rectangle2D(hitbox.getMinX(), GetEntityMinYNextToPlane(hitbox, airSpeed),
-					hitbox.getWidth(), hitbox.getHeight());
+			hitbox = new Rectangle2D(hitbox.getMinX(), GetEntityMinYNextToPlane(hitbox, airSpeed), hitbox.getWidth(),
+					hitbox.getHeight());
 			tileY = AppStage.GetTilesIn(hitbox.getMinY());
 		}
 	}
@@ -103,8 +104,7 @@ public abstract class Enemy extends Entity {
 	}
 
 	protected boolean canSeePlayer(LevelData levelData, Player player) {
-		int playerTileY = AppStage.GetTilesIn(player.getHitbox().getMinY());
-		if (playerTileY == tileY)
+		if (CanSeePlayer(levelData, player.getHitbox(), tileY))
 			if (isPlayerInRange(player)) {
 				if (IsSightClear(levelData, hitbox, player.hitbox, tileY))
 					return true;

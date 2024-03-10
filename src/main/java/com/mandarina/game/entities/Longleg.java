@@ -18,15 +18,15 @@ public class Longleg extends Enemy {
 	public Longleg(Point2D spawn) {
 		super(spawn, EntityCts.LONGLEG);
 		initDraw(LonglegCts.SPRITE_WIDTH, LonglegCts.SPRITE_HEIGHT, LonglegCts.DRAW_OFFSET_X, LonglegCts.DRAW_OFFSET_Y);
-		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_WIDTH);
+		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_HEIGHT);
 		initAttackBox(LonglegCts.ATTACK_HITBOX_WIDTH, LonglegCts.ATTACK_HITBOX_HEIGHT,
-				LonglegCts.ATTACK_HITBOX_OFFSET_X);
+				LonglegCts.ATTACK_HITBOX_OFFSET_X, LonglegCts.ATTACK_HITBOX_OFFSET_Y);
 	}
 
 	@Override
 	public void update(Playing playing) {
 		super.update(playing);
-		updateAttackBoxFlip();
+		updateAttackBox();
 	}
 
 	@Override
@@ -127,15 +127,15 @@ public class Longleg extends Enemy {
 	private static int GetSpriteAmount(EnemyState state) {
 		switch (state) {
 		case IDLE:
-			return 6;
+			return 4;
 		case RUNNING:
-			return 6;
+			return 8;
 		case ATTACK:
-			return 6;
+			return 7;
 		case HIT:
-			return 6;
+			return 7;
 		case DEAD:
-			return 6;
+			return 7;
 		}
 		return 0;
 	}
@@ -148,8 +148,8 @@ public class Longleg extends Enemy {
 	public void scale() {
 		super.scale();
 		initDraw(LonglegCts.SPRITE_WIDTH, LonglegCts.SPRITE_HEIGHT, LonglegCts.DRAW_OFFSET_X, LonglegCts.DRAW_OFFSET_Y);
-		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_WIDTH);
+		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_HEIGHT);
 		initAttackBox(LonglegCts.ATTACK_HITBOX_WIDTH, LonglegCts.ATTACK_HITBOX_HEIGHT,
-				LonglegCts.ATTACK_HITBOX_OFFSET_X);
+				LonglegCts.ATTACK_HITBOX_OFFSET_X, LonglegCts.ATTACK_HITBOX_OFFSET_Y);
 	}
 }

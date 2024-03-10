@@ -25,13 +25,12 @@ public class Player extends Entity {
 	private boolean moving = false, attacking = false;
 	private boolean left, right, jump;
 
+	private double xSpeed;
 	private double jumpSpeed;
 	private double fallSpeedAfterCollision;
 
 	private Playing playing;
 	private PlayerState state;
-
-	private int tileY = 0;
 
 	private boolean powerAttackActive;
 	private int powerAttackTick;
@@ -48,7 +47,8 @@ public class Player extends Entity {
 		this.fallSpeedAfterCollision = AppStage.Scale(0.5);
 		initDraw(PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT, PlayerCts.DRAW_OFFSET_X, PlayerCts.DRAW_OFFSET_Y);
 		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
-		initAttackBox(PlayerCts.ATTACK_HITBOX_WIDTH, PlayerCts.ATTACK_HITBOX_HEIGHT, PlayerCts.ATTACK_HITBOX_OFFSET_X);
+		initAttackBox(PlayerCts.ATTACK_HITBOX_WIDTH, PlayerCts.ATTACK_HITBOX_HEIGHT, PlayerCts.ATTACK_HITBOX_OFFSET_X,
+				PlayerCts.ATTACK_HITBOX_OFFSET_Y);
 	}
 
 	public void setPlaying(Playing playing) {
@@ -56,8 +56,8 @@ public class Player extends Entity {
 	}
 
 	@Override
-	protected void initAttackBox(int w, int h, int attackBoxOffsetX) {
-		super.initAttackBox(w, h, attackBoxOffsetX);
+	protected void initAttackBox(int w, int h, int attackBoxOffsetX, int attackBoxOffsetY) {
+		super.initAttackBox(w, h, attackBoxOffsetX, attackBoxOffsetY);
 		resetAttackBox();
 	}
 
@@ -82,7 +82,6 @@ public class Player extends Entity {
 			checkPotionTouched();
 			checkSpikesTouched();
 			checkInsideWater();
-			tileY = (int) (hitbox.getMinY() / AppStage.GetTileSize());
 			if (powerAttackActive) {
 				powerAttackTick++;
 				if (powerAttackTick >= 35) {
@@ -268,7 +267,24 @@ public class Player extends Entity {
 				if ((!left && !right) || (right && left))
 					return;
 
-		double xSpeed = 0;
+		updateXSpeed();
+
+		LevelData levelData = playing.getLevelData();
+		if (!inAir)
+			if (!IsEntityOnFloor(hitbox, levelData))
+				inAir = true;
+
+		if (inAir && !powerAttackActive) {
+			updatePosOnAir();
+		} else {
+			updateXPos();
+		}
+
+		moving = true;
+	}
+
+	private double updateXSpeed() {
+		xSpeed = 0;
 
 		if (left && !right) {
 			xSpeed -= walkSpeed;
@@ -287,33 +303,64 @@ public class Player extends Entity {
 
 			xSpeed *= 3;
 		}
+		return xSpeed;
+	}
 
+	private void updatePosOnAir() {
 		LevelData levelData = playing.getLevelData();
-		if (!inAir)
-			if (!IsEntityOnFloor(hitbox, levelData))
-				inAir = true;
+		boolean canMoveY = CanMoveHere(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
+				hitbox.getHeight(), levelData);
+		boolean canMoveX = CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(),
+				hitbox.getHeight(), levelData);
 
-		if (inAir && !powerAttackActive) {
-			if (CanMoveHere(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(), hitbox.getHeight(),
-					levelData)) {
-				hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
-						hitbox.getHeight());
-				airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
-				updateXPos(xSpeed);
-			} else {
-				hitbox = new Rectangle2D(hitbox.getMinX(), GetEntityMinYNextToPlane(hitbox, airSpeed),
-						hitbox.getWidth(), hitbox.getHeight());
-				if (airSpeed > 0) {
-					resetInAir();
-				} else {
-					airSpeed = fallSpeedAfterCollision;
-				}
-				updateXPos(xSpeed);
-			}
-		} else {
-			updateXPos(xSpeed);
+		if (canMoveY && canMoveX) {
+			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY() + airSpeed, hitbox.getWidth(),
+					hitbox.getHeight());
+			airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
+			return;
 		}
-		moving = true;
+
+		if (canMoveY) {
+			hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), hitbox.getMinY() + airSpeed,
+					hitbox.getWidth(), hitbox.getHeight());
+			airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
+			resetPowerAttack();
+			return;
+		}
+
+		if (canMoveX) {
+			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, GetEntityMinYNextToPlane(hitbox, airSpeed),
+					hitbox.getWidth(), hitbox.getHeight());
+			airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
+			if (airSpeed > 0) {
+				resetInAir();
+			} else {
+				airSpeed = fallSpeedAfterCollision;
+			}
+			return;
+		}
+
+		hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), GetEntityMinYNextToPlane(hitbox, airSpeed),
+				hitbox.getWidth(), hitbox.getHeight());
+		if (airSpeed > 0) {
+			resetInAir();
+		} else {
+			airSpeed = fallSpeedAfterCollision;
+		}
+		resetPowerAttack();
+	}
+
+	private void updateXPos() {
+		LevelData levelData = playing.getLevelData();
+		if (CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(),
+				levelData)) {
+			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(),
+					hitbox.getHeight());
+		} else {
+			hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), hitbox.getMinY(), hitbox.getWidth(),
+					hitbox.getHeight());
+			resetPowerAttack();
+		}
 	}
 
 	private void jump() {
@@ -324,25 +371,16 @@ public class Player extends Entity {
 		airSpeed = jumpSpeed;
 	}
 
+	private void resetPowerAttack() {
+		if (powerAttackActive) {
+			powerAttackActive = false;
+			powerAttackTick = 0;
+		}
+	}
+
 	private void resetInAir() {
 		inAir = false;
 		airSpeed = 0;
-	}
-
-	private void updateXPos(double xSpeed) {
-		LevelData levelData = playing.getLevelData();
-		if (CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(),
-				levelData)) {
-			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(),
-					hitbox.getHeight());
-		} else {
-			hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), hitbox.getMinY(), hitbox.getWidth(),
-					hitbox.getHeight());
-			if (powerAttackActive) {
-				powerAttackActive = false;
-				powerAttackTick = 0;
-			}
-		}
 	}
 
 	public void changeHealth(int value) {
@@ -433,10 +471,6 @@ public class Player extends Entity {
 			changeWalkDir(DirectionCts.LEFT);
 	}
 
-	public int getTileY() {
-		return tileY;
-	}
-
 	public void powerAttack() {
 		if (powerAttackActive)
 			return;
@@ -489,6 +523,7 @@ public class Player extends Entity {
 		this.fallSpeedAfterCollision = AppStage.Scale(0.5);
 		initDraw(PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT, PlayerCts.DRAW_OFFSET_X, PlayerCts.DRAW_OFFSET_Y);
 		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
-		initAttackBox(PlayerCts.ATTACK_HITBOX_WIDTH, PlayerCts.ATTACK_HITBOX_HEIGHT, PlayerCts.ATTACK_HITBOX_OFFSET_X);
+		initAttackBox(PlayerCts.ATTACK_HITBOX_WIDTH, PlayerCts.ATTACK_HITBOX_HEIGHT, PlayerCts.ATTACK_HITBOX_OFFSET_X,
+				PlayerCts.ATTACK_HITBOX_OFFSET_Y);
 	}
 }

@@ -19,7 +19,8 @@ public class Titan extends Enemy {
 		super(spawn, EntityCts.TITAN);
 		initDraw(TitanCts.SPRITE_WIDTH, TitanCts.SPRITE_HEIGHT, TitanCts.DRAW_OFFSET_X, TitanCts.DRAW_OFFSET_Y);
 		initHitbox(TitanCts.HITBOX_WIDTH, TitanCts.HITBOX_WIDTH);
-		initAttackBox(TitanCts.ATTACK_HITBOX_WIDTH, TitanCts.ATTACK_HITBOX_HEIGHT, TitanCts.ATTACK_HITBOX_OFFSET_X);
+		initAttackBox(TitanCts.ATTACK_HITBOX_WIDTH, TitanCts.ATTACK_HITBOX_HEIGHT, TitanCts.ATTACK_HITBOX_OFFSET_X,
+				TitanCts.ATTACK_HITBOX_OFFSET_Y);
 	}
 
 	@Override
@@ -148,6 +149,7 @@ public class Titan extends Enemy {
 		super.scale();
 		initDraw(TitanCts.SPRITE_WIDTH, TitanCts.SPRITE_HEIGHT, TitanCts.DRAW_OFFSET_X, TitanCts.DRAW_OFFSET_Y);
 		initHitbox(TitanCts.HITBOX_WIDTH, TitanCts.HITBOX_WIDTH);
-		initAttackBox(TitanCts.ATTACK_HITBOX_WIDTH, TitanCts.ATTACK_HITBOX_HEIGHT, TitanCts.ATTACK_HITBOX_OFFSET_X);
+		initAttackBox(TitanCts.ATTACK_HITBOX_WIDTH, TitanCts.ATTACK_HITBOX_HEIGHT, TitanCts.ATTACK_HITBOX_OFFSET_X,
+				TitanCts.ATTACK_HITBOX_OFFSET_Y);
 	}
 }

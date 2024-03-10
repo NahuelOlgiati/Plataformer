@@ -72,12 +72,12 @@ public class HelpMethods {
 	}
 
 	private static double GetEntityMinXNextRightWall(Rectangle2D hitbox) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMinX()/* + hitbox.getWidth() / 2 */) + 1;
+		int currentTile = AppStage.GetTilesIn(hitbox.getMinX() + hitbox.getWidth() / 2) + 1;
 		return currentTile * AppStage.GetTileSize() - hitbox.getWidth() - 1;
 	}
 
 	private static double GetEntityMinXNextLeftWall(Rectangle2D hitbox) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMinX()/* + hitbox.getWidth() / 2 */);
+		int currentTile = AppStage.GetTilesIn(hitbox.getMinX() + hitbox.getWidth() / 2);
 		return currentTile * AppStage.GetTileSize() + 1;
 	}
 
@@ -92,12 +92,12 @@ public class HelpMethods {
 	}
 
 	private static double GetEntityMinYUnderRoof(Rectangle2D hitbox) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMinY()/* + hitbox.getHeight() / 2 */);
+		int currentTile = AppStage.GetTilesIn(hitbox.getMinY() + hitbox.getHeight() / 2);
 		return currentTile * AppStage.GetTileSize() + 1;
 	}
 
 	private static double GetEntityMinYAboveFloor(Rectangle2D hitbox) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMinY()/* + hitbox.getHeight() / 2 */) + 1;
+		int currentTile = AppStage.GetTilesIn(hitbox.getMinY() + hitbox.getHeight() / 2) + 1;
 		return currentTile * AppStage.GetTileSize() - hitbox.getHeight() - 1;
 	}
 
@@ -126,15 +126,15 @@ public class HelpMethods {
 		return true;
 	}
 
-	public static boolean CanCannonSeePlayer(LevelData levelData, Rectangle2D firstHitbox, Rectangle2D secondHitbox,
+	public static boolean CanCannonSeePlayer(LevelData levelData, Rectangle2D playerBox, Rectangle2D cannonBox,
 			int yTile) {
-		int firstXTile = AppStage.GetTilesIn(firstHitbox.getMinX());
-		int secondXTile = AppStage.GetTilesIn(secondHitbox.getMinX());
+		int playerXTile = AppStage.GetTilesIn(playerBox.getMinX() + playerBox.getWidth() / 2);
+		int cannonXTile = AppStage.GetTilesIn(cannonBox.getMinX());
 
-		if (firstXTile > secondXTile) {
-			return IsAllTilesClear(secondXTile, firstXTile, yTile, levelData);
+		if (playerXTile > cannonXTile) {
+			return IsAllTilesClear(cannonXTile, playerXTile, yTile, levelData);
 		} else {
-			return IsAllTilesClear(firstXTile, secondXTile, yTile, levelData);
+			return IsAllTilesClear(playerXTile, cannonXTile, yTile, levelData);
 		}
 	}
 
@@ -154,19 +154,23 @@ public class HelpMethods {
 		return true;
 	}
 
+	public static boolean CanSeePlayer(LevelData levelData, Rectangle2D playerBox, int yTile) {
+		return AppStage.GetTilesIn(playerBox.getMinY() + playerBox.getHeight() / 2) == yTile;
+	}
+
 	public static boolean IsSightClear(LevelData levelData, Rectangle2D enemyBox, Rectangle2D playerBox, int yTile) {
-		int firstXTile = AppStage.GetTilesIn(enemyBox.getMinX());
+		int enemyXTile = AppStage.GetTilesIn(enemyBox.getMinX());
 
-		int secondXTile;
+		int playerXTile;
 		if (IsSolid(playerBox.getMinX(), playerBox.getMinY() + playerBox.getHeight(), 0, 1, levelData))
-			secondXTile = AppStage.GetTilesIn(playerBox.getMinX());
+			playerXTile = AppStage.GetTilesIn(playerBox.getMinX());
 		else
-			secondXTile = AppStage.GetTilesIn(playerBox.getMinX() + playerBox.getWidth());
+			playerXTile = AppStage.GetTilesIn(playerBox.getMinX() + playerBox.getWidth());
 
-		if (firstXTile > secondXTile) {
-			return IsAllTilesWalkable(secondXTile, firstXTile, yTile, levelData);
+		if (enemyXTile > playerXTile) {
+			return IsAllTilesWalkable(playerXTile, enemyXTile, yTile, levelData);
 		} else {
-			return IsAllTilesWalkable(firstXTile, secondXTile, yTile, levelData);
+			return IsAllTilesWalkable(enemyXTile, playerXTile, yTile, levelData);
 		}
 	}
 
