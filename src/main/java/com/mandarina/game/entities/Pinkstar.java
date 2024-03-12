@@ -1,8 +1,8 @@
 package com.mandarina.game.entities;
 
-import static com.mandarina.utilz.HelpMethods.CanMoveHere;
-import static com.mandarina.utilz.HelpMethods.IsEntityOnFloor;
-import static com.mandarina.utilz.HelpMethods.IsFloor;
+import static com.mandarina.utilz.SmallerThanTile.CanMoveHere;
+import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
+import static com.mandarina.utilz.SmallerThanTile.IsFloor;
 
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameCts;

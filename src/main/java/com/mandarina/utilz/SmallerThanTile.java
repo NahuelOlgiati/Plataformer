@@ -5,7 +5,7 @@ import com.mandarina.main.AppStage;
 
 import javafx.geometry.Rectangle2D;
 
-public class HelpMethods {
+public class SmallerThanTile {
 
 	public static boolean CanMoveHere(double x, double y, double width, double height, LevelData levelData) {
 		if (!IsSolid(x, y, levelData))
@@ -31,7 +31,7 @@ public class HelpMethods {
 		return IsTileSolid(xIndex, yIndex, levelData);
 	}
 
-	private static boolean IsSolid(double x, double y, int xTiles, int yTiles, LevelData levelData) {
+	public static boolean IsSolid(double x, double y, int xTiles, int yTiles, LevelData levelData) {
 		double maxHeight = levelData.getLevel().getHeight();
 		if (y < 0 || y >= maxHeight)
 			return true;
@@ -47,8 +47,8 @@ public class HelpMethods {
 	}
 
 	public static boolean IsEntityInWater(Rectangle2D hitbox, LevelData levelData) {
-		return IsEntityInWater(hitbox.getMinX(), hitbox.getMinY() + hitbox.getHeight(), levelData) || IsEntityInWater(
-				hitbox.getMinX() + hitbox.getWidth(), hitbox.getMinY() + hitbox.getHeight(), levelData);
+		return IsEntityInWater(hitbox.getMinX(), hitbox.getMaxY(), levelData)
+				|| IsEntityInWater(hitbox.getMaxX(), hitbox.getMaxY(), levelData);
 	}
 
 	private static boolean IsEntityInWater(double xPos, double yPos, LevelData levelData) {
@@ -61,49 +61,25 @@ public class HelpMethods {
 		return levelData.getIsSolid()[yTile][xTile];
 	}
 
-	public static double GetEntityMinXNextToWall(Rectangle2D hitbox, double xSpeed) {
-		if (xSpeed > 0) {
-			// Right
-			return GetEntityMinXNextRightWall(hitbox);
-		} else {
-			// Left
-			return GetEntityMinXNextLeftWall(hitbox);
+	public static boolean IsEntityOnFloor(Rectangle2D hitbox, double xSpeed, double airSpeed, LevelData levelData) {
+		if (IsSolid(hitbox.getMinX() + xSpeed, hitbox.getMaxY() + airSpeed, 0, 1, levelData)
+				|| IsSolid(hitbox.getMaxX() + xSpeed, hitbox.getMaxY() + airSpeed, 0, 1, levelData)) {
+			return true;
 		}
+		return false;
 	}
 
-	private static double GetEntityMinXNextRightWall(Rectangle2D hitbox) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMinX() + hitbox.getWidth() / 2) + 1;
-		return currentTile * AppStage.GetTileSize() - hitbox.getWidth() - 1;
-	}
-
-	private static double GetEntityMinXNextLeftWall(Rectangle2D hitbox) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMinX() + hitbox.getWidth() / 2);
-		return currentTile * AppStage.GetTileSize() + 1;
-	}
-
-	public static double GetEntityMinYNextToPlane(Rectangle2D hitbox, double airSpeed) {
-		if (airSpeed > 0) {
-			// Falling - touching floor
-			return GetEntityMinYAboveFloor(hitbox);
-		} else {
-			// Jumping
-			return GetEntityMinYUnderRoof(hitbox);
+	public static boolean IsEntityOnFloor(Rectangle2D hitbox, double xSpeed, LevelData levelData) {
+		if (IsSolid(hitbox.getMinX() + xSpeed, hitbox.getMaxY(), 0, 1, levelData)
+				|| IsSolid(hitbox.getMaxX() + xSpeed, hitbox.getMaxY(), 0, 1, levelData)) {
+			return true;
 		}
-	}
-
-	private static double GetEntityMinYUnderRoof(Rectangle2D hitbox) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMinY() + hitbox.getHeight() / 2);
-		return currentTile * AppStage.GetTileSize() + 1;
-	}
-
-	private static double GetEntityMinYAboveFloor(Rectangle2D hitbox) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMinY() + hitbox.getHeight() / 2) + 1;
-		return currentTile * AppStage.GetTileSize() - hitbox.getHeight() - 1;
+		return false;
 	}
 
 	public static boolean IsEntityOnFloor(Rectangle2D hitbox, LevelData levelData) {
-		if (IsSolid(hitbox.getMinX(), hitbox.getMinY() + hitbox.getHeight(), 0, 1, levelData) || IsSolid(
-				hitbox.getMinX() + hitbox.getWidth(), hitbox.getMinY() + hitbox.getHeight(), 0, 1, levelData)) {
+		if (IsSolid(hitbox.getMinX(), hitbox.getMaxY(), 0, 1, levelData)
+				|| IsSolid(hitbox.getMaxX(), hitbox.getMaxY(), 0, 1, levelData)) {
 			return true;
 		}
 		return false;
@@ -111,16 +87,15 @@ public class HelpMethods {
 
 	public static boolean IsFloor(Rectangle2D hitbox, double xSpeed, LevelData levelData) {
 		if (xSpeed > 0) {
-			return IsSolid(hitbox.getMinX() + hitbox.getWidth() + xSpeed, hitbox.getMinY() + hitbox.getHeight(), 0, 1,
-					levelData);
+			return IsSolid(hitbox.getMaxX() + xSpeed, hitbox.getMaxY(), 0, 1, levelData);
 		} else {
-			return IsSolid(hitbox.getMinX() + xSpeed, hitbox.getMinY() + hitbox.getHeight(), 0, 1, levelData);
+			return IsSolid(hitbox.getMinX() + xSpeed, hitbox.getMaxY(), 0, 1, levelData);
 		}
 	}
 
 	public static boolean IsFloor(Rectangle2D hitbox, LevelData levelData) {
-		if (!IsSolid(hitbox.getMinX() + hitbox.getWidth(), hitbox.getMinY() + hitbox.getHeight(), 0, 1, levelData)
-				|| !IsSolid(hitbox.getMinX(), hitbox.getMinY() + hitbox.getHeight(), 0, 1, levelData)) {
+		if (!IsSolid(hitbox.getMaxX(), hitbox.getMaxY(), 0, 1, levelData)
+				|| !IsSolid(hitbox.getMinX(), hitbox.getMaxY(), 0, 1, levelData)) {
 			return false;
 		}
 		return true;
@@ -162,10 +137,10 @@ public class HelpMethods {
 		int enemyXTile = AppStage.GetTilesIn(enemyBox.getMinX());
 
 		int playerXTile;
-		if (IsSolid(playerBox.getMinX(), playerBox.getMinY() + playerBox.getHeight(), 0, 1, levelData))
+		if (IsSolid(playerBox.getMinX(), playerBox.getMaxY(), 0, 1, levelData))
 			playerXTile = AppStage.GetTilesIn(playerBox.getMinX());
 		else
-			playerXTile = AppStage.GetTilesIn(playerBox.getMinX() + playerBox.getWidth());
+			playerXTile = AppStage.GetTilesIn(playerBox.getMaxX());
 
 		if (enemyXTile > playerXTile) {
 			return IsAllTilesWalkable(playerXTile, enemyXTile, yTile, levelData);

@@ -1,6 +1,6 @@
 package com.mandarina.game.objects;
 
-import static com.mandarina.utilz.HelpMethods.IsSolid;
+import static com.mandarina.utilz.SmallerThanTile.IsSolid;
 
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.GameDrawer;

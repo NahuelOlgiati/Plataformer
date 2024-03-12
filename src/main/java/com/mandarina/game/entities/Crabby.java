@@ -1,6 +1,6 @@
 package com.mandarina.game.entities;
 
-import static com.mandarina.utilz.HelpMethods.IsEntityOnFloor;
+import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
 
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;

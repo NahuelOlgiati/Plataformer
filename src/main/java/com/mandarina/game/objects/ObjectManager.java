@@ -1,6 +1,6 @@
 package com.mandarina.game.objects;
 
-import static com.mandarina.utilz.HelpMethods.CanCannonSeePlayer;
+import static com.mandarina.utilz.SmallerThanTile.CanCannonSeePlayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,11 +1,12 @@
 package com.mandarina.game.entities;
 
-import static com.mandarina.utilz.HelpMethods.CanMoveHere;
-import static com.mandarina.utilz.HelpMethods.GetEntityMinXNextToWall;
-import static com.mandarina.utilz.HelpMethods.GetEntityMinYNextToPlane;
-import static com.mandarina.utilz.HelpMethods.IsEntityInWater;
-import static com.mandarina.utilz.HelpMethods.IsEntityOnFloor;
-import static com.mandarina.utilz.HelpMethods.IsFloor;
+import static com.mandarina.utilz.BiggerThanTile.CanMoveHere;
+import static com.mandarina.utilz.BiggerThanTile.IsFloor;
+import static com.mandarina.utilz.PositionUtil.GetEntityMinXNextToWall;
+import static com.mandarina.utilz.PositionUtil.GetEntityMinYNextToPlane;
+import static com.mandarina.utilz.SmallerThanTile.IsEntityInWater;
+import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
+import static com.mandarina.utilz.SmallerThanTile.IsFloor;
 
 import com.mandarina.game.audio.AudioPlayer;
 import com.mandarina.game.gamestates.Playing;
@@ -13,6 +14,7 @@ import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.BiggerThanTile;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Point2D;
@@ -120,8 +122,8 @@ public class Player extends Entity {
 
 			// Fall if in air
 			if (inAir) {
-				if (CanMoveHere(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(), hitbox.getHeight(),
-						levelData)) {
+				if (CanMoveHere(hitbox, 0, airSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS,
+						PlayerCts.HITBOX_VERTICAL_CHECKS, levelData)) {
 					hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
 							hitbox.getHeight());
 					airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
@@ -308,10 +310,10 @@ public class Player extends Entity {
 
 	private void updatePosOnAir() {
 		LevelData levelData = playing.getLevelData();
-		boolean canMoveY = CanMoveHere(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
-				hitbox.getHeight(), levelData);
-		boolean canMoveX = CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(),
-				hitbox.getHeight(), levelData);
+		boolean canMoveY = CanMoveHere(hitbox, 0, airSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS,
+				PlayerCts.HITBOX_VERTICAL_CHECKS, levelData);
+		boolean canMoveX = CanMoveHere(hitbox, xSpeed, 0, PlayerCts.HITBOX_HORIZONTAL_CHECKS,
+				PlayerCts.HITBOX_VERTICAL_CHECKS, levelData);
 
 		if (canMoveY && canMoveX) {
 			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY() + airSpeed, hitbox.getWidth(),
@@ -331,8 +333,7 @@ public class Player extends Entity {
 		if (canMoveX) {
 			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, GetEntityMinYNextToPlane(hitbox, airSpeed),
 					hitbox.getWidth(), hitbox.getHeight());
-			airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
-			if (airSpeed > 0) {
+			if (airSpeed > 0 || BiggerThanTile.IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, levelData)) {
 				resetInAir();
 			} else {
 				airSpeed = fallSpeedAfterCollision;
@@ -342,7 +343,7 @@ public class Player extends Entity {
 
 		hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), GetEntityMinYNextToPlane(hitbox, airSpeed),
 				hitbox.getWidth(), hitbox.getHeight());
-		if (airSpeed > 0) {
+		if (airSpeed > 0 || IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_VERTICAL_CHECKS, levelData)) {
 			resetInAir();
 		} else {
 			airSpeed = fallSpeedAfterCollision;
@@ -352,7 +353,7 @@ public class Player extends Entity {
 
 	private void updateXPos() {
 		LevelData levelData = playing.getLevelData();
-		if (CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(),
+		if (CanMoveHere(hitbox, xSpeed, 0, PlayerCts.HITBOX_HORIZONTAL_CHECKS, PlayerCts.HITBOX_VERTICAL_CHECKS,
 				levelData)) {
 			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(),
 					hitbox.getHeight());
@@ -455,7 +456,7 @@ public class Player extends Entity {
 		playing.getStatusBar().resetPower();
 
 		toSpawn();
-		hitbox = new Rectangle2D(x, y, hitbox.getWidth(), hitbox.getHeight());
+		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
 		resetAttackBox();
 
 		LevelData levelData = playing.getLevelData();

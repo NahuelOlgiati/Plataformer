@@ -1,5 +1,7 @@
 package com.mandarina.game.entities;
 
+import com.mandarina.game.main.GameCts;
+
 public class PlayerCts {
 	public static final int HEALTH = 100;
 	public static final int DAMAGE = 20;
@@ -11,6 +13,8 @@ public class PlayerCts {
 
 	public static final int HITBOX_WIDTH = 25;
 	public static final int HITBOX_HEIGHT = 38;
+	public static final int HITBOX_HORIZONTAL_CHECKS = HITBOX_WIDTH / GameCts.TILES_DEFAULT_SIZE;
+	public static final int HITBOX_VERTICAL_CHECKS = HITBOX_HEIGHT / GameCts.TILES_DEFAULT_SIZE;
 
 	public static final int ATTACK_HITBOX_WIDTH = 35;
 	public static final int ATTACK_HITBOX_HEIGHT = 20;

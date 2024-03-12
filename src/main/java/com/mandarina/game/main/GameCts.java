@@ -9,6 +9,6 @@ public class GameCts {
 	public final static double GAME_WIDTH_DEFAULT = GameCts.TILES_DEFAULT_SIZE * GameCts.TILES_IN_WIDTH;
 	public final static double GAME_HEIGHT_DEFAULT = GameCts.TILES_DEFAULT_SIZE * GameCts.TILES_IN_HEIGHT;
 	public final static int ANI_SPEED = 25;
-	public final static double GRAVITY_DEFAULT = 0.04f;
+	public final static double GRAVITY_DEFAULT = 0.03f;
 
 }

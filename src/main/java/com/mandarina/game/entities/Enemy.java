@@ -1,12 +1,12 @@
 package com.mandarina.game.entities;
 
-import static com.mandarina.utilz.HelpMethods.CanMoveHere;
-import static com.mandarina.utilz.HelpMethods.CanSeePlayer;
-import static com.mandarina.utilz.HelpMethods.GetEntityMinYNextToPlane;
-import static com.mandarina.utilz.HelpMethods.IsEntityInWater;
-import static com.mandarina.utilz.HelpMethods.IsEntityOnFloor;
-import static com.mandarina.utilz.HelpMethods.IsFloor;
-import static com.mandarina.utilz.HelpMethods.IsSightClear;
+import static com.mandarina.utilz.PositionUtil.GetEntityMinYNextToPlane;
+import static com.mandarina.utilz.SmallerThanTile.CanMoveHere;
+import static com.mandarina.utilz.SmallerThanTile.CanSeePlayer;
+import static com.mandarina.utilz.SmallerThanTile.IsEntityInWater;
+import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
+import static com.mandarina.utilz.SmallerThanTile.IsFloor;
+import static com.mandarina.utilz.SmallerThanTile.IsSightClear;
 
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.LevelData;
