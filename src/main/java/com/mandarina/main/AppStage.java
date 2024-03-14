@@ -80,6 +80,7 @@ public class AppStage {
 				GameState.getGame().scale();
 //				GameState.setState(currentState);
 				GameState.getGame().show();
+				GameState.getGame().getPlaying().resetAll(); // TODO
 				GameState.getGame().start();
 				widthSet = false;
 				heightSet = false;
@@ -142,7 +143,7 @@ public class AppStage {
 	public static int GetTilesIn(double value) {
 		return (int) (value / AppStage.GetTileSize());
 	}
-	
+
 	public static int[] GetTilesIn(double min, double size) {
 		int startTile = GetTilesIn(min);
 		int endTile = GetTilesIn(min + size);
@@ -151,6 +152,10 @@ public class AppStage {
 			tiles[i] = startTile + i;
 		}
 		return tiles;
+	}
+
+	public static float getGameScale() {
+		return gameScale;
 	}
 
 	public static int Scale(int value) {

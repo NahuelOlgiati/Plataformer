@@ -62,9 +62,9 @@ public abstract class Entity {
 	}
 
 	protected void initHitbox(int width, int height) {
-		hitbox = new Rectangle2D(x, y, AppStage.Scale(width), AppStage.Scale(height));
-		hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() - AppStage.Scale(height), AppStage.Scale(width),
-				AppStage.Scale(height));
+		int heightScaled = AppStage.Scale(height);
+		int widthScale = AppStage.Scale(width);
+		hitbox = new Rectangle2D(x, y - heightScaled, widthScale, heightScaled);
 	}
 
 	protected void initAttackBox(int w, int h, int attackBoxOffsetX, int attackBoxOffsetY) {

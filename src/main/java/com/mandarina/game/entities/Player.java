@@ -334,7 +334,7 @@ public class Player extends Entity {
 		if (canMoveX) {
 			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, GetEntityMinYNextToPlane(hitbox, airSpeed),
 					hitbox.getWidth(), hitbox.getHeight());
-			if (airSpeed > 0 || BiggerThanTile.IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, levelData)) {
+			if (airSpeed > 0 || IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, levelData)) {
 				resetInAir();
 			} else {
 				airSpeed = fallSpeedAfterCollision;
@@ -344,7 +344,7 @@ public class Player extends Entity {
 
 		hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), GetEntityMinYNextToPlane(hitbox, airSpeed),
 				hitbox.getWidth(), hitbox.getHeight());
-		if (airSpeed > 0 || IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_VERTICAL_CHECKS, levelData)) {
+		if (airSpeed > 0 || IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, levelData)) {
 			resetInAir();
 		} else {
 			airSpeed = fallSpeedAfterCollision;

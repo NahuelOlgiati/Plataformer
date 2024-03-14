@@ -14,6 +14,8 @@ import javafx.scene.image.Image;
 
 public class Longleg extends Enemy {
 
+	private double xSpeed;
+
 	public Longleg(Point2D spawn) {
 		super(spawn, EntityCts.LONGLEG);
 		initDraw(LonglegCts.SPRITE_WIDTH, LonglegCts.SPRITE_HEIGHT, LonglegCts.DRAW_OFFSET_X, LonglegCts.DRAW_OFFSET_Y);
@@ -39,7 +41,7 @@ public class Longleg extends Enemy {
 		else {
 			switch (state) {
 			case IDLE:
-				if (IsFloor(hitbox, airSpeed, LonglegCts.HITBOX_VERTICAL_CHECKS, levelData))
+				if (IsFloor(hitbox, xSpeed, LonglegCts.HITBOX_HORIZONTAL_CHECKS, levelData))
 					newState(EnemyState.RUNNING);
 				else
 					inAir = true;
@@ -86,7 +88,7 @@ public class Longleg extends Enemy {
 	protected int getMaxHealth() {
 		return LonglegCts.HEALTH;
 	}
-	
+
 	@Override
 	public void resetEnemy() {
 		super.resetEnemy();
@@ -109,12 +111,7 @@ public class Longleg extends Enemy {
 
 	private void attackMove(Playing playing) {
 		var levelData = playing.getLevelData();
-		double xSpeed = 0;
-
-		if (walkDir == DirectionCts.LEFT)
-			xSpeed = -walkSpeed;
-		else
-			xSpeed = walkSpeed;
+		updateXSpeed();
 
 		if (CanMoveHere(hitbox, xSpeed, airSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, PlayerCts.HITBOX_VERTICAL_CHECKS,
 				levelData)) {
@@ -127,6 +124,14 @@ public class Longleg extends Enemy {
 
 		newState(EnemyState.IDLE);
 		playing.getObjectManager().addDialogue((int) hitbox.getMinX(), (int) hitbox.getMinY(), DialogueCts.EXCLAMATION);
+	}
+
+	private void updateXSpeed() {
+		xSpeed = 0;
+		if (walkDir == DirectionCts.LEFT)
+			xSpeed = -walkSpeed;
+		else
+			xSpeed = walkSpeed;
 	}
 
 	private static int GetSpriteAmount(EnemyState state) {

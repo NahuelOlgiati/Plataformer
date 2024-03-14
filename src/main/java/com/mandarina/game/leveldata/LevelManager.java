@@ -55,20 +55,20 @@ public class LevelManager implements LayerDrawer {
 
 	@Override
 	public void drawL1(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-//		this.background.draw(g, lvlOffsetX, lvlOffsetY);
-//		this.backgroundCloud.draw(g, lvlOffsetX, lvlOffsetY);
-//		getCurrentLevel().getLevelData().drawL1(g, lvlOffsetX, lvlOffsetY);
-		this.offsetChange = this.lastLvlOffsetX != lvlOffsetX || this.lastLvlOffsetY != lvlOffsetY;
-		if (offsetChange) {
-			this.background.draw(g, lvlOffsetX, lvlOffsetY);
-			this.backgroundCloud.draw(g, lvlOffsetX, lvlOffsetY);
-			getCurrentLevel().getLevelData().drawL1(g, lvlOffsetX, lvlOffsetY);
-			this.snapshot = g.getSnapshot();
-			this.lastLvlOffsetX = lvlOffsetX;
-			this.lastLvlOffsetY = lvlOffsetY;
-		} else {
-			g.drawImage(snapshot, 0, 0, snapshot.getWidth(), snapshot.getHeight());
-		}
+		this.background.draw(g, lvlOffsetX, lvlOffsetY);
+		this.backgroundCloud.draw(g, lvlOffsetX, lvlOffsetY);
+		getCurrentLevel().getLevelData().drawL1(g, lvlOffsetX, lvlOffsetY);
+//		this.offsetChange = this.lastLvlOffsetX != lvlOffsetX || this.lastLvlOffsetY != lvlOffsetY;
+//		if (offsetChange) {
+//			this.background.draw(g, lvlOffsetX, lvlOffsetY);
+//			this.backgroundCloud.draw(g, lvlOffsetX, lvlOffsetY);
+//			getCurrentLevel().getLevelData().drawL1(g, lvlOffsetX, lvlOffsetY);
+//			this.snapshot = g.getSnapshot();
+//			this.lastLvlOffsetX = lvlOffsetX;
+//			this.lastLvlOffsetY = lvlOffsetY;
+//		} else {
+//			g.drawImage(snapshot, 0, 0, snapshot.getWidth(), snapshot.getHeight());
+//		}
 	}
 
 	@Override
