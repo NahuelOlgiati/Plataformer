@@ -28,6 +28,8 @@ public abstract class Entity {
 	protected double airSpeed;
 	protected boolean inAir;
 
+	protected int tileY;
+
 	protected Rectangle2D hitbox;
 
 	protected Rectangle2D attackBox;
@@ -94,6 +96,10 @@ public abstract class Entity {
 					hitbox.getMinX() + hitbox.getWidth() - attackBox.getWidth() - attackBoxOffsetX * flipW(),
 					hitbox.getMinY() - attackBoxOffsetY, attackBox.getWidth(), attackBox.getHeight());
 		}
+	}
+
+	protected void updateTileY() {
+		tileY = AppStage.GetTilesIn(hitbox.getMaxY());
 	}
 
 	protected void changeWalkDir() {
@@ -167,6 +173,10 @@ public abstract class Entity {
 
 	public Rectangle2D getHitbox() {
 		return hitbox;
+	}
+
+	public int getTileY() {
+		return tileY;
 	}
 
 	public int getAniIndex() {

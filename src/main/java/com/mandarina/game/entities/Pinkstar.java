@@ -26,8 +26,8 @@ public class Pinkstar extends Enemy {
 		initDraw(PinkstarCts.SPRITE_WIDTH, PinkstarCts.SPRITE_HEIGHT, PinkstarCts.DRAW_OFFSET_X,
 				PinkstarCts.DRAW_OFFSET_Y);
 		initHitbox(PinkstarCts.HITBOX_WIDTH, PinkstarCts.HITBOX_HEIGHT);
-		initAttackBox(PinkstarCts.ATTACK_HITBOX_WIDTH, PinkstarCts.ATTACK_HITBOX_HEIGHT,
-				PinkstarCts.ATTACK_HITBOX_OFFSET_X, PinkstarCts.ATTACK_HITBOX_OFFSET_Y);
+		initAttackBox(PinkstarCts.ATTACKBOX_WIDTH, PinkstarCts.ATTACKBOX_HEIGHT, PinkstarCts.ATTACKBOX_OFFSET_X,
+				PinkstarCts.ATTACKBOX_OFFSET_Y);
 	}
 
 	@Override
@@ -206,7 +206,7 @@ public class Pinkstar extends Enemy {
 		initDraw(PinkstarCts.SPRITE_WIDTH, PinkstarCts.SPRITE_HEIGHT, PinkstarCts.DRAW_OFFSET_X,
 				PinkstarCts.DRAW_OFFSET_Y);
 		initHitbox(PinkstarCts.HITBOX_WIDTH, PinkstarCts.HITBOX_HEIGHT);
-		initAttackBox(PinkstarCts.ATTACK_HITBOX_WIDTH, PinkstarCts.ATTACK_HITBOX_HEIGHT,
-				PinkstarCts.ATTACK_HITBOX_OFFSET_X, PinkstarCts.ATTACK_HITBOX_OFFSET_Y);
+		initAttackBox(PinkstarCts.ATTACKBOX_WIDTH, PinkstarCts.ATTACKBOX_HEIGHT, PinkstarCts.ATTACKBOX_OFFSET_X,
+				PinkstarCts.ATTACKBOX_OFFSET_Y);
 	}
 }

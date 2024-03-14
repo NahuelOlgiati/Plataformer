@@ -8,6 +8,8 @@ import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.utilz.LoadSave;
 
+import javafx.scene.image.WritableImage;
+
 public class LevelManager implements LayerDrawer {
 
 	private Playing playing;
@@ -17,6 +19,11 @@ public class LevelManager implements LayerDrawer {
 
 	private Background background;
 	private BackgroundCloud backgroundCloud;
+
+	private boolean offsetChange = false;
+	private double lastLvlOffsetX = -1;
+	private double lastLvlOffsetY = -1;
+	private WritableImage snapshot = null;
 
 	public LevelManager(Playing playing) {
 		this.playing = playing;
@@ -48,9 +55,20 @@ public class LevelManager implements LayerDrawer {
 
 	@Override
 	public void drawL1(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		this.background.draw(g, lvlOffsetX, lvlOffsetY);
-		this.backgroundCloud.draw(g, lvlOffsetX, lvlOffsetY);
-		getCurrentLevel().getLevelData().drawL1(g, lvlOffsetX, lvlOffsetY);
+//		this.background.draw(g, lvlOffsetX, lvlOffsetY);
+//		this.backgroundCloud.draw(g, lvlOffsetX, lvlOffsetY);
+//		getCurrentLevel().getLevelData().drawL1(g, lvlOffsetX, lvlOffsetY);
+		this.offsetChange = this.lastLvlOffsetX != lvlOffsetX || this.lastLvlOffsetY != lvlOffsetY;
+		if (offsetChange) {
+			this.background.draw(g, lvlOffsetX, lvlOffsetY);
+			this.backgroundCloud.draw(g, lvlOffsetX, lvlOffsetY);
+			getCurrentLevel().getLevelData().drawL1(g, lvlOffsetX, lvlOffsetY);
+			this.snapshot = g.getSnapshot();
+			this.lastLvlOffsetX = lvlOffsetX;
+			this.lastLvlOffsetY = lvlOffsetY;
+		} else {
+			g.drawImage(snapshot, 0, 0, snapshot.getWidth(), snapshot.getHeight());
+		}
 	}
 
 	@Override

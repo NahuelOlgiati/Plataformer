@@ -12,10 +12,10 @@ public class PinkstarCts {
 	public static final int HITBOX_WIDTH = 17;
 	public static final int HITBOX_HEIGHT = 21;
 
-	public static final int ATTACK_HITBOX_WIDTH = 17;
-	public static final int ATTACK_HITBOX_HEIGHT = 21;
-	public static final int ATTACK_HITBOX_OFFSET_X = 0;
-	public static final int ATTACK_HITBOX_OFFSET_Y = 0;
+	public static final int ATTACKBOX_WIDTH = 17;
+	public static final int ATTACKBOX_HEIGHT = 21;
+	public static final int ATTACKBOX_OFFSET_X = 0;
+	public static final int ATTACKBOX_OFFSET_Y = 0;
 
 	public static final String ATLAS_IMAGE = "pinkstar.png";
 	public static final int ATLAS_SIZE_X = 8;

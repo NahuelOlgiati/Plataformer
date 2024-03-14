@@ -12,10 +12,10 @@ public class CrabbyCts {
 	public static final int HITBOX_WIDTH = 22;
 	public static final int HITBOX_HEIGHT = 19;
 
-	public static final int ATTACK_HITBOX_WIDTH = 82;
-	public static final int ATTACK_HITBOX_HEIGHT = 19;
-	public static final int ATTACK_HITBOX_OFFSET_X = 30;
-	public static final int ATTACK_HITBOX_OFFSET_Y = 0;
+	public static final int ATTACKBOX_WIDTH = 82;
+	public static final int ATTACKBOX_HEIGHT = 19;
+	public static final int ATTACKBOX_OFFSET_X = 30;
+	public static final int ATTACKBOX_OFFSET_Y = 0;
 
 	public static final String ATLAS_IMAGE = "crabby.png";
 	public static final int ATLAS_SIZE_X = 9;

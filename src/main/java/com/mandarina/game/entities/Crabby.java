@@ -17,8 +17,8 @@ public class Crabby extends Enemy {
 		super(spawn, EntityCts.CRABBY);
 		initDraw(CrabbyCts.SPRITE_WIDTH, CrabbyCts.SPRITE_HEIGHT, CrabbyCts.DRAW_OFFSET_X, CrabbyCts.DRAW_OFFSET_Y);
 		initHitbox(CrabbyCts.HITBOX_WIDTH, CrabbyCts.HITBOX_HEIGHT);
-		initAttackBox(CrabbyCts.ATTACK_HITBOX_WIDTH, CrabbyCts.ATTACK_HITBOX_HEIGHT, CrabbyCts.ATTACK_HITBOX_OFFSET_X,
-				CrabbyCts.ATTACK_HITBOX_OFFSET_Y);
+		initAttackBox(CrabbyCts.ATTACKBOX_WIDTH, CrabbyCts.ATTACKBOX_HEIGHT, CrabbyCts.ATTACKBOX_OFFSET_X,
+				CrabbyCts.ATTACKBOX_OFFSET_Y);
 	}
 
 	@Override
@@ -122,7 +122,7 @@ public class Crabby extends Enemy {
 		super.scale();
 		initDraw(CrabbyCts.SPRITE_WIDTH, CrabbyCts.SPRITE_HEIGHT, CrabbyCts.DRAW_OFFSET_X, CrabbyCts.DRAW_OFFSET_Y);
 		initHitbox(CrabbyCts.HITBOX_WIDTH, CrabbyCts.HITBOX_HEIGHT);
-		initAttackBox(CrabbyCts.ATTACK_HITBOX_WIDTH, CrabbyCts.ATTACK_HITBOX_HEIGHT, CrabbyCts.ATTACK_HITBOX_OFFSET_X,
-				CrabbyCts.ATTACK_HITBOX_OFFSET_Y);
+		initAttackBox(CrabbyCts.ATTACKBOX_WIDTH, CrabbyCts.ATTACKBOX_HEIGHT, CrabbyCts.ATTACKBOX_OFFSET_X,
+				CrabbyCts.ATTACKBOX_OFFSET_Y);
 	}
 }

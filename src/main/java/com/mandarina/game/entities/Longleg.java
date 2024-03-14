@@ -1,8 +1,7 @@
 package com.mandarina.game.entities;
 
-import static com.mandarina.utilz.SmallerThanTile.CanMoveHere;
-import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
-import static com.mandarina.utilz.SmallerThanTile.IsFloor;
+import static com.mandarina.utilz.BiggerThanTile.CanMoveHere;
+import static com.mandarina.utilz.BiggerThanTile.IsFloor;
 
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
@@ -19,14 +18,14 @@ public class Longleg extends Enemy {
 		super(spawn, EntityCts.LONGLEG);
 		initDraw(LonglegCts.SPRITE_WIDTH, LonglegCts.SPRITE_HEIGHT, LonglegCts.DRAW_OFFSET_X, LonglegCts.DRAW_OFFSET_Y);
 		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_HEIGHT);
-		initAttackBox(LonglegCts.ATTACK_HITBOX_WIDTH, LonglegCts.ATTACK_HITBOX_HEIGHT,
-				LonglegCts.ATTACK_HITBOX_OFFSET_X, LonglegCts.ATTACK_HITBOX_OFFSET_Y);
+		initAttackBox(LonglegCts.ATTACKBOX_WIDTH, LonglegCts.ATTACKBOX_HEIGHT, LonglegCts.ATTACKBOX_OFFSET_X,
+				LonglegCts.ATTACKBOX_OFFSET_Y);
 	}
 
 	@Override
 	public void update(Playing playing) {
 		super.update(playing);
-		updateAttackBox();
+		updateAttackBoxFlip();
 	}
 
 	@Override
@@ -40,7 +39,7 @@ public class Longleg extends Enemy {
 		else {
 			switch (state) {
 			case IDLE:
-				if (IsEntityOnFloor(hitbox, levelData))
+				if (IsFloor(hitbox, airSpeed, LonglegCts.HITBOX_VERTICAL_CHECKS, levelData))
 					newState(EnemyState.RUNNING);
 				else
 					inAir = true;
@@ -87,6 +86,12 @@ public class Longleg extends Enemy {
 	protected int getMaxHealth() {
 		return LonglegCts.HEALTH;
 	}
+	
+	@Override
+	public void resetEnemy() {
+		super.resetEnemy();
+		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_HEIGHT);
+	}
 
 	private boolean isPlayerCloseForAttack(Player player) {
 		int distance = getCurrentPlayerDistance(player);
@@ -111,9 +116,9 @@ public class Longleg extends Enemy {
 		else
 			xSpeed = walkSpeed;
 
-		if (CanMoveHere(hitbox.getMinX() + xSpeed * 4, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(),
+		if (CanMoveHere(hitbox, xSpeed, airSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, PlayerCts.HITBOX_VERTICAL_CHECKS,
 				levelData)) {
-			if (IsFloor(hitbox, xSpeed * 4, levelData)) {
+			if (IsFloor(hitbox, xSpeed * 4, PlayerCts.HITBOX_VERTICAL_CHECKS, levelData)) {
 				hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed * 4, hitbox.getMinY(), hitbox.getWidth(),
 						hitbox.getHeight());
 				return;
@@ -149,7 +154,7 @@ public class Longleg extends Enemy {
 		super.scale();
 		initDraw(LonglegCts.SPRITE_WIDTH, LonglegCts.SPRITE_HEIGHT, LonglegCts.DRAW_OFFSET_X, LonglegCts.DRAW_OFFSET_Y);
 		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_HEIGHT);
-		initAttackBox(LonglegCts.ATTACK_HITBOX_WIDTH, LonglegCts.ATTACK_HITBOX_HEIGHT,
-				LonglegCts.ATTACK_HITBOX_OFFSET_X, LonglegCts.ATTACK_HITBOX_OFFSET_Y);
+		initAttackBox(LonglegCts.ATTACKBOX_WIDTH, LonglegCts.ATTACKBOX_HEIGHT, LonglegCts.ATTACKBOX_OFFSET_X,
+				LonglegCts.ATTACKBOX_OFFSET_Y);
 	}
 }

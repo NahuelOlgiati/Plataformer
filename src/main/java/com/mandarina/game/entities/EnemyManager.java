@@ -57,8 +57,7 @@ public class EnemyManager implements LayerDrawer {
 	}
 
 	public void resetAllEnemies() {
-		for (Enemy e : currentLevel.getLevelEntities().getEnemys())
-			e.resetEnemy();
+		currentLevel.getLevelEntities().resetAllEnemies();
 	}
 
 	public void scale() {

@@ -129,10 +129,6 @@ public class SmallerThanTile {
 		return true;
 	}
 
-	public static boolean CanSeePlayer(LevelData levelData, Rectangle2D playerBox, int yTile) {
-		return AppStage.GetTilesIn(playerBox.getMinY() + playerBox.getHeight() / 2) == yTile;
-	}
-
 	public static boolean IsSightClear(LevelData levelData, Rectangle2D enemyBox, Rectangle2D playerBox, int yTile) {
 		int enemyXTile = AppStage.GetTilesIn(enemyBox.getMinX());
 

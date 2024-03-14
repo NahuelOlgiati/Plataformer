@@ -2,7 +2,6 @@ package com.mandarina.game.entities;
 
 import static com.mandarina.utilz.PositionUtil.GetEntityMinYNextToPlane;
 import static com.mandarina.utilz.SmallerThanTile.CanMoveHere;
-import static com.mandarina.utilz.SmallerThanTile.CanSeePlayer;
 import static com.mandarina.utilz.SmallerThanTile.IsEntityInWater;
 import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
 import static com.mandarina.utilz.SmallerThanTile.IsFloor;
@@ -21,7 +20,6 @@ import javafx.scene.image.Image;
 public abstract class Enemy extends Entity {
 	protected EnemyState state;
 	protected boolean firstUpdate = true;
-	protected int tileY;
 	protected double attackDistance;
 	protected boolean active = true;
 
@@ -73,7 +71,7 @@ public abstract class Enemy extends Entity {
 			inAir = false;
 			hitbox = new Rectangle2D(hitbox.getMinX(), GetEntityMinYNextToPlane(hitbox, airSpeed), hitbox.getWidth(),
 					hitbox.getHeight());
-			tileY = AppStage.GetTilesIn(hitbox.getMinY());
+			updateTileY();
 		}
 	}
 
@@ -104,7 +102,7 @@ public abstract class Enemy extends Entity {
 	}
 
 	protected boolean canSeePlayer(LevelData levelData, Player player) {
-		if (CanSeePlayer(levelData, player.getHitbox(), tileY))
+		if (player.getTileY() == tileY)
 			if (isPlayerInRange(player)) {
 				if (IsSightClear(levelData, hitbox, player.hitbox, tileY))
 					return true;
@@ -156,7 +154,7 @@ public abstract class Enemy extends Entity {
 		this.walkDir = DirectionCts.LEFT;
 		this.pushBackOffsetDir = DirectionCts.UP;
 		toSpawn();
-		hitbox = new Rectangle2D(x, y, hitbox.getWidth(), hitbox.getHeight());
+//		hitbox = new Rectangle2D(x, y, hitbox.getWidth(), hitbox.getHeight());
 		firstUpdate = true;
 		currentHealth = maxHealth;
 		newState(EnemyState.IDLE);

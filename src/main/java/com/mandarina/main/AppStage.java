@@ -142,6 +142,16 @@ public class AppStage {
 	public static int GetTilesIn(double value) {
 		return (int) (value / AppStage.GetTileSize());
 	}
+	
+	public static int[] GetTilesIn(double min, double size) {
+		int startTile = GetTilesIn(min);
+		int endTile = GetTilesIn(min + size);
+		int[] tiles = new int[endTile - startTile + 1];
+		for (int i = 0; i < tiles.length; i++) {
+			tiles[i] = startTile + i;
+		}
+		return tiles;
+	}
 
 	public static int Scale(int value) {
 		return (int) (value * gameScale);

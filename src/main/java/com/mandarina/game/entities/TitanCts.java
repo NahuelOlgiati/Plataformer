@@ -12,10 +12,10 @@ public class TitanCts {
 	public static final int HITBOX_WIDTH = 18;
 	public static final int HITBOX_HEIGHT = 12;
 
-	public static final int ATTACK_HITBOX_WIDTH = 20;
-	public static final int ATTACK_HITBOX_HEIGHT = 20;
-	public static final int ATTACK_HITBOX_OFFSET_X = 30;
-	public static final int ATTACK_HITBOX_OFFSET_Y = 0;
+	public static final int ATTACKBOX_WIDTH = 20;
+	public static final int ATTACKBOX_HEIGHT = 20;
+	public static final int ATTACKBOX_OFFSET_X = 30;
+	public static final int ATTACKBOX_OFFSET_Y = 0;
 
 	public static final String ATLAS_IMAGE = "titan.png";
 	public static final int ATLAS_SIZE_X = 6;

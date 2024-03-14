@@ -49,8 +49,8 @@ public class Player extends Entity {
 		this.fallSpeedAfterCollision = AppStage.Scale(0.5);
 		initDraw(PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT, PlayerCts.DRAW_OFFSET_X, PlayerCts.DRAW_OFFSET_Y);
 		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
-		initAttackBox(PlayerCts.ATTACK_HITBOX_WIDTH, PlayerCts.ATTACK_HITBOX_HEIGHT, PlayerCts.ATTACK_HITBOX_OFFSET_X,
-				PlayerCts.ATTACK_HITBOX_OFFSET_Y);
+		initAttackBox(PlayerCts.ATTACKBOX_WIDTH, PlayerCts.ATTACKBOX_HEIGHT, PlayerCts.ATTACKBOX_OFFSET_X,
+				PlayerCts.ATTACKBOX_OFFSET_Y);
 	}
 
 	public void setPlaying(Playing playing) {
@@ -278,6 +278,7 @@ public class Player extends Entity {
 
 		if (inAir && !powerAttackActive) {
 			updatePosOnAir();
+			updateTileY();
 		} else {
 			updateXPos();
 		}
@@ -524,7 +525,7 @@ public class Player extends Entity {
 		this.fallSpeedAfterCollision = AppStage.Scale(0.5);
 		initDraw(PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT, PlayerCts.DRAW_OFFSET_X, PlayerCts.DRAW_OFFSET_Y);
 		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
-		initAttackBox(PlayerCts.ATTACK_HITBOX_WIDTH, PlayerCts.ATTACK_HITBOX_HEIGHT, PlayerCts.ATTACK_HITBOX_OFFSET_X,
-				PlayerCts.ATTACK_HITBOX_OFFSET_Y);
+		initAttackBox(PlayerCts.ATTACKBOX_WIDTH, PlayerCts.ATTACKBOX_HEIGHT, PlayerCts.ATTACKBOX_OFFSET_X,
+				PlayerCts.ATTACKBOX_OFFSET_Y);
 	}
 }
