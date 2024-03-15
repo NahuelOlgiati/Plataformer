@@ -153,14 +153,13 @@ public abstract class Enemy extends Entity {
 		this.inAir = true;
 		this.walkDir = DirectionCts.LEFT;
 		this.pushBackOffsetDir = DirectionCts.UP;
-		toSpawn();
-//		hitbox = new Rectangle2D(x, y, hitbox.getWidth(), hitbox.getHeight());
 		firstUpdate = true;
 		currentHealth = maxHealth;
 		newState(EnemyState.IDLE);
 		active = true;
 		airSpeed = 0;
 		pushDrawOffset = 0;
+		toSpawn();
 	}
 
 	public boolean isActive() {

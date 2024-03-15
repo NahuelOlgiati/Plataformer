@@ -86,6 +86,12 @@ public class Crabby extends Enemy {
 		return CrabbyCts.HEALTH;
 	}
 
+	@Override
+	public void resetEnemy() {
+		super.resetEnemy();
+		initHitbox(CrabbyCts.HITBOX_WIDTH, CrabbyCts.HITBOX_HEIGHT);
+	}
+
 	private boolean isPlayerCloseForAttack(Player player) {
 		int distance = getCurrentPlayerDistance(player);
 		return distance <= attackDistance;

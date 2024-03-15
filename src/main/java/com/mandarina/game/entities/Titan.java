@@ -88,6 +88,12 @@ public class Titan extends Enemy {
 		return TitanCts.HEALTH;
 	}
 
+	@Override
+	public void resetEnemy() {
+		super.resetEnemy();
+		initHitbox(TitanCts.HITBOX_WIDTH, TitanCts.HITBOX_HEIGHT);
+	}
+
 	private boolean isPlayerCloseForAttack(Player player) {
 		int distance = getCurrentPlayerDistance(player);
 		return distance <= attackDistance * 2;

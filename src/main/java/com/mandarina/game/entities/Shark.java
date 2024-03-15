@@ -88,6 +88,12 @@ public class Shark extends Enemy {
 		return SharkCts.HEALTH;
 	}
 
+	@Override
+	public void resetEnemy() {
+		super.resetEnemy();
+		initHitbox(SharkCts.HITBOX_WIDTH, SharkCts.HITBOX_HEIGHT);
+	}
+
 	private boolean isPlayerCloseForAttack(Player player) {
 		int distance = getCurrentPlayerDistance(player);
 		return distance <= attackDistance * 2;

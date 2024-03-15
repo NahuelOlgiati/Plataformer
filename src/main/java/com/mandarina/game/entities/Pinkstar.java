@@ -122,6 +122,12 @@ public class Pinkstar extends Enemy {
 		return PinkstarCts.HEALTH;
 	}
 
+	@Override
+	public void resetEnemy() {
+		super.resetEnemy();
+		initHitbox(PinkstarCts.HITBOX_WIDTH, PinkstarCts.HITBOX_HEIGHT);
+	}
+
 	private void checkPlayerHit(Player player) {
 		if (attackBox.intersects(player.getHitbox()))
 			if (tickSinceLastDmgToPlayer >= 60) {

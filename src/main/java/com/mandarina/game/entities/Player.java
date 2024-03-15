@@ -14,7 +14,6 @@ import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
-import com.mandarina.utilz.BiggerThanTile;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Point2D;

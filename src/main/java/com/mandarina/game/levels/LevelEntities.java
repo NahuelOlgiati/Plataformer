@@ -166,9 +166,7 @@ public class LevelEntities implements LayerDrawer {
 
 	public void resetAllEnemies() {
 		for (Enemy e : enemys) {
-			if (e.isActive()) {
-				e.resetEnemy();
-			}
+			e.resetEnemy();
 		}
 //		for (Crabby c : crabs) {
 //			c.resetEnemy();
