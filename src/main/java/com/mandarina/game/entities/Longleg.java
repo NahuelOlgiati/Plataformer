@@ -62,7 +62,7 @@ public class Longleg extends Enemy {
 			case ATTACK:
 				if (aniIndex == 0)
 					attackChecked = false;
-				else if (aniIndex == LonglegCts.ATTACK_ANI_IND) {
+				else if (aniIndex >= LonglegCts.ATTACK_ANI_IND) {
 					if (!attackChecked)
 						checkPlayerHit(attackBox, playing.getPlayer());
 					attackMove(playing);
@@ -112,9 +112,9 @@ public class Longleg extends Enemy {
 		var levelData = playing.getLevelData();
 		updateXSpeed();
 
-		if (CanMoveHere(hitbox, xSpeed, ySpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, PlayerCts.HITBOX_VERTICAL_CHECKS,
-				levelData)) {
-			if (IsFloor(hitbox, xSpeed * 4, PlayerCts.HITBOX_VERTICAL_CHECKS, levelData)) {
+		if (CanMoveHere(hitbox, xSpeed * 4, ySpeed, LonglegCts.HITBOX_HORIZONTAL_CHECKS,
+				LonglegCts.HITBOX_VERTICAL_CHECKS, levelData)) {
+			if (IsFloor(hitbox, xSpeed * 4, LonglegCts.HITBOX_VERTICAL_CHECKS, levelData)) {
 				hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed * 4, hitbox.getMinY(), hitbox.getWidth(),
 						hitbox.getHeight());
 				return;

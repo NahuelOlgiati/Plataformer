@@ -1,8 +1,7 @@
 package com.mandarina.game.entities;
 
-import static com.mandarina.utilz.SmallerThanTile.CanMoveHere;
-import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
-import static com.mandarina.utilz.SmallerThanTile.IsFloor;
+import static com.mandarina.utilz.BiggerThanTile.CanMoveHere;
+import static com.mandarina.utilz.BiggerThanTile.IsFloor;
 
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
@@ -46,7 +45,7 @@ public class Titan extends Enemy {
 		else {
 			switch (state) {
 			case IDLE:
-				if (IsEntityOnFloor(hitbox, levelData))
+				if (IsFloor(hitbox, xSpeed, TitanCts.HITBOX_HORIZONTAL_CHECKS, levelData))
 					newState(EnemyState.RUNNING);
 				else
 					inAir = true;
@@ -63,7 +62,7 @@ public class Titan extends Enemy {
 			case ATTACK:
 				if (aniIndex == 0)
 					attackChecked = false;
-				else if (aniIndex == TitanCts.ATTACK_ANI_IND) {
+				else if (aniIndex >= TitanCts.ATTACK_ANI_IND) {
 					if (!attackChecked)
 						checkPlayerHit(attackBox, playing.getPlayer());
 					attackMove(playing);
@@ -113,9 +112,9 @@ public class Titan extends Enemy {
 		var levelData = playing.getLevelData();
 		updateXSpeed();
 
-		if (CanMoveHere(hitbox.getMinX() + xSpeed * 4, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(),
+		if (CanMoveHere(hitbox, xSpeed * 4, ySpeed, TitanCts.HITBOX_HORIZONTAL_CHECKS, TitanCts.HITBOX_VERTICAL_CHECKS,
 				levelData)) {
-			if (IsFloor(hitbox, xSpeed * 4, levelData)) {
+			if (IsFloor(hitbox, xSpeed * 4, TitanCts.HITBOX_VERTICAL_CHECKS, levelData)) {
 				hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed * 4, hitbox.getMinY(), hitbox.getWidth(),
 						hitbox.getHeight());
 				return;
