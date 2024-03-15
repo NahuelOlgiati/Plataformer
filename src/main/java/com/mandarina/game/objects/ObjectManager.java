@@ -210,15 +210,17 @@ public class ObjectManager implements LayerDrawer {
 	}
 
 	public void scale() {
-		currentLevel.getLevelObjects().scale();
-		for (Potion p : this.potions) {
-			p.scale();
-		}
-		for (Projectile p : this.projectiles) {
-			p.scale();
-		}
-		for (Dialogue d : this.dialogues) {
-			d.scale();
+		if (currentLevel != null) {
+			currentLevel.getLevelObjects().scale();
+			for (Potion p : this.potions) {
+				p.scale();
+			}
+			for (Projectile p : this.projectiles) {
+				p.scale();
+			}
+			for (Dialogue d : this.dialogues) {
+				d.scale();
+			}
 		}
 	}
 }

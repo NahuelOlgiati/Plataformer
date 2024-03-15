@@ -1,6 +1,6 @@
 package com.mandarina.game.gamestates;
 
-import com.mandarina.game.audio.AudioPlayer;
+import com.mandarina.game.main.GameAudio;
 import com.mandarina.game.main.Game;
 
 public enum GameState {
@@ -25,9 +25,9 @@ public enum GameState {
 
 	public static void setState(GameState newState) {
 		switch (newState) {
-		case MENU -> game.getAudioPlayer().playSong(AudioPlayer.MENU_1);
+		case MENU -> game.getAudioPlayer().playSong(GameAudio.MENU_1);
 		case PLAYING -> game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex());
-		case LVLBUILDER -> game.getAudioPlayer().playSong(AudioPlayer.BUILD);
+		case LVLBUILDER -> game.getAudioPlayer().playSong(GameAudio.BUILD);
 		}
 		state = newState;
 	}

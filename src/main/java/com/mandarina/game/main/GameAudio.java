@@ -1,15 +1,13 @@
-package com.mandarina.game.audio;
+package com.mandarina.game.main;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 
-import com.mandarina.game.main.Game;
-
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-public class AudioPlayer {
+public class GameAudio {
 
 	private static ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
@@ -34,7 +32,7 @@ public class AudioPlayer {
 
 	private Game game;
 
-	public AudioPlayer(Game game) {
+	public GameAudio(Game game) {
 		this.game = game;
 		loadSongs();
 		loadEffects();

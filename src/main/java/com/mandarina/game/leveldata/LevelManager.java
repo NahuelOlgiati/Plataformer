@@ -109,7 +109,9 @@ public class LevelManager implements LayerDrawer {
 	}
 
 	public void scale() {
-		getCurrentLevel().getLevelData().scale();
+		if (currentLevel != null) {
+			getCurrentLevel().getLevelData().scale();
+		}
 		this.backgroundCloud.scale();
 	}
 }

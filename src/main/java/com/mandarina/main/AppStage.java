@@ -80,7 +80,6 @@ public class AppStage {
 				GameState.getGame().scale();
 //				GameState.setState(currentState);
 				GameState.getGame().show();
-				GameState.getGame().getPlaying().resetAll(); // TODO
 				GameState.getGame().start();
 				widthSet = false;
 				heightSet = false;

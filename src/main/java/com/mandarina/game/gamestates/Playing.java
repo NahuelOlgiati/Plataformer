@@ -360,12 +360,14 @@ public class Playing {
 		this.rightBorder = 0.75 * AppStage.GetGameWidth();
 		this.bottomBorder = 0.25 * AppStage.GetGameHeight();
 		this.topBorder = 0.75 * AppStage.GetGameHeight();
-		this.currentLevel.scale();
 		this.levelManager.scale();
 		this.objectManager.scale();
 		this.enemyManager.scale();
 		this.uiManager.scale();
-		this.player.scale();
 		this.statusBar.scale();
+		if (currentLevel != null) {
+			this.player.scale();
+			this.currentLevel.scale();
+		}
 	}
 }

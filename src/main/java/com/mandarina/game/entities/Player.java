@@ -8,9 +8,9 @@ import static com.mandarina.utilz.SmallerThanTile.IsEntityInWater;
 import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
 import static com.mandarina.utilz.SmallerThanTile.IsFloor;
 
-import com.mandarina.game.audio.AudioPlayer;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.LevelData;
+import com.mandarina.game.main.GameAudio;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
@@ -107,7 +107,7 @@ public class Player extends Entity {
 			aniTick = 0;
 			aniIndex = 0;
 			playing.setPlayerDying(true);
-			playing.getGame().getAudioPlayer().playEffect(AudioPlayer.DIE);
+			playing.getGame().getAudioPlayer().playEffect(GameAudio.DIE);
 
 			// Check if player died in air
 			if (!IsEntityOnFloor(hitbox, levelData)) {
@@ -117,7 +117,7 @@ public class Player extends Entity {
 		} else if (aniIndex == GetSpriteAmount(PlayerState.DEAD) - 1 && aniTick >= GameCts.ANI_SPEED - 1) {
 			playing.setGameOver(true);
 			playing.getGame().getAudioPlayer().stopSong();
-			playing.getGame().getAudioPlayer().playEffect(AudioPlayer.GAMEOVER);
+			playing.getGame().getAudioPlayer().playEffect(GameAudio.GAMEOVER);
 		} else {
 			updateAnimationTick();
 
@@ -369,7 +369,7 @@ public class Player extends Entity {
 	private void jump() {
 		if (inAir)
 			return;
-		playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
+		playing.getGame().getAudioPlayer().playEffect(GameAudio.JUMP);
 		inAir = true;
 		ySpeed = jumpSpeed;
 	}

@@ -61,6 +61,8 @@ public class EnemyManager implements LayerDrawer {
 	}
 
 	public void scale() {
-		currentLevel.getLevelEntities().scale();
+		if (currentLevel != null) {
+			currentLevel.getLevelEntities().scale();
+		}
 	}
 }

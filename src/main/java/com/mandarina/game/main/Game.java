@@ -1,6 +1,5 @@
 package com.mandarina.game.main;
 
-import com.mandarina.game.audio.AudioPlayer;
 import com.mandarina.game.gamestates.Credits;
 import com.mandarina.game.gamestates.GameOptions;
 import com.mandarina.game.gamestates.GameState;
@@ -15,7 +14,6 @@ import com.mandarina.main.AppStage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class Game {
 
@@ -28,7 +26,7 @@ public class Game {
 	private LvlBuilder lvlBuilder;
 	private GameOptions gameOptions;
 	private AudioOptions audioOptions;
-	private AudioPlayer audioPlayer;
+	private GameAudio gameAudio;
 
 	private GameDrawer gameDrawer;
 	private GameInputs gameInputs;
@@ -58,7 +56,7 @@ public class Game {
 	}
 
 	public void clear() {
-		this.audioPlayer.dispose();
+		this.gameAudio.dispose();
 		scene = null;
 	}
 
@@ -110,15 +108,14 @@ public class Game {
 
 	private void initClasses() {
 		audioOptions = new AudioOptions(this);
-		audioPlayer = new AudioPlayer(this);
+		gameAudio = new GameAudio(this);
 		menu = new Menu(this);
 		loading = new Loading();
-		playing = new Playing(this);
-		playing.loadNextLevel();
 		credits = new Credits();
 		lvlBuilder = new LvlBuilder();
 		gameOptions = new GameOptions(this);
 		gameInputs = new GameInputs(this);
+		playing = new Playing(this);
 	}
 
 	private void update() {
@@ -147,10 +144,8 @@ public class Game {
 		this.menu.scale();
 		this.loading.scale();
 		this.credits.scale();
-//		this.lvlBuilder.scale();
 		this.gameOptions.scale();
 		this.audioOptions.scale();
-//		this.audioPlayer.scale(); rename GameAudio
 	}
 
 	public void windowFocusLost() {
@@ -182,7 +177,7 @@ public class Game {
 		return audioOptions;
 	}
 
-	public AudioPlayer getAudioPlayer() {
-		return audioPlayer;
+	public GameAudio getAudioPlayer() {
+		return gameAudio;
 	}
 }
