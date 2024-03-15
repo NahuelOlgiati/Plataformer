@@ -37,6 +37,8 @@ public class GameAudio {
 		loadSongs();
 		loadEffects();
 		playSong(MENU_1);
+		updateEffectsVolume();
+		updateSongVolume();
 	}
 
 	private void loadSongs() {
@@ -111,7 +113,7 @@ public class GameAudio {
 		MediaPlayer mp = effects[effect];
 		mp.stop();
 		mp.seek(mp.getStartTime());
-//		mp.play();
+		mp.play();
 	}
 
 	public void playSong(int song) {
@@ -119,7 +121,7 @@ public class GameAudio {
 		currentSongId = song;
 		MediaPlayer mp = songs[currentSongId];
 		mp.seek(mp.getStartTime());
-//		mp.play();
+		mp.play();
 	}
 
 	public void toggleSongMute() {

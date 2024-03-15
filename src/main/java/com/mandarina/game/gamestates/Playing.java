@@ -1,5 +1,7 @@
 package com.mandarina.game.gamestates;
 
+import java.io.File;
+
 import com.mandarina.game.entities.EnemyManager;
 import com.mandarina.game.entities.Player;
 import com.mandarina.game.entities.PlayerCts;
@@ -62,8 +64,14 @@ public class Playing {
 	}
 
 	public void loadCustomLevel(LvlBuilderImage image) {
-		Level level = new Level(image);
-		levelManager.loadCustomLevel(level);
+		levelManager.loadCustomLevel(image);
+		Level level = levelManager.getCurrentLevel();
+		loadLevel(level);
+	}
+
+	public void loadCustomFolder(File folder) {
+		levelManager.loadCustomFolder(folder);
+		Level level = levelManager.getCurrentLevel();
 		loadLevel(level);
 	}
 
@@ -301,10 +309,6 @@ public class Playing {
 
 	public Game getGame() {
 		return game;
-	}
-
-	public void setLevelSong() {
-		this.game.getAudioPlayer().setLevelSong(this.getLevelManager().getLevelIndex());
 	}
 
 	public void unpauseGame() {

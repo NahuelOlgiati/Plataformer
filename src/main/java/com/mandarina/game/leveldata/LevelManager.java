@@ -1,6 +1,8 @@
 
 package com.mandarina.game.leveldata;
 
+import java.io.File;
+
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.main.GameDrawer;
@@ -8,47 +10,66 @@ import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.utilz.LoadSave;
 
-import javafx.scene.image.WritableImage;
-
 public class LevelManager implements LayerDrawer {
 
 	private Playing playing;
 	private Level currentLevel;
 	private int lvlIndex;
-	private int numOfLevels;
+	private Integer numOfLevels;
 
 	private Background background;
 	private BackgroundCloud backgroundCloud;
 
-	private boolean offsetChange = false;
-	private double lastLvlOffsetX = -1;
-	private double lastLvlOffsetY = -1;
-	private WritableImage snapshot = null;
+	private File folderLvls;
+
+//	private boolean offsetChange = false;
+//	private double lastLvlOffsetX = -1;
+//	private double lastLvlOffsetY = -1;
+//	private WritableImage snapshot = null;
 
 	public LevelManager(Playing playing) {
 		this.playing = playing;
-		this.lvlIndex = 0;
-		this.numOfLevels = LoadSave.GetNumOfLevels();
-
 		this.background = new Background();
 		this.backgroundCloud = new BackgroundCloud();
 	}
 
 	public void loadNextLevel() {
 		lvlIndex++;
-		LvlBuilderImage lvlImg = LoadSave.GetLevel(lvlIndex);
-		Level level = new Level(lvlImg);
+		Level level = getLevel();
 		this.currentLevel = level;
-		loadLevel(level);
+		loadLevel(currentLevel);
 	}
 
-	public void loadCustomLevel(Level level) {
+	public void loadCustomLevel(LvlBuilderImage image) {
 		this.lvlIndex = 0;
+		this.currentLevel = new Level(image);
+		loadLevel(currentLevel);
+	}
+
+	public void loadCustomFolder(File folder) {
+		this.folderLvls = folder;
+		this.lvlIndex = 1;
+		Level level = getLevel();
 		this.currentLevel = level;
-		loadLevel(level);
+		loadLevel(currentLevel);
+	}
+
+	private Level getLevel() {
+		if (this.folderLvls == null) {
+			return new Level(LoadSave.GetLevel(lvlIndex));
+		} else {
+			return new Level(LoadSave.GetLevel(folderLvls, lvlIndex));
+		}
 	}
 
 	public void loadLevel(Level level) {
+		if (this.numOfLevels == null) {
+			if (this.folderLvls == null) {
+				this.numOfLevels = LoadSave.GetNumOfLevels();
+			} else {
+				this.numOfLevels = LoadSave.GetNumOfLevels(this.folderLvls);
+			}
+		}
 		playing.getObjectManager().loadObjects(level);
 		playing.getEnemyManager().loadEnemies(level);
 	}
@@ -105,6 +126,7 @@ public class LevelManager implements LayerDrawer {
 	public void reset() {
 		this.currentLevel = null;
 		this.lvlIndex = 0;
+		this.folderLvls = null;
 		loadNextLevel();
 	}
 
@@ -114,4 +136,5 @@ public class LevelManager implements LayerDrawer {
 		}
 		this.backgroundCloud.scale();
 	}
+
 }

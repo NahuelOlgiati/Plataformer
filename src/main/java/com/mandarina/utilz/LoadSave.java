@@ -1,5 +1,6 @@
 package com.mandarina.utilz;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -86,6 +87,15 @@ public class LoadSave {
 		return GetLvlImage(Paths.get("assets", "lvls", num + ".png"));
 	}
 
+	public static LvlBuilderImage GetLevel(File folder, int num) {
+		try {
+			return new LvlBuilderImage(new File(folder, num + ".png"));
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private static LvlBuilderImage GetLvlImage(Path path) {
 		try {
 			return Stream.of(new PathMatchingResourcePatternResolver(cl).getResources(pathNormalization(path)))
@@ -104,18 +114,29 @@ public class LoadSave {
 	}
 
 	public static int GetNumOfLevels() {
-		return getCount(Paths.get("assets", "lvls"));
+		return GetCount(Paths.get("assets", "lvls"));
 	}
 
-	private static int getCount(Path path) {
+	private static int GetCount(Path path) {
 		try {
-			return (int) Stream
-					.of(new PathMatchingResourcePatternResolver(cl).getResources(pathNormalization(path) + "/*"))
-					.count();
+			return new PathMatchingResourcePatternResolver(cl).getResources(pathNormalization(path) + "/*").length;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	public static Integer GetNumOfLevels(File directory) {
+		int count = 0;
+		File[] files = directory.listFiles();
+		if (files != null) {
+			for (File file : files) {
+				if (file.isFile()) {
+					count++;
+				}
+			}
+		}
+		return count;
 	}
 
 	private static String pathNormalization(Path path) {

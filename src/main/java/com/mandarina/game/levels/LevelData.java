@@ -2,6 +2,7 @@ package com.mandarina.game.levels;
 
 import java.util.List;
 
+import com.mandarina.game.leveldata.GameData;
 import com.mandarina.game.leveldata.Grass;
 import com.mandarina.game.leveldata.Tile;
 import com.mandarina.game.leveldata.Water;
@@ -13,6 +14,7 @@ import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.lvlbuilder.RGB;
 import com.mandarina.lvlbuilder.feature.PNGMetadata;
 import com.mandarina.lvlbuilder.feature.TileFeature;
+import com.mandarina.main.AppStage;
 
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -35,6 +37,14 @@ public class LevelData implements LayerDrawer {
 	private LayerManager<Water> water;
 	private LayerManager<Grass> grass;
 
+	private static int cachedTileOffsetX = -1;
+	private static int cachedMaxTileOffsetX = -1;
+	private static double cachedLvlOffsetX = Double.NaN;
+
+	private static int cachedTileOffsetY = -1;
+	private static int cachedMaxTileOffsetY = -1;
+	private static double cachedLvlOffsetY = Double.NaN;
+
 	public LevelData(Level level) {
 		this.level = level;
 		int height = (int) level.getImg().getHeight();
@@ -53,8 +63,9 @@ public class LevelData implements LayerDrawer {
 
 			@Override
 			public void draw(Tile t, GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-				t.draw(g, lvlOffsetX, lvlOffsetY, tileSprite);
-
+				if (mustDrawX(t, lvlOffsetX) && mustDrawY(t, lvlOffsetY)) {
+					t.draw(g, lvlOffsetX, lvlOffsetY, tileSprite);
+				}
 			}
 		};
 		this.water = new LayerManager<Water>() {
@@ -66,7 +77,9 @@ public class LevelData implements LayerDrawer {
 
 			@Override
 			public void draw(Water w, GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-				w.draw(g, lvlOffsetX, lvlOffsetY, waterSprite);
+				if (mustDrawX(w, lvlOffsetX) && mustDrawY(w, lvlOffsetY)) {
+					w.draw(g, lvlOffsetX, lvlOffsetY, waterSprite);
+				}
 			}
 		};
 		this.grass = new LayerManager<Grass>() {
@@ -78,10 +91,34 @@ public class LevelData implements LayerDrawer {
 
 			@Override
 			public void draw(Grass r, GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-				r.draw(g, lvlOffsetX, lvlOffsetY, grassSprite);
+				if (mustDrawX(r, lvlOffsetX) && mustDrawY(r, lvlOffsetY)) {
+					r.draw(g, lvlOffsetX, lvlOffsetY, grassSprite);
+				}
 			}
 		};
 		load(level.getImg(), level.getPm());
+	}
+
+	private static boolean mustDrawX(GameData d, double lvlOffsetX) {
+		if (lvlOffsetX != cachedLvlOffsetX) {
+			cachedLvlOffsetX = lvlOffsetX;
+			cachedTileOffsetX = AppStage.GetTilesIn(lvlOffsetX);
+			cachedMaxTileOffsetX = cachedTileOffsetX + GameCts.TILES_IN_WIDTH;
+		}
+
+		double spawnX = d.getSpawn().getX();
+		return spawnX >= cachedTileOffsetX && spawnX <= cachedMaxTileOffsetX;
+	}
+
+	private static boolean mustDrawY(GameData d, double lvlOffsetY) {
+		if (lvlOffsetY != cachedLvlOffsetY) {
+			cachedLvlOffsetY = lvlOffsetY;
+			cachedTileOffsetY = AppStage.GetTilesIn(lvlOffsetY);
+			cachedMaxTileOffsetY = cachedTileOffsetY + GameCts.TILES_IN_HEIGHT;
+		}
+
+		double spawnY = d.getSpawn().getY();
+		return spawnY >= cachedTileOffsetY && spawnY <= cachedMaxTileOffsetY;
 	}
 
 	public void update() {

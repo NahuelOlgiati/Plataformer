@@ -1,7 +1,12 @@
 package com.mandarina.lvlbuilder;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 
+import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
 
 import javafx.scene.image.Image;
@@ -33,6 +38,10 @@ public class LvlBuilderImage extends Image {
 				this.name = values[2].split("\\.")[0];
 			}
 		}
+	}
+
+	public LvlBuilderImage(File file) throws Throwable {
+		this(new FileInputStream(file), new FileUrlResource(file.toURI().toURL()));
 	}
 
 	public Resource getResource() {

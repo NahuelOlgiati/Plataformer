@@ -506,7 +506,7 @@ public class Player extends Entity {
 		case JUMP:
 			return 8;
 		case ATTACK:
-			return 7;
+			return 4; // TODO
 		case FALLING:
 			return 4;
 		default:

@@ -26,7 +26,7 @@ public class VolumeButton extends PauseButton {
 		maxX = (int) (sliderBounds.getX() + AppStage.Scale(VolumeButtonCts.SLIDER_WIDTH_DEFAULT)
 				- AppStage.Scale(VolumeButtonCts.VOLUME_WIDTH_DEFAULT) / 2);
 		loadImgs();
-		setVolume(0.75);
+		setVolume(VolumeButtonCts.VOLUME_VALUE_DEFAULT);
 		updateVolume();
 	}
 

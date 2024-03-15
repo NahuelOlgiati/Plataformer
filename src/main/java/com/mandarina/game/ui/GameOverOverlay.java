@@ -80,7 +80,7 @@ public class GameOverOverlay {
 		} else if (isIn(play, e))
 			if (play.isMousePressed()) {
 				playing.resetAll();
-				playing.setLevelSong();
+				GameState.setState(GameState.PLAYING);
 			}
 
 		menu.resetBools();

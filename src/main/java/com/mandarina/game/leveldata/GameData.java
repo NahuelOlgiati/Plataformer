@@ -19,6 +19,10 @@ public class GameData {
 		this.y = spawn.getY() * AppStage.GetTileSize();
 	}
 
+	public Point2D getSpawn() {
+		return spawn;
+	}
+
 	public void scale() {
 		init();
 	}

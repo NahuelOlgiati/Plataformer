@@ -85,8 +85,8 @@ public abstract class Entity {
 				hitbox.getMinY() - lvlOffsetY - drawOffsetY + pushDrawOffset, drawWidth * flipW(), drawHeight);
 
 		// For Debug
-		drawHitbox(g, lvlOffsetX, lvlOffsetY);
-		drawAttackBox(g, lvlOffsetX, lvlOffsetY);
+//		drawHitbox(g, lvlOffsetX, lvlOffsetY);
+//		drawAttackBox(g, lvlOffsetX, lvlOffsetY);
 	}
 
 	protected void updateAttackBox() {

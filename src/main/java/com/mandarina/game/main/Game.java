@@ -1,5 +1,7 @@
 package com.mandarina.game.main;
 
+import java.io.File;
+
 import com.mandarina.game.gamestates.Credits;
 import com.mandarina.game.gamestates.GameOptions;
 import com.mandarina.game.gamestates.GameState;
@@ -38,6 +40,12 @@ public class Game {
 		}
 		if (AppStage.get().getStage().getUserData() instanceof LvlBuilderImage image) {
 			GameState.getGame().getPlaying().loadCustomLevel(image);
+			GameState.setState(GameState.PLAYING);
+			AppStage.get().getStage().setUserData(null);
+		}
+		
+		if (AppStage.get().getStage().getUserData() instanceof File folder) {
+			GameState.getGame().getPlaying().loadCustomFolder(folder);
 			GameState.setState(GameState.PLAYING);
 			AppStage.get().getStage().setUserData(null);
 		}

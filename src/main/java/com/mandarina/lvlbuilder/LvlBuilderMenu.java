@@ -2,12 +2,9 @@ package com.mandarina.lvlbuilder;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-
-import org.springframework.core.io.FileUrlResource;
 
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.main.Game;
@@ -41,6 +38,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -69,6 +67,10 @@ public class LvlBuilderMenu {
 		openMenuItem.setOnAction(this::openFile);
 		fileMenu.getItems().add(openMenuItem);
 
+		MenuItem openFolderMenuItem = new MenuItem("Run Folder");
+		openFolderMenuItem.setOnAction(this::runFolder);
+		fileMenu.getItems().add(openFolderMenuItem);
+
 		MenuItem runMenuItem = new MenuItem("Run");
 		runMenuItem.setOnAction(this::run);
 		fileMenu.getItems().add(runMenuItem);
@@ -89,8 +91,7 @@ public class LvlBuilderMenu {
 		File selectedFile = fileChooser.showOpenDialog(null);
 		if (selectedFile != null) {
 			try {
-				LvlBuilderImage lvl = new LvlBuilderImage(new FileInputStream(selectedFile),
-						new FileUrlResource(selectedFile.toURI().toURL()));
+				LvlBuilderImage lvl = new LvlBuilderImage(selectedFile);
 				resizeMainPane((int) lvl.getWidth(), (int) lvl.getHeight());
 				loadLevel(lvl);
 				loadMetadata(lvl);
@@ -108,8 +109,7 @@ public class LvlBuilderMenu {
 		File selectedFile = fileChooser.showOpenDialog(null);
 		if (selectedFile != null) {
 			try {
-				LvlBuilderImage lvl = new LvlBuilderImage(new FileInputStream(selectedFile),
-						new FileUrlResource(selectedFile.toURI().toURL()));
+				LvlBuilderImage lvl = new LvlBuilderImage(selectedFile);
 				AppStage.get().getStage().setUserData(lvl);
 				GameState.setState(GameState.PLAYING);
 				Game game = GameState.getGame();
@@ -117,6 +117,27 @@ public class LvlBuilderMenu {
 				game.start();
 				lvlBuilder.close();
 			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void runFolder(ActionEvent event) {
+		DirectoryChooser directoryChooser = new DirectoryChooser();
+		directoryChooser.setTitle("Open Directory");
+
+		// Show the directory chooser dialog
+		File selectedDirectory = directoryChooser.showDialog(null);
+		if (selectedDirectory != null) {
+			try {
+				AppStage.get().getStage().setUserData(selectedDirectory);
+				GameState.setState(GameState.PLAYING);
+				Game game = GameState.getGame();
+				game.show();
+				game.start();
+				lvlBuilder.close();
+			} catch (Throwable e) {
+				// Handle other exceptions
 				e.printStackTrace();
 			}
 		}
