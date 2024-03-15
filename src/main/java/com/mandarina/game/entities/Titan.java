@@ -111,12 +111,7 @@ public class Titan extends Enemy {
 
 	private void attackMove(Playing playing) {
 		var levelData = playing.getLevelData();
-		double xSpeed = 0;
-
-		if (walkDir == DirectionCts.LEFT)
-			xSpeed = -walkSpeed;
-		else
-			xSpeed = walkSpeed;
+		updateXSpeed();
 
 		if (CanMoveHere(hitbox.getMinX() + xSpeed * 4, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(),
 				levelData)) {

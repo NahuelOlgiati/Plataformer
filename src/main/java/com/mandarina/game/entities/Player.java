@@ -287,7 +287,8 @@ public class Player extends Entity {
 		moving = true;
 	}
 
-	private double updateXSpeed() {
+	@Override
+	protected void updateXSpeed() {
 		xSpeed = 0;
 
 		if (left && !right) {
@@ -307,7 +308,6 @@ public class Player extends Entity {
 
 			xSpeed *= 3;
 		}
-		return xSpeed;
 	}
 
 	private void updatePosOnAir() {

@@ -125,14 +125,6 @@ public class Longleg extends Enemy {
 		playing.getObjectManager().addDialogue((int) hitbox.getMinX(), (int) hitbox.getMinY(), DialogueCts.EXCLAMATION);
 	}
 
-	private void updateXSpeed() {
-		xSpeed = 0;
-		if (walkDir == DirectionCts.LEFT)
-			xSpeed = -walkSpeed;
-		else
-			xSpeed = walkSpeed;
-	}
-
 	private static int GetSpriteAmount(EnemyState state) {
 		switch (state) {
 		case IDLE:

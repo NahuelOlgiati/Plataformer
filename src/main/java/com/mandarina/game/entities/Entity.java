@@ -108,6 +108,14 @@ public abstract class Entity {
 	protected void updateTileY() {
 		tileY = AppStage.GetTilesIn(hitbox.getMaxY());
 	}
+	
+	protected void updateXSpeed() {
+		xSpeed = 0;
+		if (walkDir == DirectionCts.LEFT)
+			xSpeed = -walkSpeed;
+		else
+			xSpeed = walkSpeed;
+	}
 
 	protected void changeWalkDir() {
 		if (walkDir == DirectionCts.LEFT)

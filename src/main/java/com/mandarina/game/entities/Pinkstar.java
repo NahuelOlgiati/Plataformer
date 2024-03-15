@@ -148,12 +148,7 @@ public class Pinkstar extends Enemy {
 
 	private void move(Playing playing) {
 		var levelData = playing.getLevelData();
-		double xSpeed = 0;
-
-		if (walkDir == DirectionCts.LEFT)
-			xSpeed = -walkSpeed;
-		else
-			xSpeed = walkSpeed;
+		updateXSpeed();
 
 		if (EnemyState.ATTACK.equals(state))
 			xSpeed *= 2;
