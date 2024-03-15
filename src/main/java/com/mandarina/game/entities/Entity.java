@@ -25,7 +25,8 @@ public abstract class Entity {
 	protected double walkSpeed;
 	protected int walkDir;
 
-	protected double airSpeed;
+	protected double xSpeed;
+	protected double ySpeed;
 	protected boolean inAir;
 
 	protected int tileY;
@@ -41,8 +42,10 @@ public abstract class Entity {
 	protected double pushDrawOffset;
 	protected int pushBackOffsetDir;
 
-	public Entity(Point2D spawn) {
+	public Entity(Point2D spawn, int health) {
 		this.spawn = spawn;
+		this.maxHealth = health;
+		this.currentHealth = maxHealth;
 		this.inAir = true;
 		this.walkDir = DirectionCts.LEFT;
 		this.pushBackOffsetDir = DirectionCts.UP;
@@ -52,6 +55,10 @@ public abstract class Entity {
 	public void toSpawn() {
 		this.x = spawn.getX() * AppStage.GetTileSize();
 		this.y = spawn.getY() * AppStage.GetTileSize();
+	}
+
+	protected void initAttackWalkSpeed(float walkSpeed) {
+		this.walkSpeed = AppStage.Scale(walkSpeed);
 	}
 
 	protected void initDraw(int width, int height, int offsetX, int offsetY) {

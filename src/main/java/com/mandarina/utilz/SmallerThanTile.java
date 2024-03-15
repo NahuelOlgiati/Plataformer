@@ -61,9 +61,9 @@ public class SmallerThanTile {
 		return levelData.getIsSolid()[yTile][xTile];
 	}
 
-	public static boolean IsEntityOnFloor(Rectangle2D hitbox, double xSpeed, double airSpeed, LevelData levelData) {
-		if (IsSolid(hitbox.getMinX() + xSpeed, hitbox.getMaxY() + airSpeed, 0, 1, levelData)
-				|| IsSolid(hitbox.getMaxX() + xSpeed, hitbox.getMaxY() + airSpeed, 0, 1, levelData)) {
+	public static boolean IsEntityOnFloor(Rectangle2D hitbox, double xSpeed, double ySpeed, LevelData levelData) {
+		if (IsSolid(hitbox.getMinX() + xSpeed, hitbox.getMaxY() + ySpeed, 0, 1, levelData)
+				|| IsSolid(hitbox.getMaxX() + xSpeed, hitbox.getMaxY() + ySpeed, 0, 1, levelData)) {
 			return true;
 		}
 		return false;

@@ -14,7 +14,13 @@ import javafx.scene.image.Image;
 public class Crabby extends Enemy {
 
 	public Crabby(Point2D spawn) {
-		super(spawn, EntityCts.CRABBY);
+		super(spawn, CrabbyCts.HEALTH, EntityCts.CRABBY);
+		initCrabby();
+	}
+
+	private void initCrabby() {
+		initAttackDistance(CrabbyCts.ATTACK_DISTANCE);
+		initAttackWalkSpeed(CrabbyCts.WALK_SPEED);
 		initDraw(CrabbyCts.SPRITE_WIDTH, CrabbyCts.SPRITE_HEIGHT, CrabbyCts.DRAW_OFFSET_X, CrabbyCts.DRAW_OFFSET_Y);
 		initHitbox(CrabbyCts.HITBOX_WIDTH, CrabbyCts.HITBOX_HEIGHT);
 		initAttackBox(CrabbyCts.ATTACKBOX_WIDTH, CrabbyCts.ATTACKBOX_HEIGHT, CrabbyCts.ATTACKBOX_OFFSET_X,
@@ -59,7 +65,7 @@ public class Crabby extends Enemy {
 			case ATTACK:
 				if (aniIndex == 0)
 					attackChecked = false;
-				if (aniIndex == 3 && !attackChecked)
+				if (aniIndex == CrabbyCts.ATTACK_ANI_IND && !attackChecked)
 					checkPlayerHit(attackBox, playing.getPlayer());
 				break;
 			case HIT:
@@ -79,11 +85,6 @@ public class Crabby extends Enemy {
 	@Override
 	protected int getSpriteAmount(EnemyState state) {
 		return GetSpriteAmount(state);
-	}
-
-	@Override
-	protected int getMaxHealth() {
-		return CrabbyCts.HEALTH;
 	}
 
 	@Override
@@ -126,9 +127,6 @@ public class Crabby extends Enemy {
 
 	public void scale() {
 		super.scale();
-		initDraw(CrabbyCts.SPRITE_WIDTH, CrabbyCts.SPRITE_HEIGHT, CrabbyCts.DRAW_OFFSET_X, CrabbyCts.DRAW_OFFSET_Y);
-		initHitbox(CrabbyCts.HITBOX_WIDTH, CrabbyCts.HITBOX_HEIGHT);
-		initAttackBox(CrabbyCts.ATTACKBOX_WIDTH, CrabbyCts.ATTACKBOX_HEIGHT, CrabbyCts.ATTACKBOX_OFFSET_X,
-				CrabbyCts.ATTACKBOX_OFFSET_Y);
+		initCrabby();
 	}
 }

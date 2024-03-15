@@ -9,17 +9,17 @@ import javafx.geometry.Rectangle2D;
 
 public class BiggerThanTile {
 
-	public static boolean CanMoveHere(Rectangle2D hitbox, double xSpeed, double airSpeed, int hChecks, int vChecks,
+	public static boolean CanMoveHere(Rectangle2D hitbox, double xSpeed, double ySpeed, int hChecks, int vChecks,
 			LevelData levelData) {
 		double minXWithSpeed = hitbox.getMinX() + xSpeed;
-		double minYWithSpeed = hitbox.getMinY() + airSpeed;
+		double minYWithSpeed = hitbox.getMinY() + ySpeed;
 		if (!IsSolid(minXWithSpeed, minYWithSpeed, levelData)) {
 			double maxXWithSpeed = hitbox.getMaxX() + xSpeed;
-			double maxYWithSpeed = hitbox.getMaxY() + airSpeed;
+			double maxYWithSpeed = hitbox.getMaxY() + ySpeed;
 			if (!IsSolid(maxXWithSpeed, maxYWithSpeed, levelData))
 				if (!IsSolid(maxXWithSpeed, minYWithSpeed, levelData))
 					if (!IsSolid(minXWithSpeed, maxYWithSpeed, levelData)) {
-						if (xSpeed == 0 && airSpeed == 0) {
+						if (xSpeed == 0 && ySpeed == 0) {
 							return true;
 						}
 						float tileSize = AppStage.GetTileSize();
@@ -42,7 +42,7 @@ public class BiggerThanTile {
 							return true;
 						}
 
-						if (airSpeed > 0) {
+						if (ySpeed > 0) {
 							return CanMoveHereHorizontally(minXWithSpeed, maxYWithSpeed, hChecks, tileSize, levelData);
 						} else {
 							return CanMoveHereHorizontally(minXWithSpeed, minYWithSpeed, hChecks, tileSize, levelData);
@@ -52,14 +52,14 @@ public class BiggerThanTile {
 		return false;
 	}
 
-	public static boolean CanMoveDown(Rectangle2D hitbox, double xSpeed, double airSpeed, int hChecks,
+	public static boolean CanMoveDown(Rectangle2D hitbox, double xSpeed, double ySpeed, int hChecks,
 			LevelData levelData) {
 		double minXWithSpeed = hitbox.getMinX() + xSpeed;
 		double maxXWithSpeed = hitbox.getMaxX() + xSpeed;
-		double maxYWithSpeed = hitbox.getMaxY() + airSpeed;
+		double maxYWithSpeed = hitbox.getMaxY() + ySpeed;
 		if (!IsSolid(maxXWithSpeed, maxYWithSpeed, levelData))
 			if (!IsSolid(minXWithSpeed, maxYWithSpeed, levelData)) {
-				if (xSpeed == 0 && airSpeed == 0) {
+				if (xSpeed == 0 && ySpeed == 0) {
 					return true;
 				}
 
@@ -68,10 +68,10 @@ public class BiggerThanTile {
 				}
 
 				double tileSize = AppStage.GetTileSize();
-				if (airSpeed > 0) {
+				if (ySpeed > 0) {
 					return CanMoveHereHorizontally(minXWithSpeed, maxYWithSpeed, hChecks, tileSize, levelData);
 				} else {
-					double minYWithSpeed = hitbox.getMinY() + airSpeed;
+					double minYWithSpeed = hitbox.getMinY() + ySpeed;
 					return CanMoveHereHorizontally(minXWithSpeed, minYWithSpeed, hChecks, tileSize, levelData);
 				}
 			}

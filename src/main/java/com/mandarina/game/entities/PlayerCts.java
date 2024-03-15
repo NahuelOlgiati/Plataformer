@@ -24,4 +24,10 @@ public class PlayerCts {
 	public static final String ATLAS_IMAGE = "player.png";
 	public static final int ATLAS_SIZE_X = 8;
 	public static final int ATLAS_SIZE_Y = 6;
+
+	public static final float WALK_SPEED = 1f;
+	public static final float JUMP_SPEED = 2.25f;
+	public static final float FALL_SPEED_AFTER_COLLISION = 0.5f;
+	public static final int ATTACK_DISTANCE = 32;
+	public static final int ATTACK_ANI_IND = 3;
 }

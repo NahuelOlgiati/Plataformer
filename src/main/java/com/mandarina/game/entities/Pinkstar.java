@@ -22,7 +22,13 @@ public class Pinkstar extends Enemy {
 	private int rollDurationTick, rollDuration = 300;
 
 	public Pinkstar(Point2D spawn) {
-		super(spawn, EntityCts.PINKSTAR);
+		super(spawn, PinkstarCts.HEALTH, EntityCts.PINKSTAR);
+		initPinkstar();
+	}
+
+	private void initPinkstar() {
+		initAttackDistance(PinkstarCts.ATTACK_DISTANCE);
+		initAttackWalkSpeed(PinkstarCts.WALK_SPEED);
 		initDraw(PinkstarCts.SPRITE_WIDTH, PinkstarCts.SPRITE_HEIGHT, PinkstarCts.DRAW_OFFSET_X,
 				PinkstarCts.DRAW_OFFSET_Y);
 		initHitbox(PinkstarCts.HITBOX_WIDTH, PinkstarCts.HITBOX_HEIGHT);
@@ -67,7 +73,7 @@ public class Pinkstar extends Enemy {
 				break;
 			case ATTACK:
 				if (preRoll) {
-					if (aniIndex >= 3)
+					if (aniIndex >= PinkstarCts.ATTACK_ANI_IND)
 						preRoll = false;
 				} else {
 					move(playing);
@@ -115,11 +121,6 @@ public class Pinkstar extends Enemy {
 	@Override
 	protected int getSpriteAmount(EnemyState state) {
 		return GetSpriteAmount(state);
-	}
-
-	@Override
-	protected int getMaxHealth() {
-		return PinkstarCts.HEALTH;
 	}
 
 	@Override
@@ -209,10 +210,6 @@ public class Pinkstar extends Enemy {
 
 	public void scale() {
 		super.scale();
-		initDraw(PinkstarCts.SPRITE_WIDTH, PinkstarCts.SPRITE_HEIGHT, PinkstarCts.DRAW_OFFSET_X,
-				PinkstarCts.DRAW_OFFSET_Y);
-		initHitbox(PinkstarCts.HITBOX_WIDTH, PinkstarCts.HITBOX_HEIGHT);
-		initAttackBox(PinkstarCts.ATTACKBOX_WIDTH, PinkstarCts.ATTACKBOX_HEIGHT, PinkstarCts.ATTACKBOX_OFFSET_X,
-				PinkstarCts.ATTACKBOX_OFFSET_Y);
+		initPinkstar();
 	}
 }

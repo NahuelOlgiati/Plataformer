@@ -37,15 +37,17 @@ public class Player extends Entity {
 	private int powerAttackTick;
 
 	public Player(Point2D spawn) {
-		super(spawn);
+		super(spawn, PlayerCts.HEALTH);
 		this.state = PlayerState.IDLE;
 		this.walkDir = DirectionCts.RIGHT;
-		this.maxHealth = PlayerCts.HEALTH;
-		this.currentHealth = maxHealth;
 		this.animations = load();
-		this.walkSpeed = AppStage.Scale(1.0);
-		this.jumpSpeed = AppStage.Scale(-2.25);
-		this.fallSpeedAfterCollision = AppStage.Scale(0.5);
+		initPlayer();
+	}
+
+	private void initPlayer() {
+		this.jumpSpeed = -AppStage.Scale(PlayerCts.JUMP_SPEED);
+		this.fallSpeedAfterCollision = AppStage.Scale(PlayerCts.FALL_SPEED_AFTER_COLLISION);
+		initAttackWalkSpeed(PlayerCts.WALK_SPEED);
 		initDraw(PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT, PlayerCts.DRAW_OFFSET_X, PlayerCts.DRAW_OFFSET_Y);
 		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
 		initAttackBox(PlayerCts.ATTACKBOX_WIDTH, PlayerCts.ATTACKBOX_HEIGHT, PlayerCts.ATTACKBOX_OFFSET_X,
@@ -110,7 +112,7 @@ public class Player extends Entity {
 			// Check if player died in air
 			if (!IsEntityOnFloor(hitbox, levelData)) {
 				inAir = true;
-				airSpeed = 0;
+				ySpeed = 0;
 			}
 		} else if (aniIndex == GetSpriteAmount(PlayerState.DEAD) - 1 && aniTick >= GameCts.ANI_SPEED - 1) {
 			playing.setGameOver(true);
@@ -121,11 +123,11 @@ public class Player extends Entity {
 
 			// Fall if in air
 			if (inAir) {
-				if (CanMoveHere(hitbox, 0, airSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS,
-						PlayerCts.HITBOX_VERTICAL_CHECKS, levelData)) {
-					hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
+				if (CanMoveHere(hitbox, 0, ySpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, PlayerCts.HITBOX_VERTICAL_CHECKS,
+						levelData)) {
+					hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + ySpeed, hitbox.getWidth(),
 							hitbox.getHeight());
-					airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
+					ySpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 				} else {
 					inAir = false;
 				}
@@ -205,7 +207,7 @@ public class Player extends Entity {
 				attackChecked = false;
 				if (PlayerState.HIT.equals(state)) {
 					newState(PlayerState.IDLE);
-					airSpeed = 0f;
+					ySpeed = 0f;
 					LevelData levelData = playing.getLevelData();
 					if (!IsFloor(hitbox, 0, levelData))
 						inAir = true;
@@ -226,7 +228,7 @@ public class Player extends Entity {
 			state = PlayerState.IDLE;
 
 		if (inAir) {
-			if (airSpeed < 0)
+			if (ySpeed < 0)
 				state = PlayerState.JUMP;
 			else
 				state = PlayerState.FALLING;
@@ -310,43 +312,43 @@ public class Player extends Entity {
 
 	private void updatePosOnAir() {
 		LevelData levelData = playing.getLevelData();
-		boolean canMoveY = CanMoveHere(hitbox, 0, airSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS,
+		boolean canMoveY = CanMoveHere(hitbox, 0, ySpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS,
 				PlayerCts.HITBOX_VERTICAL_CHECKS, levelData);
 		boolean canMoveX = CanMoveHere(hitbox, xSpeed, 0, PlayerCts.HITBOX_HORIZONTAL_CHECKS,
 				PlayerCts.HITBOX_VERTICAL_CHECKS, levelData);
 
 		if (canMoveY && canMoveX) {
-			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY() + airSpeed, hitbox.getWidth(),
+			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY() + ySpeed, hitbox.getWidth(),
 					hitbox.getHeight());
-			airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
+			ySpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 			return;
 		}
 
 		if (canMoveY) {
-			hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), hitbox.getMinY() + airSpeed,
+			hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), hitbox.getMinY() + ySpeed,
 					hitbox.getWidth(), hitbox.getHeight());
-			airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
+			ySpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 			resetPowerAttack();
 			return;
 		}
 
 		if (canMoveX) {
-			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, GetEntityMinYNextToPlane(hitbox, airSpeed),
+			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, GetEntityMinYNextToPlane(hitbox, ySpeed),
 					hitbox.getWidth(), hitbox.getHeight());
-			if (airSpeed > 0 || IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, levelData)) {
+			if (ySpeed > 0 || IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, levelData)) {
 				resetInAir();
 			} else {
-				airSpeed = fallSpeedAfterCollision;
+				ySpeed = fallSpeedAfterCollision;
 			}
 			return;
 		}
 
-		hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), GetEntityMinYNextToPlane(hitbox, airSpeed),
+		hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), GetEntityMinYNextToPlane(hitbox, ySpeed),
 				hitbox.getWidth(), hitbox.getHeight());
-		if (airSpeed > 0 || IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, levelData)) {
+		if (ySpeed > 0 || IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, levelData)) {
 			resetInAir();
 		} else {
-			airSpeed = fallSpeedAfterCollision;
+			ySpeed = fallSpeedAfterCollision;
 		}
 		resetPowerAttack();
 	}
@@ -369,7 +371,7 @@ public class Player extends Entity {
 			return;
 		playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
 		inAir = true;
-		airSpeed = jumpSpeed;
+		ySpeed = jumpSpeed;
 	}
 
 	private void resetPowerAttack() {
@@ -381,7 +383,7 @@ public class Player extends Entity {
 
 	private void resetInAir() {
 		inAir = false;
-		airSpeed = 0;
+		ySpeed = 0;
 	}
 
 	public void changeHealth(int value) {
@@ -448,7 +450,7 @@ public class Player extends Entity {
 		inAir = true;
 		attacking = false;
 		moving = false;
-		airSpeed = 0f;
+		ySpeed = 0f;
 		state = PlayerState.IDLE;
 		currentHealth = maxHealth;
 		powerAttackActive = false;
@@ -519,12 +521,6 @@ public class Player extends Entity {
 
 	public void scale() {
 		super.scale();
-		this.walkSpeed = AppStage.Scale(1.0);
-		this.jumpSpeed = AppStage.Scale(-2.25);
-		this.fallSpeedAfterCollision = AppStage.Scale(0.5);
-		initDraw(PlayerCts.SPRITE_WIDTH, PlayerCts.SPRITE_HEIGHT, PlayerCts.DRAW_OFFSET_X, PlayerCts.DRAW_OFFSET_Y);
-		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
-		initAttackBox(PlayerCts.ATTACKBOX_WIDTH, PlayerCts.ATTACKBOX_HEIGHT, PlayerCts.ATTACKBOX_OFFSET_X,
-				PlayerCts.ATTACKBOX_OFFSET_Y);
+		initPlayer();
 	}
 }

@@ -20,25 +20,26 @@ import javafx.scene.image.Image;
 public abstract class Enemy extends Entity {
 	protected EnemyState state;
 	protected boolean firstUpdate = true;
-	protected double attackDistance;
+	protected int enemyType;
 	protected boolean active = true;
 
-	public Enemy(Point2D spawn, int enemyType) {
-		super(spawn);
+	protected double attackDistance;
+
+	public Enemy(Point2D spawn, int health, int enemyType) {
+		super(spawn, health);
+		this.enemyType = enemyType;
 		this.state = EnemyState.IDLE;
-		maxHealth = getMaxHealth();
-		currentHealth = maxHealth;
-		attackDistance = AppStage.GetTileSize();
-		walkSpeed = AppStage.Scale(0.35f);
+	}
+
+	protected void initAttackDistance(int attackDistance) {
+		this.attackDistance = AppStage.Scale(attackDistance);
 	}
 
 	protected abstract void updateBehavior(Playing playing);
 
-	public abstract void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations);
+	protected abstract void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations);
 
 	protected abstract int getSpriteAmount(EnemyState state);
-
-	protected abstract int getMaxHealth();
 
 	public void update(Playing playing) {
 		updateBehavior(playing);
@@ -62,14 +63,14 @@ public abstract class Enemy extends Entity {
 	}
 
 	protected void updateInAir(LevelData levelData) {
-		if (CanMoveHere(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(), hitbox.getHeight(),
+		if (CanMoveHere(hitbox.getMinX(), hitbox.getMinY() + ySpeed, hitbox.getWidth(), hitbox.getHeight(),
 				levelData)) {
-			hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + airSpeed, hitbox.getWidth(),
+			hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + ySpeed, hitbox.getWidth(),
 					hitbox.getHeight());
-			airSpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
+			ySpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 		} else {
 			inAir = false;
-			hitbox = new Rectangle2D(hitbox.getMinX(), GetEntityMinYNextToPlane(hitbox, airSpeed), hitbox.getWidth(),
+			hitbox = new Rectangle2D(hitbox.getMinX(), GetEntityMinYNextToPlane(hitbox, ySpeed), hitbox.getWidth(),
 					hitbox.getHeight());
 			updateTileY();
 		}
@@ -157,7 +158,7 @@ public abstract class Enemy extends Entity {
 		currentHealth = maxHealth;
 		newState(EnemyState.IDLE);
 		active = true;
-		airSpeed = 0;
+		ySpeed = 0;
 		pushDrawOffset = 0;
 		toSpawn();
 	}
@@ -178,7 +179,6 @@ public abstract class Enemy extends Entity {
 
 	public void scale() {
 		super.scale();
-		attackDistance = AppStage.GetTileSize();
 		walkSpeed = AppStage.Scale(0.35);
 	}
 }

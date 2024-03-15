@@ -20,4 +20,8 @@ public class PinkstarCts {
 	public static final String ATLAS_IMAGE = "pinkstar.png";
 	public static final int ATLAS_SIZE_X = 8;
 	public static final int ATLAS_SIZE_Y = 5;
+	
+	public static final float WALK_SPEED = 0.35f;
+	public static final int ATTACK_DISTANCE = 32;
+	public static final int ATTACK_ANI_IND = 3;
 }

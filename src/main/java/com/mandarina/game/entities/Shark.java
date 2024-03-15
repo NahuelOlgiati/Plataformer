@@ -16,7 +16,13 @@ import javafx.scene.image.Image;
 public class Shark extends Enemy {
 
 	public Shark(Point2D spawn) {
-		super(spawn, EntityCts.SHARK);
+		super(spawn, SharkCts.HEALTH, EntityCts.SHARK);
+		initShark();
+	}
+
+	private void initShark() {
+		initAttackDistance(SharkCts.ATTACK_DISTANCE);
+		initAttackWalkSpeed(SharkCts.WALK_SPEED);
 		initDraw(SharkCts.SPRITE_WIDTH, SharkCts.SPRITE_HEIGHT, SharkCts.DRAW_OFFSET_X, SharkCts.DRAW_OFFSET_Y);
 		initHitbox(SharkCts.HITBOX_WIDTH, SharkCts.HITBOX_HEIGHT);
 		initAttackBox(SharkCts.ATTACKBOX_WIDTH, SharkCts.ATTACKBOX_HEIGHT, SharkCts.ATTACKBOX_OFFSET_X,
@@ -57,7 +63,7 @@ public class Shark extends Enemy {
 			case ATTACK:
 				if (aniIndex == 0)
 					attackChecked = false;
-				else if (aniIndex == 3) {
+				else if (aniIndex == SharkCts.ATTACK_ANI_IND) {
 					if (!attackChecked)
 						checkPlayerHit(attackBox, playing.getPlayer());
 					attackMove(playing);
@@ -81,11 +87,6 @@ public class Shark extends Enemy {
 	@Override
 	protected int getSpriteAmount(EnemyState state) {
 		return GetSpriteAmount(state);
-	}
-
-	@Override
-	protected int getMaxHealth() {
-		return SharkCts.HEALTH;
 	}
 
 	@Override
@@ -152,9 +153,6 @@ public class Shark extends Enemy {
 
 	public void scale() {
 		super.scale();
-		initDraw(SharkCts.SPRITE_WIDTH, SharkCts.SPRITE_HEIGHT, SharkCts.DRAW_OFFSET_X, SharkCts.DRAW_OFFSET_Y);
-		initHitbox(SharkCts.HITBOX_WIDTH, SharkCts.HITBOX_HEIGHT);
-		initAttackBox(SharkCts.ATTACKBOX_WIDTH, SharkCts.ATTACKBOX_HEIGHT, SharkCts.ATTACKBOX_OFFSET_X,
-				SharkCts.ATTACKBOX_OFFSET_Y);
+		initShark();
 	}
 }

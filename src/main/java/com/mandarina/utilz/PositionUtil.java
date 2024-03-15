@@ -26,8 +26,8 @@ public class PositionUtil {
 		return currentTile * AppStage.GetTileSize() + 1;
 	}
 
-	public static double GetEntityMinYNextToPlane(Rectangle2D hitbox, double airSpeed) {
-		if (airSpeed > 0) {
+	public static double GetEntityMinYNextToPlane(Rectangle2D hitbox, double ySpeed) {
+		if (ySpeed > 0) {
 			// Falling
 			return GetEntityMinYAboveFloor(hitbox);
 		} else {

@@ -6,7 +6,6 @@ import static com.mandarina.utilz.BiggerThanTile.IsFloor;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
-import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.geometry.Point2D;
@@ -15,11 +14,14 @@ import javafx.scene.image.Image;
 
 public class Longleg extends Enemy {
 
-	private double xSpeed;
-
 	public Longleg(Point2D spawn) {
-		super(spawn, EntityCts.LONGLEG);
-		attackDistance = AppStage.Scale(LonglegCts.ATTACK_DISTANCE);
+		super(spawn, LonglegCts.HEALTH, EntityCts.LONGLEG);
+		initLongleg();
+	}
+
+	private void initLongleg() {
+		initAttackDistance(LonglegCts.ATTACK_DISTANCE);
+		initAttackWalkSpeed(LonglegCts.WALK_SPEED);
 		initDraw(LonglegCts.SPRITE_WIDTH, LonglegCts.SPRITE_HEIGHT, LonglegCts.DRAW_OFFSET_X, LonglegCts.DRAW_OFFSET_Y);
 		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_HEIGHT);
 		initAttackBox(LonglegCts.ATTACKBOX_WIDTH, LonglegCts.ATTACKBOX_HEIGHT, LonglegCts.ATTACKBOX_OFFSET_X,
@@ -58,7 +60,6 @@ public class Longleg extends Enemy {
 				move(levelData);
 				break;
 			case ATTACK:
-				System.out.println(aniIndex);
 				if (aniIndex == 0)
 					attackChecked = false;
 				else if (aniIndex == LonglegCts.ATTACK_ANI_IND) {
@@ -88,11 +89,6 @@ public class Longleg extends Enemy {
 	}
 
 	@Override
-	protected int getMaxHealth() {
-		return LonglegCts.HEALTH;
-	}
-
-	@Override
 	public void resetEnemy() {
 		super.resetEnemy();
 		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_HEIGHT);
@@ -116,7 +112,7 @@ public class Longleg extends Enemy {
 		var levelData = playing.getLevelData();
 		updateXSpeed();
 
-		if (CanMoveHere(hitbox, xSpeed, airSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, PlayerCts.HITBOX_VERTICAL_CHECKS,
+		if (CanMoveHere(hitbox, xSpeed, ySpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, PlayerCts.HITBOX_VERTICAL_CHECKS,
 				levelData)) {
 			if (IsFloor(hitbox, xSpeed * 4, PlayerCts.HITBOX_VERTICAL_CHECKS, levelData)) {
 				hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed * 4, hitbox.getMinY(), hitbox.getWidth(),
@@ -160,10 +156,6 @@ public class Longleg extends Enemy {
 
 	public void scale() {
 		super.scale();
-		attackDistance = AppStage.Scale(LonglegCts.ATTACK_DISTANCE);
-		initDraw(LonglegCts.SPRITE_WIDTH, LonglegCts.SPRITE_HEIGHT, LonglegCts.DRAW_OFFSET_X, LonglegCts.DRAW_OFFSET_Y);
-		initHitbox(LonglegCts.HITBOX_WIDTH, LonglegCts.HITBOX_HEIGHT);
-		initAttackBox(LonglegCts.ATTACKBOX_WIDTH, LonglegCts.ATTACKBOX_HEIGHT, LonglegCts.ATTACKBOX_OFFSET_X,
-				LonglegCts.ATTACKBOX_OFFSET_Y);
+		initLongleg();
 	}
 }

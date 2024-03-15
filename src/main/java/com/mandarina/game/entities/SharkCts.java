@@ -20,4 +20,8 @@ public class SharkCts {
 	public static final String ATLAS_IMAGE = "shark.png";
 	public static final int ATLAS_SIZE_X = 8;
 	public static final int ATLAS_SIZE_Y = 5;
+	
+	public static final float WALK_SPEED = 0.35f;
+	public static final int ATTACK_DISTANCE = 60;
+	public static final int ATTACK_ANI_IND = 6;
 }

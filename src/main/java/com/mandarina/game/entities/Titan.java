@@ -16,9 +16,15 @@ import javafx.scene.image.Image;
 public class Titan extends Enemy {
 
 	public Titan(Point2D spawn) {
-		super(spawn, EntityCts.TITAN);
+		super(spawn, TitanCts.HEALTH, EntityCts.TITAN);
+		initTitan();
+	}
+
+	private void initTitan() {
+		initAttackDistance(TitanCts.ATTACK_DISTANCE);
+		initAttackWalkSpeed(TitanCts.WALK_SPEED);
 		initDraw(TitanCts.SPRITE_WIDTH, TitanCts.SPRITE_HEIGHT, TitanCts.DRAW_OFFSET_X, TitanCts.DRAW_OFFSET_Y);
-		initHitbox(TitanCts.HITBOX_WIDTH, TitanCts.HITBOX_WIDTH);
+		initHitbox(TitanCts.HITBOX_WIDTH, TitanCts.HITBOX_HEIGHT);
 		initAttackBox(TitanCts.ATTACKBOX_WIDTH, TitanCts.ATTACKBOX_HEIGHT, TitanCts.ATTACKBOX_OFFSET_X,
 				TitanCts.ATTACKBOX_OFFSET_Y);
 	}
@@ -57,7 +63,7 @@ public class Titan extends Enemy {
 			case ATTACK:
 				if (aniIndex == 0)
 					attackChecked = false;
-				else if (aniIndex == 3) {
+				else if (aniIndex == TitanCts.ATTACK_ANI_IND) {
 					if (!attackChecked)
 						checkPlayerHit(attackBox, playing.getPlayer());
 					attackMove(playing);
@@ -81,11 +87,6 @@ public class Titan extends Enemy {
 	@Override
 	protected int getSpriteAmount(EnemyState state) {
 		return GetSpriteAmount(state);
-	}
-
-	@Override
-	protected int getMaxHealth() {
-		return TitanCts.HEALTH;
 	}
 
 	@Override
@@ -153,9 +154,6 @@ public class Titan extends Enemy {
 
 	public void scale() {
 		super.scale();
-		initDraw(TitanCts.SPRITE_WIDTH, TitanCts.SPRITE_HEIGHT, TitanCts.DRAW_OFFSET_X, TitanCts.DRAW_OFFSET_Y);
-		initHitbox(TitanCts.HITBOX_WIDTH, TitanCts.HITBOX_WIDTH);
-		initAttackBox(TitanCts.ATTACKBOX_WIDTH, TitanCts.ATTACKBOX_HEIGHT, TitanCts.ATTACKBOX_OFFSET_X,
-				TitanCts.ATTACKBOX_OFFSET_Y);
+		initTitan();
 	}
 }
