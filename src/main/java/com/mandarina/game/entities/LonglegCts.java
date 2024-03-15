@@ -11,17 +11,20 @@ public class LonglegCts {
 	public static final int DRAW_OFFSET_X = 90;
 	public static final int DRAW_OFFSET_Y = 52;
 
-	public static final int HITBOX_WIDTH = 18;
+	public static final int HITBOX_WIDTH = 26;
 	public static final int HITBOX_HEIGHT = 100;
 	public static final int HITBOX_HORIZONTAL_CHECKS = HITBOX_WIDTH / GameCts.TILES_DEFAULT_SIZE;
 	public static final int HITBOX_VERTICAL_CHECKS = HITBOX_HEIGHT / GameCts.TILES_DEFAULT_SIZE;
 
-	public static final int ATTACKBOX_WIDTH = 20;
-	public static final int ATTACKBOX_HEIGHT = 40;
-	public static final int ATTACKBOX_OFFSET_X = 30;
-	public static final int ATTACKBOX_OFFSET_Y = -50;
+	public static final int ATTACKBOX_WIDTH = 40;
+	public static final int ATTACKBOX_HEIGHT = 60;
+	public static final int ATTACKBOX_OFFSET_X = 50;
+	public static final int ATTACKBOX_OFFSET_Y = -40;
 
 	public static final String ATLAS_IMAGE = "longleg.png";
 	public static final int ATLAS_SIZE_X = 8;
 	public static final int ATLAS_SIZE_Y = 5;
+
+	public static final int ATTACK_DISTANCE = 60;
+	public static final int ATTACK_ANI_IND = 6;
 }
