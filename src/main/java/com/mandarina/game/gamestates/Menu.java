@@ -81,16 +81,13 @@ public class Menu {
 		for (MenuButton mb : buttons) {
 			if (mb.isIn(e)) {
 				if (mb.isMousePressed()) {
-					GameState.setState(mb.getState());
 					if (mb.getState() == GameState.PLAYING) {
 						game.getPlaying().loadNextLevel();
-						break;
-					}
-					if (mb.getState() == GameState.LVLBUILDER) {
+					} else if (mb.getState() == GameState.LVLBUILDER) {
 						game.stop();
 						game.getLvlBuilder().show();
-						break;
 					}
+					GameState.setState(mb.getState());
 					break;
 				}
 			}

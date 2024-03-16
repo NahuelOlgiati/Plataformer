@@ -123,10 +123,14 @@ public class LevelManager implements LayerDrawer {
 		return lvlIndex;
 	}
 
+	public void resetLvlIndex() {
+		this.lvlIndex = 0;
+	}
+
 	public void reset() {
 		this.currentLevel = null;
-		this.lvlIndex = 0;
 		this.folderLvls = null;
+		resetLvlIndex();
 		loadNextLevel();
 	}
 
