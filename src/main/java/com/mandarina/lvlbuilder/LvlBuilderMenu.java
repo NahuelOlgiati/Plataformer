@@ -111,7 +111,6 @@ public class LvlBuilderMenu {
 			try {
 				LvlBuilderImage lvl = new LvlBuilderImage(selectedFile);
 				AppStage.get().getStage().setUserData(lvl);
-				GameState.setState(GameState.PLAYING);
 				Game game = GameState.getGame();
 				game.show();
 				game.start();
@@ -131,7 +130,6 @@ public class LvlBuilderMenu {
 		if (selectedDirectory != null) {
 			try {
 				AppStage.get().getStage().setUserData(selectedDirectory);
-				GameState.setState(GameState.PLAYING);
 				Game game = GameState.getGame();
 				game.show();
 				game.start();
