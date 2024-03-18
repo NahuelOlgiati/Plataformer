@@ -11,7 +11,7 @@ public abstract class GameLoop {
 
 	private static final boolean SHOW_FPS_UPS = false;
 
-	private static final int UPS_SET = 100;
+	private static final int UPS_SET = 180;
 	private static final int FPS_SET = 60;
 
 	private static final int DELTA_SET = UPS_SET / FPS_SET;
@@ -33,9 +33,6 @@ public abstract class GameLoop {
 	}
 
 	private void init() {
-		this.frames = 0;
-		this.updates = 0;
-		this.delta = 0;
 		updateTimeline = new Timeline(new KeyFrame(KEYFRAME_UPDATE_DURATION, new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -63,7 +60,7 @@ public abstract class GameLoop {
 					delta = 0;
 				}
 
-				if (SHOW_FPS_UPS && frames == 60) {
+				if (SHOW_FPS_UPS && frames == FPS_SET) {
 					System.out.println("UPSx60f: " + updates);
 					frames = 0;
 					updates = 0;
@@ -73,8 +70,14 @@ public abstract class GameLoop {
 		repaintTimer.setCycleCount(Animation.INDEFINITE);
 	}
 
+	private void reset() {
+		this.frames = 0;
+		this.updates = 0;
+		this.delta = 0;
+	}
+
 	public void start() {
-		init();
+		reset();
 		updateTimeline.play();
 		repaintTimer.play();
 	}
@@ -82,8 +85,6 @@ public abstract class GameLoop {
 	public void stop() {
 		updateTimeline.stop();
 		repaintTimer.stop();
-		updateTimeline = null;
-		repaintTimer = null;
 	}
 
 	public abstract void update();

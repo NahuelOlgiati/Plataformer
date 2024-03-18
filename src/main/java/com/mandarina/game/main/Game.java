@@ -43,7 +43,7 @@ public class Game {
 			GameState.setState(GameState.PLAYING);
 			AppStage.get().getStage().setUserData(null);
 		}
-		
+
 		if (AppStage.get().getStage().getUserData() instanceof File folder) {
 			GameState.getGame().getPlaying().loadCustomFolder(folder);
 			GameState.setState(GameState.PLAYING);
@@ -77,41 +77,32 @@ public class Game {
 
 		Scene scene = new Scene(root);
 		gameInputs.init(scene);
-		gameLoop = new GameLoop() {
-
-			@Override
-			public void update() {
-				Game.this.update();
-			}
-
-			@Override
-			public void repaint() {
-				Game.this.repaint();
-			}
-
-		};
 		return scene;
 	}
 
 	public void start() {
-		gameLoop = new GameLoop() {
+		if (gameLoop == null) {
+			gameLoop = new GameLoop() {
 
-			@Override
-			public void update() {
-				Game.this.update();
-			}
+				@Override
+				public void update() {
+					Game.this.update();
+				}
 
-			@Override
-			public void repaint() {
-				Game.this.repaint();
-			}
+				@Override
+				public void repaint() {
+					Game.this.repaint();
+				}
 
-		};
+			};
+		}
 		gameLoop.start();
 	}
 
 	public void stop() {
-		gameLoop.stop();
+		if (gameLoop != null) {
+			gameLoop.stop();
+		}
 	}
 
 	private void initClasses() {
