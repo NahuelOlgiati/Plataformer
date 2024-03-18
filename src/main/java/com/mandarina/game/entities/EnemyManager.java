@@ -1,5 +1,6 @@
 package com.mandarina.game.entities;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.main.GameDrawer;
@@ -27,23 +28,23 @@ public class EnemyManager implements LayerDrawer {
 	}
 
 	@Override
-	public void drawL1(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		currentLevel.getLevelEntities().drawL1(g, lvlOffsetX, lvlOffsetY);
+	public void drawL1(GameDrawer g, Offset offset) {
+		currentLevel.getLevelEntities().drawL1(g, offset);
 	}
 
 	@Override
-	public void drawL2(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		currentLevel.getLevelEntities().drawL2(g, lvlOffsetX, lvlOffsetY);
+	public void drawL2(GameDrawer g, Offset offset) {
+		currentLevel.getLevelEntities().drawL2(g, offset);
 	}
 
 	@Override
-	public void drawL3(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		currentLevel.getLevelEntities().drawL3(g, lvlOffsetX, lvlOffsetY);
+	public void drawL3(GameDrawer g, Offset offset) {
+		currentLevel.getLevelEntities().drawL3(g, offset);
 	}
 
 	@Override
-	public void drawL4(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		currentLevel.getLevelEntities().drawL4(g, lvlOffsetX, lvlOffsetY);
+	public void drawL4(GameDrawer g, Offset offset) {
+		currentLevel.getLevelEntities().drawL4(g, offset);
 	}
 
 	public void checkEnemyHit(Rectangle2D attackBox, int playerDamage) {

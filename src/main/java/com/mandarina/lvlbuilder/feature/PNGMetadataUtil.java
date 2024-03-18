@@ -25,7 +25,7 @@ public class PNGMetadataUtil {
 	public static void readFeatures(LvlBuilderImage img, PNGMetadata pm) {
 		try (ImageInputStream input = ImageIO.createImageInputStream(img.getResource().getFile())) {
 			Iterator<ImageReader> readers = ImageIO.getImageReaders(input);
-			ImageReader reader = (ImageReader) readers.next();
+			ImageReader reader = readers.next();
 			reader.setInput(input);
 			IIOMetadata metadata = reader.getImageMetadata(0);
 			for (TileFeature tf : TileFeature.values()) {
@@ -47,7 +47,7 @@ public class PNGMetadataUtil {
 		try (ImageInputStream input = ImageIO.createImageInputStream(file);
 				ImageOutputStream output = ImageIO.createImageOutputStream(file)) {
 			Iterator<ImageReader> readers = ImageIO.getImageReaders(input);
-			ImageReader reader = (ImageReader) readers.next();
+			ImageReader reader = readers.next();
 			reader.setInput(input);
 			IIOImage image = reader.readAll(0, null);
 			IIOMetadata metadata = image.getMetadata();

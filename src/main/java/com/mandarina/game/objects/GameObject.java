@@ -1,5 +1,6 @@
 package com.mandarina.game.objects;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
@@ -73,9 +74,9 @@ public class GameObject {
 		hitbox = new Rectangle2D(x, y, AppStage.Scale(width), AppStage.Scale(height));
 	}
 
-	public void drawHitbox(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
+	public void drawHitbox(GameDrawer g, Offset offset) {
 		g.setStroke(Color.PINK);
-		g.strokeRect(hitbox.getMinX() - lvlOffsetX, hitbox.getMinY() - lvlOffsetY, hitbox.getWidth(),
+		g.strokeRect(hitbox.getMinX() - offset.getX(), hitbox.getMinY() - offset.getY(), hitbox.getWidth(),
 				hitbox.getHeight());
 	}
 

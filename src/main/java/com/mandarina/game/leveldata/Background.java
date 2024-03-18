@@ -1,5 +1,6 @@
 package com.mandarina.game.leveldata;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
 import com.mandarina.utilz.ImageUtil;
@@ -16,7 +17,7 @@ public class Background {
 		this.backgroundSprite = ImageUtil.darkerBackground(backgroundSprite, 1);
 	}
 
-	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
+	public void draw(GameDrawer g, Offset offset) {
 		g.drawImage(backgroundSprite, 0, 0, AppStage.GetGameWidth(), AppStage.GetGameHeight());
 	}
 

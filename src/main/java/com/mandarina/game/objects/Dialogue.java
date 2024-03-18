@@ -1,5 +1,6 @@
 package com.mandarina.game.objects;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
@@ -29,14 +30,13 @@ public class Dialogue extends GameObject {
 		}
 	}
 
-	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[] dialogueQuestionSprite,
-			Image[] dialogueExclamationSprite) {
+	public void draw(GameDrawer g, Offset offset, Image[] dialogueQuestionSprite, Image[] dialogueExclamationSprite) {
 		if (getObjType() == DialogueCts.QUESTION)
-			g.drawImage(dialogueQuestionSprite[getAniIndex()], x - lvlOffsetX, y - lvlOffsetY,
+			g.drawImage(dialogueQuestionSprite[getAniIndex()], x - offset.getX(), y - offset.getY(),
 					AppStage.Scale(DialogueCts.DIALOGUE_WIDTH_DEFAULT),
 					AppStage.Scale(DialogueCts.DIALOGUE_HEIGHT_DEFAULT));
 		else
-			g.drawImage(dialogueExclamationSprite[getAniIndex()], x - lvlOffsetX, y - lvlOffsetY,
+			g.drawImage(dialogueExclamationSprite[getAniIndex()], x - offset.getX(), y - offset.getY(),
 					AppStage.Scale(DialogueCts.DIALOGUE_WIDTH_DEFAULT),
 					AppStage.Scale(DialogueCts.DIALOGUE_HEIGHT_DEFAULT));
 	}
@@ -51,10 +51,12 @@ public class Dialogue extends GameObject {
 		active = true;
 	}
 
+	@Override
 	public int getAniIndex() {
 		return aniIndex;
 	}
 
+	@Override
 	public boolean isActive() {
 		return active;
 	}

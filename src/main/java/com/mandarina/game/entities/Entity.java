@@ -2,6 +2,7 @@ package com.mandarina.game.entities;
 
 import static com.mandarina.utilz.SmallerThanTile.CanMoveHere;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
@@ -80,13 +81,13 @@ public abstract class Entity {
 		this.attackBoxOffsetY = AppStage.Scale(attackBoxOffsetY);
 	}
 
-	protected void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations, int row) {
-		g.drawImage(animations[row][getAniIndex()], hitbox.getMinX() - lvlOffsetX - drawOffsetX + flipX(),
-				hitbox.getMinY() - lvlOffsetY - drawOffsetY + pushDrawOffset, drawWidth * flipW(), drawHeight);
+	protected void draw(GameDrawer g, Offset offset, Image[][] animations, int row) {
+		g.drawImage(animations[row][getAniIndex()], hitbox.getMinX() - offset.getX() - drawOffsetX + flipX(),
+				hitbox.getMinY() - offset.getY() - drawOffsetY + pushDrawOffset, drawWidth * flipW(), drawHeight);
 
 		// For Debug
-//		drawHitbox(g, lvlOffsetX, lvlOffsetY);
-//		drawAttackBox(g, lvlOffsetX, lvlOffsetY);
+//		drawHitbox(g, offset);
+//		drawAttackBox(g, offset);
 	}
 
 	protected void updateAttackBox() {
@@ -170,15 +171,15 @@ public abstract class Entity {
 					hitbox.getHeight());
 	}
 
-	protected void drawAttackBox(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
+	protected void drawAttackBox(GameDrawer g, Offset offset) {
 		g.setStroke(Color.RED);
-		g.strokeRect(attackBox.getMinX() - lvlOffsetX, attackBox.getMinY() - lvlOffsetY, attackBox.getWidth(),
+		g.strokeRect(attackBox.getMinX() - offset.getX(), attackBox.getMinY() - offset.getY(), attackBox.getWidth(),
 				attackBox.getHeight());
 	}
 
-	protected void drawHitbox(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
+	protected void drawHitbox(GameDrawer g, Offset offset) {
 		g.setStroke(Color.PINK);
-		g.strokeRect(hitbox.getMinX() - lvlOffsetX, hitbox.getMinY() - lvlOffsetY, hitbox.getWidth(),
+		g.strokeRect(hitbox.getMinX() - offset.getX(), hitbox.getMinY() - offset.getY(), hitbox.getWidth(),
 				hitbox.getHeight());
 	}
 

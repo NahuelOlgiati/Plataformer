@@ -11,6 +11,7 @@ import com.mandarina.game.entities.Pinkstar;
 import com.mandarina.game.entities.Player;
 import com.mandarina.game.entities.Shark;
 import com.mandarina.game.entities.Titan;
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
@@ -62,56 +63,56 @@ public class LevelEntities implements LayerDrawer {
 	}
 
 	@Override
-	public void drawL1(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
+	public void drawL1(GameDrawer g, Offset offset) {
 		for (Crabby c : crabs) {
 			if (c.isActive()) {
-				c.draw(g, lvlOffsetX, lvlOffsetY, crabbySprite);
+				c.draw(g, offset, crabbySprite);
 			}
 		}
 		for (Pinkstar p : pinkstars) {
 			if (p.isActive()) {
-				p.draw(g, lvlOffsetX, lvlOffsetY, pinkstarSprite);
+				p.draw(g, offset, pinkstarSprite);
 			}
 		}
 		for (Shark s : sharks) {
 			if (s.isActive()) {
-				s.draw(g, lvlOffsetX, lvlOffsetY, sharkSprite);
+				s.draw(g, offset, sharkSprite);
 			}
 		}
 		for (Titan t : titans) {
 			if (t.isActive()) {
-				t.draw(g, lvlOffsetX, lvlOffsetY, titanSprite);
+				t.draw(g, offset, titanSprite);
 			}
 		}
 		for (Longleg l : longlegs) {
 			if (l.isActive()) {
-				l.draw(g, lvlOffsetX, lvlOffsetY, longlegSprite);
+				l.draw(g, offset, longlegSprite);
 			}
 		}
 	}
 
 	@Override
-	public void drawL2(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
+	public void drawL2(GameDrawer g, Offset offset) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void drawL3(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
+	public void drawL3(GameDrawer g, Offset offset) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void drawL4(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
+	public void drawL4(GameDrawer g, Offset offset) {
 		// TODO Auto-generated method stub
 	}
 
 	public void load(LvlBuilderImage img) {
-		List<Enemy> enemys = new ArrayList<Enemy>();
-		List<Crabby> crabs = new ArrayList<Crabby>();
-		List<Pinkstar> pinkstars = new ArrayList<Pinkstar>();
-		List<Shark> sharks = new ArrayList<Shark>();
-		List<Titan> titans = new ArrayList<Titan>();
-		List<Longleg> longlegs = new ArrayList<Longleg>();
+		List<Enemy> enemys = new ArrayList<>();
+		List<Crabby> crabs = new ArrayList<>();
+		List<Pinkstar> pinkstars = new ArrayList<>();
+		List<Shark> sharks = new ArrayList<>();
+		List<Titan> titans = new ArrayList<>();
+		List<Longleg> longlegs = new ArrayList<>();
 		PixelReader pixelReader = img.getPixelReader();
 		for (int y = 0; y < this.level.getImgHeight(); y++) {
 			for (int x = 0; x < this.level.getImgWidth(); x++) {

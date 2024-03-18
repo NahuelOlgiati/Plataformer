@@ -4,6 +4,7 @@ import static com.mandarina.utilz.SmallerThanTile.CanMoveHere;
 import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
 import static com.mandarina.utilz.SmallerThanTile.IsFloor;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
@@ -80,8 +81,8 @@ public class Shark extends Enemy {
 	}
 
 	@Override
-	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val());
+	public void draw(GameDrawer g, Offset offset, Image[][] animations) {
+		draw(g, offset, animations, state.val());
 	}
 
 	@Override
@@ -146,6 +147,7 @@ public class Shark extends Enemy {
 				SharkCts.SPRITE_HEIGHT, LoadSave.GetAtlas(SharkCts.ATLAS_IMAGE));
 	}
 
+	@Override
 	public void scale() {
 		super.scale();
 		initShark();

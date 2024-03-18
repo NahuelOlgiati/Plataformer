@@ -40,6 +40,7 @@ public class Container extends GameObject {
 		return LoadSave.GetAnimations(8, 2, 40, 30, LoadSave.GetAtlas(LoadSave.CONTAINER));
 	}
 
+	@Override
 	public void scale() {
 		super.scale();
 		createHitbox();

@@ -115,6 +115,7 @@ public class VolumeButton extends PauseButton {
 		return volume;
 	}
 
+	@Override
 	public Rectangle getBounds() {
 		return bounds;
 	}

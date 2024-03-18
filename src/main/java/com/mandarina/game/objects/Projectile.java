@@ -2,6 +2,7 @@ package com.mandarina.game.objects;
 
 import static com.mandarina.utilz.SmallerThanTile.IsSolid;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
@@ -34,8 +35,8 @@ public class Projectile extends GameObject {
 				hitbox.getWidth(), hitbox.getHeight());
 	}
 
-	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image cannonBallSprite) {
-		g.drawImage(cannonBallSprite, getHitbox().getMinX() - lvlOffsetX, getHitbox().getMinY() - lvlOffsetY,
+	public void draw(GameDrawer g, Offset offset, Image cannonBallSprite) {
+		g.drawImage(cannonBallSprite, getHitbox().getMinX() - offset.getX(), getHitbox().getMinY() - offset.getY(),
 				AppStage.Scale(ProjectileCts.CANNON_BALL_WIDTH_DEFAULT),
 				AppStage.Scale(ProjectileCts.CANNON_BALL_HEIGHT_DEFAULT));
 	}
@@ -48,14 +49,17 @@ public class Projectile extends GameObject {
 		hitbox = new Rectangle2D(x, y, hitbox.getWidth(), hitbox.getHeight());
 	}
 
+	@Override
 	public Rectangle2D getHitbox() {
 		return hitbox;
 	}
 
+	@Override
 	public void setActive(boolean active) {
 		this.active = active;
 	}
 
+	@Override
 	public boolean isActive() {
 		return active;
 	}
@@ -64,6 +68,7 @@ public class Projectile extends GameObject {
 		return LoadSave.GetSprite(LoadSave.CANNON_BALL);
 	}
 
+	@Override
 	public void scale() {
 		super.scale();
 		int xOffset = AppStage.Scale(-3);

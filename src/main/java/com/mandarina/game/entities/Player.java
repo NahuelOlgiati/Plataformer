@@ -8,6 +8,7 @@ import static com.mandarina.utilz.SmallerThanTile.IsEntityInWater;
 import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
 import static com.mandarina.utilz.SmallerThanTile.IsFloor;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.GameAudio;
@@ -176,8 +177,8 @@ public class Player extends Entity {
 			changeWalkDir(DirectionCts.LEFT);
 	}
 
-	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val());
+	public void draw(GameDrawer g, Offset offset) {
+		draw(g, offset, animations, state.val());
 	}
 
 	@Override
@@ -519,6 +520,7 @@ public class Player extends Entity {
 				PlayerCts.SPRITE_HEIGHT, LoadSave.GetAtlas(PlayerCts.ATLAS_IMAGE));
 	}
 
+	@Override
 	public void scale() {
 		super.scale();
 		initPlayer();

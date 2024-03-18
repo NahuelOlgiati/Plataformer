@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.mandarina.game.entities.Enemy;
 import com.mandarina.game.entities.Player;
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.levels.LevelData;
@@ -25,7 +26,7 @@ public class ObjectManager implements LayerDrawer {
 
 	private List<Potion> potions;
 	private List<Projectile> projectiles;
-	private List<Dialogue> dialogues = new ArrayList<Dialogue>();
+	private List<Dialogue> dialogues = new ArrayList<>();
 
 	public ObjectManager(Playing playing) {
 		this.playing = playing;
@@ -33,31 +34,31 @@ public class ObjectManager implements LayerDrawer {
 
 	public void loadObjects(Level level) {
 		this.currentLevel = level;
-		this.potions = new ArrayList<Potion>(Arrays.asList(level.getLevelObjects().getPotion().getItems()));
-		this.projectiles = new ArrayList<Projectile>();
+		this.potions = new ArrayList<>(Arrays.asList(level.getLevelObjects().getPotion().getItems()));
+		this.projectiles = new ArrayList<>();
 		loadDialogues();
 	}
 
 	@Override
-	public void drawL1(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		currentLevel.getLevelObjects().drawL1(g, lvlOffsetX, lvlOffsetY);
-		currentLevel.getLevelObjects().drawProjectiles(g, lvlOffsetX, lvlOffsetY, this.projectiles);
-		currentLevel.getLevelObjects().drawDialogues(g, lvlOffsetX, lvlOffsetY, this.dialogues);
+	public void drawL1(GameDrawer g, Offset offset) {
+		currentLevel.getLevelObjects().drawL1(g, offset);
+		currentLevel.getLevelObjects().drawProjectiles(g, offset, this.projectiles);
+		currentLevel.getLevelObjects().drawDialogues(g, offset, this.dialogues);
 	}
 
 	@Override
-	public void drawL2(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		currentLevel.getLevelObjects().drawL2(g, lvlOffsetX, lvlOffsetY);
+	public void drawL2(GameDrawer g, Offset offset) {
+		currentLevel.getLevelObjects().drawL2(g, offset);
 	}
 
 	@Override
-	public void drawL3(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		currentLevel.getLevelObjects().drawL3(g, lvlOffsetX, lvlOffsetY);
+	public void drawL3(GameDrawer g, Offset offset) {
+		currentLevel.getLevelObjects().drawL3(g, offset);
 	}
 
 	@Override
-	public void drawL4(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		currentLevel.getLevelObjects().drawL4(g, lvlOffsetX, lvlOffsetY);
+	public void drawL4(GameDrawer g, Offset offset) {
+		currentLevel.getLevelObjects().drawL4(g, offset);
 	}
 
 	public void checkSpikesTouched(Player p) {

@@ -1,5 +1,6 @@
 package com.mandarina.game.objects;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
@@ -18,9 +19,9 @@ public class Spike extends GameObject {
 		hitbox = new Rectangle2D(x + xDrawOffset, y + yDrawOffset, 32, 16);
 	}
 
-	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image image) {
-		g.drawImage(image, (int) (getHitbox().getMinX() - lvlOffsetX),
-				(int) (getHitbox().getMinY() - getyDrawOffset() - lvlOffsetY),
+	public void draw(GameDrawer g, Offset offset, Image image) {
+		g.drawImage(image, (int) (getHitbox().getMinX() - offset.getX()),
+				(int) (getHitbox().getMinY() - getyDrawOffset() - offset.getY()),
 				AppStage.Scale(ObjectCts.SPIKE_WIDTH_DEFAULT), AppStage.Scale(ObjectCts.SPIKE_HEIGHT_DEFAULT));
 	}
 
@@ -28,6 +29,7 @@ public class Spike extends GameObject {
 		return LoadSave.GetAtlas(LoadSave.TRAP);
 	}
 
+	@Override
 	public void scale() {
 		super.scale();
 		initHitbox(32, 16);

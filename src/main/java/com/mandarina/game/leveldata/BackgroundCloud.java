@@ -2,6 +2,7 @@ package com.mandarina.game.leveldata;
 
 import java.util.Random;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
@@ -26,16 +27,16 @@ public class BackgroundCloud {
 			smallCloudsPos[i] = AppStage.Scale(90) + rnd.nextInt(AppStage.Scale(100));
 	}
 
-	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
+	public void draw(GameDrawer g, Offset offset) {
 		for (int i = 0; i < 4; i++)
 			g.drawImage(bigCloud,
-					i * AppStage.Scale(BackgroundCloudCts.BIG_CLOUD_WIDTH_DEFAULT) - (int) (lvlOffsetX * 0.3),
+					i * AppStage.Scale(BackgroundCloudCts.BIG_CLOUD_WIDTH_DEFAULT) - (int) (offset.getX() * 0.3),
 					AppStage.Scale(204), AppStage.Scale(BackgroundCloudCts.BIG_CLOUD_WIDTH_DEFAULT),
 					AppStage.Scale(BackgroundCloudCts.BIG_CLOUD_HEIGHT_DEFAULT));
 
 		for (int i = 0; i < smallCloudsPos.length; i++)
 			g.drawImage(smallCloud,
-					AppStage.Scale(BackgroundCloudCts.SMALL_CLOUD_WIDTH_DEFAULT) * 4 * i - (int) (lvlOffsetX * 0.7),
+					AppStage.Scale(BackgroundCloudCts.SMALL_CLOUD_WIDTH_DEFAULT) * 4 * i - (int) (offset.getX() * 0.7),
 					smallCloudsPos[i], AppStage.Scale(BackgroundCloudCts.SMALL_CLOUD_WIDTH_DEFAULT),
 					AppStage.Scale(BackgroundCloudCts.SMALL_CLOUD_HEIGHT_DEFAULT));
 	}

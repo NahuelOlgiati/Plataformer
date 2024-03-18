@@ -1,5 +1,6 @@
 package com.mandarina.game.objects;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
@@ -20,11 +21,11 @@ public class Cannon extends GameObject {
 				hitbox.getHeight());
 	}
 
-	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[] animations) {
-		int x = (int) (getHitbox().getMinX() - lvlOffsetX);
+	public void draw(GameDrawer g, Offset offset, Image[] animations) {
+		int x = (int) (getHitbox().getMinX() - offset.getX());
 		int width = AppStage.Scale(ObjectCts.CANNON_WIDTH_DEFAULT);
 
-		int y = (int) (getHitbox().getMinY() - lvlOffsetY);
+		int y = (int) (getHitbox().getMinY() - offset.getY());
 		int height = AppStage.Scale(ObjectCts.CANNON_HEIGHT_DEFAULT);
 
 		if (getObjType() == ObjectCts.CANNON_RIGHT) {
@@ -47,6 +48,7 @@ public class Cannon extends GameObject {
 		return LoadSave.GetAnimations(7, 40, 26, LoadSave.GetAtlas(LoadSave.CANNON));
 	}
 
+	@Override
 	public void scale() {
 		super.scale();
 		tileY = AppStage.GetTilesIn(y);

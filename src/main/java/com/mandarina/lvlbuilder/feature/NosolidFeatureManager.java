@@ -1,6 +1,5 @@
 package com.mandarina.lvlbuilder.feature;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.mandarina.lvlbuilder.LvlBuilderUtil;
@@ -80,9 +79,7 @@ public class NosolidFeatureManager implements FeatureManager<List<Pair<Integer, 
 
 	private boolean exist(FlowPane fp) {
 		boolean existsNodeWithIdHola = false;
-		Iterator<Node> iterator = fp.getChildren().iterator();
-		while (iterator.hasNext()) {
-			Node node = iterator.next();
+		for (Node node : fp.getChildren()) {
 			if (getID().equals(node.getId())) {
 				existsNodeWithIdHola = true;
 				break;

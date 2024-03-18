@@ -3,6 +3,7 @@ package com.mandarina.game.leveldata;
 
 import java.io.File;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.main.GameDrawer;
@@ -21,11 +22,6 @@ public class LevelManager implements LayerDrawer {
 	private BackgroundCloud backgroundCloud;
 
 	private File folderLvls;
-
-//	private boolean offsetChange = false;
-//	private double lastLvlOffsetX = -1;
-//	private double lastLvlOffsetY = -1;
-//	private WritableImage snapshot = null;
 
 	public LevelManager(Playing playing) {
 		this.playing = playing;
@@ -75,36 +71,25 @@ public class LevelManager implements LayerDrawer {
 	}
 
 	@Override
-	public void drawL1(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		this.background.draw(g, lvlOffsetX, lvlOffsetY);
-		this.backgroundCloud.draw(g, lvlOffsetX, lvlOffsetY);
-		getCurrentLevel().getLevelData().drawL1(g, lvlOffsetX, lvlOffsetY);
-//		this.offsetChange = this.lastLvlOffsetX != lvlOffsetX || this.lastLvlOffsetY != lvlOffsetY;
-//		if (offsetChange) {
-//			this.background.draw(g, lvlOffsetX, lvlOffsetY);
-//			this.backgroundCloud.draw(g, lvlOffsetX, lvlOffsetY);
-//			getCurrentLevel().getLevelData().drawL1(g, lvlOffsetX, lvlOffsetY);
-//			this.snapshot = g.getSnapshot();
-//			this.lastLvlOffsetX = lvlOffsetX;
-//			this.lastLvlOffsetY = lvlOffsetY;
-//		} else {
-//			g.drawImage(snapshot, 0, 0, snapshot.getWidth(), snapshot.getHeight());
-//		}
+	public void drawL1(GameDrawer g, Offset offset) {
+		this.background.draw(g, offset);
+		this.backgroundCloud.draw(g, offset);
+		getCurrentLevel().getLevelData().drawL1(g, offset);
 	}
 
 	@Override
-	public void drawL2(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		getCurrentLevel().getLevelData().drawL2(g, lvlOffsetX, lvlOffsetY);
+	public void drawL2(GameDrawer g, Offset offset) {
+		getCurrentLevel().getLevelData().drawL2(g, offset);
 	}
 
 	@Override
-	public void drawL3(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		getCurrentLevel().getLevelData().drawL3(g, lvlOffsetX, lvlOffsetY);
+	public void drawL3(GameDrawer g, Offset offset) {
+		getCurrentLevel().getLevelData().drawL3(g, offset);
 	}
 
 	@Override
-	public void drawL4(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		getCurrentLevel().getLevelData().drawL4(g, lvlOffsetX, lvlOffsetY);
+	public void drawL4(GameDrawer g, Offset offset) {
+		getCurrentLevel().getLevelData().drawL4(g, offset);
 	}
 
 	public void update() {

@@ -3,6 +3,7 @@ package com.mandarina.game.entities;
 import static com.mandarina.utilz.BiggerThanTile.CanMoveHere;
 import static com.mandarina.utilz.BiggerThanTile.IsFloor;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
@@ -79,8 +80,8 @@ public class Titan extends Enemy {
 	}
 
 	@Override
-	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val());
+	public void draw(GameDrawer g, Offset offset, Image[][] animations) {
+		draw(g, offset, animations, state.val());
 	}
 
 	@Override
@@ -146,6 +147,7 @@ public class Titan extends Enemy {
 				TitanCts.SPRITE_HEIGHT, LoadSave.GetAtlas(TitanCts.ATLAS_IMAGE));
 	}
 
+	@Override
 	public void scale() {
 		super.scale();
 		initTitan();

@@ -32,15 +32,8 @@ public class Playing {
 	private ObjectManager objectManager;
 	private UIManager uiManager;
 	private StatusBar statusBar;
+	private Offset offset;
 	private Level currentLevel;
-
-	private double lvlOffsetX;
-	private double lvlOffsetY;
-
-	private double leftBorder;
-	private double rightBorder;
-	private double bottomBorder;
-	private double topBorder;
 
 	private boolean paused = false;
 	private boolean gameOver;
@@ -50,10 +43,6 @@ public class Playing {
 
 	public Playing(Game game) {
 		this.game = game;
-		this.leftBorder = 0.25 * AppStage.GetGameWidth();
-		this.rightBorder = 0.75 * AppStage.GetGameWidth();
-		this.bottomBorder = 0.25 * AppStage.GetGameHeight();
-		this.topBorder = 0.75 * AppStage.GetGameHeight();
 		initClasses();
 	}
 
@@ -88,6 +77,7 @@ public class Playing {
 		objectManager = new ObjectManager(this);
 		uiManager = new UIManager(this);
 		statusBar = new StatusBar(this);
+		offset = new Offset(this);
 	}
 
 	public void update() {
@@ -107,53 +97,28 @@ public class Playing {
 			enemyManager.update();
 			objectManager.update();
 			statusBar.update();
-			checkCloseToBorderX();
-			checkCloseToBorderY();
+			offset.update();
 		}
 	}
 
-	private void checkCloseToBorderX() {
-		double playerX = player.getHitbox().getMinX();
-		double diff = playerX - lvlOffsetX;
-
-		if (diff > rightBorder)
-			lvlOffsetX += diff - rightBorder;
-		else if (diff < leftBorder)
-			lvlOffsetX += diff - leftBorder;
-
-		lvlOffsetX = Math.max(Math.min(lvlOffsetX, currentLevel.getMaxLvlOffsetX()), 0);
-	}
-
-	private void checkCloseToBorderY() {
-		double playerY = player.getHitbox().getMinY();
-		double diff = playerY - lvlOffsetY;
-
-		if (diff > topBorder)
-			lvlOffsetY += diff - topBorder;
-		else if (diff < bottomBorder)
-			lvlOffsetY += diff - bottomBorder;
-
-		lvlOffsetY = Math.max(Math.min(lvlOffsetY, currentLevel.getMaxLvlOffsetY()), 0);
-	}
-
 	public void draw(GameDrawer g) {
-		levelManager.drawL1(g, lvlOffsetX, lvlOffsetY);
-		objectManager.drawL1(g, lvlOffsetX, lvlOffsetY);
-		enemyManager.drawL1(g, lvlOffsetX, lvlOffsetY);
+		levelManager.drawL1(g, offset);
+		objectManager.drawL1(g, offset);
+		enemyManager.drawL1(g, offset);
 
-		player.draw(g, lvlOffsetX, lvlOffsetY);
+		player.draw(g, offset);
 
-		levelManager.drawL2(g, lvlOffsetX, lvlOffsetY);
-		objectManager.drawL2(g, lvlOffsetX, lvlOffsetY);
-		enemyManager.drawL2(g, lvlOffsetX, lvlOffsetY);
+		levelManager.drawL2(g, offset);
+		objectManager.drawL2(g, offset);
+		enemyManager.drawL2(g, offset);
 
-		levelManager.drawL3(g, lvlOffsetX, lvlOffsetY);
-		objectManager.drawL3(g, lvlOffsetX, lvlOffsetY);
-		enemyManager.drawL3(g, lvlOffsetX, lvlOffsetY);
+		levelManager.drawL3(g, offset);
+		objectManager.drawL3(g, offset);
+		enemyManager.drawL3(g, offset);
 
-		levelManager.drawL4(g, lvlOffsetX, lvlOffsetY);
-		objectManager.drawL4(g, lvlOffsetX, lvlOffsetY);
-		enemyManager.drawL4(g, lvlOffsetX, lvlOffsetY);
+		levelManager.drawL4(g, offset);
+		objectManager.drawL4(g, offset);
+		enemyManager.drawL4(g, offset);
 
 		statusBar.draw(g);
 
@@ -351,19 +316,7 @@ public class Playing {
 		return currentLevel.getLevelData();
 	}
 
-	public double getLvlOffsetX() {
-		return lvlOffsetX;
-	}
-
-	public double getLvlOffsetY() {
-		return lvlOffsetY;
-	}
-
 	public void scale() {
-		this.leftBorder = 0.25 * AppStage.GetGameWidth();
-		this.rightBorder = 0.75 * AppStage.GetGameWidth();
-		this.bottomBorder = 0.25 * AppStage.GetGameHeight();
-		this.topBorder = 0.75 * AppStage.GetGameHeight();
 		this.levelManager.scale();
 		this.objectManager.scale();
 		this.enemyManager.scale();

@@ -33,7 +33,7 @@ public class Credits {
 	}
 
 	private void loadEntities() {
-		entitiesList = new ArrayList<ShowEntity>();
+		entitiesList = new ArrayList<>();
 		entitiesList.add(new ShowEntity(Titan.load()[2], (int) (AppStage.GetGameWidth() * 0.05),
 				(int) (AppStage.GetGameHeight() * 0.45)));
 		entitiesList.add(new ShowEntity(Crabby.load()[1], (int) (AppStage.GetGameWidth() * 0.2),

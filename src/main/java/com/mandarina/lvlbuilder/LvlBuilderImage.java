@@ -2,9 +2,7 @@ package com.mandarina.lvlbuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;

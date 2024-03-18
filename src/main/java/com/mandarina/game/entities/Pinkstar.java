@@ -4,6 +4,7 @@ import static com.mandarina.utilz.SmallerThanTile.CanMoveHere;
 import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
 import static com.mandarina.utilz.SmallerThanTile.IsFloor;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
@@ -93,8 +94,8 @@ public class Pinkstar extends Enemy {
 	}
 
 	@Override
-	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations) {
-		draw(g, lvlOffsetX, lvlOffsetY, animations, state.val());
+	public void draw(GameDrawer g, Offset offset, Image[][] animations) {
+		draw(g, offset, animations, state.val());
 	}
 
 	@Override
@@ -203,6 +204,7 @@ public class Pinkstar extends Enemy {
 				PinkstarCts.SPRITE_HEIGHT, LoadSave.GetAtlas(PinkstarCts.ATLAS_IMAGE));
 	}
 
+	@Override
 	public void scale() {
 		super.scale();
 		initPinkstar();

@@ -2,6 +2,7 @@ package com.mandarina.game.objects;
 
 import java.util.Random;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
@@ -29,13 +30,14 @@ public class Tree extends GameObject {
 		}
 	}
 
-	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] treeImgs) {
+	public void draw(GameDrawer g, Offset offset, Image[][] treeImgs) {
 		int type = getObjType();
 		if (type == 9)
 			type = 8;
 		int index = type - 7;
-		g.drawImage(treeImgs[index][getAniIndex()], x - lvlOffsetX + GetTreeOffsetX(getObjType()),
-				y - lvlOffsetY + GetTreeOffsetY(getObjType()), GetTreeWidth(getObjType()), GetTreeHeight(getObjType()));
+		g.drawImage(treeImgs[index][getAniIndex()], x - offset.getX() + GetTreeOffsetX(getObjType()),
+				y - offset.getY() + GetTreeOffsetY(getObjType()), GetTreeWidth(getObjType()),
+				GetTreeHeight(getObjType()));
 	}
 
 	public static Image[][] load() {
@@ -100,6 +102,7 @@ public class Tree extends GameObject {
 		return 0;
 	}
 
+	@Override
 	public int getAniIndex() {
 		return aniIndex;
 	}

@@ -2,6 +2,7 @@ package com.mandarina.game.levels;
 
 import java.util.List;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.leveldata.GameData;
 import com.mandarina.game.leveldata.Grass;
 import com.mandarina.game.leveldata.Tile;
@@ -54,7 +55,7 @@ public class LevelData implements LayerDrawer {
 		this.tileSprite = Tile.load();
 		this.waterSprite = Water.load();
 		this.grassSprite = Grass.load();
-		this.tile = new LayerManager<Tile>() {
+		this.tile = new LayerManager<>() {
 
 			@Override
 			public Class<Tile> getClazz() {
@@ -62,13 +63,13 @@ public class LevelData implements LayerDrawer {
 			}
 
 			@Override
-			public void draw(Tile t, GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-				if (mustDrawX(t, lvlOffsetX) && mustDrawY(t, lvlOffsetY)) {
-					t.draw(g, lvlOffsetX, lvlOffsetY, tileSprite);
+			public void draw(Tile t, GameDrawer g, Offset offset) {
+				if (mustDrawX(t, offset.getX()) && mustDrawY(t, offset.getY())) {
+					t.draw(g, offset, tileSprite);
 				}
 			}
 		};
-		this.water = new LayerManager<Water>() {
+		this.water = new LayerManager<>() {
 
 			@Override
 			public Class<Water> getClazz() {
@@ -76,13 +77,13 @@ public class LevelData implements LayerDrawer {
 			}
 
 			@Override
-			public void draw(Water w, GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-				if (mustDrawX(w, lvlOffsetX) && mustDrawY(w, lvlOffsetY)) {
-					w.draw(g, lvlOffsetX, lvlOffsetY, waterSprite);
+			public void draw(Water w, GameDrawer g, Offset offset) {
+				if (mustDrawX(w, offset.getX()) && mustDrawY(w, offset.getY())) {
+					w.draw(g, offset, waterSprite);
 				}
 			}
 		};
-		this.grass = new LayerManager<Grass>() {
+		this.grass = new LayerManager<>() {
 
 			@Override
 			public Class<Grass> getClazz() {
@@ -90,9 +91,9 @@ public class LevelData implements LayerDrawer {
 			}
 
 			@Override
-			public void draw(Grass r, GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-				if (mustDrawX(r, lvlOffsetX) && mustDrawY(r, lvlOffsetY)) {
-					r.draw(g, lvlOffsetX, lvlOffsetY, grassSprite);
+			public void draw(Grass r, GameDrawer g, Offset offset) {
+				if (mustDrawX(r, offset.getX()) && mustDrawY(r, offset.getY())) {
+					r.draw(g, offset, grassSprite);
 				}
 			}
 		};
@@ -128,31 +129,31 @@ public class LevelData implements LayerDrawer {
 	}
 
 	@Override
-	public void drawL1(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		this.tile.drawL1(g, lvlOffsetX, lvlOffsetY);
-		this.water.drawL1(g, lvlOffsetX, lvlOffsetY);
-		this.grass.drawL1(g, lvlOffsetX, lvlOffsetY);
+	public void drawL1(GameDrawer g, Offset offset) {
+		this.tile.drawL1(g, offset);
+		this.water.drawL1(g, offset);
+		this.grass.drawL1(g, offset);
 	}
 
 	@Override
-	public void drawL2(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		this.tile.drawL2(g, lvlOffsetX, lvlOffsetY);
-		this.water.drawL2(g, lvlOffsetX, lvlOffsetY);
-		this.grass.drawL2(g, lvlOffsetX, lvlOffsetY);
+	public void drawL2(GameDrawer g, Offset offset) {
+		this.tile.drawL2(g, offset);
+		this.water.drawL2(g, offset);
+		this.grass.drawL2(g, offset);
 	}
 
 	@Override
-	public void drawL3(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		this.tile.drawL3(g, lvlOffsetX, lvlOffsetY);
-		this.water.drawL3(g, lvlOffsetX, lvlOffsetY);
-		this.grass.drawL3(g, lvlOffsetX, lvlOffsetY);
+	public void drawL3(GameDrawer g, Offset offset) {
+		this.tile.drawL3(g, offset);
+		this.water.drawL3(g, offset);
+		this.grass.drawL3(g, offset);
 	}
 
 	@Override
-	public void drawL4(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		this.tile.drawL4(g, lvlOffsetX, lvlOffsetY);
-		this.water.drawL4(g, lvlOffsetX, lvlOffsetY);
-		this.grass.drawL4(g, lvlOffsetX, lvlOffsetY);
+	public void drawL4(GameDrawer g, Offset offset) {
+		this.tile.drawL4(g, offset);
+		this.water.drawL4(g, offset);
+		this.grass.drawL4(g, offset);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -185,7 +186,7 @@ public class LevelData implements LayerDrawer {
 			List<Pair<Integer, Integer>> layer3, List<Pair<Integer, Integer>> layer4) {
 
 		// TODO
-		Pair<Integer, Integer> p = new Pair<Integer, Integer>((int) spawn.getX(), (int) spawn.getY());
+		Pair<Integer, Integer> p = new Pair<>((int) spawn.getX(), (int) spawn.getY());
 		if (red != GameCts.EMPTY_TILE_VALUE) {
 			switch (red) {
 			case 48, 49:

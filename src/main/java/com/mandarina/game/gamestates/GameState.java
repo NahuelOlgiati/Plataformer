@@ -1,7 +1,7 @@
 package com.mandarina.game.gamestates;
 
-import com.mandarina.game.main.GameAudio;
 import com.mandarina.game.main.Game;
+import com.mandarina.game.main.GameAudio;
 
 public enum GameState {
 

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.mandarina.game.gamestates.Offset;
+
 public abstract class LayerManager<T> {
 
 	private int layerDefault;
@@ -85,31 +87,31 @@ public abstract class LayerManager<T> {
 
 	public abstract Class<T> getClazz();
 
-	protected abstract void draw(T t, GameDrawer g, double lvlOffsetX, double lvlOffsetY);
+	protected abstract void draw(T t, GameDrawer g, Offset offset);
 
-	private void drawLayer(int num, GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
+	private void drawLayer(int num, GameDrawer g, Offset offset) {
 		T[] l = getL(num);
 		if (l != null) {
 			for (T t : l) {
-				draw(t, g, lvlOffsetX, lvlOffsetY);
+				draw(t, g, offset);
 			}
 		}
 	}
 
-	public void drawL1(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		drawLayer(1, g, lvlOffsetX, lvlOffsetY);
+	public void drawL1(GameDrawer g, Offset offset) {
+		drawLayer(1, g, offset);
 	}
 
-	public void drawL2(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		drawLayer(2, g, lvlOffsetX, lvlOffsetY);
+	public void drawL2(GameDrawer g, Offset offset) {
+		drawLayer(2, g, offset);
 	}
 
-	public void drawL3(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		drawLayer(3, g, lvlOffsetX, lvlOffsetY);
+	public void drawL3(GameDrawer g, Offset offset) {
+		drawLayer(3, g, offset);
 	}
 
-	public void drawL4(GameDrawer g, double lvlOffsetX, double lvlOffsetY) {
-		drawLayer(4, g, lvlOffsetX, lvlOffsetY);
+	public void drawL4(GameDrawer g, Offset offset) {
+		drawLayer(4, g, offset);
 	}
 
 	public T[] getItems() {

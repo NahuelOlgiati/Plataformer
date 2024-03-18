@@ -1,5 +1,6 @@
 package com.mandarina.game.leveldata;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
@@ -17,11 +18,12 @@ public class Water extends GameData {
 		this.type = type;
 	}
 
-	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[] imgs) {
+	public void draw(GameDrawer g, Offset offset, Image[] imgs) {
 		if (type == 48)
-			g.drawImage(imgs[aniIndex], x - lvlOffsetX, y - lvlOffsetY, AppStage.GetTileSize(), AppStage.GetTileSize());
+			g.drawImage(imgs[aniIndex], x - offset.getX(), y - offset.getY(), AppStage.GetTileSize(),
+					AppStage.GetTileSize());
 		else if (type == 49)
-			g.drawImage(imgs[4], x - lvlOffsetX, y - lvlOffsetY, AppStage.GetTileSize(), AppStage.GetTileSize());
+			g.drawImage(imgs[4], x - offset.getX(), y - offset.getY(), AppStage.GetTileSize(), AppStage.GetTileSize());
 	}
 
 	public void update() {

@@ -50,6 +50,7 @@ public class Potion extends GameObject {
 		return potionImgs;
 	}
 
+	@Override
 	public void scale() {
 		initHitbox(7, 14);
 

@@ -7,6 +7,7 @@ import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
 import static com.mandarina.utilz.SmallerThanTile.IsFloor;
 import static com.mandarina.utilz.SmallerThanTile.IsSightClear;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.GameCts;
@@ -37,7 +38,7 @@ public abstract class Enemy extends Entity {
 
 	protected abstract void updateBehavior(Playing playing);
 
-	protected abstract void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[][] animations);
+	protected abstract void draw(GameDrawer g, Offset offset, Image[][] animations);
 
 	protected abstract int getSpriteAmount(EnemyState state);
 
@@ -177,6 +178,7 @@ public abstract class Enemy extends Entity {
 		aniIndex = 0;
 	}
 
+	@Override
 	public void scale() {
 		super.scale();
 		walkSpeed = AppStage.Scale(0.35);

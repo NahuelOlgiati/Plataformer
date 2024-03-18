@@ -1,5 +1,6 @@
 package com.mandarina.game.leveldata;
 
+import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
@@ -23,8 +24,8 @@ public class Grass extends GameData {
 		this.y = spawn.getY() * AppStage.GetTileSize() - AppStage.GetTileSize();
 	}
 
-	public void draw(GameDrawer g, double lvlOffsetX, double lvlOffsetY, Image[] grassImgs) {
-		g.drawImage(grassImgs[getType()], x - lvlOffsetX, y - lvlOffsetY, AppStage.GetTileSize(),
+	public void draw(GameDrawer g, Offset offset, Image[] grassImgs) {
+		g.drawImage(grassImgs[getType()], x - offset.getX(), y - offset.getY(), AppStage.GetTileSize(),
 				AppStage.GetTileSize());
 	}
 
