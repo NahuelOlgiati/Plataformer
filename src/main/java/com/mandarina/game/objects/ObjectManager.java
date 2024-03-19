@@ -106,56 +106,58 @@ public class ObjectManager implements LayerDrawer {
 			}
 	}
 
-	public void update() {
-		updateBackgroundTrees();
-		for (Potion p : potions)
-			if (p.isActive())
-				p.update();
+	public void update(Offset offset) {
+		updateTrees(offset);
+		updatePotions(offset);
+		updateContainers(offset);
+		updateCannons(currentLevel.getLevelData(), playing.getPlayer(), offset);
+		updateProjectiles(currentLevel.getLevelData(), playing.getPlayer(), offset);
+		updateDialogues(offset);
+	}
 
-		for (Container c : currentLevel.getLevelObjects().getContainer().getItems())
-			if (c.isActive())
-				c.update();
-
-		updateCannons(currentLevel.getLevelData(), playing.getPlayer());
-		updateProjectiles(currentLevel.getLevelData(), playing.getPlayer());
-
+	private void updateDialogues(Offset offset) {
 		for (Dialogue d : dialogues)
 			if (d.isActive())
-				d.update();
-
+				if (offset.in(d.getSpawn()))
+					d.update();
 	}
 
-	private void updateBackgroundTrees() {
-		for (Tree bt : currentLevel.getLevelObjects().getTree().getItems())
-			bt.update();
+	private void updateContainers(Offset offset) {
+		for (Container c : currentLevel.getLevelObjects().getContainer().getItems())
+			if (c.isActive())
+				if (offset.in(c.getSpawn()))
+					c.update();
 	}
 
-	private void updateProjectiles(LevelData levelData, Player player) {
-		for (Projectile p : projectiles)
-			if (p.isActive()) {
-				p.updatePos();
-				if (p.getHitbox().intersects(player.getHitbox())) {
-					player.changeHealth(-25);
-					p.setActive(false);
-				} else if (p.isProjectileHittingLevel(levelData))
-					p.setActive(false);
+	private void updatePotions(Offset offset) {
+		for (Potion p : potions)
+			if (p.isActive())
+				if (offset.in(p.getSpawn()))
+					p.update();
+	}
+
+	private void updateTrees(Offset offset) {
+		for (Tree t : currentLevel.getLevelObjects().getTree().getItems())
+			if (offset.in(t.getSpawn())) {
+				t.update();
 			}
+
 	}
 
-	private boolean isPlayerInRange(Cannon c, Player player) {
-		int absValue = (int) Math.abs(player.getHitbox().getMinX() - c.getHitbox().getMinX());
-		return absValue <= AppStage.GetTileSize() * 5;
+	private void updateProjectiles(LevelData levelData, Player player, Offset offset) {
+		for (Projectile p : projectiles)
+			if (p.isActive())
+				if (offset.in(p.getHitbox())) {
+					p.updatePos();
+					if (p.getHitbox().intersects(player.getHitbox())) {
+						player.changeHealth(-25);
+						p.setActive(false);
+					} else if (p.isProjectileHittingLevel(levelData))
+						p.setActive(false);
+				}
 	}
 
-	private boolean isPlayerInfrontOfCannon(Cannon c, Player player) {
-		if (c.getObjType() == ObjectCts.CANNON_LEFT) {
-			return c.getHitbox().getMinX() > player.getHitbox().getMinX();
-		} else {
-			return c.getHitbox().getMinX() < player.getHitbox().getMinX();
-		}
-	}
-
-	private void updateCannons(LevelData levelData, Player player) {
+	private void updateCannons(LevelData levelData, Player player, Offset offset) {
 		for (Cannon c : currentLevel.getLevelObjects().getCannon().getItems()) {
 			if (!c.doAnimation)
 				if (isPlayerInRange(c, player))
@@ -168,6 +170,19 @@ public class ObjectManager implements LayerDrawer {
 			c.update();
 			if (c.getAniIndex() == 4 && c.getAniTick() == 0)
 				shootCannon(c);
+		}
+	}
+
+	private boolean isPlayerInRange(Cannon c, Player player) {
+		int absValue = (int) Math.abs(player.getHitbox().getMinX() - c.getHitbox().getMinX());
+		return absValue <= AppStage.GetTileSize() * 5;
+	}
+
+	private boolean isPlayerInfrontOfCannon(Cannon c, Player player) {
+		if (c.getObjType() == ObjectCts.CANNON_LEFT) {
+			return c.getHitbox().getMinX() > player.getHitbox().getMinX();
+		} else {
+			return c.getHitbox().getMinX() < player.getHitbox().getMinX();
 		}
 	}
 

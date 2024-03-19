@@ -51,12 +51,13 @@ public class LevelEntities implements LayerDrawer {
 		load(level.getImg());
 	}
 
-	public boolean update(Playing playing) {
+	public boolean update(Playing playing, Offset offset) {
 		boolean isAnyActive = false;
 		for (Enemy e : enemys) {
 			if (e.isActive()) {
-				e.update(playing);
 				isAnyActive = true;
+				if (offset.in(e.getHitbox()))
+					e.update(playing);
 			}
 		}
 		return isAnyActive;
@@ -65,29 +66,32 @@ public class LevelEntities implements LayerDrawer {
 	@Override
 	public void drawL1(GameDrawer g, Offset offset) {
 		for (Crabby c : crabs) {
-			if (c.isActive()) {
-				c.draw(g, offset, crabbySprite);
-			}
+			if (c.isActive())
+				if (offset.in(c.getHitbox()))
+					c.draw(g, offset, crabbySprite);
 		}
 		for (Pinkstar p : pinkstars) {
-			if (p.isActive()) {
-				p.draw(g, offset, pinkstarSprite);
-			}
+			if (p.isActive())
+				if (offset.in(p.getHitbox()))
+					p.draw(g, offset, pinkstarSprite);
+
 		}
 		for (Shark s : sharks) {
-			if (s.isActive()) {
-				s.draw(g, offset, sharkSprite);
-			}
+			if (s.isActive())
+				if (offset.in(s.getHitbox()))
+					s.draw(g, offset, sharkSprite);
+
 		}
 		for (Titan t : titans) {
-			if (t.isActive()) {
-				t.draw(g, offset, titanSprite);
-			}
+			if (t.isActive())
+				if (offset.in(t.getHitbox()))
+					t.draw(g, offset, titanSprite);
+
 		}
 		for (Longleg l : longlegs) {
-			if (l.isActive()) {
-				l.draw(g, offset, longlegSprite);
-			}
+			if (l.isActive())
+				if (offset.in(l.getHitbox()))
+					l.draw(g, offset, longlegSprite);
 		}
 	}
 

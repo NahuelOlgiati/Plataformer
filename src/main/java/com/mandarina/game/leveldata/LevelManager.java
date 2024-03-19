@@ -92,8 +92,8 @@ public class LevelManager implements LayerDrawer {
 		getCurrentLevel().getLevelData().drawL4(g, offset);
 	}
 
-	public void update() {
-		getCurrentLevel().getLevelData().update();
+	public void update(Offset offset) {
+		getCurrentLevel().getLevelData().update(offset);
 	}
 
 	public Level getCurrentLevel() {

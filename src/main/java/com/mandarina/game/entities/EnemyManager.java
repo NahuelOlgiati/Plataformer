@@ -21,8 +21,8 @@ public class EnemyManager implements LayerDrawer {
 		this.currentLevel = level;
 	}
 
-	public void update() {
-		boolean isAnyActive = currentLevel.getLevelEntities().update(playing);
+	public void update(Offset offset) {
+		boolean isAnyActive = currentLevel.getLevelEntities().update(playing, offset);
 		if (!isAnyActive)
 			playing.setLevelCompleted(true);
 	}

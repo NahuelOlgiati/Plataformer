@@ -92,10 +92,10 @@ public class Playing {
 		else if (playerDying)
 			player.update();
 		else {
-			levelManager.update();
+			levelManager.update(offset);
 			player.update();
-			enemyManager.update();
-			objectManager.update();
+			enemyManager.update(offset);
+			objectManager.update(offset);
 			statusBar.update();
 			offset.update();
 		}
