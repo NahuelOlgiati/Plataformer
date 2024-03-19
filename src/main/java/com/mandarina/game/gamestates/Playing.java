@@ -151,6 +151,7 @@ public class Playing {
 		player.resetAll();
 		enemyManager.resetAllEnemies();
 		objectManager.resetAllObjects();
+		offset.reset();
 	}
 
 	public void setGameOver(boolean gameOver) {

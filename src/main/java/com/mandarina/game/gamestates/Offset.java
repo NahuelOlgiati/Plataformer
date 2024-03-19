@@ -19,18 +19,30 @@ public class Offset {
 	private double bottomBorder;
 	private double topBorder;
 
-	private int cachedTileOffsetX = -1;
-	private int cachedMaxTileOffsetX = -1;
-	private double cachedLvlOffsetX = Double.NaN;
-	private double cachedMaxOffsetX = Double.NaN;
+	private int cachedTileOffsetX;
+	private int cachedMaxTileOffsetX;
+	private double cachedLvlOffsetX;
+	private double cachedMaxOffsetX;
 
-	private int cachedTileOffsetY = -1;
-	private int cachedMaxTileOffsetY = -1;
-	private double cachedLvlOffsetY = Double.NaN;
-	private double cachedMaxOffsetY = Double.NaN;
+	private int cachedTileOffsetY;
+	private int cachedMaxTileOffsetY;
+	private double cachedLvlOffsetY;
+	private double cachedMaxOffsetY;
 
 	public Offset(Playing playing) {
 		this.playing = playing;
+		reset();
+	}
+
+	public void reset() {
+		this.cachedTileOffsetX = -1;
+		this.cachedMaxTileOffsetX = -1;
+		this.cachedLvlOffsetX = Double.NaN;
+		this.cachedMaxOffsetX = Double.NaN;
+		this.cachedTileOffsetY = -1;
+		this.cachedMaxTileOffsetY = -1;
+		this.cachedLvlOffsetY = Double.NaN;
+		this.cachedMaxOffsetY = Double.NaN;
 		this.leftBorder = 0.25 * AppStage.GetGameWidth();
 		this.rightBorder = 0.75 * AppStage.GetGameWidth();
 		this.bottomBorder = 0.25 * AppStage.GetGameHeight();
@@ -86,12 +98,12 @@ public class Offset {
 
 	private boolean mustUpdateX(Point2D spawn) {
 		checkCachedLvlOffsetX();
-		return checkTileRangeX(spawn.getX());
+		return checkTileRangeX((int) spawn.getX());
 	}
 
 	private boolean mustUpdateY(Point2D spawn) {
 		checkCachedLvlOffsetY();
-		return checkTileRangeY(spawn.getY());
+		return checkTileRangeY((int) spawn.getY());
 	}
 
 	private boolean mustUpdateX(Rectangle2D hitbox) {
@@ -104,11 +116,11 @@ public class Offset {
 		return checkRangeY(hitbox);
 	}
 
-	private boolean checkTileRangeX(double spawnX) {
+	private boolean checkTileRangeX(int spawnX) {
 		return spawnX >= cachedTileOffsetX && spawnX <= cachedMaxTileOffsetX;
 	}
 
-	private boolean checkTileRangeY(double spawnY) {
+	private boolean checkTileRangeY(int spawnY) {
 		return spawnY >= cachedTileOffsetY && spawnY <= cachedMaxTileOffsetY;
 	}
 
@@ -145,9 +157,6 @@ public class Offset {
 	}
 
 	public void scale() {
-		this.leftBorder = 0.25 * AppStage.GetGameWidth();
-		this.rightBorder = 0.75 * AppStage.GetGameWidth();
-		this.bottomBorder = 0.25 * AppStage.GetGameHeight();
-		this.topBorder = 0.75 * AppStage.GetGameHeight();
+		reset();
 	}
 }
