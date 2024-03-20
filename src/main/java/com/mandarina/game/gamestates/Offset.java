@@ -29,6 +29,11 @@ public class Offset {
 	private double cachedLvlOffsetY;
 	private double cachedMaxOffsetY;
 
+	private double cachedLvlOffsetHalfX;
+	private double cachedMaxOffsetHalfX;
+	private double cachedLvlOffsetHalfY;
+	private double cachedMaxOffsetHalfY;
+
 	public Offset(Playing playing) {
 		this.playing = playing;
 		reset();
@@ -96,6 +101,10 @@ public class Offset {
 		return mustUpdateX(h) && mustUpdateY(h);
 	}
 
+	public boolean inHalf(Rectangle2D h) {
+		return mustUpdateHalfX(h) && mustUpdateHalfY(h);
+	}
+
 	private boolean mustUpdateX(Point2D spawn) {
 		checkCachedLvlOffsetX();
 		return checkTileRangeX((int) spawn.getX());
@@ -116,6 +125,16 @@ public class Offset {
 		return checkRangeY(hitbox);
 	}
 
+	private boolean mustUpdateHalfX(Rectangle2D hitbox) {
+		checkCachedLvlOffsetX();
+		return checkRangeHalfX(hitbox);
+	}
+
+	private boolean mustUpdateHalfY(Rectangle2D hitbox) {
+		checkCachedLvlOffsetY();
+		return checkRangeHalfY(hitbox);
+	}
+
 	private boolean checkTileRangeX(int spawnX) {
 		return spawnX >= cachedTileOffsetX && spawnX <= cachedMaxTileOffsetX;
 	}
@@ -127,21 +146,38 @@ public class Offset {
 	private boolean checkRangeX(Rectangle2D hitbox) {
 		double minX = hitbox.getMinX();
 		double maxX = hitbox.getMaxX();
-		return (minX >= lvlOffsetX && minX <= cachedMaxOffsetX) || //
-				(maxX >= lvlOffsetX && maxX <= cachedMaxOffsetX);
+		return (minX >= cachedLvlOffsetX && minX <= cachedMaxOffsetX) || //
+				(maxX >= cachedLvlOffsetX && maxX <= cachedMaxOffsetX);
 	}
 
 	private boolean checkRangeY(Rectangle2D hitbox) {
 		double minY = hitbox.getMinY();
 		double maxY = hitbox.getMaxY();
-		return (minY >= lvlOffsetY && minY <= cachedMaxOffsetY) || //
-				(maxY >= lvlOffsetY && maxY <= cachedMaxOffsetY);
+		return (minY >= cachedLvlOffsetY && minY <= cachedMaxOffsetY) || //
+				(maxY >= cachedLvlOffsetY && maxY <= cachedMaxOffsetY);
+	}
+
+	private boolean checkRangeHalfX(Rectangle2D hitbox) {
+		double minX = hitbox.getMinX();
+		double maxX = hitbox.getMaxX();
+		return (minX >= cachedLvlOffsetHalfX && minX <= cachedMaxOffsetHalfX) || //
+				(maxX >= cachedLvlOffsetHalfX && maxX <= cachedMaxOffsetHalfX);
+	}
+
+	private boolean checkRangeHalfY(Rectangle2D hitbox) {
+		double minY = hitbox.getMinY();
+		double maxY = hitbox.getMaxY();
+		return (minY >= cachedLvlOffsetHalfY && minY <= cachedMaxOffsetHalfY) || //
+				(maxY >= cachedLvlOffsetHalfY && maxY <= cachedMaxOffsetHalfY);
 	}
 
 	private void checkCachedLvlOffsetX() {
 		if (lvlOffsetX != cachedLvlOffsetX) {
+			float half = AppStage.GetGameWidth() / 2;
 			cachedLvlOffsetX = lvlOffsetX;
+			cachedLvlOffsetHalfX = lvlOffsetX - half;
 			cachedMaxOffsetX = lvlOffsetX + AppStage.GetGameWidth();
+			cachedMaxOffsetHalfX = cachedMaxOffsetX + half;
 			cachedTileOffsetX = AppStage.GetTilesIn(lvlOffsetX);
 			cachedMaxTileOffsetX = cachedTileOffsetX + GameCts.TILES_IN_WIDTH;
 		}
@@ -149,8 +185,11 @@ public class Offset {
 
 	private void checkCachedLvlOffsetY() {
 		if (lvlOffsetY != cachedLvlOffsetY) {
+			float half = AppStage.GetGameHeight() / 2;
 			cachedLvlOffsetY = lvlOffsetY;
+			cachedLvlOffsetHalfY = lvlOffsetY - half;
 			cachedMaxOffsetY = lvlOffsetY + AppStage.GetGameHeight();
+			cachedMaxOffsetHalfY = cachedMaxOffsetY + half;
 			cachedTileOffsetY = AppStage.GetTilesIn(lvlOffsetY);
 			cachedMaxTileOffsetY = cachedTileOffsetY + GameCts.TILES_IN_HEIGHT;
 		}
