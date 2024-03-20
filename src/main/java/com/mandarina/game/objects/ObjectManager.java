@@ -12,6 +12,7 @@ import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.levels.LevelData;
+import com.mandarina.game.main.GameAudio;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.main.AppStage;
@@ -189,6 +190,7 @@ public class ObjectManager implements LayerDrawer {
 		int dir = 1;
 		if (c.getObjType() == ObjectCts.CANNON_LEFT)
 			dir = -1;
+		playing.getGame().getAudioPlayer().playEffect(GameAudio.WOMP);
 		projectiles.add(new Projectile(c.getSpawn(), dir));
 	}
 

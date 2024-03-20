@@ -23,6 +23,7 @@ public class GameAudio {
 	public static final int ATTACK_ONE = 4;
 	public static final int ATTACK_TWO = 5;
 	public static final int ATTACK_THREE = 6;
+	public static final int WOMP = 7;
 
 	private MediaPlayer[] songs;
 	private MediaPlayer[] effects;
@@ -50,7 +51,7 @@ public class GameAudio {
 	}
 
 	private void loadEffects() {
-		String[] effectNames = { "die", "jump", "gameover", "lvlcompleted", "attack1", "attack2", "attack3" };
+		String[] effectNames = { "die", "jump", "gameover", "lvlcompleted", "attack1", "attack2", "attack3", "womp" };
 		effects = new MediaPlayer[effectNames.length];
 		for (int i = 0; i < effects.length; i++) {
 			effects[i] = getMediaPlayer(effectNames[i]);

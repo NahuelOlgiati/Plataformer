@@ -67,30 +67,30 @@ public class LevelEntities implements LayerDrawer {
 	public void drawL1(GameDrawer g, Offset offset) {
 		for (Crabby c : crabs) {
 			if (c.isActive())
-				if (offset.inHalf(c.getHitbox()))
+				if (offset.in(c.getHitbox()))
 					c.draw(g, offset, crabbySprite);
 		}
 		for (Pinkstar p : pinkstars) {
 			if (p.isActive())
-				if (offset.inHalf(p.getHitbox()))
+				if (offset.in(p.getHitbox()))
 					p.draw(g, offset, pinkstarSprite);
 
 		}
 		for (Shark s : sharks) {
 			if (s.isActive())
-				if (offset.inHalf(s.getHitbox()))
+				if (offset.in(s.getHitbox()))
 					s.draw(g, offset, sharkSprite);
 
 		}
 		for (Titan t : titans) {
 			if (t.isActive())
-				if (offset.inHalf(t.getHitbox()))
+				if (offset.in(t.getHitbox()))
 					t.draw(g, offset, titanSprite);
 
 		}
 		for (Longleg l : longlegs) {
 			if (l.isActive())
-				if (offset.inHalf(l.getHitbox()))
+				if (offset.in(l.getHitbox()))
 					l.draw(g, offset, longlegSprite);
 		}
 	}
