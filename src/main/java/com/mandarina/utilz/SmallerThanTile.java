@@ -3,11 +3,9 @@ package com.mandarina.utilz;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.main.AppStage;
 
-import javafx.geometry.Rectangle2D;
-
 public class SmallerThanTile {
 
-	public static boolean CanMoveHere(double x, double y, double width, double height, LevelData levelData) {
+	public static boolean CanMoveHere(float x, float y, float width, float height, LevelData levelData) {
 		if (!IsSolid(x, y, levelData))
 			if (!IsSolid(x + width, y + height, levelData))
 				if (!IsSolid(x + width, y, levelData))
@@ -16,12 +14,12 @@ public class SmallerThanTile {
 		return false;
 	}
 
-	public static boolean IsSolid(double x, double y, LevelData levelData) {
-		double maxHeight = levelData.getLevel().getHeight();
+	public static boolean IsSolid(float x, float y, LevelData levelData) {
+		float maxHeight = levelData.getLevel().getHeight();
 		if (y < 0 || y >= maxHeight)
 			return true;
 
-		double maxWidth = levelData.getLevel().getWidth();
+		float maxWidth = levelData.getLevel().getWidth();
 		if (x < 0 || x >= maxWidth)
 			return true;
 
@@ -31,12 +29,12 @@ public class SmallerThanTile {
 		return IsTileSolid(xIndex, yIndex, levelData);
 	}
 
-	public static boolean IsSolid(double x, double y, int xTiles, int yTiles, LevelData levelData) {
-		double maxHeight = levelData.getLevel().getHeight();
+	public static boolean IsSolid(float x, float y, int xTiles, int yTiles, LevelData levelData) {
+		float maxHeight = levelData.getLevel().getHeight();
 		if (y < 0 || y >= maxHeight)
 			return true;
 
-		double maxWidth = levelData.getLevel().getWidth();
+		float maxWidth = levelData.getLevel().getWidth();
 		if (x < 0 || x >= maxWidth)
 			return true;
 
@@ -46,12 +44,12 @@ public class SmallerThanTile {
 		return IsTileSolid(xIndex, yIndex, levelData);
 	}
 
-	public static boolean IsEntityInWater(Rectangle2D hitbox, LevelData levelData) {
+	public static boolean IsEntityInWater(Box hitbox, LevelData levelData) {
 		return IsEntityInWater(hitbox.getMinX(), hitbox.getMaxY(), levelData)
 				|| IsEntityInWater(hitbox.getMaxX(), hitbox.getMaxY(), levelData);
 	}
 
-	private static boolean IsEntityInWater(double xPos, double yPos, LevelData levelData) {
+	private static boolean IsEntityInWater(float xPos, float yPos, LevelData levelData) {
 		int xCord = AppStage.GetTilesIn(xPos);
 		int yCord = AppStage.GetTilesIn(yPos);
 		return levelData.getIsWater()[yCord][xCord];
@@ -61,7 +59,7 @@ public class SmallerThanTile {
 		return levelData.getIsSolid()[yTile][xTile];
 	}
 
-	public static boolean IsEntityOnFloor(Rectangle2D hitbox, double xSpeed, double ySpeed, LevelData levelData) {
+	public static boolean IsEntityOnFloor(Box hitbox, float xSpeed, float ySpeed, LevelData levelData) {
 		if (IsSolid(hitbox.getMinX() + xSpeed, hitbox.getMaxY() + ySpeed, 0, 1, levelData)
 				|| IsSolid(hitbox.getMaxX() + xSpeed, hitbox.getMaxY() + ySpeed, 0, 1, levelData)) {
 			return true;
@@ -69,7 +67,7 @@ public class SmallerThanTile {
 		return false;
 	}
 
-	public static boolean IsEntityOnFloor(Rectangle2D hitbox, double xSpeed, LevelData levelData) {
+	public static boolean IsEntityOnFloor(Box hitbox, float xSpeed, LevelData levelData) {
 		if (IsSolid(hitbox.getMinX() + xSpeed, hitbox.getMaxY(), 0, 1, levelData)
 				|| IsSolid(hitbox.getMaxX() + xSpeed, hitbox.getMaxY(), 0, 1, levelData)) {
 			return true;
@@ -77,7 +75,7 @@ public class SmallerThanTile {
 		return false;
 	}
 
-	public static boolean IsEntityOnFloor(Rectangle2D hitbox, LevelData levelData) {
+	public static boolean IsEntityOnFloor(Box hitbox, LevelData levelData) {
 		if (IsSolid(hitbox.getMinX(), hitbox.getMaxY(), 0, 1, levelData)
 				|| IsSolid(hitbox.getMaxX(), hitbox.getMaxY(), 0, 1, levelData)) {
 			return true;
@@ -85,7 +83,7 @@ public class SmallerThanTile {
 		return false;
 	}
 
-	public static boolean IsFloor(Rectangle2D hitbox, double xSpeed, LevelData levelData) {
+	public static boolean IsFloor(Box hitbox, float xSpeed, LevelData levelData) {
 		if (xSpeed > 0) {
 			return IsSolid(hitbox.getMaxX() + xSpeed, hitbox.getMaxY(), 0, 1, levelData);
 		} else {
@@ -93,7 +91,7 @@ public class SmallerThanTile {
 		}
 	}
 
-	public static boolean IsFloor(Rectangle2D hitbox, LevelData levelData) {
+	public static boolean IsFloor(Box hitbox, LevelData levelData) {
 		if (!IsSolid(hitbox.getMaxX(), hitbox.getMaxY(), 0, 1, levelData)
 				|| !IsSolid(hitbox.getMinX(), hitbox.getMaxY(), 0, 1, levelData)) {
 			return false;
@@ -101,7 +99,7 @@ public class SmallerThanTile {
 		return true;
 	}
 
-	public static boolean CanCannonSeePlayer(LevelData levelData, Rectangle2D playerBox, Rectangle2D cannonBox,
+	public static boolean CanCannonSeePlayer(LevelData levelData, Box playerBox, Box cannonBox,
 			int yTile) {
 		int playerXTile = AppStage.GetTilesIn(playerBox.getMinX() + playerBox.getWidth() / 2);
 		int cannonXTile = AppStage.GetTilesIn(cannonBox.getMinX());
@@ -129,7 +127,7 @@ public class SmallerThanTile {
 		return true;
 	}
 
-	public static boolean IsSightClear(LevelData levelData, Rectangle2D enemyBox, Rectangle2D playerBox, int yTile) {
+	public static boolean IsSightClear(LevelData levelData, Box enemyBox, Box playerBox, int yTile) {
 		int enemyXTile = AppStage.GetTilesIn(enemyBox.getMinX());
 
 		int playerXTile;

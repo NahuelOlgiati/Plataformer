@@ -17,8 +17,8 @@ import com.mandarina.game.objects.Spike;
 import com.mandarina.game.objects.Tree;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
@@ -197,7 +197,7 @@ public class LevelObjects implements LayerDrawer {
 
 	public void addBlue(int blue, int x, int y) {
 		if (blue != GameCts.EMPTY_TILE_VALUE) {
-			Point2D spawn = new Point2D(x, y);
+			Point spawn = new Point(x, y);
 			switch (blue) {
 			case ObjectCts.RED_POTION, ObjectCts.BLUE_POTION -> potion.add(new Potion(spawn, blue));
 			case ObjectCts.BOX, ObjectCts.BARREL -> container.add(new Container(spawn, blue));

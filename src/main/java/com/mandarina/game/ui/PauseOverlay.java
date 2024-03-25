@@ -13,7 +13,7 @@ public class PauseOverlay {
 
 	private Playing playing;
 	private Image backgroundImg;
-	private double bgX, bgY, bgW, bgH;
+	private float bgX, bgY, bgW, bgH;
 	private UrmButton menuB, replayB, unpauseB;
 
 	public PauseOverlay(Playing playing) {

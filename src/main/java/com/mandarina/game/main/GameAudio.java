@@ -74,7 +74,7 @@ public class GameAudio {
 		return new MediaPlayer(GetAudio(name + ".wav"));
 	}
 
-	public void setVolume(double volume) {
+	public void setVolume(float volume) {
 		game.getAudioOptions().getVolumeButton().setVolume(volume);
 		updateSongVolume();
 		updateEffectsVolume();
@@ -114,7 +114,7 @@ public class GameAudio {
 		MediaPlayer mp = effects[effect];
 		mp.stop();
 		mp.seek(mp.getStartTime());
-		mp.play();
+//		mp.play();
 	}
 
 	public void playSong(int song) {
@@ -122,7 +122,7 @@ public class GameAudio {
 		currentSongId = song;
 		MediaPlayer mp = songs[currentSongId];
 		mp.seek(mp.getStartTime());
-		mp.play();
+//		mp.play();
 	}
 
 	public void toggleSongMute() {
@@ -142,14 +142,14 @@ public class GameAudio {
 	}
 
 	private void updateSongVolume() {
-		double volume = game.getAudioOptions().getVolumeButton().getVolume();
+		float volume = game.getAudioOptions().getVolumeButton().getVolume();
 		for (MediaPlayer song : songs) {
 			song.setVolume(volume);
 		}
 	}
 
 	private void updateEffectsVolume() {
-		double volume = game.getAudioOptions().getVolumeButton().getVolume();
+		float volume = game.getAudioOptions().getVolumeButton().getVolume();
 		for (MediaPlayer effect : effects) {
 			effect.setVolume(volume);
 		}

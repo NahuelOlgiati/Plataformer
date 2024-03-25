@@ -15,7 +15,7 @@ public class LevelCompletedOverlay {
 	private Playing playing;
 	private UrmButton menu, next;
 	private Image img;
-	private double bgX, bgY, bgW, bgH;
+	private float bgX, bgY, bgW, bgH;
 
 	public LevelCompletedOverlay(Playing playing) {
 		this.playing = playing;

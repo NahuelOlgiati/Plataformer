@@ -15,7 +15,7 @@ public class GameCompletedOverlay {
 	private Playing playing;
 	private Image img;
 	private MenuButton quit, credit;
-	private double imgX, imgY, imgW, imgH;
+	private float imgX, imgY, imgW, imgH;
 
 	public GameCompletedOverlay(Playing playing) {
 		this.playing = playing;

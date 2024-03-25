@@ -17,8 +17,8 @@ import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
@@ -122,7 +122,7 @@ public class LevelEntities implements LayerDrawer {
 			for (int x = 0; x < this.level.getImgWidth(); x++) {
 				Color c = pixelReader.getColor(x, y);
 				int green = (int) (c.getGreen() * 255);
-				addGreen(green, new Point2D(x, y), enemys, crabs, pinkstars, sharks, titans, longlegs);
+				addGreen(green, new Point(x, y), enemys, crabs, pinkstars, sharks, titans, longlegs);
 			}
 		}
 		this.enemys = enemys.toArray(new Enemy[enemys.size()]);
@@ -133,7 +133,7 @@ public class LevelEntities implements LayerDrawer {
 		this.longlegs = longlegs.toArray(new Longleg[longlegs.size()]);
 	}
 
-	public void addGreen(int green, Point2D spawn, List<Enemy> enemys, List<Crabby> crabs, List<Pinkstar> pinkstars,
+	public void addGreen(int green, Point spawn, List<Enemy> enemys, List<Crabby> crabs, List<Pinkstar> pinkstars,
 			List<Shark> sharks, List<Titan> titans, List<Longleg> longlegs) {
 		if (green != GameCts.EMPTY_TILE_VALUE) {
 			switch (green) {

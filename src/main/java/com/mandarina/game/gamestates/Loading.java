@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 public class Loading {
 
 	private Image backgroundImg;
-	private double x, y, w, h;
+	private float x, y, w, h;
 
 	public Loading() {
 		loadBackground();

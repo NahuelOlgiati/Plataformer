@@ -12,3 +12,11 @@
 y el gato patas largas bajen un corason porque son grandes y el gato comun baje un corason y medio porque es chiquito y la barra de enerjia que sea un  rallito y cadaves que
 usas una ves el poder especial se baje esa barrita y se va tener que recargar con el tiempo 
 -hacer que el objetivo del juego sea pasar el nivel hasta llegar hasta el final pero hay que conseguir tres llaves una la tiene un enemigo otra esta oculta en los bloques falsos y otra en un barril
+
+
+
+
+
+
+
+cargar recursos con runlater

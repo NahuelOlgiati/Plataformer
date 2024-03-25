@@ -3,22 +3,21 @@ package com.mandarina.game.objects;
 import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public class Cannon extends GameObject {
 
 	private int tileY;
 
-	public Cannon(Point2D spawn, int objType) {
+	public Cannon(Point spawn, int objType) {
 		super(spawn, objType);
 		tileY = AppStage.GetTilesIn(y);
 		initHitbox(40, 26);
-		hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + AppStage.Scale(6), hitbox.getWidth(),
-				hitbox.getHeight());
+		hitbox = new Box(hitbox.getMinX(), hitbox.getMinY() + AppStage.Scale(6), hitbox.getWidth(), hitbox.getHeight());
 	}
 
 	public void draw(GameDrawer g, Offset offset, Image[] animations) {
@@ -53,7 +52,6 @@ public class Cannon extends GameObject {
 		super.scale();
 		tileY = AppStage.GetTilesIn(y);
 		initHitbox(40, 26);
-		hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + AppStage.Scale(6), hitbox.getWidth(),
-				hitbox.getHeight());
+		hitbox.set(hitbox.getMinX(), hitbox.getMinY() + AppStage.Scale(6), hitbox.getWidth(), hitbox.getHeight());
 	}
 }

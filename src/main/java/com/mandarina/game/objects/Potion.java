@@ -1,18 +1,18 @@
 package com.mandarina.game.objects;
 
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public class Potion extends GameObject {
 
-	private double hoverOffset;
+	private float hoverOffset;
 	private int maxHoverOffset, hoverDir = 1;
 
-	public Potion(Point2D spawn, int objType) {
+	public Potion(Point spawn, int objType) {
 		super(spawn, objType);
 		doAnimation = true;
 
@@ -37,7 +37,7 @@ public class Potion extends GameObject {
 		else if (hoverOffset < 0)
 			hoverDir = 1;
 
-		hitbox = new Rectangle2D(hitbox.getMinX(), y + hoverOffset, hitbox.getWidth(), hitbox.getHeight());
+		hitbox = new Box(hitbox.getMinX(), y + hoverOffset, hitbox.getWidth(), hitbox.getHeight());
 	}
 
 	public static Image[][] load() {

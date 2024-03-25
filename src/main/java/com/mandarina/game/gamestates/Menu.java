@@ -15,7 +15,7 @@ public class Menu {
 	private Game game;
 	private MenuButton[] buttons = new MenuButton[5];
 	private Image backgroundImg, backgroundImgPink;
-	private double menuX, menuY, menuWidth, menuHeight;
+	private float menuX, menuY, menuWidth, menuHeight;
 	private FullScreenButton fullScreenButton;
 
 	public Menu(Game game) {

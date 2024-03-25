@@ -10,7 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
 public class MenuButton {
-	private double xPos, yPos;
+	private float xPos, yPos;
 	private int rowIndex, index;
 	private int xOffsetCenter;
 	private GameState state;
@@ -18,7 +18,7 @@ public class MenuButton {
 	private boolean mouseOver, mousePressed;
 	private Rectangle bounds;
 
-	public MenuButton(double xPos, double yPos, int rowIndex, GameState state) {
+	public MenuButton(float xPos, float yPos, int rowIndex, GameState state) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.rowIndex = rowIndex;

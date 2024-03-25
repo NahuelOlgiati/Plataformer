@@ -5,8 +5,7 @@ import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
-
-import javafx.geometry.Rectangle2D;
+import com.mandarina.utilz.Box;
 
 public class EnemyManager implements LayerDrawer {
 
@@ -47,7 +46,7 @@ public class EnemyManager implements LayerDrawer {
 		currentLevel.getLevelEntities().drawL4(g, offset);
 	}
 
-	public void checkEnemyHit(Rectangle2D attackBox, int playerDamage) {
+	public void checkEnemyHit(Box attackBox, int playerDamage) {
 		for (Enemy e : currentLevel.getLevelEntities().getEnemys())
 			if (e.isActive())
 				if (!EnemyState.DEAD.equals(e.getState()) && !EnemyState.HIT.equals(e.getState()))

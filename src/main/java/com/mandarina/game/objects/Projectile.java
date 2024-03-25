@@ -6,18 +6,18 @@ import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public class Projectile extends GameObject {
-	private Rectangle2D hitbox;
+	private Box hitbox;
 	private int dir;
 	private boolean active = true;
 
-	public Projectile(Point2D spawn, int dir) {
+	public Projectile(Point spawn, int dir) {
 		super(spawn, ObjectCts.PROJECTILE);
 		this.dir = dir;
 		int xOffset = AppStage.Scale(-3);
@@ -26,13 +26,12 @@ public class Projectile extends GameObject {
 		if (dir == 1)
 			xOffset = AppStage.Scale(29);
 
-		hitbox = new Rectangle2D(x + xOffset, y + yOffset, AppStage.Scale(ProjectileCts.CANNON_BALL_WIDTH_DEFAULT),
+		hitbox = new Box(x + xOffset, y + yOffset, AppStage.Scale(ProjectileCts.CANNON_BALL_WIDTH_DEFAULT),
 				AppStage.Scale(ProjectileCts.CANNON_BALL_HEIGHT_DEFAULT));
 	}
 
 	public void updatePos() {
-		hitbox = new Rectangle2D(hitbox.getMinX() + dir * AppStage.Scale(ProjectileCts.SPEED_DEFAULT), hitbox.getMinY(),
-				hitbox.getWidth(), hitbox.getHeight());
+		hitbox.setMinX(hitbox.getMinX() + dir * AppStage.Scale(ProjectileCts.SPEED_DEFAULT));
 	}
 
 	public void draw(GameDrawer g, Offset offset, Image cannonBallSprite) {
@@ -46,11 +45,11 @@ public class Projectile extends GameObject {
 	}
 
 	public void setPos(int x, int y) {
-		hitbox = new Rectangle2D(x, y, hitbox.getWidth(), hitbox.getHeight());
+		hitbox.set(x, y, hitbox.getWidth(), hitbox.getHeight());
 	}
 
 	@Override
-	public Rectangle2D getHitbox() {
+	public Box getHitbox() {
 		return hitbox;
 	}
 
@@ -77,7 +76,7 @@ public class Projectile extends GameObject {
 		if (dir == 1)
 			xOffset = AppStage.Scale(29);
 
-		hitbox = new Rectangle2D(x + xOffset, y + yOffset, AppStage.Scale(ProjectileCts.CANNON_BALL_WIDTH_DEFAULT),
+		hitbox.set(x + xOffset, y + yOffset, AppStage.Scale(ProjectileCts.CANNON_BALL_WIDTH_DEFAULT),
 				AppStage.Scale(ProjectileCts.CANNON_BALL_HEIGHT_DEFAULT));
 	}
 

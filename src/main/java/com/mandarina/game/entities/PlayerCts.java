@@ -11,7 +11,7 @@ public class PlayerCts {
 	public static final int DRAW_OFFSET_X = 10;
 	public static final int DRAW_OFFSET_Y = 22;
 
-	public static final int HITBOX_WIDTH = 25;
+	public static final int HITBOX_WIDTH = 24;
 	public static final int HITBOX_HEIGHT = 38;
 	public static final int HITBOX_HORIZONTAL_CHECKS = HITBOX_WIDTH / GameCts.TILES_DEFAULT_SIZE;
 	public static final int HITBOX_VERTICAL_CHECKS = HITBOX_HEIGHT / GameCts.TILES_DEFAULT_SIZE;
@@ -23,7 +23,7 @@ public class PlayerCts {
 
 	public static final String ATLAS_IMAGE = "player.png";
 	public static final int ATLAS_SIZE_X = 8;
-	public static final int ATLAS_SIZE_Y = 6;
+	public static final int ATLAS_SIZE_Y = 7;
 
 	public static final float WALK_SPEED = 1f;
 	public static final float JUMP_SPEED = 2.25f;

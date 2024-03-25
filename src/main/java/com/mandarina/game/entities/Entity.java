@@ -6,44 +6,45 @@ import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Box;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public abstract class Entity {
 
-	private Point2D spawn;
-	protected double x, y;
-	protected double drawWidth, drawHeight, drawOffsetX, drawOffsetY;
+	private Point spawn;
+	protected float x, y;
+	protected float hitboxWidth, hitboxHeight;
+	protected float drawWidth, drawHeight, drawOffsetX, drawOffsetY;
 
 	protected int aniTick, aniIndex;
 
 	protected int maxHealth;
 	protected int currentHealth;
 
-	protected double walkSpeed;
+	protected float walkSpeed;
 	protected int walkDir;
 
-	protected double xSpeed;
-	protected double ySpeed;
+	protected float xSpeed;
+	protected float ySpeed;
 	protected boolean inAir;
 
 	protected int tileY;
 
-	protected Rectangle2D hitbox;
+	protected Box hitbox;
 
-	protected Rectangle2D attackBox;
+	protected Box attackBox;
 	protected boolean attackChecked;
 	protected int attackBoxOffsetX;
 	protected int attackBoxOffsetY;
 
 	protected int pushBackDir;
-	protected double pushDrawOffset;
+	protected float pushDrawOffset;
 	protected int pushBackOffsetDir;
 
-	public Entity(Point2D spawn, int health) {
+	public Entity(Point spawn, int health) {
 		this.spawn = spawn;
 		this.maxHealth = health;
 		this.currentHealth = maxHealth;
@@ -70,13 +71,13 @@ public abstract class Entity {
 	}
 
 	protected void initHitbox(int width, int height) {
-		int heightScaled = AppStage.Scale(height);
-		int widthScale = AppStage.Scale(width);
-		hitbox = new Rectangle2D(x, y - heightScaled, widthScale, heightScaled);
+		this.hitboxWidth = AppStage.Scale(width);
+		this.hitboxHeight = AppStage.Scale(height);
+		hitbox = new Box(x, y - hitboxHeight, hitboxWidth, hitboxHeight);
 	}
 
 	protected void initAttackBox(int w, int h, int attackBoxOffsetX, int attackBoxOffsetY) {
-		attackBox = new Rectangle2D(x, y, AppStage.Scale(w), AppStage.Scale(h));
+		attackBox = new Box(x, y, AppStage.Scale(w), AppStage.Scale(h));
 		this.attackBoxOffsetX = AppStage.Scale(attackBoxOffsetX);
 		this.attackBoxOffsetY = AppStage.Scale(attackBoxOffsetY);
 	}
@@ -86,23 +87,20 @@ public abstract class Entity {
 				hitbox.getMinY() - offset.getY() - drawOffsetY + pushDrawOffset, drawWidth * flipW(), drawHeight);
 
 		// For Debug
-//		drawHitbox(g, offset);
-//		drawAttackBox(g, offset);
+		drawHitbox(g, offset);
+		drawAttackBox(g, offset);
 	}
 
 	protected void updateAttackBox() {
-		attackBox = new Rectangle2D(hitbox.getMinX() - attackBoxOffsetX, hitbox.getMinY() - attackBoxOffsetY,
-				attackBox.getWidth(), attackBox.getHeight());
+		attackBox.setMinXY(hitbox.getMinX() - attackBoxOffsetX, hitbox.getMinY() - attackBoxOffsetY);
 	}
 
 	protected void updateAttackBoxFlip() {
 		if (walkDir == DirectionCts.RIGHT) {
-			attackBox = new Rectangle2D(hitbox.getMinX() - attackBoxOffsetX * flipW(),
-					hitbox.getMinY() - attackBoxOffsetY, attackBox.getWidth(), attackBox.getHeight());
+			attackBox.setMinXY(hitbox.getMinX() - attackBoxOffsetX * flipW(), hitbox.getMinY() - attackBoxOffsetY);
 		} else {
-			attackBox = new Rectangle2D(
-					hitbox.getMinX() + hitbox.getWidth() - attackBox.getWidth() - attackBoxOffsetX * flipW(),
-					hitbox.getMinY() - attackBoxOffsetY, attackBox.getWidth(), attackBox.getHeight());
+			attackBox.setMinXY(hitbox.getMinX() + hitbox.getWidth() - attackBox.getWidth() - attackBoxOffsetX * flipW(),
+					hitbox.getMinY() - attackBoxOffsetY);
 		}
 	}
 
@@ -129,7 +127,7 @@ public abstract class Entity {
 		walkDir = direction;
 	}
 
-	public double flipX() {
+	public float flipX() {
 		if (walkDir == DirectionCts.RIGHT)
 			return drawWidth;
 		else
@@ -144,8 +142,8 @@ public abstract class Entity {
 	}
 
 	protected void updatePushBackDrawOffset() {
-		double speed = 0.95f;
-		double limit = -30f;
+		float speed = 0.95f;
+		float limit = -30f;
 
 		if (pushBackOffsetDir == DirectionCts.UP) {
 			pushDrawOffset -= speed;
@@ -158,8 +156,8 @@ public abstract class Entity {
 		}
 	}
 
-	protected void pushBack(int pushBackDir, LevelData levelData, double speedMulti) {
-		double xSpeed = 0;
+	protected void pushBack(int pushBackDir, LevelData levelData, float speedMulti) {
+		float xSpeed = 0;
 		if (pushBackDir == DirectionCts.LEFT)
 			xSpeed = -walkSpeed;
 		else
@@ -167,8 +165,7 @@ public abstract class Entity {
 
 		if (CanMoveHere(hitbox.getMinX() + xSpeed * speedMulti, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(),
 				levelData))
-			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed * speedMulti, hitbox.getMinY(), hitbox.getWidth(),
-					hitbox.getHeight());
+			hitbox.setMinX(hitbox.getMinX() + xSpeed * speedMulti);
 	}
 
 	protected void drawAttackBox(GameDrawer g, Offset offset) {
@@ -183,11 +180,11 @@ public abstract class Entity {
 				hitbox.getHeight());
 	}
 
-	public Point2D getSpawn() {
+	public Point getSpawn() {
 		return spawn;
 	}
 
-	public Rectangle2D getHitbox() {
+	public Box getHitbox() {
 		return hitbox;
 	}
 

@@ -8,15 +8,15 @@ import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
+import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public class Shark extends Enemy {
 
-	public Shark(Point2D spawn) {
+	public Shark(Point spawn) {
 		super(spawn, SharkCts.HEALTH, EntityCts.SHARK);
 		initShark();
 	}
@@ -108,7 +108,7 @@ public class Shark extends Enemy {
 		if (CanMoveHere(hitbox.getMinX() + xSpeed * 4, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(),
 				levelData)) {
 			if (IsFloor(hitbox, xSpeed * 4, levelData)) {
-				hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed * 4, hitbox.getMinY(), hitbox.getWidth(),
+				hitbox = new Box(hitbox.getMinX() + xSpeed * 4, hitbox.getMinY(), hitbox.getWidth(),
 						hitbox.getHeight());
 				return;
 			}
@@ -117,7 +117,7 @@ public class Shark extends Enemy {
 		playing.getObjectManager().addDialogue((int) hitbox.getMinX(), (int) hitbox.getMinY(), DialogueCts.EXCLAMATION);
 	}
 
-	private void checkPlayerHit(Rectangle2D attackBox, Player player) {
+	private void checkPlayerHit(Box attackBox, Player player) {
 		if (attackBox.intersects(player.getHitbox()))
 			player.changeHealth(-SharkCts.DAMAGE, this);
 		else {

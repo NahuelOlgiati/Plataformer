@@ -2,17 +2,17 @@ package com.mandarina.game.ui;
 
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Box;
 
-import javafx.geometry.Rectangle2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class FullScreenButton {
 
-	private double x, y, s;
+	private float x, y, s;
 	private int diff, offset, border, rectangleSize;
 	private boolean mouseOver, mousePressed;
-	private Rectangle2D bounds;
+	private Box bounds;
 	private boolean maximize;
 
 	public FullScreenButton() {
@@ -28,7 +28,7 @@ public class FullScreenButton {
 	}
 
 	private void initBounds() {
-		bounds = new Rectangle2D(x, y, s, s);
+		bounds = new Box(x, y, s, s);
 	}
 
 	public void draw(GameDrawer g) {
@@ -67,7 +67,7 @@ public class FullScreenButton {
 		}
 	}
 
-	private void drawRectangle(GameDrawer g, double x, double y, Color color) {
+	private void drawRectangle(GameDrawer g, float x, float y, Color color) {
 		g.setStroke(color);
 		g.setLineWidth(border);
 		g.strokeRect(x, y, rectangleSize, rectangleSize);
@@ -91,7 +91,7 @@ public class FullScreenButton {
 		this.mousePressed = mousePressed;
 	}
 
-	public Rectangle2D getBounds() {
+	public Box getBounds() {
 		return bounds;
 	}
 

@@ -6,7 +6,7 @@ import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
-import javafx.geometry.Point2D;
+import com.mandarina.utilz.Point;
 import javafx.scene.image.Image;
 
 public class Dialogue extends GameObject {
@@ -14,7 +14,7 @@ public class Dialogue extends GameObject {
 	private int aniIndex, aniTick;
 	private boolean active = true;
 
-	public Dialogue(Point2D spawn, int type) {
+	public Dialogue(Point spawn, int type) {
 		super(spawn, type);
 	}
 

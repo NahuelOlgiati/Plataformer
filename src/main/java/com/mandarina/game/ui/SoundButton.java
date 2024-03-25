@@ -1,10 +1,10 @@
 package com.mandarina.game.ui;
 
 import com.mandarina.game.main.GameDrawer;
+import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
-import javafx.scene.shape.Rectangle;
 
 public class SoundButton extends PauseButton {
 
@@ -48,8 +48,8 @@ public class SoundButton extends PauseButton {
 	}
 
 	public void draw(GameDrawer g) {
-		Rectangle b = getBounds();
-		g.drawImage(soundImgs[rowIndex][colIndex], b.getX(), b.getY(), b.getWidth(), b.getHeight());
+		Box b = getBounds();
+		g.drawImage(soundImgs[rowIndex][colIndex], b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
 	}
 
 	public boolean isMouseOver() {

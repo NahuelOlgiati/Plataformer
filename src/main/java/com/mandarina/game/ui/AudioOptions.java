@@ -54,9 +54,9 @@ public class AudioOptions {
 
 	public void mouseDragged(MouseEvent e) {
 		if (volumeButton.isMousePressed()) {
-			double valueBefore = volumeButton.getVolume();
+			float valueBefore = volumeButton.getVolume();
 			volumeButton.changeX((int) e.getX());
-			double valueAfter = volumeButton.getVolume();
+			float valueAfter = volumeButton.getVolume();
 			if (valueBefore != valueAfter)
 				game.getAudioPlayer().setVolume(valueAfter);
 		}

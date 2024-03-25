@@ -16,9 +16,8 @@ import com.mandarina.game.main.GameAudio;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.main.AppStage;
-
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
+import com.mandarina.utilz.Box;
+import com.mandarina.utilz.Point;
 
 public class ObjectManager implements LayerDrawer {
 
@@ -74,7 +73,7 @@ public class ObjectManager implements LayerDrawer {
 				e.hurt(200);
 	}
 
-	public void checkObjectTouched(Rectangle2D hitbox) {
+	public void checkObjectTouched(Box hitbox) {
 		for (Potion p : potions)
 			if (p.isActive()) {
 				if (hitbox.intersects(p.getHitbox())) {
@@ -91,7 +90,7 @@ public class ObjectManager implements LayerDrawer {
 			playing.getStatusBar().changePower(ObjectCts.BLUE_POTION_VALUE);
 	}
 
-	public void checkObjectHit(Rectangle2D attackbox) {
+	public void checkObjectHit(Box attackbox) {
 		for (Container c : currentLevel.getLevelObjects().getContainer().getItems())
 			if (c.isActive() && !c.doAnimation) {
 				if (c.getHitbox().intersects(attackbox)) {
@@ -99,7 +98,7 @@ public class ObjectManager implements LayerDrawer {
 					int type = 0;
 					if (c.getObjType() == ObjectCts.BARREL)
 						type = 1;
-					Point2D p = new Point2D((int) (c.getHitbox().getMinX() + c.getHitbox().getWidth() / 2),
+					Point p = new Point((int) (c.getHitbox().getMinX() + c.getHitbox().getWidth() / 2),
 							(int) (c.getHitbox().getMinY() - c.getHitbox().getHeight() / 2));
 					potions.add(new Potion(p, type));
 					return;
@@ -197,16 +196,16 @@ public class ObjectManager implements LayerDrawer {
 	private void loadDialogues() {
 		dialogues.clear();
 		for (int i = 0; i < 10; i++)
-			dialogues.add(new Dialogue(new Point2D(0, 0), DialogueCts.EXCLAMATION));
+			dialogues.add(new Dialogue(new Point(0, 0), DialogueCts.EXCLAMATION));
 		for (int i = 0; i < 10; i++)
-			dialogues.add(new Dialogue(new Point2D(0, 0), DialogueCts.QUESTION));
+			dialogues.add(new Dialogue(new Point(0, 0), DialogueCts.QUESTION));
 
 		for (Dialogue d : dialogues)
 			d.deactive();
 	}
 
 	public void addDialogue(int x, int y, int type) {
-		dialogues.add(new Dialogue(new Point2D(x, y - AppStage.Scale(15)), type));
+		dialogues.add(new Dialogue(new Point(x, y - AppStage.Scale(15)), type));
 		for (Dialogue d : dialogues)
 			if (!d.isActive())
 				if (d.getObjType() == type) {

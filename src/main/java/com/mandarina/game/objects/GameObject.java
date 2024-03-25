@@ -4,22 +4,22 @@ import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Box;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
 
 public class GameObject {
 
-	private Point2D spawn;
-	protected double x, y;
+	private Point spawn;
+	protected float x, y;
 	protected int objType;
-	protected Rectangle2D hitbox;
+	protected Box hitbox;
 	protected boolean doAnimation, active = true;
 	protected int aniTick, aniIndex;
 	protected int xDrawOffset, yDrawOffset;
 
-	public GameObject(Point2D spawn, int objType) {
+	public GameObject(Point spawn, int objType) {
 		this.spawn = spawn;
 		this.objType = objType;
 		init();
@@ -71,7 +71,7 @@ public class GameObject {
 	}
 
 	protected void initHitbox(int width, int height) {
-		hitbox = new Rectangle2D(x, y, AppStage.Scale(width), AppStage.Scale(height));
+		hitbox = new Box(x, y, AppStage.Scale(width), AppStage.Scale(height));
 	}
 
 	public void drawHitbox(GameDrawer g, Offset offset) {
@@ -84,11 +84,11 @@ public class GameObject {
 		return objType;
 	}
 
-	public Point2D getSpawn() {
+	public Point getSpawn() {
 		return spawn;
 	}
 
-	public Rectangle2D getHitbox() {
+	public Box getHitbox() {
 		return hitbox;
 	}
 

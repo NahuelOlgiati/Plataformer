@@ -7,14 +7,14 @@ import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
-import javafx.geometry.Point2D;
+import com.mandarina.utilz.Point;
 import javafx.scene.image.Image;
 
 public class Tree extends GameObject {
 
 	private int aniIndex, aniTick;
 
-	public Tree(Point2D spawn, int type) {
+	public Tree(Point spawn, int type) {
 		super(spawn, type);
 		Random r = new Random();
 		aniIndex = r.nextInt(4);
@@ -53,7 +53,7 @@ public class Tree extends GameObject {
 		return treeImgs;
 	}
 
-	public static double GetTreeOffsetX(int treeType) {
+	public static float GetTreeOffsetX(int treeType) {
 		switch (treeType) {
 		case ObjectCts.TREE_UP:
 			return (AppStage.GetTileSize() / 2) - (GetTreeWidth(treeType) / 2);
@@ -66,7 +66,7 @@ public class Tree extends GameObject {
 		return 0;
 	}
 
-	public static double GetTreeOffsetY(int treeType) {
+	public static float GetTreeOffsetY(int treeType) {
 
 		switch (treeType) {
 		case ObjectCts.TREE_UP:

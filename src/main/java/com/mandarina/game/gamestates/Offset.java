@@ -3,36 +3,35 @@ package com.mandarina.game.gamestates;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.main.AppStage;
-
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
+import com.mandarina.utilz.Box;
+import com.mandarina.utilz.Point;
 
 public class Offset {
 
 	private Playing playing;
 
-	private double lvlOffsetX;
-	private double lvlOffsetY;
+	private float lvlOffsetX;
+	private float lvlOffsetY;
 
-	private double leftBorder;
-	private double rightBorder;
-	private double bottomBorder;
-	private double topBorder;
+	private float leftBorder;
+	private float rightBorder;
+	private float bottomBorder;
+	private float topBorder;
 
 	private int cachedTileOffsetX;
 	private int cachedMaxTileOffsetX;
-	private double cachedLvlOffsetX;
-	private double cachedMaxOffsetX;
+	private float cachedLvlOffsetX;
+	private float cachedMaxOffsetX;
 
 	private int cachedTileOffsetY;
 	private int cachedMaxTileOffsetY;
-	private double cachedLvlOffsetY;
-	private double cachedMaxOffsetY;
+	private float cachedLvlOffsetY;
+	private float cachedMaxOffsetY;
 
-	private double cachedLvlOffsetHalfX;
-	private double cachedMaxOffsetHalfX;
-	private double cachedLvlOffsetHalfY;
-	private double cachedMaxOffsetHalfY;
+	private float cachedLvlOffsetHalfX;
+	private float cachedMaxOffsetHalfX;
+	private float cachedLvlOffsetHalfY;
+	private float cachedMaxOffsetHalfY;
 
 	public Offset(Playing playing) {
 		this.playing = playing;
@@ -42,28 +41,28 @@ public class Offset {
 	public void reset() {
 		this.cachedTileOffsetX = -1;
 		this.cachedMaxTileOffsetX = -1;
-		this.cachedLvlOffsetX = Double.NaN;
-		this.cachedMaxOffsetX = Double.NaN;
+		this.cachedLvlOffsetX = -1;
+		this.cachedMaxOffsetX = -1;
 		this.cachedTileOffsetY = -1;
 		this.cachedMaxTileOffsetY = -1;
-		this.cachedLvlOffsetY = Double.NaN;
-		this.cachedMaxOffsetY = Double.NaN;
-		this.leftBorder = 0.25 * AppStage.GetGameWidth();
-		this.rightBorder = 0.75 * AppStage.GetGameWidth();
-		this.bottomBorder = 0.25 * AppStage.GetGameHeight();
-		this.topBorder = 0.75 * AppStage.GetGameHeight();
+		this.cachedLvlOffsetY = -1;
+		this.cachedMaxOffsetY = -1;
+		this.leftBorder = 0.25f * AppStage.GetGameWidth();
+		this.rightBorder = 0.75f * AppStage.GetGameWidth();
+		this.bottomBorder = 0.25f * AppStage.GetGameHeight();
+		this.topBorder = 0.75f * AppStage.GetGameHeight();
 	}
 
 	public void update() {
-		Rectangle2D playerHitbox = playing.getPlayer().getHitbox();
+		Box playerHitbox = playing.getPlayer().getHitbox();
 		Level currentLevel = playing.getCurrentLevel();
 		checkCloseToBorderX(playerHitbox, currentLevel);
 		checkCloseToBorderY(playerHitbox, currentLevel);
 	}
 
-	private void checkCloseToBorderX(Rectangle2D playerHitbox, Level currentLevel) {
-		double playerX = playerHitbox.getMinX();
-		double diff = playerX - lvlOffsetX;
+	private void checkCloseToBorderX(Box playerHitbox, Level currentLevel) {
+		float playerX = playerHitbox.getMinX();
+		float diff = playerX - lvlOffsetX;
 
 		if (diff > rightBorder)
 			lvlOffsetX += diff - rightBorder;
@@ -73,9 +72,9 @@ public class Offset {
 		lvlOffsetX = Math.max(Math.min(lvlOffsetX, currentLevel.getMaxLvlOffsetX()), 0);
 	}
 
-	private void checkCloseToBorderY(Rectangle2D playerHitbox, Level currentLevel) {
-		double playerY = playerHitbox.getMinY();
-		double diff = playerY - lvlOffsetY;
+	private void checkCloseToBorderY(Box playerHitbox, Level currentLevel) {
+		float playerY = playerHitbox.getMinY();
+		float diff = playerY - lvlOffsetY;
 
 		if (diff > topBorder)
 			lvlOffsetY += diff - topBorder;
@@ -85,52 +84,52 @@ public class Offset {
 		lvlOffsetY = Math.max(Math.min(lvlOffsetY, currentLevel.getMaxLvlOffsetY()), 0);
 	}
 
-	public double getX() {
+	public float getX() {
 		return lvlOffsetX;
 	}
 
-	public double getY() {
+	public float getY() {
 		return lvlOffsetY;
 	}
 
-	public boolean in(Point2D p) {
+	public boolean in(Point p) {
 		return mustUpdateX(p) && mustUpdateY(p);
 	}
 
-	public boolean in(Rectangle2D h) {
+	public boolean in(Box h) {
 		return mustUpdateX(h) && mustUpdateY(h);
 	}
 
-	public boolean inHalf(Rectangle2D h) {
+	public boolean inHalf(Box h) {
 		return mustUpdateHalfX(h) && mustUpdateHalfY(h);
 	}
 
-	private boolean mustUpdateX(Point2D spawn) {
+	private boolean mustUpdateX(Point spawn) {
 		checkCachedLvlOffsetX();
 		return checkTileRangeX((int) spawn.getX());
 	}
 
-	private boolean mustUpdateY(Point2D spawn) {
+	private boolean mustUpdateY(Point spawn) {
 		checkCachedLvlOffsetY();
 		return checkTileRangeY((int) spawn.getY());
 	}
 
-	private boolean mustUpdateX(Rectangle2D hitbox) {
+	private boolean mustUpdateX(Box hitbox) {
 		checkCachedLvlOffsetX();
 		return checkRangeX(hitbox);
 	}
 
-	private boolean mustUpdateY(Rectangle2D hitbox) {
+	private boolean mustUpdateY(Box hitbox) {
 		checkCachedLvlOffsetY();
 		return checkRangeY(hitbox);
 	}
 
-	private boolean mustUpdateHalfX(Rectangle2D hitbox) {
+	private boolean mustUpdateHalfX(Box hitbox) {
 		checkCachedLvlOffsetX();
 		return checkRangeHalfX(hitbox);
 	}
 
-	private boolean mustUpdateHalfY(Rectangle2D hitbox) {
+	private boolean mustUpdateHalfY(Box hitbox) {
 		checkCachedLvlOffsetY();
 		return checkRangeHalfY(hitbox);
 	}
@@ -143,30 +142,30 @@ public class Offset {
 		return spawnY >= cachedTileOffsetY && spawnY <= cachedMaxTileOffsetY;
 	}
 
-	private boolean checkRangeX(Rectangle2D hitbox) {
-		double minX = hitbox.getMinX();
-		double maxX = hitbox.getMaxX();
+	private boolean checkRangeX(Box hitbox) {
+		float minX = hitbox.getMinX();
+		float maxX = hitbox.getMaxX();
 		return (minX >= cachedLvlOffsetX && minX <= cachedMaxOffsetX) || //
 				(maxX >= cachedLvlOffsetX && maxX <= cachedMaxOffsetX);
 	}
 
-	private boolean checkRangeY(Rectangle2D hitbox) {
-		double minY = hitbox.getMinY();
-		double maxY = hitbox.getMaxY();
+	private boolean checkRangeY(Box hitbox) {
+		float minY = hitbox.getMinY();
+		float maxY = hitbox.getMaxY();
 		return (minY >= cachedLvlOffsetY && minY <= cachedMaxOffsetY) || //
 				(maxY >= cachedLvlOffsetY && maxY <= cachedMaxOffsetY);
 	}
 
-	private boolean checkRangeHalfX(Rectangle2D hitbox) {
-		double minX = hitbox.getMinX();
-		double maxX = hitbox.getMaxX();
+	private boolean checkRangeHalfX(Box hitbox) {
+		float minX = hitbox.getMinX();
+		float maxX = hitbox.getMaxX();
 		return (minX >= cachedLvlOffsetHalfX && minX <= cachedMaxOffsetHalfX) || //
 				(maxX >= cachedLvlOffsetHalfX && maxX <= cachedMaxOffsetHalfX);
 	}
 
-	private boolean checkRangeHalfY(Rectangle2D hitbox) {
-		double minY = hitbox.getMinY();
-		double maxY = hitbox.getMaxY();
+	private boolean checkRangeHalfY(Box hitbox) {
+		float minY = hitbox.getMinY();
+		float maxY = hitbox.getMaxY();
 		return (minY >= cachedLvlOffsetHalfY && minY <= cachedMaxOffsetHalfY) || //
 				(maxY >= cachedLvlOffsetHalfY && maxY <= cachedMaxOffsetHalfY);
 	}

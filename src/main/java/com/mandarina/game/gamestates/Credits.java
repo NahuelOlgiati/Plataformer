@@ -17,8 +17,8 @@ import javafx.scene.input.KeyEvent;
 
 public class Credits {
 	private Image backgroundImg, creditsImg;
-	private double bgX, bgY, bgW, bgH;
-	private double bgYdouble;
+	private float bgX, bgY, bgW, bgH;
+	private float bgYDouble;
 
 	private List<ShowEntity> entitiesList;
 
@@ -45,14 +45,14 @@ public class Credits {
 	}
 
 	public void update() {
-		bgYdouble -= 0.2f;
+		bgYDouble -= 0.2f;
 		for (ShowEntity se : entitiesList)
 			se.update();
 	}
 
 	public void draw(GameDrawer g) {
 		g.drawImage(backgroundImg, 0, 0, AppStage.GetGameWidth(), AppStage.GetGameHeight());
-		g.drawImage(creditsImg, bgX, bgY + bgYdouble, bgW, bgH);
+		g.drawImage(creditsImg, bgX, bgY + bgYDouble, bgW, bgH);
 
 		for (ShowEntity se : entitiesList)
 			se.draw(g);
@@ -60,7 +60,7 @@ public class Credits {
 
 	public void keyReleased(KeyEvent e) {
 		if (e.getCode() == KeyCode.ESCAPE) {
-			bgYdouble = 0;
+			bgYDouble = 0;
 			GameState.setState(GameState.MENU);
 		}
 	}

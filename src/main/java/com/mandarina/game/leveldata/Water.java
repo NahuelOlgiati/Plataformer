@@ -6,14 +6,14 @@ import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
-import javafx.geometry.Point2D;
+import com.mandarina.utilz.Point;
 import javafx.scene.image.Image;
 
 public class Water extends GameData {
 
 	private int type, aniIndex, aniTick;
 
-	public Water(Point2D spawn, int type) {
+	public Water(Point spawn, int type) {
 		super(spawn);
 		this.type = type;
 	}

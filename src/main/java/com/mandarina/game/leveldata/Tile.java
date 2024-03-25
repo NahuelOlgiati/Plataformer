@@ -5,14 +5,14 @@ import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
-import javafx.geometry.Point2D;
+import com.mandarina.utilz.Point;
 import javafx.scene.image.Image;
 
 public class Tile extends GameData {
 
 	private int aniIndex;
 
-	public Tile(Point2D spawn, int aniIndex) {
+	public Tile(Point spawn, int aniIndex) {
 		super(spawn);
 		this.aniIndex = aniIndex;
 	}

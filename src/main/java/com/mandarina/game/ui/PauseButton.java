@@ -1,20 +1,20 @@
 package com.mandarina.game.ui;
 
-import javafx.scene.shape.Rectangle;
+import com.mandarina.utilz.Box;
 
 public class PauseButton {
 
-	protected Rectangle bounds;
+	protected Box bounds;
 
 	public PauseButton(int x, int y, int width, int height) {
-		bounds = new Rectangle(x, y, width, height);
+		bounds = new Box(x, y, width, height);
 	}
 
-	public Rectangle getBounds() {
+	public Box getBounds() {
 		return bounds;
 	}
 
-	public void setBounds(Rectangle bounds) {
+	public void setBounds(Box bounds) {
 		this.bounds = bounds;
 	}
 

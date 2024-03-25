@@ -10,9 +10,8 @@ import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
 import com.mandarina.utilz.LoadSave;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public class Pinkstar extends Enemy {
@@ -22,7 +21,7 @@ public class Pinkstar extends Enemy {
 	private int tickAfterRollInIdle;
 	private int rollDurationTick, rollDuration = 300;
 
-	public Pinkstar(Point2D spawn) {
+	public Pinkstar(Point spawn) {
 		super(spawn, PinkstarCts.HEALTH, EntityCts.PINKSTAR);
 		initPinkstar();
 	}
@@ -156,8 +155,7 @@ public class Pinkstar extends Enemy {
 
 		if (CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(), levelData))
 			if (IsFloor(hitbox, xSpeed, levelData)) {
-				hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(),
-						hitbox.getHeight());
+				hitbox.setMinX(hitbox.getMinX() + xSpeed);
 				return;
 			}
 

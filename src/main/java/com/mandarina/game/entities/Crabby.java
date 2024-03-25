@@ -6,15 +6,15 @@ import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
+import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public class Crabby extends Enemy {
 
-	public Crabby(Point2D spawn) {
+	public Crabby(Point spawn) {
 		super(spawn, CrabbyCts.HEALTH, EntityCts.CRABBY);
 		initCrabby();
 	}
@@ -99,7 +99,7 @@ public class Crabby extends Enemy {
 		return distance <= attackDistance;
 	}
 
-	private void checkPlayerHit(Rectangle2D attackBox, Player player) {
+	private void checkPlayerHit(Box attackBox, Player player) {
 		if (attackBox.intersects(player.getHitbox()))
 			player.changeHealth(-CrabbyCts.DAMAGE, this);
 		attackChecked = true;

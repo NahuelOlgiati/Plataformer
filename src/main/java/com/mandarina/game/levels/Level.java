@@ -13,15 +13,15 @@ public class Level {
 	private int imgHeight;
 	private int imgWidth;
 
-	private double height;
-	private double width;
+	private float height;
+	private float width;
 
 	private LevelData levelData;
 	private LevelEntities levelEntities;
 	private LevelObjects levelObjects;
 
-	private double maxLvlOffsetX;
-	private double maxLvlOffsetY;
+	private float maxLvlOffsetX;
+	private float maxLvlOffsetY;
 
 	public Level(LvlBuilderImage img) {
 		this.img = img;
@@ -54,11 +54,11 @@ public class Level {
 		return pm;
 	}
 
-	public double getHeight() {
+	public float getHeight() {
 		return height;
 	}
 
-	public double getWidth() {
+	public float getWidth() {
 		return width;
 	}
 
@@ -82,11 +82,11 @@ public class Level {
 		return levelObjects;
 	}
 
-	public double getMaxLvlOffsetX() {
+	public float getMaxLvlOffsetX() {
 		return maxLvlOffsetX;
 	}
 
-	public double getMaxLvlOffsetY() {
+	public float getMaxLvlOffsetY() {
 		return maxLvlOffsetY;
 	}
 

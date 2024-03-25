@@ -8,13 +8,13 @@ import javafx.scene.paint.Color;
 
 public class ImageUtil {
 
-	public static Image scaleImage(Image originalImage, double scaleFactor) {
+	public static Image scaleImage(Image originalImage, float scaleFactor) {
 		int scaledWidth = (int) (originalImage.getWidth() * scaleFactor);
 		int scaledHeight = (int) (originalImage.getHeight() * scaleFactor);
 		return new Image(originalImage.getUrl(), scaledWidth, scaledHeight, true, true);
 	}
 
-	public static Image darkerBackground(Image originalImage, double factor) {
+	public static Image darkerBackground(Image originalImage, float factor) {
 		int width = (int) originalImage.getWidth();
 		int height = (int) originalImage.getHeight();
 

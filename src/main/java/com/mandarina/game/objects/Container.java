@@ -1,15 +1,15 @@
 package com.mandarina.game.objects;
 
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public class Container extends GameObject {
 
-	public Container(Point2D spawn, int objType) {
+	public Container(Point spawn, int objType) {
 		super(spawn, objType);
 		createHitbox();
 	}
@@ -27,7 +27,7 @@ public class Container extends GameObject {
 			yDrawOffset = AppStage.Scale(5);
 		}
 
-		hitbox = new Rectangle2D(hitbox.getMinX() + xDrawOffset / 2, hitbox.getMinY() + yDrawOffset + AppStage.Scale(2),
+		hitbox = new Box(hitbox.getMinX() + xDrawOffset / 2, hitbox.getMinY() + yDrawOffset + AppStage.Scale(2),
 				hitbox.getWidth(), hitbox.getHeight());
 	}
 

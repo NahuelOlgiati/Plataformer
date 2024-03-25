@@ -3,20 +3,20 @@ package com.mandarina.game.objects;
 import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public class Spike extends GameObject {
 
-	public Spike(Point2D spawn, int objType) {
+	public Spike(Point spawn, int objType) {
 		super(spawn, objType);
 		initHitbox(32, 16);
 		xDrawOffset = 0;
 		yDrawOffset = AppStage.Scale(16);
-		hitbox = new Rectangle2D(x + xDrawOffset, y + yDrawOffset, 32, 16);
+		hitbox = new Box(x + xDrawOffset, y + yDrawOffset, 32, 16);
 	}
 
 	public void draw(GameDrawer g, Offset offset, Image image) {
@@ -35,6 +35,6 @@ public class Spike extends GameObject {
 		initHitbox(32, 16);
 		xDrawOffset = 0;
 		yDrawOffset = AppStage.Scale(16);
-		hitbox = new Rectangle2D(x + xDrawOffset, y + yDrawOffset, 32, 16);
+		hitbox = new Box(x + xDrawOffset, y + yDrawOffset, 32, 16);
 	}
 }

@@ -14,8 +14,8 @@ import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.lvlbuilder.RGB;
 import com.mandarina.lvlbuilder.feature.PNGMetadata;
 import com.mandarina.lvlbuilder.feature.TileFeature;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
@@ -142,7 +142,7 @@ public class LevelData implements LayerDrawer {
 			for (int x = 0; x < this.level.getImgWidth(); x++) {
 				Color c = pixelReader.getColor(x, y);
 				int red = (int) (c.getRed() * 255);
-				addRed(red, new Point2D(x, y), nosolid, layer1, layer2, layer3, layer4);
+				addRed(red, new Point(x, y), nosolid, layer1, layer2, layer3, layer4);
 			}
 		}
 		this.tile.consolidate();
@@ -150,9 +150,9 @@ public class LevelData implements LayerDrawer {
 		this.grass.consolidate();
 	}
 
-	private void addRed(int red, Point2D spawn, List<Pair<Integer, Integer>> nosolid,
-			List<Pair<Integer, Integer>> layer1, List<Pair<Integer, Integer>> layer2,
-			List<Pair<Integer, Integer>> layer3, List<Pair<Integer, Integer>> layer4) {
+	private void addRed(int red, Point spawn, List<Pair<Integer, Integer>> nosolid, List<Pair<Integer, Integer>> layer1,
+			List<Pair<Integer, Integer>> layer2, List<Pair<Integer, Integer>> layer3,
+			List<Pair<Integer, Integer>> layer4) {
 
 		// TODO
 		Pair<Integer, Integer> p = new Pair<>((int) spawn.getX(), (int) spawn.getY());
@@ -189,14 +189,14 @@ public class LevelData implements LayerDrawer {
 		}
 	}
 
-	private void addGrass(int red, Point2D spawn) {
+	private void addGrass(int red, Point spawn) {
 		switch (red) {
 		case 0, 1, 2, 3, 30, 31, 33, 34, 35, 36, 37, 38, 39 ->
 			this.grass.add(new Grass(spawn, getRndGrassType(spawn.getX())));
 		}
 	}
 
-	private int getRndGrassType(double d) {
+	private int getRndGrassType(float d) {
 		return (int) (d % 2);
 	}
 

@@ -14,7 +14,7 @@ public class GameOverOverlay {
 
 	private Playing playing;
 	private Image img;
-	private double imgX, imgY, imgW, imgH;
+	private float imgX, imgY, imgW, imgH;
 	private UrmButton menu, play;
 
 	public GameOverOverlay(Playing playing) {

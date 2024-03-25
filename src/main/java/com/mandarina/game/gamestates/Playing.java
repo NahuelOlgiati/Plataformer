@@ -15,8 +15,8 @@ import com.mandarina.game.ui.StatusBar;
 import com.mandarina.game.ui.UIManager;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Box;
 
-import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -158,15 +158,15 @@ public class Playing {
 		this.gameOver = gameOver;
 	}
 
-	public void checkObjectHit(Rectangle2D attackBox) {
+	public void checkObjectHit(Box attackBox) {
 		objectManager.checkObjectHit(attackBox);
 	}
 
-	public void checkEnemyHit(Rectangle2D attackBox) {
+	public void checkEnemyHit(Box attackBox) {
 		enemyManager.checkEnemyHit(attackBox, PlayerCts.DAMAGE);
 	}
 
-	public void checkPotionTouched(Rectangle2D hitbox) {
+	public void checkPotionTouched(Box hitbox) {
 		objectManager.checkObjectTouched(hitbox);
 	}
 
@@ -195,6 +195,9 @@ public class Playing {
 			case SPACE:
 				player.setJump(true);
 				break;
+			case C:
+//				player.setDuck(true);
+				break;
 			case ESCAPE:
 				paused = !paused;
 				break;
@@ -212,6 +215,9 @@ public class Playing {
 				break;
 			case D:
 				player.setRight(false);
+				break;
+			case C:
+//				player.setDuck(false);
 				break;
 			case SPACE:
 				player.setJump(false);

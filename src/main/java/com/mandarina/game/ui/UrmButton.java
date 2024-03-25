@@ -2,10 +2,10 @@ package com.mandarina.game.ui;
 
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
-import javafx.scene.shape.Rectangle;
 
 public class UrmButton extends PauseButton {
 	private Image[] imgs;
@@ -36,8 +36,8 @@ public class UrmButton extends PauseButton {
 	}
 
 	public void draw(GameDrawer g) {
-		Rectangle b = getBounds();
-		g.drawImage(imgs[index], b.getX(), b.getY(), AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT),
+		Box b = getBounds();
+		g.drawImage(imgs[index], b.getMinX(), b.getMinY(), AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT),
 				AppStage.Scale(URMButtonCts.URM_SIZE_DEFAULT));
 	}
 

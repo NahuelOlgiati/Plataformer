@@ -6,7 +6,6 @@ import static com.mandarina.utilz.PositionUtil.GetEntityMinXNextToWall;
 import static com.mandarina.utilz.PositionUtil.GetEntityMinYNextToPlane;
 import static com.mandarina.utilz.SmallerThanTile.IsEntityInWater;
 import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
-import static com.mandarina.utilz.SmallerThanTile.IsFloor;
 
 import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
@@ -16,9 +15,8 @@ import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public class Player extends Entity {
@@ -27,9 +25,9 @@ public class Player extends Entity {
 	private boolean moving = false, attacking = false;
 	private boolean left, right, jump;
 
-	private double xSpeed;
-	private double jumpSpeed;
-	private double fallSpeedAfterCollision;
+	private float xSpeed;
+	private float jumpSpeed;
+	private float fallSpeedAfterCollision;
 
 	private Playing playing;
 	private PlayerState state;
@@ -37,7 +35,7 @@ public class Player extends Entity {
 	private boolean powerAttackActive;
 	private int powerAttackTick;
 
-	public Player(Point2D spawn) {
+	public Player(Point spawn) {
 		super(spawn, PlayerCts.HEALTH);
 		this.state = PlayerState.IDLE;
 		this.walkDir = DirectionCts.RIGHT;
@@ -77,7 +75,7 @@ public class Player extends Entity {
 
 		if (PlayerState.HIT.equals(state)) {
 			if (aniIndex <= GetSpriteAmount(state) - 3)
-				pushBack(pushBackDir, levelData, 1.25);
+				pushBack(pushBackDir, levelData, 1.25f);
 			updatePushBackDrawOffset();
 		} else
 			updatePos();
@@ -126,8 +124,7 @@ public class Player extends Entity {
 			if (inAir) {
 				if (CanMoveHere(hitbox, 0, ySpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, PlayerCts.HITBOX_VERTICAL_CHECKS,
 						levelData)) {
-					hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + ySpeed, hitbox.getWidth(),
-							hitbox.getHeight());
+					hitbox.setMinY(hitbox.getMinY() + ySpeed);
 					ySpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 				} else {
 					inAir = false;
@@ -182,7 +179,7 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public double flipX() {
+	public float flipX() {
 		if (walkDir == DirectionCts.RIGHT)
 			return 0;
 		else
@@ -210,7 +207,7 @@ public class Player extends Entity {
 					newState(PlayerState.IDLE);
 					ySpeed = 0f;
 					LevelData levelData = playing.getLevelData();
-					if (!IsFloor(hitbox, 0, levelData))
+					if (!IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, levelData))
 						inAir = true;
 				}
 			}
@@ -319,23 +316,22 @@ public class Player extends Entity {
 				PlayerCts.HITBOX_VERTICAL_CHECKS, levelData);
 
 		if (canMoveY && canMoveX) {
-			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY() + ySpeed, hitbox.getWidth(),
-					hitbox.getHeight());
+			hitbox.setMinXY(hitbox.getMinX() + xSpeed, hitbox.getMinY() + ySpeed);
 			ySpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 			return;
 		}
 
+		float minXNextToWall = GetEntityMinXNextToWall(hitbox, xSpeed);
 		if (canMoveY) {
-			hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), hitbox.getMinY() + ySpeed,
-					hitbox.getWidth(), hitbox.getHeight());
+			hitbox.setMinXY(minXNextToWall, hitbox.getMinY() + ySpeed);
 			ySpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 			resetPowerAttack();
 			return;
 		}
 
+		float minYNextToPlane = GetEntityMinYNextToPlane(hitbox, ySpeed);
 		if (canMoveX) {
-			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, GetEntityMinYNextToPlane(hitbox, ySpeed),
-					hitbox.getWidth(), hitbox.getHeight());
+			hitbox.setMinXY(hitbox.getMinX() + xSpeed, minYNextToPlane);
 			if (ySpeed > 0 || IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, levelData)) {
 				resetInAir();
 			} else {
@@ -344,8 +340,7 @@ public class Player extends Entity {
 			return;
 		}
 
-		hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), GetEntityMinYNextToPlane(hitbox, ySpeed),
-				hitbox.getWidth(), hitbox.getHeight());
+		hitbox.setMinXY(GetEntityMinXNextToWall(hitbox, xSpeed, true), GetEntityMinYNextToPlane(hitbox, ySpeed, true));
 		if (ySpeed > 0 || IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, levelData)) {
 			resetInAir();
 		} else {
@@ -358,11 +353,9 @@ public class Player extends Entity {
 		LevelData levelData = playing.getLevelData();
 		if (CanMoveHere(hitbox, xSpeed, 0, PlayerCts.HITBOX_HORIZONTAL_CHECKS, PlayerCts.HITBOX_VERTICAL_CHECKS,
 				levelData)) {
-			hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(),
-					hitbox.getHeight());
+			hitbox.setMinX(hitbox.getMinX() + xSpeed);
 		} else {
-			hitbox = new Rectangle2D(GetEntityMinXNextToWall(hitbox, xSpeed), hitbox.getMinY(), hitbox.getWidth(),
-					hitbox.getHeight());
+			hitbox.setMinX(GetEntityMinXNextToWall(hitbox, xSpeed));
 			resetPowerAttack();
 		}
 	}
@@ -490,7 +483,7 @@ public class Player extends Entity {
 		aniIndex = 0;
 	}
 
-	public double getMaxHealth() {
+	public float getMaxHealth() {
 		return maxHealth;
 	}
 

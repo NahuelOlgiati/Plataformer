@@ -139,11 +139,11 @@ public class AppStage {
 		return previusTileSize;
 	}
 
-	public static int GetTilesIn(double value) {
+	public static int GetTilesIn(float value) {
 		return (int) (value / AppStage.GetTileSize());
 	}
 
-	public static int[] GetTilesIn(double min, double size) {
+	public static int[] GetTilesIn(float min, float size) {
 		int startTile = GetTilesIn(min);
 		int endTile = GetTilesIn(min + size);
 		int[] tiles = new int[endTile - startTile + 1];
@@ -161,7 +161,11 @@ public class AppStage {
 		return (int) (value * gameScale);
 	}
 
-	public static double Scale(double value) {
+	public static float Scale(double value) {
+		return (float) (value * gameScale);
+	}
+
+	public static float Scale(float value) {
 		return value * gameScale;
 	}
 

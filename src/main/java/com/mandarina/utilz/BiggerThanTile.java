@@ -5,17 +5,15 @@ import static com.mandarina.utilz.SmallerThanTile.IsSolid;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.main.AppStage;
 
-import javafx.geometry.Rectangle2D;
-
 public class BiggerThanTile {
 
-	public static boolean CanMoveHere(Rectangle2D hitbox, double xSpeed, double ySpeed, int hChecks, int vChecks,
+	public static boolean CanMoveHere(Box hitbox, float xSpeed, float ySpeed, int hChecks, int vChecks,
 			LevelData levelData) {
-		double minXWithSpeed = hitbox.getMinX() + xSpeed;
-		double minYWithSpeed = hitbox.getMinY() + ySpeed;
+		float minXWithSpeed = hitbox.getMinX() + xSpeed;
+		float minYWithSpeed = hitbox.getMinY() + ySpeed;
 		if (!IsSolid(minXWithSpeed, minYWithSpeed, levelData)) {
-			double maxXWithSpeed = hitbox.getMaxX() + xSpeed;
-			double maxYWithSpeed = hitbox.getMaxY() + ySpeed;
+			float maxXWithSpeed = hitbox.getMaxX() + xSpeed;
+			float maxYWithSpeed = hitbox.getMaxY() + ySpeed;
 			if (!IsSolid(maxXWithSpeed, maxYWithSpeed, levelData))
 				if (!IsSolid(maxXWithSpeed, minYWithSpeed, levelData))
 					if (!IsSolid(minXWithSpeed, maxYWithSpeed, levelData)) {
@@ -52,11 +50,11 @@ public class BiggerThanTile {
 		return false;
 	}
 
-	public static boolean CanMoveDown(Rectangle2D hitbox, double xSpeed, double ySpeed, int hChecks,
+	public static boolean CanMoveDown(Box hitbox, float xSpeed, float ySpeed, int hChecks,
 			LevelData levelData) {
-		double minXWithSpeed = hitbox.getMinX() + xSpeed;
-		double maxXWithSpeed = hitbox.getMaxX() + xSpeed;
-		double maxYWithSpeed = hitbox.getMaxY() + ySpeed;
+		float minXWithSpeed = hitbox.getMinX() + xSpeed;
+		float maxXWithSpeed = hitbox.getMaxX() + xSpeed;
+		float maxYWithSpeed = hitbox.getMaxY() + ySpeed;
 		if (!IsSolid(maxXWithSpeed, maxYWithSpeed, levelData))
 			if (!IsSolid(minXWithSpeed, maxYWithSpeed, levelData)) {
 				if (xSpeed == 0 && ySpeed == 0) {
@@ -67,20 +65,20 @@ public class BiggerThanTile {
 					return true;
 				}
 
-				double tileSize = AppStage.GetTileSize();
+				float tileSize = AppStage.GetTileSize();
 				if (ySpeed > 0) {
 					return CanMoveHereHorizontally(minXWithSpeed, maxYWithSpeed, hChecks, tileSize, levelData);
 				} else {
-					double minYWithSpeed = hitbox.getMinY() + ySpeed;
+					float minYWithSpeed = hitbox.getMinY() + ySpeed;
 					return CanMoveHereHorizontally(minXWithSpeed, minYWithSpeed, hChecks, tileSize, levelData);
 				}
 			}
 		return false;
 	}
 
-	private static boolean CanMoveHereVertically(double x, double y, int checks, double tileSize, LevelData levelData) {
+	private static boolean CanMoveHereVertically(float x, float y, int checks, float tileSize, LevelData levelData) {
 		for (int i = 1; i <= checks; i++) {
-			double deltaY = i * tileSize;
+			float deltaY = i * tileSize;
 			if (IsSolid(x, y + deltaY, levelData)) {
 				return false;
 			}
@@ -88,10 +86,10 @@ public class BiggerThanTile {
 		return true;
 	}
 
-	private static boolean CanMoveHereHorizontally(double x, double y, int checks, double tileSize,
+	private static boolean CanMoveHereHorizontally(float x, float y, int checks, float tileSize,
 			LevelData levelData) {
 		for (int i = 1; i <= checks; i++) {
-			double deltaX = i * tileSize;
+			float deltaX = i * tileSize;
 			if (IsSolid(x + deltaX, y, levelData)) {
 				return false;
 			}
@@ -99,7 +97,7 @@ public class BiggerThanTile {
 		return true;
 	}
 
-	public static boolean IsFloor(Rectangle2D hitbox, double xSpeed, int hChecks, LevelData levelData) {
+	public static boolean IsFloor(Box hitbox, float xSpeed, int hChecks, LevelData levelData) {
 		return !CanMoveDown(hitbox, xSpeed, AppStage.getGameScale(), hChecks, levelData);
 	}
 }

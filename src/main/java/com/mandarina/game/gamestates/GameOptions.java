@@ -14,7 +14,7 @@ import javafx.scene.input.MouseEvent;
 public class GameOptions {
 
 	private Image backgroundImg, optionsBackgroundImg;
-	private double bgX, bgY, bgW, bgH;
+	private float bgX, bgY, bgW, bgH;
 	private UrmButton menuB;
 
 	private Game game;

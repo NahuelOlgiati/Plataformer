@@ -13,9 +13,8 @@ import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public abstract class Enemy extends Entity {
@@ -24,9 +23,9 @@ public abstract class Enemy extends Entity {
 	protected int enemyType;
 	protected boolean active = true;
 
-	protected double attackDistance;
+	protected float attackDistance;
 
-	public Enemy(Point2D spawn, int health, int enemyType) {
+	public Enemy(Point spawn, int health, int enemyType) {
 		super(spawn, health);
 		this.enemyType = enemyType;
 		this.state = EnemyState.IDLE;
@@ -66,19 +65,17 @@ public abstract class Enemy extends Entity {
 	protected void updateInAir(LevelData levelData) {
 		if (CanMoveHere(hitbox.getMinX(), hitbox.getMinY() + ySpeed, hitbox.getWidth(), hitbox.getHeight(),
 				levelData)) {
-			hitbox = new Rectangle2D(hitbox.getMinX(), hitbox.getMinY() + ySpeed, hitbox.getWidth(),
-					hitbox.getHeight());
+			hitbox.setMinY(hitbox.getMinY() + ySpeed);
 			ySpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 		} else {
 			inAir = false;
-			hitbox = new Rectangle2D(hitbox.getMinX(), GetEntityMinYNextToPlane(hitbox, ySpeed), hitbox.getWidth(),
-					hitbox.getHeight());
+			hitbox.setMinY(GetEntityMinYNextToPlane(hitbox, ySpeed));
 			updateTileY();
 		}
 	}
 
 	protected void move(LevelData levelData) {
-		double xSpeed = 0;
+		float xSpeed = 0;
 
 		if (walkDir == DirectionCts.LEFT)
 			xSpeed = -walkSpeed;
@@ -87,8 +84,7 @@ public abstract class Enemy extends Entity {
 
 		if (CanMoveHere(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight(), levelData))
 			if (IsFloor(hitbox, xSpeed, levelData)) {
-				hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed, hitbox.getMinY(), hitbox.getWidth(),
-						hitbox.getHeight());
+				hitbox.setMinX(hitbox.getMinX() + xSpeed);
 				return;
 			}
 
@@ -181,6 +177,6 @@ public abstract class Enemy extends Entity {
 	@Override
 	public void scale() {
 		super.scale();
-		walkSpeed = AppStage.Scale(0.35);
+		walkSpeed = AppStage.Scale(0.35f);
 	}
 }

@@ -11,11 +11,11 @@ import javafx.scene.paint.Color;
 
 public class GameDrawer {
 
-	private double widthDefault, heightDefault;
+	private float widthDefault, heightDefault;
 	private Canvas canvas;
 	private GraphicsContext ctx;
 
-	public GameDrawer(double widthDefault, double heightDefault) {
+	public GameDrawer(float widthDefault, float heightDefault) {
 		this.widthDefault = widthDefault;
 		this.heightDefault = heightDefault;
 		this.canvas = new Canvas(AppStage.Scale(widthDefault), AppStage.Scale(heightDefault));
@@ -26,7 +26,7 @@ public class GameDrawer {
 		root.getChildren().addAll(canvas);
 	}
 
-	public void drawImage(Image img, double x, double y, double w, double h) {
+	public void drawImage(Image img, float x, float y, float w, float h) {
 		ctx.drawImage(img, x, y, w, h);
 	}
 
@@ -34,7 +34,7 @@ public class GameDrawer {
 		ctx.setStroke(c);
 	}
 
-	public void strokeRect(double x, double y, double w, double h) {
+	public void strokeRect(float x, float y, float w, float h) {
 		ctx.strokeRect(x, y, w, h);
 	}
 
@@ -42,11 +42,11 @@ public class GameDrawer {
 		ctx.setFill(c);
 	}
 
-	public void fillRect(double x, double y, double w, double h) {
+	public void fillRect(float x, float y, float w, float h) {
 		ctx.fillRect(x, y, w, h);
 	}
 
-	public void setLineWidth(double w) {
+	public void setLineWidth(float w) {
 		ctx.setLineWidth(w);
 	}
 

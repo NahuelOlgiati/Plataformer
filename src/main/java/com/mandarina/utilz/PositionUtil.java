@@ -2,47 +2,53 @@ package com.mandarina.utilz;
 
 import com.mandarina.main.AppStage;
 
-import javafx.geometry.Rectangle2D;
-
 public class PositionUtil {
 
-	public static double GetEntityMinXNextToWall(Rectangle2D hitbox, double xSpeed) {
+	public static float GetEntityMinXNextToWall(Box hitbox, float xSpeed) {
+		return GetEntityMinXNextToWall(hitbox, xSpeed, false);
+	}
+
+	public static float GetEntityMinXNextToWall(Box hitbox, float xSpeed, boolean aprox) {
 		if (xSpeed > 0) {
 			// Right
-			return GetEntityMinXNextRightWall(hitbox);
+			return GetEntityMinXNextRightWall(hitbox, aprox);
 		} else {
 			// Left
-			return GetEntityMinXNextLeftWall(hitbox);
+			return GetEntityMinXNextLeftWall(hitbox, aprox);
 		}
 	}
 
-	private static double GetEntityMinXNextRightWall(Rectangle2D hitbox) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMaxX()) + 1;
-		return currentTile * AppStage.GetTileSize() - hitbox.getWidth() - 1;
+	private static float GetEntityMinXNextRightWall(Box hitbox, boolean aprox) {
+		int currentTile = AppStage.GetTilesIn(aprox ? hitbox.getMinX() + hitbox.getWidth() / 2 : hitbox.getMaxX());
+		return (currentTile + 1) * AppStage.GetTileSize() - hitbox.getWidth() - 1;
 	}
 
-	private static double GetEntityMinXNextLeftWall(Rectangle2D hitbox) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMinX());
+	private static float GetEntityMinXNextLeftWall(Box hitbox, boolean aprox) {
+		int currentTile = AppStage.GetTilesIn(aprox ? hitbox.getMinX() + hitbox.getWidth() / 2 : hitbox.getMinX());
 		return currentTile * AppStage.GetTileSize() + 1;
 	}
 
-	public static double GetEntityMinYNextToPlane(Rectangle2D hitbox, double ySpeed) {
+	public static float GetEntityMinYNextToPlane(Box hitbox, float ySpeed) {
+		return GetEntityMinYNextToPlane(hitbox, ySpeed, false);
+	}
+
+	public static float GetEntityMinYNextToPlane(Box hitbox, float ySpeed, boolean aprox) {
 		if (ySpeed > 0) {
 			// Falling
-			return GetEntityMinYAboveFloor(hitbox);
+			return GetEntityMinYAboveFloor(hitbox, aprox);
 		} else {
 			// Jumping
-			return GetEntityMinYUnderRoof(hitbox);
+			return GetEntityMinYUnderRoof(hitbox, aprox);
 		}
 	}
 
-	private static double GetEntityMinYUnderRoof(Rectangle2D hitbox) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMinY());
+	private static float GetEntityMinYUnderRoof(Box hitbox, boolean aprox) {
+		int currentTile = AppStage.GetTilesIn(aprox ? hitbox.getMinY() + hitbox.getHeight() / 2 : hitbox.getMinY());
 		return currentTile * AppStage.GetTileSize() + 1;
 	}
 
-	private static double GetEntityMinYAboveFloor(Rectangle2D hitbox) {
-		int currentTile = AppStage.GetTilesIn(hitbox.getMaxY()) + 1;
-		return currentTile * AppStage.GetTileSize() - hitbox.getHeight() - 1;
+	private static float GetEntityMinYAboveFloor(Box hitbox, boolean aprox) {
+		int currentTile = AppStage.GetTilesIn(aprox ? hitbox.getMinY() + hitbox.getHeight() / 2 : hitbox.getMaxY());
+		return (currentTile + 1) * AppStage.GetTileSize() - hitbox.getHeight() - 1;
 	}
 }

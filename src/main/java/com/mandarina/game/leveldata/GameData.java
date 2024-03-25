@@ -2,14 +2,14 @@ package com.mandarina.game.leveldata;
 
 import com.mandarina.main.AppStage;
 
-import javafx.geometry.Point2D;
+import com.mandarina.utilz.Point;
 
 public class GameData {
 
-	protected Point2D spawn;
-	protected double x, y;
+	protected Point spawn;
+	protected float x, y;
 
-	public GameData(Point2D spawn) {
+	public GameData(Point spawn) {
 		this.spawn = spawn;
 		init();
 	}
@@ -19,7 +19,7 @@ public class GameData {
 		this.y = spawn.getY() * AppStage.GetTileSize();
 	}
 
-	public Point2D getSpawn() {
+	public Point getSpawn() {
 		return spawn;
 	}
 

@@ -7,15 +7,15 @@ import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
+import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
+import com.mandarina.utilz.Point;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public class Titan extends Enemy {
 
-	public Titan(Point2D spawn) {
+	public Titan(Point spawn) {
 		super(spawn, TitanCts.HEALTH, EntityCts.TITAN);
 		initTitan();
 	}
@@ -72,7 +72,7 @@ public class Titan extends Enemy {
 				break;
 			case HIT:
 				if (aniIndex <= getSpriteAmount(state) - 2)
-					pushBack(pushBackDir, levelData, 0.5);
+					pushBack(pushBackDir, levelData, 0.5f);
 				updatePushBackDrawOffset();
 				break;
 			}
@@ -100,7 +100,7 @@ public class Titan extends Enemy {
 		return distance <= attackDistance * 2;
 	}
 
-	private void checkPlayerHit(Rectangle2D attackBox, Player player) {
+	private void checkPlayerHit(Box attackBox, Player player) {
 		if (attackBox.intersects(player.getHitbox()))
 			player.changeHealth(-TitanCts.DAMAGE, this);
 		else {
@@ -116,8 +116,7 @@ public class Titan extends Enemy {
 		if (CanMoveHere(hitbox, xSpeed * 4, ySpeed, TitanCts.HITBOX_HORIZONTAL_CHECKS, TitanCts.HITBOX_VERTICAL_CHECKS,
 				levelData)) {
 			if (IsFloor(hitbox, xSpeed * 4, TitanCts.HITBOX_VERTICAL_CHECKS, levelData)) {
-				hitbox = new Rectangle2D(hitbox.getMinX() + xSpeed * 4, hitbox.getMinY(), hitbox.getWidth(),
-						hitbox.getHeight());
+				hitbox.setMinX(hitbox.getMinX() + xSpeed * 4);
 				return;
 			}
 		}
