@@ -196,7 +196,7 @@ public class Playing {
 				player.setJump(true);
 				break;
 			case C:
-//				player.setDuck(true);
+				player.setDuck(true);
 				break;
 			case ESCAPE:
 				paused = !paused;
@@ -217,7 +217,7 @@ public class Playing {
 				player.setRight(false);
 				break;
 			case C:
-//				player.setDuck(false);
+				player.setDuck(false);
 				break;
 			case SPACE:
 				player.setJump(false);

@@ -13,6 +13,8 @@ public class PlayerCts {
 
 	public static final int HITBOX_WIDTH = 24;
 	public static final int HITBOX_HEIGHT = 38;
+	public static final int HITBOX_DUCK_HEIGHT = 24;
+	public static final int HITBOX_DIFF_HEIGHT = HITBOX_HEIGHT - HITBOX_DUCK_HEIGHT;
 	public static final int HITBOX_HORIZONTAL_CHECKS = HITBOX_WIDTH / GameCts.TILES_DEFAULT_SIZE;
 	public static final int HITBOX_VERTICAL_CHECKS = HITBOX_HEIGHT / GameCts.TILES_DEFAULT_SIZE;
 

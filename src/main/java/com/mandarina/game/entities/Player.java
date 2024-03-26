@@ -14,6 +14,7 @@ import com.mandarina.game.main.GameAudio;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
 import com.mandarina.utilz.Point;
 
@@ -23,7 +24,7 @@ public class Player extends Entity {
 
 	private Image[][] animations;
 	private boolean moving = false, attacking = false;
-	private boolean left, right, jump;
+	private boolean left, right, jump, duck, tryStandUp;
 
 	private float xSpeed;
 	private float jumpSpeed;
@@ -34,6 +35,9 @@ public class Player extends Entity {
 
 	private boolean powerAttackActive;
 	private int powerAttackTick;
+
+	private float duckHeight;
+	private float diffHeight;
 
 	public Player(Point spawn) {
 		super(spawn, PlayerCts.HEALTH);
@@ -51,6 +55,8 @@ public class Player extends Entity {
 		initHitbox(PlayerCts.HITBOX_WIDTH, PlayerCts.HITBOX_HEIGHT);
 		initAttackBox(PlayerCts.ATTACKBOX_WIDTH, PlayerCts.ATTACKBOX_HEIGHT, PlayerCts.ATTACKBOX_OFFSET_X,
 				PlayerCts.ATTACKBOX_OFFSET_Y);
+		this.duckHeight = AppStage.Scale(PlayerCts.HITBOX_DUCK_HEIGHT);
+		this.diffHeight = AppStage.Scale(PlayerCts.HITBOX_DIFF_HEIGHT);
 	}
 
 	public void setPlaying(Playing playing) {
@@ -122,8 +128,7 @@ public class Player extends Entity {
 
 			// Fall if in air
 			if (inAir) {
-				if (CanMoveHere(hitbox, 0, ySpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, PlayerCts.HITBOX_VERTICAL_CHECKS,
-						levelData)) {
+				if (CanMoveHere(hitbox, 0, ySpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, getvCheck(), levelData)) {
 					hitbox.setMinY(hitbox.getMinY() + ySpeed);
 					ySpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
 				} else {
@@ -225,6 +230,15 @@ public class Player extends Entity {
 		else
 			state = PlayerState.IDLE;
 
+		if (duck) {
+			state = PlayerState.DUCK;
+			if (!moving) {
+				aniIndex = 1;
+				aniTick = 0;
+			}
+			return;
+		}
+
 		if (inAir) {
 			if (ySpeed < 0)
 				state = PlayerState.JUMP;
@@ -247,6 +261,7 @@ public class Player extends Entity {
 				return;
 			}
 		}
+
 		if (!state.equals(startAni)) {
 			resetAniTick();
 		}
@@ -271,6 +286,15 @@ public class Player extends Entity {
 		updateXSpeed();
 
 		LevelData levelData = playing.getLevelData();
+		if (tryStandUp) {
+			Box clone = getDuckHitbox();
+			if (CanMoveHere(clone, xSpeed, ySpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, getvCheck(), levelData)) {
+				hitbox = clone;
+				this.tryStandUp = false;
+				this.duck = false;
+			}
+		}
+
 		if (!inAir)
 			if (!IsEntityOnFloor(hitbox, levelData))
 				inAir = true;
@@ -306,14 +330,13 @@ public class Player extends Entity {
 
 			xSpeed *= 3;
 		}
+		System.out.println(xSpeed);
 	}
 
 	private void updatePosOnAir() {
 		LevelData levelData = playing.getLevelData();
-		boolean canMoveY = CanMoveHere(hitbox, 0, ySpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS,
-				PlayerCts.HITBOX_VERTICAL_CHECKS, levelData);
-		boolean canMoveX = CanMoveHere(hitbox, xSpeed, 0, PlayerCts.HITBOX_HORIZONTAL_CHECKS,
-				PlayerCts.HITBOX_VERTICAL_CHECKS, levelData);
+		boolean canMoveY = CanMoveHere(hitbox, 0, ySpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, getvCheck(), levelData);
+		boolean canMoveX = CanMoveHere(hitbox, xSpeed, 0, PlayerCts.HITBOX_HORIZONTAL_CHECKS, getvCheck(), levelData);
 
 		if (canMoveY && canMoveX) {
 			hitbox.setMinXY(hitbox.getMinX() + xSpeed, hitbox.getMinY() + ySpeed);
@@ -351,13 +374,18 @@ public class Player extends Entity {
 
 	private void updateXPos() {
 		LevelData levelData = playing.getLevelData();
-		if (CanMoveHere(hitbox, xSpeed, 0, PlayerCts.HITBOX_HORIZONTAL_CHECKS, PlayerCts.HITBOX_VERTICAL_CHECKS,
-				levelData)) {
+		if (CanMoveHere(hitbox, xSpeed, 0, PlayerCts.HITBOX_HORIZONTAL_CHECKS, getvCheck(), levelData)) {
 			hitbox.setMinX(hitbox.getMinX() + xSpeed);
 		} else {
-			hitbox.setMinX(GetEntityMinXNextToWall(hitbox, xSpeed));
+			hitbox.setMinX(GetEntityMinXNextToWall(hitbox, xSpeed, true));
+			System.out.println(
+					CanMoveHere(hitbox, xSpeed, 0, PlayerCts.HITBOX_HORIZONTAL_CHECKS, getvCheck(), levelData));
 			resetPowerAttack();
 		}
+	}
+
+	public int getvCheck() {
+		return duck ? 0 : PlayerCts.HITBOX_VERTICAL_CHECKS;
 	}
 
 	private void jump() {
@@ -439,6 +467,33 @@ public class Player extends Entity {
 		this.jump = jump;
 	}
 
+	public boolean isDuck() {
+		return duck;
+	}
+
+	public void setDuck(boolean duck) {
+		if (duck && duck != this.duck) {
+			hitbox.set(hitbox.getMinX(), hitbox.getMinY() + diffHeight, hitbox.getWidth(), duckHeight);
+			this.duck = duck;
+		}
+		if (!duck && duck != this.duck) {
+			LevelData levelData = playing.getLevelData();
+			Box clone = getDuckHitbox();
+			if (CanMoveHere(clone, xSpeed, ySpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, getvCheck(), levelData)) {
+				hitbox = clone;
+				this.duck = duck;
+			} else {
+				this.tryStandUp = true;
+			}
+		}
+	}
+
+	private Box getDuckHitbox() {
+		Box clone = hitbox.clone();
+		clone.set(hitbox.getMinX(), hitbox.getMinY() - diffHeight, hitbox.getWidth(), hitboxHeight);
+		return clone;
+	}
+
 	public void resetAll() {
 		resetDirBooleans();
 		inAir = true;
@@ -502,6 +557,8 @@ public class Player extends Entity {
 		case ATTACK:
 			return 4; // TODO
 		case FALLING:
+			return 4;
+		case DUCK:
 			return 4;
 		default:
 			return 1;
