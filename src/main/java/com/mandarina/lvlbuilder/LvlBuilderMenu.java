@@ -13,6 +13,7 @@ import com.mandarina.lvlbuilder.feature.PNGMetadata;
 import com.mandarina.lvlbuilder.feature.PNGMetadataUtil;
 import com.mandarina.lvlbuilder.feature.TileFeature;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Point;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -41,7 +42,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 public class LvlBuilderMenu {
 
@@ -158,7 +158,7 @@ public class LvlBuilderMenu {
 				int green = (int) (c.getGreen() * 255);
 				int blue = (int) (c.getBlue() * 255);
 
-				Pair<Integer, Integer> coords = new Pair<Integer, Integer>(x, y);
+				Point coords = new Point(x, y);
 				loadManePane(coords, lvlBuilder.getRedMainPane(), RGB.RED, red);
 				loadManePane(coords, lvlBuilder.getGreenMainPane(), RGB.GREEN, green);
 				loadManePane(coords, lvlBuilder.getBlueMainPane(), RGB.BLUE, blue);
@@ -175,7 +175,7 @@ public class LvlBuilderMenu {
 		loadManePaneMetadata(lvlBuilder.getBlueMainPane(), RGB.BLUE, pm);
 	}
 
-	private void loadManePane(Pair<Integer, Integer> coords, VBox mainPane, RGB rgb, int value) {
+	private void loadManePane(Point coords, VBox mainPane, RGB rgb, int value) {
 		AnchorPane square = LvlBuilderUtil.getSquare(coords, mainPane);
 		square.getChildren().clear();
 		if (value != GameCts.EMPTY_TILE_VALUE) {
@@ -230,7 +230,7 @@ public class LvlBuilderMenu {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		for (int y = 0; y < lvlBuilder.getMainPaneY(); y++) {
 			for (int x = 0; x < lvlBuilder.getMainPaneX(); x++) {
-				Pair<Integer, Integer> coords = new Pair<>(x, y);
+				Point coords = new Point(x, y);
 				int redValue = getRGBValue(coords, lvlBuilder.getRedMainPane());
 				int greenValue = getRGBValue(coords, lvlBuilder.getGreenMainPane());
 				int blueValue = getRGBValue(coords, lvlBuilder.getBlueMainPane());
@@ -242,7 +242,7 @@ public class LvlBuilderMenu {
 		return canvas;
 	}
 
-	private int getRGBValue(Pair<Integer, Integer> coords, VBox mainPane) {
+	private int getRGBValue(Point coords, VBox mainPane) {
 		int rgbValue = GameCts.EMPTY_TILE_VALUE;
 		ImageView iv = LvlBuilderUtil.getImageView(coords, mainPane);
 		if (iv != null) {

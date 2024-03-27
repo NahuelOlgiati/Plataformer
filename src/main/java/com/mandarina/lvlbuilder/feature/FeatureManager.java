@@ -1,15 +1,15 @@
 package com.mandarina.lvlbuilder.feature;
 
 import com.mandarina.lvlbuilder.RGB;
+import com.mandarina.utilz.Point;
 
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
 
 public interface FeatureManager<T> {
 
 	public TileFeature getTileFeature();
 
-	public void applyTo(Pair<Integer, Integer> coord, PNGMetadata pm, RGB rgb, VBox pane);
+	public void applyTo(Point coord, PNGMetadata pm, RGB rgb, VBox pane);
 
 	public void applyFrom(PNGMetadata pm, RGB rgb, VBox pane);
 
@@ -19,5 +19,5 @@ public interface FeatureManager<T> {
 
 	public String toString(PNGMetadata pm, RGB rgb);
 
-	public void add(PNGMetadata pm, RGB rgb, Pair<Integer, Integer> coord);
+	public void add(PNGMetadata pm, RGB rgb, Point coord);
 }

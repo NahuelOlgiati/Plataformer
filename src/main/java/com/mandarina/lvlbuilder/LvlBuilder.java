@@ -7,6 +7,7 @@ import java.util.Set;
 import com.mandarina.lvlbuilder.feature.PNGMetadata;
 import com.mandarina.lvlbuilder.feature.TileFeature;
 import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Point;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -24,7 +25,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Pair;
 
 public class LvlBuilder {
 
@@ -267,7 +267,7 @@ public class LvlBuilder {
 			LvlBuilderImage vi = (LvlBuilderImage) iv.getImage();
 			if (vi != null) {
 				this.selectedTiles = this.selectedTiles == null ? new HashSet<SelectedTile>() : this.selectedTiles;
-				Pair<Integer, Integer> coords = LvlBuilderUtil.getCoords(event);
+				Point coords = LvlBuilderUtil.getCoords(event);
 				SelectedTile st = new SelectedTile(iv, rgb, coords);
 				this.selectedTiles.add(st);
 				AnchorPane square = LvlBuilderUtil.getSquare(coords, pane);

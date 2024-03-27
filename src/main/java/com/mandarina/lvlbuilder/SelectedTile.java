@@ -2,16 +2,17 @@ package com.mandarina.lvlbuilder;
 
 import java.util.Objects;
 
+import com.mandarina.utilz.Point;
+
 import javafx.scene.image.ImageView;
-import javafx.util.Pair;
 
 public class SelectedTile {
 
 	private ImageView imageView;
 	private RGB rgb;
-	private Pair<Integer, Integer> coords;
+	private Point coords;
 
-	public SelectedTile(ImageView imageView, RGB rgb, Pair<Integer, Integer> coords) {
+	public SelectedTile(ImageView imageView, RGB rgb, Point coords) {
 		this.imageView = imageView;
 		this.rgb = rgb;
 		this.coords = coords;
@@ -25,7 +26,7 @@ public class SelectedTile {
 		return rgb;
 	}
 
-	public Pair<Integer, Integer> getCoords() {
+	public Point getCoords() {
 		return coords;
 	}
 

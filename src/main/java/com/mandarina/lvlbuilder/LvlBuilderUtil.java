@@ -1,5 +1,7 @@
 package com.mandarina.lvlbuilder;
 
+import com.mandarina.utilz.Point;
+
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
@@ -11,7 +13,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
 
 public class LvlBuilderUtil {
 
@@ -36,7 +37,7 @@ public class LvlBuilderUtil {
 		to.setVvalue(from.getVvalue());
 	}
 
-	public static ImageView getImageView(Pair<Integer, Integer> coords, VBox pane) {
+	public static ImageView getImageView(Point coords, VBox pane) {
 		AnchorPane square = getSquare(coords, pane);
 		return getImageView(square);
 	}
@@ -51,33 +52,33 @@ public class LvlBuilderUtil {
 		return getImageView(square);
 	}
 
-	public static AnchorPane getSquare(Pair<Integer, Integer> coords, VBox pane) {
-		HBox row = (HBox) pane.getChildren().get(coords.getValue());
-		return (AnchorPane) row.getChildren().get(coords.getKey());
+	public static AnchorPane getSquare(Point coords, VBox pane) {
+		HBox row = (HBox) pane.getChildren().get(coords.getY());
+		return (AnchorPane) row.getChildren().get(coords.getX());
 	}
 
 	public static AnchorPane getSquare(MouseEvent event, VBox pane) {
-		Pair<Integer, Integer> coords = getCoords(event);
-		HBox row = (HBox) pane.getChildren().get(coords.getValue());
-		return (AnchorPane) row.getChildren().get(coords.getKey());
+		Point coords = getCoords(event);
+		HBox row = (HBox) pane.getChildren().get(coords.getY());
+		return (AnchorPane) row.getChildren().get(coords.getX());
 	}
 
 	public static AnchorPane getSquare(MouseEvent event, VBox pane, Integer gap) {
-		Pair<Integer, Integer> coords = getCoords(event, gap);
-		HBox row = (HBox) pane.getChildren().get(coords.getValue());
-		return (AnchorPane) row.getChildren().get(coords.getKey());
+		Point coords = getCoords(event, gap);
+		HBox row = (HBox) pane.getChildren().get(coords.getY());
+		return (AnchorPane) row.getChildren().get(coords.getX());
 	}
 
-	public static Pair<Integer, Integer> getCoords(MouseEvent event) {
+	public static Point getCoords(MouseEvent event) {
 		int colIndex = (int) (event.getX() / LvlBuilderCts.TILE_WIDTH);
 		int rowIndex = (int) (event.getY() / LvlBuilderCts.TILE_HEIGHT);
-		return new Pair<Integer, Integer>(colIndex, rowIndex);
+		return new Point(colIndex, rowIndex);
 	}
 
-	public static Pair<Integer, Integer> getCoords(MouseEvent event, Integer gap) {
+	public static Point getCoords(MouseEvent event, Integer gap) {
 		int colIndex = (int) (event.getX() / (LvlBuilderCts.TILE_WIDTH + gap));
 		int rowIndex = (int) (event.getY() / (LvlBuilderCts.TILE_HEIGHT + gap));
-		return new Pair<Integer, Integer>(colIndex, rowIndex);
+		return new Point(colIndex, rowIndex);
 	}
 
 	public static AnchorPane newSelectableVBox(ImageView imageView) {

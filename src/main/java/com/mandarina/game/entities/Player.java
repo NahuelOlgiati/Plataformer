@@ -330,7 +330,6 @@ public class Player extends Entity {
 
 			xSpeed *= 3;
 		}
-		System.out.println(xSpeed);
 	}
 
 	private void updatePosOnAir() {
@@ -378,8 +377,6 @@ public class Player extends Entity {
 			hitbox.setMinX(hitbox.getMinX() + xSpeed);
 		} else {
 			hitbox.setMinX(GetEntityMinXNextToWall(hitbox, xSpeed, true));
-			System.out.println(
-					CanMoveHere(hitbox, xSpeed, 0, PlayerCts.HITBOX_HORIZONTAL_CHECKS, getvCheck(), levelData));
 			resetPowerAttack();
 		}
 	}

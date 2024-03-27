@@ -5,15 +5,15 @@ import java.util.List;
 import com.mandarina.lvlbuilder.LvlBuilderUtil;
 import com.mandarina.lvlbuilder.RGB;
 import com.mandarina.utilz.LoadSave;
+import com.mandarina.utilz.Point;
 
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
 
-public class NosolidFeatureManager implements FeatureManager<List<Pair<Integer, Integer>>> {
+public class NosolidFeatureManager implements FeatureManager<List<Point>> {
 
 	@Override
 	public TileFeature getTileFeature() {
@@ -21,7 +21,7 @@ public class NosolidFeatureManager implements FeatureManager<List<Pair<Integer, 
 	}
 
 	@Override
-	public void applyTo(Pair<Integer, Integer> coord, PNGMetadata pm, RGB rgb, VBox pane) {
+	public void applyTo(Point coord, PNGMetadata pm, RGB rgb, VBox pane) {
 		if (isApplicable()) {
 			apply(pm, rgb, coord, pane);
 		}
@@ -33,9 +33,9 @@ public class NosolidFeatureManager implements FeatureManager<List<Pair<Integer, 
 
 	@Override
 	public void applyFrom(PNGMetadata pm, RGB rgb, VBox pane) {
-		List<Pair<Integer, Integer>> values = get(pm, rgb);
+		List<Point> values = get(pm, rgb);
 		if (values != null) {
-			for (Pair<Integer, Integer> coord : values) {
+			for (Point coord : values) {
 				ImageView iv = LvlBuilderUtil.getImageView(coord, pane);
 				if (iv != null) {
 					applyTo(coord, null, rgb, pane);
@@ -45,26 +45,26 @@ public class NosolidFeatureManager implements FeatureManager<List<Pair<Integer, 
 	}
 
 	@Override
-	public List<Pair<Integer, Integer>> get(PNGMetadata pm, RGB rgb) {
-		return PairListMetadata.get(pm, rgb, getTileFeature().getKeyCode());
+	public List<Point> get(PNGMetadata pm, RGB rgb) {
+		return PointListMetadata.get(pm, rgb, getTileFeature().getKeyCode());
 	}
 
 	@Override
-	public List<Pair<Integer, Integer>> fromString(PNGMetadata pm, RGB rgb, String text) {
-		return PairListMetadata.fromString(pm, rgb, text);
+	public List<Point> fromString(PNGMetadata pm, RGB rgb, String text) {
+		return PointListMetadata.fromString(pm, rgb, text);
 	}
 
 	@Override
 	public String toString(PNGMetadata pm, RGB rgb) {
-		return PairListMetadata.toString(pm, rgb, getTileFeature().getKeyCode());
+		return PointListMetadata.toString(pm, rgb, getTileFeature().getKeyCode());
 	}
 
 	@Override
-	public void add(PNGMetadata pm, RGB rgb, Pair<Integer, Integer> coord) {
-		PairListMetadata.add(pm, rgb, coord, getTileFeature().getKeyCode());
+	public void add(PNGMetadata pm, RGB rgb, Point coord) {
+		PointListMetadata.add(pm, rgb, coord, getTileFeature().getKeyCode());
 	}
 
-	private void apply(PNGMetadata pm, RGB rgb, Pair<Integer, Integer> coord, VBox pane) {
+	private void apply(PNGMetadata pm, RGB rgb, Point coord, VBox pane) {
 		AnchorPane ap = LvlBuilderUtil.getSquare(coord, pane);
 		FlowPane fp = LvlBuilderUtil.getOrCreateFlowPane(ap);
 		if (!exist(fp)) {
