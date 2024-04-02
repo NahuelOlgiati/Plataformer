@@ -9,6 +9,7 @@ import com.mandarina.game.levels.Level;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
+import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
 
 public class LevelManager implements LayerDrawer {
@@ -94,6 +95,10 @@ public class LevelManager implements LayerDrawer {
 
 	public void update(Offset offset) {
 		getCurrentLevel().getLevelData().update(offset);
+	}
+
+	public Slide checkOverSlider(Box hitbox) {
+		return getCurrentLevel().getLevelData().getSlide(hitbox);
 	}
 
 	public Level getCurrentLevel() {

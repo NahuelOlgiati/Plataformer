@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.leveldata.Grass;
+import com.mandarina.game.leveldata.Slide;
 import com.mandarina.game.leveldata.Tile;
 import com.mandarina.game.leveldata.Water;
 import com.mandarina.game.main.GameCts;
@@ -14,12 +15,12 @@ import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.lvlbuilder.RGB;
 import com.mandarina.lvlbuilder.feature.PNGMetadata;
 import com.mandarina.lvlbuilder.feature.TileFeature;
+import com.mandarina.utilz.Box;
 import com.mandarina.utilz.Point;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
-import javafx.util.Pair;
 
 public class LevelData implements LayerDrawer {
 
@@ -31,10 +32,12 @@ public class LevelData implements LayerDrawer {
 	private Image[] tileSprite;
 	private Image[] waterSprite;
 	private Image[] grassSprite;
+	private Image slideSprite;
 
 	private LayerManager<Tile> tile;
 	private LayerManager<Water> water;
 	private LayerManager<Grass> grass;
+	private LayerManager<Slide> slide;
 
 	public LevelData(Level level) {
 		this.level = level;
@@ -45,6 +48,8 @@ public class LevelData implements LayerDrawer {
 		this.tileSprite = Tile.load();
 		this.waterSprite = Water.load();
 		this.grassSprite = Grass.load();
+		this.slideSprite = Slide.load();
+
 		this.tile = new LayerManager<>() {
 
 			@Override
@@ -87,6 +92,20 @@ public class LevelData implements LayerDrawer {
 				}
 			}
 		};
+		this.slide = new LayerManager<>() {
+
+			@Override
+			public Class<Slide> getClazz() {
+				return Slide.class;
+			}
+
+			@Override
+			public void draw(Slide s, GameDrawer g, Offset offset) {
+				if (offset.in(s.getSpawn())) {
+					s.draw(g, offset, slideSprite);
+				}
+			}
+		};
 		load(level.getImg(), level.getPm());
 	}
 
@@ -95,6 +114,9 @@ public class LevelData implements LayerDrawer {
 			if (offset.in(w.getSpawn()))
 				w.update();
 		}
+		for (Slide s : slide.getItems()) {
+			s.update();
+		}
 	}
 
 	@Override
@@ -102,6 +124,7 @@ public class LevelData implements LayerDrawer {
 		this.tile.drawL1(g, offset);
 		this.water.drawL1(g, offset);
 		this.grass.drawL1(g, offset);
+		this.slide.drawL1(g, offset);
 	}
 
 	@Override
@@ -109,6 +132,7 @@ public class LevelData implements LayerDrawer {
 		this.tile.drawL2(g, offset);
 		this.water.drawL2(g, offset);
 		this.grass.drawL2(g, offset);
+		this.slide.drawL2(g, offset);
 	}
 
 	@Override
@@ -116,6 +140,7 @@ public class LevelData implements LayerDrawer {
 		this.tile.drawL3(g, offset);
 		this.water.drawL3(g, offset);
 		this.grass.drawL3(g, offset);
+		this.slide.drawL3(g, offset);
 	}
 
 	@Override
@@ -123,20 +148,16 @@ public class LevelData implements LayerDrawer {
 		this.tile.drawL4(g, offset);
 		this.water.drawL4(g, offset);
 		this.grass.drawL4(g, offset);
+		this.slide.drawL4(g, offset);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void load(LvlBuilderImage img, PNGMetadata pngMetadata) {
-		List<Pair<Integer, Integer>> nosolid = (List<Pair<Integer, Integer>>) TileFeature.NOSOLID.getManager()
-				.get(pngMetadata, RGB.RED);
-		List<Pair<Integer, Integer>> layer1 = (List<Pair<Integer, Integer>>) TileFeature.LAYER1.getManager()
-				.get(pngMetadata, RGB.RED);
-		List<Pair<Integer, Integer>> layer2 = (List<Pair<Integer, Integer>>) TileFeature.LAYER2.getManager()
-				.get(pngMetadata, RGB.RED);
-		List<Pair<Integer, Integer>> layer3 = (List<Pair<Integer, Integer>>) TileFeature.LAYER3.getManager()
-				.get(pngMetadata, RGB.RED);
-		List<Pair<Integer, Integer>> layer4 = (List<Pair<Integer, Integer>>) TileFeature.LAYER4.getManager()
-				.get(pngMetadata, RGB.RED);
+		List<Point> nosolid = (List<Point>) TileFeature.NOSOLID.getManager().get(pngMetadata, RGB.RED);
+		List<Point> layer1 = (List<Point>) TileFeature.LAYER1.getManager().get(pngMetadata, RGB.RED);
+		List<Point> layer2 = (List<Point>) TileFeature.LAYER2.getManager().get(pngMetadata, RGB.RED);
+		List<Point> layer3 = (List<Point>) TileFeature.LAYER3.getManager().get(pngMetadata, RGB.RED);
+		List<Point> layer4 = (List<Point>) TileFeature.LAYER4.getManager().get(pngMetadata, RGB.RED);
 		PixelReader pixelReader = img.getPixelReader();
 		for (int y = 0; y < this.level.getImgHeight(); y++) {
 			for (int x = 0; x < this.level.getImgWidth(); x++) {
@@ -148,29 +169,29 @@ public class LevelData implements LayerDrawer {
 		this.tile.consolidate();
 		this.water.consolidate();
 		this.grass.consolidate();
+		this.slide.consolidate();
 	}
 
-	private void addRed(int red, Point spawn, List<Pair<Integer, Integer>> nosolid, List<Pair<Integer, Integer>> layer1,
-			List<Pair<Integer, Integer>> layer2, List<Pair<Integer, Integer>> layer3,
-			List<Pair<Integer, Integer>> layer4) {
-
-		// TODO
-		Pair<Integer, Integer> p = new Pair<>((int) spawn.getX(), (int) spawn.getY());
+	private void addRed(int red, Point spawn, List<Point> nosolid, List<Point> layer1, List<Point> layer2,
+			List<Point> layer3, List<Point> layer4) {
 		if (red != GameCts.EMPTY_TILE_VALUE) {
 			switch (red) {
 			case 48, 49:
-				isWater[(int) spawn.getY()][(int) spawn.getX()] = true;
+				isWater[spawn.getY()][spawn.getX()] = true;
 				this.water.add(new Water(spawn, red));
 				break;
+			case 50, 51, 52, 53:
+				this.slide.add(new Slide(spawn, red));
+				break;
 			default:
-				boolean isNosolid = nosolid == null ? false : nosolid.contains(p);
-				isSolid[(int) spawn.getY()][(int) spawn.getX()] = !isNosolid;
+				boolean isNosolid = nosolid == null ? false : nosolid.contains(spawn);
+				isSolid[spawn.getY()][spawn.getX()] = !isNosolid;
 				Tile t = new Tile(spawn, red);
 
-				boolean isLayer1 = layer1 == null ? false : layer1.contains(p);
-				boolean isLayer2 = layer2 == null ? false : layer2.contains(p);
-				boolean isLayer3 = layer3 == null ? false : layer3.contains(p);
-				boolean isLayer4 = layer4 == null ? false : layer4.contains(p);
+				boolean isLayer1 = layer1 == null ? false : layer1.contains(spawn);
+				boolean isLayer2 = layer2 == null ? false : layer2.contains(spawn);
+				boolean isLayer3 = layer3 == null ? false : layer3.contains(spawn);
+				boolean isLayer4 = layer4 == null ? false : layer4.contains(spawn);
 
 				if (!isLayer1 && !isLayer2 && !isLayer3 && !isLayer4) {
 					tile.add(t);
@@ -200,6 +221,16 @@ public class LevelData implements LayerDrawer {
 		return (int) (d % 2);
 	}
 
+	public Slide getSlide(Box hitbox) {
+		for (Slide s : this.slide.getItems()) {
+			Slide g = s.getSlide(hitbox);
+			if (g != null) {
+				return g;
+			}
+		}
+		return null;
+	}
+
 	public Level getLevel() {
 		return level;
 	}
@@ -221,6 +252,9 @@ public class LevelData implements LayerDrawer {
 		}
 		for (Grass g : this.grass.getItems()) {
 			g.scale();
+		}
+		for (Slide s : this.slide.getItems()) {
+			s.scale();
 		}
 	}
 }

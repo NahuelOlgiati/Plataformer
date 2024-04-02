@@ -6,6 +6,7 @@ import com.mandarina.game.entities.EnemyManager;
 import com.mandarina.game.entities.Player;
 import com.mandarina.game.entities.PlayerCts;
 import com.mandarina.game.leveldata.LevelManager;
+import com.mandarina.game.leveldata.Slide;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.Game;
@@ -156,6 +157,10 @@ public class Playing {
 
 	public void setGameOver(boolean gameOver) {
 		this.gameOver = gameOver;
+	}
+	
+	public Slide checkOverSlider(Box attackBox) {
+		return levelManager.checkOverSlider(attackBox);
 	}
 
 	public void checkObjectHit(Box attackBox) {

@@ -48,6 +48,7 @@ public class LoadSave {
 	public static final String RAIN_PARTICLE = "rain_particle.png";
 	public static final String WATER = "water.png";
 	public static final String WATER_BOTTOM = "water.png";
+	public static final String SLIDE = "slide.png";
 
 	public static Image GetAtlas(String fileName) {
 		return GetImage(Paths.get("assets", "atlas", fileName));

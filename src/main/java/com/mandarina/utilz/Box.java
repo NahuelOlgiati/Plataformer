@@ -14,7 +14,6 @@ public class Box {
 		if (width < 0 || height < 0) {
 			throw new IllegalArgumentException("Both width and height must be >= 0");
 		}
-
 		this.minX = minX;
 		this.minY = minY;
 		this.width = width;
@@ -95,7 +94,7 @@ public class Box {
 	public boolean contains(float x, float y) {
 		return x >= minX && x <= maxX && y >= minY && y <= maxY;
 	}
-	
+
 	public boolean contains(double x, double y) {
 		return x >= minX && x <= maxX && y >= minY && y <= maxY;
 	}
@@ -118,6 +117,22 @@ public class Box {
 
 	public boolean intersects(float x, float y, float w, float h) {
 		return x < maxX && y < maxY && x + w > minX && y + h > minY;
+	}
+
+	public boolean collideFromAbove(HorizontalLine line) {
+		return line.collideY(minY) && line.collideX(minX, maxX);
+	}
+
+	public boolean collideFromBelow(HorizontalLine line) {
+		return line.collideY(maxY) && line.collideX(minX, maxX);
+	}
+
+	public boolean collideFromLeft(HorizontalLine line) {
+		return line.collideY(minY) && line.collideFromLeftX(minX);
+	}
+
+	public boolean collideFromRight(HorizontalLine line) {
+		return line.collideY(minY) && line.collideFromRightX(maxX);
 	}
 
 	public Box clone() {

@@ -9,6 +9,7 @@ import static com.mandarina.utilz.SmallerThanTile.IsEntityOnFloor;
 
 import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.leveldata.Slide;
 import com.mandarina.game.levels.LevelData;
 import com.mandarina.game.main.GameAudio;
 import com.mandarina.game.main.GameCts;
@@ -38,6 +39,8 @@ public class Player extends Entity {
 
 	private float duckHeight;
 	private float diffHeight;
+
+	private Slide slide;
 
 	public Player(Point spawn) {
 		super(spawn, PlayerCts.HEALTH);
@@ -78,6 +81,8 @@ public class Player extends Entity {
 
 		updateWalkDir();
 		updateAttackBoxFlip();
+
+		checkOverSlider();
 
 		if (PlayerState.HIT.equals(state)) {
 			if (aniIndex <= GetSpriteAmount(state) - 3)
@@ -146,6 +151,17 @@ public class Player extends Entity {
 
 	private void checkSpikesTouched() {
 		playing.checkSpikesTouched(this);
+	}
+
+	private void checkOverSlider() {
+		Slide checkOverSlider = playing.checkOverSlider(hitbox);
+		if (checkOverSlider == null && onSlide()) {
+			inAir = true;
+		}
+		if (checkOverSlider != null && !onSlide()) {
+			jump = false;
+		}
+		this.slide = checkOverSlider;
 	}
 
 	private void checkPotionTouched() {
@@ -275,27 +291,21 @@ public class Player extends Entity {
 	private void updatePos() {
 		moving = false;
 
-		if (jump)
-			jump();
-
-		if (!inAir)
-			if (!powerAttackActive)
-				if ((!left && !right) || (right && left))
-					return;
+		if (onSlide())
+			inAir = false;
 
 		updateXSpeed();
 
+		if (jump)
+			jump();
+
 		LevelData levelData = playing.getLevelData();
+
 		if (tryStandUp) {
-			Box clone = getDuckHitbox();
-			if (CanMoveHere(clone, xSpeed, ySpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, getvCheck(), levelData)) {
-				hitbox = clone;
-				this.tryStandUp = false;
-				this.duck = false;
-			}
+			tryStandUp(levelData);
 		}
 
-		if (!inAir)
+		if (!inAir && !onSlide())
 			if (!IsEntityOnFloor(hitbox, levelData))
 				inAir = true;
 
@@ -303,10 +313,30 @@ public class Player extends Entity {
 			updatePosOnAir();
 			updateTileY();
 		} else {
+
+			if (onVerticalSlide()) {
+				hitbox.setMinY(slide.getHitline().getY() - hitbox.getHeight());
+				updateTileY();
+			}
+
 			updateXPos();
 		}
 
+		if (!inAir)
+			if (!powerAttackActive)
+				if ((!left && !right) || (right && left))
+					return;
+
 		moving = true;
+	}
+
+	private void tryStandUp(LevelData levelData) {
+		Box clone = getDuckHitbox();
+		if (CanMoveHere(clone, xSpeed, ySpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, getvCheck(), levelData)) {
+			hitbox = clone;
+			this.tryStandUp = false;
+			this.duck = false;
+		}
 	}
 
 	@Override
@@ -330,6 +360,11 @@ public class Player extends Entity {
 
 			xSpeed *= 3;
 		}
+
+		if (onHorizontalSlide()) {
+			ySpeed = 0;
+			xSpeed = xSpeed + slide.getSpeed();
+		}
 	}
 
 	private void updatePosOnAir() {
@@ -339,14 +374,14 @@ public class Player extends Entity {
 
 		if (canMoveY && canMoveX) {
 			hitbox.setMinXY(hitbox.getMinX() + xSpeed, hitbox.getMinY() + ySpeed);
-			ySpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
+			updateYSpeed();
 			return;
 		}
 
 		float minXNextToWall = GetEntityMinXNextToWall(hitbox, xSpeed);
 		if (canMoveY) {
 			hitbox.setMinXY(minXNextToWall, hitbox.getMinY() + ySpeed);
-			ySpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
+			updateYSpeed();
 			resetPowerAttack();
 			return;
 		}
@@ -354,21 +389,26 @@ public class Player extends Entity {
 		float minYNextToPlane = GetEntityMinYNextToPlane(hitbox, ySpeed);
 		if (canMoveX) {
 			hitbox.setMinXY(hitbox.getMinX() + xSpeed, minYNextToPlane);
-			if (ySpeed > 0 || IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, levelData)) {
-				resetInAir();
-			} else {
-				ySpeed = fallSpeedAfterCollision;
-			}
+			updateYSpeedAfterCollision(levelData);
+			resetPowerAttack();
 			return;
 		}
 
 		hitbox.setMinXY(GetEntityMinXNextToWall(hitbox, xSpeed, true), GetEntityMinYNextToPlane(hitbox, ySpeed, true));
+		updateYSpeedAfterCollision(levelData);
+		resetPowerAttack();
+	}
+
+	private void updateYSpeed() {
+		ySpeed += AppStage.Scale(GameCts.GRAVITY_DEFAULT);
+	}
+
+	private void updateYSpeedAfterCollision(LevelData levelData) {
 		if (ySpeed > 0 || IsFloor(hitbox, xSpeed, PlayerCts.HITBOX_HORIZONTAL_CHECKS, levelData)) {
 			resetInAir();
 		} else {
 			ySpeed = fallSpeedAfterCollision;
 		}
-		resetPowerAttack();
 	}
 
 	private void updateXPos() {
@@ -379,6 +419,18 @@ public class Player extends Entity {
 			hitbox.setMinX(GetEntityMinXNextToWall(hitbox, xSpeed, true));
 			resetPowerAttack();
 		}
+	}
+
+	private boolean onSlide() {
+		return slide != null;
+	}
+
+	private boolean onHorizontalSlide() {
+		return slide != null && slide.isHorizontal();
+	}
+
+	private boolean onVerticalSlide() {
+		return slide != null && !slide.isHorizontal();
 	}
 
 	public int getvCheck() {
