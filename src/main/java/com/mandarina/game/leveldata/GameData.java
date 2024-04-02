@@ -1,8 +1,7 @@
 package com.mandarina.game.leveldata;
 
-import com.mandarina.main.AppStage;
-
-import com.mandarina.utilz.Point;
+import com.mandarina.game.geometry.Point;
+import com.mandarina.game.main.AppStage;
 
 public class GameData {
 

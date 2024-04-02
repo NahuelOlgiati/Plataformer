@@ -1,12 +1,13 @@
 package com.mandarina.game.leveldata;
 
 import com.mandarina.game.gamestates.Offset;
+import com.mandarina.game.geometry.Point;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
-import com.mandarina.utilz.Point;
 import javafx.scene.image.Image;
 
 public class Water extends GameData {
@@ -41,10 +42,10 @@ public class Water extends GameData {
 
 	public static Image[] load() {
 		Image[] waterSprite = new Image[5];
-		Image img = LoadSave.GetAtlas(LoadSave.WATER);
+		Image img = LoadSave.GetAtlas(Catalog.WATER);
 		for (int i = 0; i < 4; i++)
 			waterSprite[i] = LoadSave.GetSubimage(img, i, 0, GameCts.TILES_DEFAULT_SIZE, GameCts.TILES_DEFAULT_SIZE);
-		waterSprite[4] = LoadSave.GetSprite(LoadSave.WATER_BOTTOM);
+		waterSprite[4] = LoadSave.GetSprite(Catalog.WATER_BOTTOM);
 		return waterSprite;
 	}
 }

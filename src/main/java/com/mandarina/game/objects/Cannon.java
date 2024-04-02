@@ -1,11 +1,12 @@
 package com.mandarina.game.objects;
 
 import com.mandarina.game.gamestates.Offset;
+import com.mandarina.game.geometry.Box;
+import com.mandarina.game.geometry.Point;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Box;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.image.Image;
 
@@ -44,7 +45,7 @@ public class Cannon extends GameObject {
 	}
 
 	public static Image[] load() {
-		return LoadSave.GetAnimations(7, 40, 26, LoadSave.GetAtlas(LoadSave.CANNON));
+		return LoadSave.GetAnimations(7, 40, 26, LoadSave.GetAtlas(Catalog.CANNON));
 	}
 
 	@Override

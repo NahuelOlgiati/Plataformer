@@ -11,7 +11,6 @@ import com.mandarina.game.gamestates.Playing;
 import com.mandarina.game.ui.AudioOptions;
 import com.mandarina.lvlbuilder.LvlBuilder;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
-import com.mandarina.main.AppStage;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;

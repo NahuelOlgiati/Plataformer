@@ -1,7 +1,8 @@
 package com.mandarina.utilz;
 
+import com.mandarina.game.geometry.Box;
 import com.mandarina.game.levels.LevelData;
-import com.mandarina.main.AppStage;
+import com.mandarina.game.main.AppStage;
 
 public class SmallerThanTile {
 

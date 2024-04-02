@@ -3,8 +3,9 @@ package com.mandarina.game.leveldata;
 import java.util.Random;
 
 import com.mandarina.game.gamestates.Offset;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -16,8 +17,8 @@ public class BackgroundCloud {
 	private Random rnd = new Random();
 
 	public BackgroundCloud() {
-		bigCloud = LoadSave.GetSprite(LoadSave.BIG_CLOUDS);
-		smallCloud = LoadSave.GetSprite(LoadSave.SMALL_CLOUDS);
+		bigCloud = LoadSave.GetSprite(Catalog.BIG_CLOUDS);
+		smallCloud = LoadSave.GetSprite(Catalog.SMALL_CLOUDS);
 		smallCloudsPos = new int[8];
 		initSmallCloudsPos();
 	}

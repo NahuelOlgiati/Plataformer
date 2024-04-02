@@ -1,10 +1,11 @@
 package com.mandarina.game.gamestates;
 
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.Game;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.ui.FullScreenButton;
 import com.mandarina.game.ui.MenuButton;
-import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -20,8 +21,8 @@ public class Menu {
 
 	public Menu(Game game) {
 		this.game = game;
-		backgroundImgPink = LoadSave.GetSprite(LoadSave.MENU_BACKGROUND_IMG);
-		backgroundImg = LoadSave.GetSprite(LoadSave.MENU_BACKGROUND);
+		backgroundImgPink = LoadSave.GetSprite(Catalog.MENU_BACKGROUND_IMG);
+		backgroundImg = LoadSave.GetSprite(Catalog.MENU_BACKGROUND);
 		loadButtons();
 		loadBackground();
 		loadFullScreenButton();

@@ -1,13 +1,14 @@
 package com.mandarina.game.leveldata;
 
 import com.mandarina.game.gamestates.Offset;
+import com.mandarina.game.geometry.Box;
+import com.mandarina.game.geometry.HorizontalLine;
+import com.mandarina.game.geometry.Point;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Box;
-import com.mandarina.utilz.HorizontalLine;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -149,7 +150,7 @@ public class Slide extends GameData {
 	}
 
 	public static Image load() {
-		return LoadSave.GetAtlas(LoadSave.SLIDE);
+		return LoadSave.GetAtlas(Catalog.SLIDE);
 	}
 
 	@Override

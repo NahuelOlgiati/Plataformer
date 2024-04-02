@@ -5,11 +5,11 @@ import static com.mandarina.utilz.BiggerThanTile.IsFloor;
 
 import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.geometry.Box;
+import com.mandarina.game.geometry.Point;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.objects.DialogueCts;
-import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.image.Image;
 

@@ -10,14 +10,14 @@ import com.mandarina.game.entities.Enemy;
 import com.mandarina.game.entities.Player;
 import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.geometry.Box;
+import com.mandarina.game.geometry.Point;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.levels.LevelData;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameAudio;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Box;
-import com.mandarina.utilz.Point;
 
 public class ObjectManager implements LayerDrawer {
 

@@ -2,7 +2,7 @@ package com.mandarina.lvlbuilder;
 
 import java.util.Objects;
 
-import com.mandarina.utilz.Point;
+import com.mandarina.game.geometry.Point;
 
 import javafx.scene.image.ImageView;
 

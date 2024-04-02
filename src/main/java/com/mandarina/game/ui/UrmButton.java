@@ -1,8 +1,9 @@
 package com.mandarina.game.ui;
 
+import com.mandarina.game.geometry.Box;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Box;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -19,7 +20,7 @@ public class UrmButton extends PauseButton {
 	}
 
 	private void loadImgs() {
-		Image temp = LoadSave.GetSprite(LoadSave.URM_BUTTONS);
+		Image temp = LoadSave.GetSprite(Catalog.URM_BUTTONS);
 		imgs = new Image[3];
 		for (int i = 0; i < imgs.length; i++)
 			imgs[i] = LoadSave.GetSubimage(temp, i, rowIndex, URMButtonCts.URM_SIZE_DEFAULT,

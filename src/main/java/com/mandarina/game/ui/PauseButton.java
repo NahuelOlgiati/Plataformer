@@ -1,6 +1,6 @@
 package com.mandarina.game.ui;
 
-import com.mandarina.utilz.Box;
+import com.mandarina.game.geometry.Box;
 
 public class PauseButton {
 

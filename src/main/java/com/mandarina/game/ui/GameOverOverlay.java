@@ -2,8 +2,9 @@ package com.mandarina.game.ui;
 
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -19,7 +20,7 @@ public class GameOverOverlay {
 
 	public GameOverOverlay(Playing playing) {
 		this.playing = playing;
-		img = LoadSave.GetSprite(LoadSave.DEATH_SCREEN);
+		img = LoadSave.GetSprite(Catalog.DEATH_SCREEN);
 		createImg();
 		createButtons();
 	}

@@ -1,10 +1,10 @@
 package com.mandarina.game.gamestates;
 
+import com.mandarina.game.geometry.Box;
+import com.mandarina.game.geometry.Point;
 import com.mandarina.game.levels.Level;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameCts;
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Box;
-import com.mandarina.utilz.Point;
 
 public class Offset {
 

@@ -4,10 +4,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.mandarina.game.geometry.Point;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.lvlbuilder.feature.PNGMetadata;
 import com.mandarina.lvlbuilder.feature.TileFeature;
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Label;

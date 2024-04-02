@@ -7,8 +7,9 @@ import com.mandarina.game.entities.Crabby;
 import com.mandarina.game.entities.Pinkstar;
 import com.mandarina.game.entities.Shark;
 import com.mandarina.game.entities.Titan;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -23,8 +24,8 @@ public class Credits {
 	private List<ShowEntity> entitiesList;
 
 	public Credits() {
-		backgroundImg = LoadSave.GetSprite(LoadSave.MENU_BACKGROUND_IMG);
-		creditsImg = LoadSave.GetSprite(LoadSave.CREDITS);
+		backgroundImg = LoadSave.GetSprite(Catalog.MENU_BACKGROUND_IMG);
+		creditsImg = LoadSave.GetSprite(Catalog.CREDITS);
 		bgW = AppStage.Scale(creditsImg.getWidth());
 		bgH = AppStage.Scale(creditsImg.getHeight());
 		bgX = AppStage.GetGameWidth() / 2 - bgW / 2;

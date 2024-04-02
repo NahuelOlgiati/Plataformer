@@ -1,9 +1,9 @@
 package com.mandarina.game.levels;
 
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.lvlbuilder.feature.PNGMetadata;
-import com.mandarina.main.AppStage;
 
 public class Level {
 

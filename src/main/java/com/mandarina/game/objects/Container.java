@@ -1,9 +1,10 @@
 package com.mandarina.game.objects;
 
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Box;
+import com.mandarina.game.geometry.Box;
+import com.mandarina.game.geometry.Point;
+import com.mandarina.game.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.image.Image;
 
@@ -37,7 +38,7 @@ public class Container extends GameObject {
 	}
 
 	public static Image[][] load() {
-		return LoadSave.GetAnimations(8, 2, 40, 30, LoadSave.GetAtlas(LoadSave.CONTAINER));
+		return LoadSave.GetAnimations(8, 2, 40, 30, LoadSave.GetAtlas(Catalog.CONTAINER));
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.mandarina.lvlbuilder.feature;
 
+import com.mandarina.game.geometry.Point;
 import com.mandarina.lvlbuilder.RGB;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.layout.VBox;
 

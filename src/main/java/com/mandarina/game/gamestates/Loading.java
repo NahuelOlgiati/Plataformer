@@ -1,7 +1,8 @@
 package com.mandarina.game.gamestates;
 
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -16,7 +17,7 @@ public class Loading {
 	}
 
 	private void loadBackground() {
-		backgroundImg = LoadSave.GetSprite(LoadSave.MENU_BACKGROUND_IMG);
+		backgroundImg = LoadSave.GetSprite(Catalog.MENU_BACKGROUND_IMG);
 //		w = AppStage.Scale(backgroundImg.getWidth());
 //		h = AppStage.Scale(backgroundImg.getHeight());
 //		x = AppStage.GetGameWidth() / 2 - w / 2;

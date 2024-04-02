@@ -1,7 +1,6 @@
-package com.mandarina.main;
+package com.mandarina.game.main;
 
 import com.mandarina.game.gamestates.GameState;
-import com.mandarina.game.main.GameCts;
 
 import javafx.application.Platform;
 import javafx.stage.Stage;

@@ -9,11 +9,11 @@ import static com.mandarina.utilz.SmallerThanTile.IsSightClear;
 
 import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.geometry.Point;
 import com.mandarina.game.levels.LevelData;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.image.Image;
 

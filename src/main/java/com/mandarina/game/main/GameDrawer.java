@@ -1,7 +1,5 @@
 package com.mandarina.game.main;
 
-import com.mandarina.main.AppStage;
-
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;

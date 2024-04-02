@@ -3,6 +3,8 @@ package com.mandarina.game.levels;
 import java.util.List;
 
 import com.mandarina.game.gamestates.Offset;
+import com.mandarina.game.geometry.Point;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
@@ -16,8 +18,6 @@ import com.mandarina.game.objects.Projectile;
 import com.mandarina.game.objects.Spike;
 import com.mandarina.game.objects.Tree;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;

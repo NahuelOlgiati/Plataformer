@@ -2,10 +2,10 @@ package com.mandarina.game.entities;
 
 import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.geometry.Box;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
-import com.mandarina.utilz.Box;
 
 public class EnemyManager implements LayerDrawer {
 

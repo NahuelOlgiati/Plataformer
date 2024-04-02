@@ -1,7 +1,8 @@
 package com.mandarina.game.ui;
 
+import com.mandarina.game.geometry.Box;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.utilz.Box;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -20,7 +21,7 @@ public class SoundButton extends PauseButton {
 	}
 
 	private void loadSoundImgs() {
-		Image temp = LoadSave.GetSprite(LoadSave.SOUND_BUTTONS);
+		Image temp = LoadSave.GetSprite(Catalog.SOUND_BUTTONS);
 		soundImgs = new Image[2][3];
 		for (int j = 0; j < soundImgs.length; j++)
 			for (int i = 0; i < soundImgs[j].length; i++)

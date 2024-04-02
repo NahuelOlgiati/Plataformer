@@ -3,6 +3,8 @@ package com.mandarina.game.levels;
 import java.util.List;
 
 import com.mandarina.game.gamestates.Offset;
+import com.mandarina.game.geometry.Box;
+import com.mandarina.game.geometry.Point;
 import com.mandarina.game.leveldata.Grass;
 import com.mandarina.game.leveldata.Slide;
 import com.mandarina.game.leveldata.Tile;
@@ -15,8 +17,6 @@ import com.mandarina.lvlbuilder.LvlBuilderImage;
 import com.mandarina.lvlbuilder.RGB;
 import com.mandarina.lvlbuilder.feature.PNGMetadata;
 import com.mandarina.lvlbuilder.feature.TileFeature;
-import com.mandarina.utilz.Box;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;

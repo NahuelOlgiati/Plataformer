@@ -1,6 +1,6 @@
 package com.mandarina.lvlbuilder;
 
-import com.mandarina.utilz.Point;
+import com.mandarina.game.geometry.Point;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;

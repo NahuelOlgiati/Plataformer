@@ -3,10 +3,10 @@ package com.mandarina.lvlbuilder.feature;
 import java.util.Iterator;
 import java.util.List;
 
+import com.mandarina.game.geometry.Point;
 import com.mandarina.lvlbuilder.LvlBuilderUtil;
 import com.mandarina.lvlbuilder.RGB;
 import com.mandarina.utilz.LoadSave;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;

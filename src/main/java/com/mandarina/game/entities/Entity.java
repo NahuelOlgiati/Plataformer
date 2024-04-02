@@ -3,11 +3,11 @@ package com.mandarina.game.entities;
 import static com.mandarina.utilz.SmallerThanTile.CanMoveHere;
 
 import com.mandarina.game.gamestates.Offset;
+import com.mandarina.game.geometry.Box;
+import com.mandarina.game.geometry.Point;
 import com.mandarina.game.levels.LevelData;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Box;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;

@@ -2,8 +2,9 @@ package com.mandarina.game.ui;
 
 import com.mandarina.game.entities.Player;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -39,7 +40,7 @@ public class StatusBar {
 
 	public StatusBar(Playing playing) {
 		this.playing = playing;
-		this.statusBarImg = LoadSave.GetSprite(LoadSave.STATUS_BAR);
+		this.statusBarImg = LoadSave.GetSprite(Catalog.STATUS_BAR);
 
 		this.statusBarWidth = AppStage.Scale(192);
 		this.statusBarHeight = AppStage.Scale(58);

@@ -7,13 +7,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.mandarina.game.gamestates.GameState;
+import com.mandarina.game.geometry.Point;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.Game;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.lvlbuilder.feature.PNGMetadata;
 import com.mandarina.lvlbuilder.feature.PNGMetadataUtil;
 import com.mandarina.lvlbuilder.feature.TileFeature;
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Point;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;

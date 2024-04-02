@@ -1,8 +1,9 @@
 package com.mandarina.game.ui;
 
 import com.mandarina.game.gamestates.GameState;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -35,7 +36,7 @@ public class MenuButton {
 
 	private void loadImgs() {
 		imgs = new Image[3];
-		Image temp = LoadSave.GetSprite(LoadSave.MENU_BUTTONS);
+		Image temp = LoadSave.GetSprite(Catalog.MENU_BUTTONS);
 		for (int i = 0; i < imgs.length; i++) {
 			imgs[i] = LoadSave.GetSubimage(temp, i, rowIndex, MenuButtonCts.WIDTH_DEFAULT,
 					MenuButtonCts.HEIGHT_DEFAULT);

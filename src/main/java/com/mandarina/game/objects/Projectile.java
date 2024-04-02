@@ -3,12 +3,13 @@ package com.mandarina.game.objects;
 import static com.mandarina.utilz.SmallerThanTile.IsSolid;
 
 import com.mandarina.game.gamestates.Offset;
+import com.mandarina.game.geometry.Box;
+import com.mandarina.game.geometry.Point;
 import com.mandarina.game.levels.LevelData;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Box;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.image.Image;
 
@@ -64,7 +65,7 @@ public class Projectile extends GameObject {
 	}
 
 	public static Image load() {
-		return LoadSave.GetSprite(LoadSave.CANNON_BALL);
+		return LoadSave.GetSprite(Catalog.CANNON_BALL);
 	}
 
 	@Override

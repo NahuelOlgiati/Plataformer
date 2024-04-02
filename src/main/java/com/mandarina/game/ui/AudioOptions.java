@@ -1,8 +1,8 @@
 package com.mandarina.game.ui;
 
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.Game;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
 
 import javafx.scene.input.MouseEvent;
 

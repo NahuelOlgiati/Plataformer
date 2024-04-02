@@ -2,8 +2,9 @@ package com.mandarina.game.ui;
 
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Catalog;
 //import com.mandarina.main.AppStage;
 import com.mandarina.utilz.LoadSave;
 
@@ -19,7 +20,7 @@ public class GameCompletedOverlay {
 
 	public GameCompletedOverlay(Playing playing) {
 		this.playing = playing;
-		img = LoadSave.GetSprite(LoadSave.GAME_COMPLETED);
+		img = LoadSave.GetSprite(Catalog.GAME_COMPLETED);
 		createImg();
 		createButtons();
 	}

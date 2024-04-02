@@ -1,6 +1,6 @@
-package com.mandarina.utilz;
+package com.mandarina.game.geometry;
 
-import com.mandarina.main.AppStage;
+import com.mandarina.game.main.AppStage;
 
 public class HorizontalLine {
 

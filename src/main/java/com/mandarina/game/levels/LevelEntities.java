@@ -13,11 +13,11 @@ import com.mandarina.game.entities.Shark;
 import com.mandarina.game.entities.Titan;
 import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.geometry.Point;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;

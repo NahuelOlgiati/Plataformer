@@ -2,8 +2,9 @@ package com.mandarina.game.ui;
 
 import com.mandarina.game.gamestates.GameState;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -18,7 +19,7 @@ public class PauseOverlay {
 
 	public PauseOverlay(Playing playing) {
 		this.playing = playing;
-		backgroundImg = LoadSave.GetSprite(LoadSave.PAUSE_BACKGROUND);
+		backgroundImg = LoadSave.GetSprite(Catalog.PAUSE_BACKGROUND);
 		loadBackground();
 		createUrmButtons();
 	}

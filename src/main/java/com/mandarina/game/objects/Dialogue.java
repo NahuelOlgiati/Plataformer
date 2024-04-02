@@ -1,12 +1,13 @@
 package com.mandarina.game.objects;
 
 import com.mandarina.game.gamestates.Offset;
+import com.mandarina.game.geometry.Point;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameCts;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
-import com.mandarina.utilz.Point;
 import javafx.scene.image.Image;
 
 public class Dialogue extends GameObject {
@@ -62,10 +63,10 @@ public class Dialogue extends GameObject {
 	}
 
 	public static Image[] loadQuestions() {
-		return LoadSave.GetAnimations(5, 14, 12, LoadSave.GetAtlas(LoadSave.QUESTION));
+		return LoadSave.GetAnimations(5, 14, 12, LoadSave.GetAtlas(Catalog.QUESTION));
 	}
 
 	public static Image[] loadExclamations() {
-		return LoadSave.GetAnimations(5, 14, 12, LoadSave.GetAtlas(LoadSave.EXCLAMATION));
+		return LoadSave.GetAnimations(5, 14, 12, LoadSave.GetAtlas(Catalog.EXCLAMATION));
 	}
 }

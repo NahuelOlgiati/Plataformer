@@ -5,11 +5,11 @@ import java.io.File;
 
 import com.mandarina.game.gamestates.Offset;
 import com.mandarina.game.gamestates.Playing;
+import com.mandarina.game.geometry.Box;
 import com.mandarina.game.levels.Level;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.main.LayerDrawer;
 import com.mandarina.lvlbuilder.LvlBuilderImage;
-import com.mandarina.utilz.Box;
 import com.mandarina.utilz.LoadSave;
 
 public class LevelManager implements LayerDrawer {

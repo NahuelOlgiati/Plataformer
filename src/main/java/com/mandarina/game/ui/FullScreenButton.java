@@ -1,8 +1,8 @@
 package com.mandarina.game.ui;
 
+import com.mandarina.game.geometry.Box;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Box;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;

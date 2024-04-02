@@ -1,4 +1,4 @@
-package com.mandarina.utilz;
+package com.mandarina.game.geometry;
 
 public class Box {
 

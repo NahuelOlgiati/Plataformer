@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.mandarina.game.geometry.Point;
 import com.mandarina.lvlbuilder.RGB;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.input.KeyCode;
 

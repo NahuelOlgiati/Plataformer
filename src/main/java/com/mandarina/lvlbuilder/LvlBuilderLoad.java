@@ -5,15 +5,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import com.mandarina.utilz.LoadSave;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.ImageView;
@@ -22,45 +19,13 @@ import javafx.scene.layout.AnchorPane;
 
 public class LvlBuilderLoad {
 
-	private static ClassLoader cl = Thread.currentThread().getContextClassLoader();
-
-	private static String pathNormalization(Path path) {
-		return path.toString().replace('\\', '/');
-	}
-
 	public static URL GetCSS() {
-		return cl.getResource(pathNormalization(Paths.get("assets", "css")) + "/lvlbuilder.css");
-	}
-
-	public static LvlBuilderImage[] GetAllRGB() {
-		return getImages(Paths.get("assets", "rgb"), "*");
-	}
-
-	public static LvlBuilderImage[] GetAllRGB(RGB rgb) {
-		return getImages(Paths.get("assets", "rgb"), rgb.getValue() + "_*");
-	}
-
-	private static LvlBuilderImage[] getImages(Path path, String regex) {
-		try {
-			return Stream
-					.of(new PathMatchingResourcePatternResolver(cl).getResources(pathNormalization(path) + "/" + regex))
-					.map(r -> {
-						try (InputStream is = r.getInputStream()) {
-							return new LvlBuilderImage(is, r);
-						} catch (Throwable e) {
-							e.printStackTrace();
-							return null;
-						}
-					}).toArray(LvlBuilderImage[]::new);
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		return null;
+		return LoadSave.GetCSS("lvlbuilder.css");
 	}
 
 	public static List<AnchorPane> getItems(RGB rgb) {
 		List<AnchorPane> items = new ArrayList<AnchorPane>();
-		LvlBuilderImage[] getAllRGB = GetAllRGB(rgb);
+		LvlBuilderImage[] getAllRGB = LoadSave.GetAllRGB(rgb);
 		for (LvlBuilderImage image : getAllRGB) {
 			if (image.isTiled()) {
 				LvlBuilderImage[] valuedImages = getTiledImages(image);
@@ -73,7 +38,7 @@ public class LvlBuilderLoad {
 	}
 
 	public static LvlBuilderImage getImage(RGB rgb, int value) {
-		for (LvlBuilderImage image : GetAllRGB(rgb)) {
+		for (LvlBuilderImage image : LoadSave.GetAllRGB(rgb)) {
 			if (image.isTiled()) {
 				if (value >= image.getFirstValue() && value <= image.getLastValue()) {
 					return getTile(image, value);

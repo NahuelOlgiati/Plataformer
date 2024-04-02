@@ -3,11 +3,12 @@ package com.mandarina.game.objects;
 import java.util.Random;
 
 import com.mandarina.game.gamestates.Offset;
+import com.mandarina.game.geometry.Point;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
-import com.mandarina.utilz.Point;
 import javafx.scene.image.Image;
 
 public class Tree extends GameObject {
@@ -42,11 +43,11 @@ public class Tree extends GameObject {
 
 	public static Image[][] load() {
 		Image[][] treeImgs = new Image[2][4];
-		Image treeOneImg = LoadSave.GetAtlas(LoadSave.TREE_ONE);
+		Image treeOneImg = LoadSave.GetAtlas(Catalog.TREE_ONE);
 		for (int i = 0; i < 4; i++)
 			treeImgs[0][i] = LoadSave.GetSubimage(treeOneImg, i, 0, 39, 92);
 
-		Image treeTwoImg = LoadSave.GetAtlas(LoadSave.TREE_TWO);
+		Image treeTwoImg = LoadSave.GetAtlas(Catalog.TREE_TWO);
 		for (int i = 0; i < 4; i++)
 			treeImgs[1][i] = LoadSave.GetSubimage(treeTwoImg, i, 0, 62, 54);
 

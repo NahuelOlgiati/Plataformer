@@ -1,9 +1,10 @@
 package com.mandarina.game.objects;
 
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Box;
+import com.mandarina.game.geometry.Box;
+import com.mandarina.game.geometry.Point;
+import com.mandarina.game.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
-import com.mandarina.utilz.Point;
 
 import javafx.scene.image.Image;
 
@@ -41,7 +42,7 @@ public class Potion extends GameObject {
 	}
 
 	public static Image[][] load() {
-		Image potionSprite = LoadSave.GetAtlas(LoadSave.POTION);
+		Image potionSprite = LoadSave.GetAtlas(Catalog.POTION);
 		Image[][] potionImgs = new Image[2][7];
 		for (int j = 0; j < potionImgs.length; j++)
 			for (int i = 0; i < potionImgs[j].length; i++)

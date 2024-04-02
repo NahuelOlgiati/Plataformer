@@ -1,11 +1,12 @@
 package com.mandarina.game.gamestates;
 
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.Game;
 import com.mandarina.game.main.GameDrawer;
 import com.mandarina.game.ui.PauseButton;
 import com.mandarina.game.ui.URMButtonCts;
 import com.mandarina.game.ui.UrmButton;
-import com.mandarina.main.AppStage;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -21,8 +22,8 @@ public class GameOptions {
 
 	public GameOptions(Game game) {
 		this.game = game;
-		backgroundImg = LoadSave.GetSprite(LoadSave.MENU_BACKGROUND_IMG);
-		optionsBackgroundImg = LoadSave.GetSprite(LoadSave.OPTIONS_MENU);
+		backgroundImg = LoadSave.GetSprite(Catalog.MENU_BACKGROUND_IMG);
+		optionsBackgroundImg = LoadSave.GetSprite(Catalog.OPTIONS_MENU);
 		loadImgs();
 		loadButton();
 	}

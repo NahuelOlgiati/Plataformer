@@ -1,8 +1,9 @@
 package com.mandarina.game.ui;
 
+import com.mandarina.game.geometry.Box;
+import com.mandarina.game.main.AppStage;
 import com.mandarina.game.main.GameDrawer;
-import com.mandarina.main.AppStage;
-import com.mandarina.utilz.Box;
+import com.mandarina.utilz.Catalog;
 import com.mandarina.utilz.LoadSave;
 
 import javafx.scene.image.Image;
@@ -31,7 +32,7 @@ public class VolumeButton extends PauseButton {
 	}
 
 	private void loadImgs() {
-		Image temp = LoadSave.GetSprite(LoadSave.VOLUME_BUTTONS);
+		Image temp = LoadSave.GetSprite(Catalog.VOLUME_BUTTONS);
 		imgs = new Image[3];
 		for (int i = 0; i < imgs.length; i++)
 			imgs[i] = LoadSave.GetSubimage(temp, i, 0, VolumeButtonCts.VOLUME_WIDTH_DEFAULT,
